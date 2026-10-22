@@ -1,0 +1,48 @@
+import { timingSafeEqual } from "node:crypto";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { createAdminClient } from "@/lib/supabase/admin";
+
+const Body = z.object({
+  email: z.string().trim().toLowerCase().email(),
+  password: z.string().min(6).max(200),
+  name: z.string().trim().max(40).optional(),
+  code: z.string().trim().min(1).max(200),
+});
+
+function codeMatches(given: string, expected: string) {
+  const a = Buffer.from(given);
+  const b = Buffer.from(expected);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+// Invite-only registration: the access code lives in SIGNUP_ACCESS_CODE (Vercel env).
+// Users are created server-side, so public sign-ups can stay disabled in Supabase.
+export async function POST(req: Request) {
+  const expected = process.env.SIGNUP_ACCESS_CODE?.trim();
+  if (!expected) return NextResponse.json({ error: "Registrace je momentálně vypnutá." }, { status: 503 });
+
+  const parsed = Body.safeParse(await req.json().catch(() => ({})));
+  if (!parsed.success) return NextResponse.json({ error: "Zkontroluj e-mail a heslo (min. 6 znaků)." }, { status: 400 });
+  const { email, password, name, code } = parsed.data;
+
+  if (!codeMatches(code, expected)) {
+    await new Promise((r) => setTimeout(r, 800)); // slow down guessing
+    return NextResponse.json({ error: "Neplatný přístupový kód." }, { status: 403 });
+  }
+
+  const { error } = await createAdminClient().auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: { display_name: name || email.split("@")[0] },
+  });
+  if (error) {
+    const exists = /already|registered|exists/i.test(error.message);
+    return NextResponse.json(
+      { error: exists ? "Tento e-mail už je zaregistrovaný. Přihlas se." : "Účet se nepodařilo vytvořit." },
+      { status: exists ? 409 : 500 },
+    );
+  }
+  return NextResponse.json({ ok: true });
+}

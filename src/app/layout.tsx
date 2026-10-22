@@ -15,8 +15,10 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Scio Trenažér", template: "%s · Scio Trenažér" },
-  description: "Příprava na Národní srovnávací zkoušky – OSP testy, trénink slabin s AI, gamifikace.",
+  title: { default: "Natrénuj testy", template: "%s · Natrénuj testy" },
+  description: "Soukromá tréninková aplikace.",
+  // private app – keep it out of search engines
+  robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };
 
 export const viewport: Viewport = {

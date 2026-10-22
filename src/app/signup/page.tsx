@@ -6,7 +6,7 @@ export const metadata = { title: "Registrace" };
 
 export default function SignupPage() {
   return (
-    <AuthShell title="Začni trénovat 🚀" subtitle="Účet je zdarma. Ukládáme ti pokrok, chyby i streak.">
+    <AuthShell title="Registrace 🔑" subtitle="Registrace je jen na pozvánku – zadej přístupový kód, který jsi dostal(a).">
       <Suspense>
         <AuthForm mode="signup" />
       </Suspense>

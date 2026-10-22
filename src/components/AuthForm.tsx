@@ -13,9 +13,9 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(params.get("error") === "confirm" ? "Odkaz pro potvrzení vypršel. Zkus se přihlásit." : null);
-  const [sent, setSent] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,20 +30,18 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         router.replace(params.get("next") ?? "/app");
         router.refresh();
       } else {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { display_name: name || email.split("@")[0] },
-            emailRedirectTo: `${window.location.origin}/auth/callback?next=/app/onboarding`,
-          },
+        const r = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, name, code }),
         });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.error ?? "Registrace se nepovedla.");
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        if (data.session) {
-          startNavProgress();
-          router.replace("/app/onboarding");
-          router.refresh();
-        } else setSent(true);
+        startNavProgress();
+        router.replace("/app/onboarding");
+        router.refresh();
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -51,16 +49,6 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     } finally {
       setBusy(false);
     }
-  }
-
-  if (sent) {
-    return (
-      <div className="space-y-3 text-center">
-        <div className="text-5xl">📬</div>
-        <h2 className="font-display text-xl font-bold">Zkontroluj e-mail</h2>
-        <p className="text-muted">Poslali jsme ti odkaz pro potvrzení účtu na <b>{email}</b>. Po kliknutí se rovnou přihlásíš.</p>
-      </div>
-    );
   }
 
   const input =
@@ -81,6 +69,18 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      {mode === "signup" && (
+        <input
+          className={input}
+          required
+          autoComplete="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          placeholder="Přístupový kód"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
+      )}
       {error && <p className="rounded-xl bg-rose-100 px-3 py-2 text-sm font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">{error}</p>}
       <Button type="submit" size="lg" className="w-full" loading={busy}>
         {busy ? (mode === "login" ? "Přihlašuji…" : "Zakládám účet…") : mode === "login" ? "Přihlásit se" : "Vytvořit účet"}
