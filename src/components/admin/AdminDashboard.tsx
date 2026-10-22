@@ -129,32 +129,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
             hint={p.costPerServe !== null ? `${usd(p.costPerServe)} za zobrazení · ${p.waiting} čeká` : `${p.waiting} čeká připraveno`}
           />
         </div>
-        {p.byType.length > 0 && (
-          <div className="scroll-thin mt-4 overflow-x-auto">
-            <table className="w-full min-w-[420px] text-sm">
-              <thead className="text-left text-xs uppercase text-muted">
-                <tr>
-                  <th className="py-1">Typ úlohy</th>
-                  <th className="py-1 text-right">Vytvořeno</th>
-                  <th className="py-1 text-right">Zobrazeno</th>
-                  <th className="py-1 text-right">Poměr</th>
-                </tr>
-              </thead>
-              <tbody>
-                {p.byType.map((r) => (
-                  <tr key={r.type} className="border-t border-border">
-                    <td className="py-1.5">
-                      {taskTypeMeta(r.type)?.emoji} {taskTypeMeta(r.type)?.name ?? r.type}
-                    </td>
-                    <td className="py-1.5 text-right tabular-nums">{r.generated}</td>
-                    <td className="py-1.5 text-right tabular-nums">{r.serves}</td>
-                    <td className="py-1.5 text-right tabular-nums">{r.generated ? `${num(r.serves / r.generated, 1)}×` : "–"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <PoolStock rows={p.byType} />
       </Card>
 
       {stats.rejects.length > 0 && (
@@ -174,6 +149,77 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
 
       <InviteCodes invites={stats.invites} />
       <Users users={stats.users} />
+    </div>
+  );
+}
+
+function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
+  const router = useRouter();
+  const [running, setRunning] = useState(false);
+  const [status, setStatus] = useState<Record<string, string>>({});
+  const missing = rows.filter((r) => r.ready < 2);
+
+  async function fill() {
+    setRunning(true);
+    const queue = [...missing];
+    // 3 types at a time – each request generates up to 2 tasks in parallel
+    const worker = async () => {
+      for (let r = queue.shift(); r; r = queue.shift()) {
+        setStatus((s) => ({ ...s, [r.type]: "⏳ generuji…" }));
+        try {
+          const res = await fetch("/api/admin/pool", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ type: r.type, target: 2 }),
+          });
+          const j = await res.json();
+          setStatus((s) => ({ ...s, [r.type]: res.ok ? `✓ ${j.stock} připraveno${j.rejected ? ` (${j.rejected} zamítnuto)` : ""}` : `✗ ${j.error ?? "chyba"}` }));
+        } catch {
+          setStatus((s) => ({ ...s, [r.type]: "✗ vypršel čas – zkus znovu" }));
+        }
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    setRunning(false);
+    router.refresh();
+  }
+
+  return (
+    <div className="mt-4">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <div className="text-sm text-muted">
+          Zásoba pro nové uživatele: u každého typu mají být aspoň 2 hotové úlohy, aby nikdo nečekal na AI.
+        </div>
+        <Button size="sm" loading={running} disabled={!missing.length} onClick={fill}>
+          {missing.length ? `Doplnit zásobu (${missing.length} typů)` : "Zásoba je plná ✓"}
+        </Button>
+      </div>
+      <div className="scroll-thin overflow-x-auto">
+        <table className="w-full min-w-[520px] text-sm">
+          <thead className="text-left text-xs uppercase text-muted">
+            <tr>
+              <th className="py-1">Typ úlohy</th>
+              <th className="py-1 text-right">Připraveno</th>
+              <th className="py-1 text-right">Vytvořeno</th>
+              <th className="py-1 text-right">Zobrazeno</th>
+              <th className="py-1 pl-3">Stav</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.type} className="border-t border-border">
+                <td className="py-1.5">
+                  {taskTypeMeta(r.type)?.emoji} {taskTypeMeta(r.type)?.name ?? r.type}
+                </td>
+                <td className={clsx("py-1.5 text-right font-bold tabular-nums", r.ready < 2 ? "text-amber-600" : "text-emerald-600")}>{r.ready}</td>
+                <td className="py-1.5 text-right tabular-nums">{r.generated}</td>
+                <td className="py-1.5 text-right tabular-nums">{r.serves}</td>
+                <td className="py-1.5 pl-3 text-xs text-muted">{status[r.type] ?? ""}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

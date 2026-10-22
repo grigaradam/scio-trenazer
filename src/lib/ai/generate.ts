@@ -270,7 +270,7 @@ async function validate(group: Group, type: TaskType, userId?: string): Promise<
   const response = await anthropic().messages.parse({
     model: AI.validatorModel,
     max_tokens: 16000,
-    output_config: { effort: "high", format: zodOutputFormat(ValidationSchema) },
+    output_config: { effort: AI.validatorEffort, format: zodOutputFormat(ValidationSchema) },
     system: VALIDATOR_SYSTEM,
     messages: [
       {
@@ -356,7 +356,7 @@ ${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst
       const response = await anthropic().messages.parse({
         model: AI.model,
         max_tokens: 20000, // non-streaming requests must stay under the SDK's 10-minute ceiling (~21k)
-        output_config: { effort: "high", format: zodOutputFormat(GeneratedSchema) },
+        output_config: { effort: AI.generatorEffort, format: zodOutputFormat(GeneratedSchema) },
         system: GENERATOR_SYSTEM,
         messages: [{ role: "user", content: prompt }],
       });

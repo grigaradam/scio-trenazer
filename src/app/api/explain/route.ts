@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   if (over) return over;
   try {
     const explanation = await generateExplanation(task, user.id);
-    await admin.from("explanations").upsert({ task_ref: task.ref, content: explanation, model: AI.model });
+    await admin.from("explanations").upsert({ task_ref: task.ref, content: explanation, model: AI.explainModel });
     return NextResponse.json({ explanation, answer: task.question.parts.map((p) => p.answer) });
   } catch (err) {
     return aiErrorResponse(err);

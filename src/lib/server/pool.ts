@@ -6,8 +6,8 @@ import type { ExamId, TaskType } from "@/lib/content/types";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /** How many unseen, ready-made tasks of a type we keep waiting for each user. */
-const BUFFER = 1;
-const MAX_ATTEMPTS = 3;
+const BUFFER = 2;
+const MAX_ATTEMPTS = 4;
 const inflight = new Set<string>();
 
 /** Unseen pool tasks for a user, current generator version only (older, easier tasks are skipped). */
@@ -39,10 +39,10 @@ export function ensureTaskBuffer(userId: string, exam: ExamId, type: TaskType) {
     inflight.add(key);
     try {
       for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-        if ((await waitingCount(userId, exam, type)) >= BUFFER) return;
+        const missing = BUFFER - (await waitingCount(userId, exam, type));
+        if (missing <= 0) return;
         if (!(await tryBudget(userId, "generate"))) return;
-        const outcome = await generateTasks({ exam, type, count: 1, userId });
-        if (outcome.accepted.length) return;
+        await generateTasks({ exam, type, count: missing, userId }); // candidates run in parallel
       }
     } catch (e) {
       console.error("task buffer top-up", e);
@@ -50,4 +50,14 @@ export function ensureTaskBuffer(userId: string, exam: ExamId, type: TaskType) {
       inflight.delete(key);
     }
   });
+}
+
+/** How many current-version tasks of a type exist in the pool (what a brand-new user can get instantly). */
+export async function poolStock(exam: ExamId, type: TaskType) {
+  const { data } = await createAdminClient()
+    .from("generated_tasks")
+    .select("id,payload->v")
+    .eq("exam", exam)
+    .eq("task_type", type);
+  return ((data ?? []) as { v?: number | null }[]).filter((r) => Number(r.v ?? 1) >= GENERATOR_VERSION).length;
 }

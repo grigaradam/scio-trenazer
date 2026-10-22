@@ -22,7 +22,7 @@ ${userAnswer ? `\nStudent odpověděl: ${userAnswer}` : ""}`;
 
 export function streamChat(task: ResolvedTask, userAnswer: string | null, messages: Anthropic.MessageParam[]) {
   return anthropic().messages.stream({
-    model: AI.model,
+    model: AI.chatModel,
     max_tokens: 4000,
     output_config: { effort: "low" },
     system: [{ type: "text", text: chatSystemPrompt(task, userAnswer), cache_control: { type: "ephemeral" } }],

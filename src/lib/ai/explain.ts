@@ -35,7 +35,7 @@ Správná odpověď je daná klíčem – nikdy ji nezpochybňuj, vysvětli, pro
 export async function generateExplanation(task: ResolvedTask, userId?: string): Promise<Explanation> {
   const meta = taskTypeMeta(task.taskType);
   const response = await anthropic().messages.parse({
-    model: AI.model,
+    model: AI.explainModel,
     max_tokens: 8000,
     output_config: { effort: "medium", format: zodOutputFormat(ExplanationSchema) },
     system: SYSTEM,
@@ -46,7 +46,7 @@ export async function generateExplanation(task: ResolvedTask, userId?: string): 
       },
     ],
   });
-  await logAiCall({ userId, kind: "explain", model: AI.model, usage: response.usage, ok: Boolean(response.parsed_output) });
+  await logAiCall({ userId, kind: "explain", model: AI.explainModel, usage: response.usage, ok: Boolean(response.parsed_output) });
   if (!response.parsed_output) throw new Error(`Explanation parse failed (stop_reason ${response.stop_reason})`);
   return response.parsed_output;
 }

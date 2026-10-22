@@ -1,4 +1,6 @@
 import "server-only";
+import { GENERATOR_VERSION } from "@/lib/ai/generate";
+import { TASK_TYPES } from "@/lib/content/exams";
 import { levelInfo } from "@/lib/gamification";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { czToday } from "./queries";
@@ -59,7 +61,7 @@ export interface AdminStats {
     waiting: number;
     reuseFactor: number | null;
     costPerServe: number | null;
-    byType: { type: string; generated: number; serves: number }[];
+    byType: { type: string; generated: number; ready: number; serves: number }[];
   };
   traffic: { day: string; users: number; views: number; minutes: number }[];
   rejects: { at: string; note: string }[];
@@ -82,7 +84,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
     admin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
     admin.from("profiles").select("*"),
     admin.from("study_days").select("user_id,day,seconds,tasks"),
-    admin.from("generated_tasks").select("id,created_by,served_count,task_type"),
+    admin.from("generated_tasks").select("id,created_by,served_count,task_type,v:payload->v"),
     admin.from("task_seen").select("task_ref", { count: "exact", head: true }).like("task_ref", "gen:%"),
     admin.from("ai_calls").select("user_id,kind,cost_usd,created_at,ok"),
     admin.from("attempts").select("user_id").eq("status", "completed"),
@@ -100,7 +102,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
   const authUsers = usersRes.data?.users ?? [];
   const profiles = (profilesRes.data ?? []) as Profile[];
   const days = (daysRes.data ?? []) as { user_id: string; day: string; seconds: number; tasks: number }[];
-  const gen = (genRes.data ?? []) as { id: string; created_by: string | null; served_count: number; task_type: string }[];
+  const gen = (genRes.data ?? []) as { id: string; created_by: string | null; served_count: number; task_type: string; v?: number | null }[];
   const ai = (aiRes.data ?? []) as { user_id: string | null; kind: string; cost_usd: number; created_at: string; ok: boolean }[];
   const attempts = (attemptsRes.data ?? []) as { user_id: string }[];
   const invites = (invitesRes.data ?? []) as {
@@ -187,13 +189,16 @@ export async function loadAdminStats(): Promise<AdminStats> {
       waiting: gen.filter((g) => g.served_count === 0).length,
       reuseFactor: servedTasks ? serves / servedTasks : null,
       costPerServe: serves ? genCost / serves : null,
-      byType: types
+      byType: TASK_TYPES.filter((t) => t.exam === "osp")
+        .map((m) => m.id as string)
+        .concat(types.filter((t) => !TASK_TYPES.some((m) => m.id === t)))
         .map((t) => ({
           type: t,
           generated: gen.filter((g) => g.task_type === t).length,
+          ready: gen.filter((g) => g.task_type === t && Number(g.v ?? 1) >= GENERATOR_VERSION).length,
           serves: sum(gen.filter((g) => g.task_type === t).map((g) => g.served_count)),
         }))
-        .sort((a, b) => b.generated - a.generated),
+
     },
     traffic: week.map((day) => ({
       day,

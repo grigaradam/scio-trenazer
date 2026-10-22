@@ -35,7 +35,7 @@ export async function POST(req: Request) {
         stream.on("text", (delta) => controller.enqueue(encoder.encode(delta)));
         try {
           const final = await stream.finalMessage();
-          await logAiCall({ userId: user.id, kind: "chat", model: AI.model, usage: final.usage });
+          await logAiCall({ userId: user.id, kind: "chat", model: AI.chatModel, usage: final.usage });
           if (final.stop_reason === "refusal") controller.enqueue(encoder.encode("\n\n(Na tohle ti bohužel neodpovím.)"));
         } catch (e) {
           console.error("chat stream", e);
