@@ -1,4 +1,4 @@
-# SCIO Trenažér – plán projektu
+# Nanečisto – plán projektu
 
 > Tento dokument je závazný plán. Všechno, co se staví, se drží tohoto souboru.
 > Změny plánu se zapisují sem (sekce *Changelog* dole).

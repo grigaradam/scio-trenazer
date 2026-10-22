@@ -249,7 +249,7 @@ export const Burst: React.FC<{ at: number; count?: number; distance?: number; se
   );
 };
 
-/** The app's "N" logo tile. */
+/** The app's logo tile: draft answer bubble with a check drawn over it. */
 export const LogoTile: React.FC<{ size: number }> = ({ size }) => (
   <div
     style={{
@@ -260,12 +260,12 @@ export const LogoTile: React.FC<{ size: number }> = ({ size }) => (
       placeItems: "center",
       backgroundImage: `linear-gradient(135deg, ${C.brand500}, ${C.teal500})`,
       boxShadow: `0 ${size * 0.075}px 0 0 ${C.brand800}, 0 ${size * 0.25}px ${size * 0.6}px rgba(124,58,237,0.45)`,
-      fontFamily: display,
-      fontWeight: 800,
-      fontSize: size * 0.55,
-      color: "#fff",
     }}
   >
-    N
+    <svg viewBox="0 0 64 64" width={size} height={size}>
+      <circle cx="29" cy="36" r="15" fill="none" stroke="#fff" strokeOpacity=".5" strokeWidth="3" strokeDasharray="5 5" strokeLinecap="round" />
+      <path d="M20 35.5 28.5 44 49 17" fill="none" stroke="#fff" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="49" cy="17" r="3.5" fill="#fde047" />
+    </svg>
   </div>
 );

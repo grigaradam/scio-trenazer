@@ -15,7 +15,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Natrénuj testy", template: "%s · Natrénuj testy" },
+  title: { default: "Nanečisto", template: "%s · Nanečisto" },
   description: "Soukromá tréninková aplikace.",
   // private app – keep it out of search engines
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },

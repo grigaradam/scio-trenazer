@@ -33,7 +33,7 @@ export default function Home() {
               🔒 Soukromá tréninková aplikace
             </span>
             <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
-              Natrénuj testy. <span className="bg-gradient-to-r from-brand-600 to-analytic-500 bg-clip-text text-transparent">Hravě.</span>
+              Nanečisto teď. <span className="bg-gradient-to-r from-brand-600 to-analytic-500 bg-clip-text text-transparent">Načisto u zkoušky.</span>
             </h1>
             <p className="mt-5 max-w-lg text-lg text-muted">
               Testy na čas, rozbor každé chyby s AI lektorem a nekonečný trénink úloh, které ti nejdou.

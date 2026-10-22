@@ -55,9 +55,12 @@ export const OutroScene: React.FC = () => {
           color: C.textOnDark,
           display: "flex",
           gap: 36,
+          flexWrap: "wrap",
+          justifyContent: "center",
+          maxWidth: 1500,
         }}
       >
-        <span style={fadeUp(frame, 16, 60)}>Natrénuj testy.</span>
+        <span style={fadeUp(frame, 16, 60)}>Nanečisto teď.</span>
         <span
           style={{
             ...gradientText(C.brand400, C.teal400),
@@ -65,7 +68,7 @@ export const OutroScene: React.FC = () => {
             scale: word,
           }}
         >
-          Hravě.
+          Načisto u zkoušky.
         </span>
       </div>
       <div style={{ display: "flex", gap: 18 }}>

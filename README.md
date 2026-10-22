@@ -1,4 +1,4 @@
-# Natrénuj testy
+# Nanečisto
 
 Soukromá aplikace (noindex, registrace jen s přístupovým kódem).
 

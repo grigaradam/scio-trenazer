@@ -77,10 +77,13 @@ export const IntroScene: React.FC = () => {
             display: "flex",
             gap: 40,
             alignItems: "baseline",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            maxWidth: 1500,
           }}
         >
-          <span style={fadeUp(frame, 22, 70)}>Natrénuj</span>
-          <span style={fadeUp(frame, 30, 70)}>testy.</span>
+          <span style={fadeUp(frame, 22, 70)}>Nanečisto</span>
+          <span style={fadeUp(frame, 30, 70)}>teď.</span>
           <span
             style={{
               ...gradientText(C.brand400, C.teal400),
@@ -89,7 +92,7 @@ export const IntroScene: React.FC = () => {
               opacity: interpolate(frame, [48, 54], [0, 1], clamp),
             }}
           >
-            Hravě.
+            Načisto u zkoušky.
           </span>
         </div>
 
