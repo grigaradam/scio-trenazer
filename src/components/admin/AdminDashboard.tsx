@@ -247,9 +247,12 @@ $$);`;
             </p>
           )}
           {auto.lastError && !waitingCredits && <p className="mt-2 text-xs text-muted">Poslední chyba: {auto.lastError}</p>}
-          {!cronAlive && (
-            <div className="mt-4 rounded-2xl border-2 border-dashed border-border p-3">
-              <div className="text-sm font-bold">Aby generování běželo i se zavřeným webem, nastav jednou plánovač:</div>
+          <details open={!cronAlive} className="mt-4 rounded-2xl border-2 border-dashed border-border p-3">
+            <summary className="cursor-pointer text-sm font-bold">
+              {cronAlive ? "✓ Plánovač je nastavený (SQL pro jistotu tady)" : "Nastavení plánovače – stačí jednou, pak už jen Zapnout / Vypnout"}
+            </summary>
+            <div className="mt-2">
+              <div className="text-sm">Plánovač v Supabase každou minutu zavolá generátor. Když je generování vypnuté, nic nedělá a nic nestojí.</div>
               <ol className="mt-1 list-decimal space-y-1 pl-5 text-sm text-muted">
                 {!auto.secret && (
                   <li>
@@ -265,7 +268,7 @@ $$);`;
                 {copied === "cron" ? "Zkopírováno" : "Zkopírovat SQL"}
               </Button>
             </div>
-          )}
+          </details>
         </>
       )}
     </Card>

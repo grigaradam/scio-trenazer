@@ -18,11 +18,13 @@ function bearerOk(req: Request) {
 // Called every minute by pg_cron (Bearer AUTOGEN_SECRET) or by the admin dashboard.
 // Responds immediately; the generation itself runs after the response (up to the 300 s limit).
 export async function POST(req: Request) {
-  if (!bearerOk(req) && !(await isAdmin())) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const fromCron = bearerOk(req);
+  if (!fromCron && !(await isAdmin())) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   const state = await getAutogenState();
   if (!state) return NextResponse.json({ status: "migration-missing" });
-  await updateAutogenState({ last_tick_at: new Date().toISOString() });
+  // last_tick_at tracks the scheduler only – a manual kick from the dashboard must not look like a working cron
+  if (fromCron) await updateAutogenState({ last_tick_at: new Date().toISOString() });
   if (!state.enabled) return NextResponse.json({ status: "disabled" });
   if (!process.env.ANTHROPIC_API_KEY) return NextResponse.json({ status: "no-api-key" });
   if (state.credits_exhausted_at && Date.now() - new Date(state.credits_exhausted_at).getTime() < CREDIT_RETRY_MS) {

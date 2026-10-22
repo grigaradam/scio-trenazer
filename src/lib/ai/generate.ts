@@ -302,10 +302,17 @@ function validatorLetters(v: Validation, qi: number) {
 }
 
 function accepts(group: Group, v: Validation) {
-  const keyMatches = group.questions.every((q, qi) => {
-    const letters = validatorLetters(v, qi);
-    return q.parts.every((p, pi) => letters[pi] === p.answer);
-  });
+  // Validators sometimes list each part as its own entry ([["D"],["G"]] instead of [["D","G"]]):
+  // when the total number of letters matches the number of parts, compare them in order.
+  const key = group.questions.flatMap((q) => q.parts.map((p) => p.answer));
+  const all = v.answers.flatMap((a) => a.flatMap((x) => x.toUpperCase().match(/[A-H]/g) ?? []));
+  const keyMatches =
+    all.length === key.length
+      ? key.every((k, i) => all[i] === k)
+      : group.questions.every((q, qi) => {
+          const letters = validatorLetters(v, qi);
+          return q.parts.every((p, pi) => letters[pi] === p.answer);
+        });
   const s = v.scores;
   // correctness bars stay strict; style/difficulty bars match real Scio tasks (not "harder than Scio")
   const scoresOk =
@@ -328,7 +335,8 @@ Než odpovíš, úlohu si sám vyřeš od nuly, jako bys klíč neznal, a zkontr
 function rejectionText(group: Group, verdict: ReturnType<typeof accepts>, v: Validation) {
   const parts: string[] = [];
   if (!verdict.keyMatches) {
-    const theirs = group.questions.map((q, qi) => `úloha ${qi + 1}: validátor ${validatorLetters(v, qi).join("/") || "?"}, klíč ${q.parts.map((p) => p.answer).join("/")}`);
+    const all = v.answers.flatMap((a) => a.flatMap((x) => x.toUpperCase().match(/[A-H]/g) ?? [])).join("/");
+    const theirs = [`validátor ${all || "?"}, klíč ${group.questions.flatMap((q) => q.parts.map((p) => p.answer)).join("/")}`];
     parts.push(`jiná odpověď než klíč (${theirs.join("; ")})`);
   }
   if (!verdict.hardEnough) parts.push(`příliš lehká nebo se zkratkou (odhad úspěšnosti ${v.predictedSuccess} %, zkratka ${v.shortcut})`);
