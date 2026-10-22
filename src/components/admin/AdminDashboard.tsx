@@ -157,6 +157,21 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         )}
       </Card>
 
+      {stats.rejects.length > 0 && (
+        <Card>
+          <h2 className="font-display text-lg font-extrabold">Zamítnuté AI úlohy (posledních {stats.rejects.length})</h2>
+          <p className="mb-3 text-sm text-muted">Proč úloha neprošla kontrolou – pomáhá ladit generátor.</p>
+          <ul className="space-y-2 text-sm">
+            {stats.rejects.map((r, i) => (
+              <li key={i} className="rounded-xl bg-surface-2 px-3 py-2">
+                <span className="mr-2 text-xs font-bold text-muted">{ago(r.at)}</span>
+                <span className="break-words">{r.note}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+
       <InviteCodes invites={stats.invites} />
       <Users users={stats.users} />
     </div>

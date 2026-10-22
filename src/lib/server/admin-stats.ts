@@ -62,6 +62,7 @@ export interface AdminStats {
     byType: { type: string; generated: number; serves: number }[];
   };
   traffic: { day: string; users: number; views: number; minutes: number }[];
+  rejects: { at: string; note: string }[];
   users: AdminUserRow[];
   invites: InviteRow[];
 }
@@ -89,6 +90,12 @@ export async function loadAdminStats(): Promise<AdminStats> {
     admin.from("daily_traffic").select("day,user_id,views").gte("day", week[0]),
   ]);
   const migrationMissing = Boolean(aiRes.error || invitesRes.error || trafficRes.error);
+  const rejectsRes = await admin
+    .from("ai_calls")
+    .select("created_at,note")
+    .eq("kind", "reject")
+    .order("created_at", { ascending: false })
+    .limit(15);
 
   const authUsers = usersRes.data?.users ?? [];
   const profiles = (profilesRes.data ?? []) as Profile[];
@@ -194,6 +201,9 @@ export async function loadAdminStats(): Promise<AdminStats> {
       views: sum(traffic.filter((t) => t.day === day).map((t) => t.views)),
       minutes: Math.round(sum(days.filter((d) => d.day === day).map((d) => d.seconds)) / 60),
     })),
+    rejects: ((rejectsRes.error ? [] : rejectsRes.data) ?? [])
+      .filter((r) => r.note)
+      .map((r) => ({ at: r.created_at as string, note: r.note as string })),
     users,
     invites: invites.map((i) => ({
       code: i.code,

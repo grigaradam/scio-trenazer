@@ -62,7 +62,12 @@ export async function POST(req: Request) {
   if (!available.length) {
     const over = await spendBudget(user.id, "generate");
     if (over) return over;
-    const outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id });
+    const started = Date.now();
+    let outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id });
+    // both candidates rejected and there is still time left in this request → one more round
+    if (!outcome.accepted.length && Date.now() - started < 110_000) {
+      outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id });
+    }
     if (!outcome.accepted.length) {
       return NextResponse.json(
         { error: "AI tentokrát nevytvořila úlohu, která by prošla kontrolou kvality. Zkus to prosím znovu." },

@@ -17,7 +17,7 @@ export function costUsd(model: string, u: Pick<Anthropic.Usage, "input_tokens" |
   return (u.input_tokens * p.input + cacheWrite * p.input * 1.25 + cacheRead * p.cacheRead + u.output_tokens * p.output) / 1e6;
 }
 
-export type AiCallKind = "explain" | "chat" | "generate" | "validate";
+export type AiCallKind = "explain" | "chat" | "generate" | "validate" | "reject";
 
 /** Logs one Claude API call with its token usage and cost (never throws). */
 export async function logAiCall(opts: {
@@ -26,22 +26,26 @@ export async function logAiCall(opts: {
   model: string;
   usage?: Anthropic.Usage | null;
   ok?: boolean;
+  /** Free-text note (rejection reason). Needs migration 0003. */
+  note?: string;
 }) {
   try {
     const u = opts.usage;
-    await createAdminClient()
-      .from("ai_calls")
-      .insert({
-        user_id: opts.userId ?? null,
-        kind: opts.kind,
-        model: opts.model,
-        input_tokens: u?.input_tokens ?? 0,
-        output_tokens: u?.output_tokens ?? 0,
-        cache_read_tokens: u?.cache_read_input_tokens ?? 0,
-        cache_write_tokens: u?.cache_creation_input_tokens ?? 0,
-        cost_usd: u ? costUsd(opts.model, u) : 0,
-        ok: opts.ok ?? true,
-      });
+    const row: Record<string, unknown> = {
+      user_id: opts.userId ?? null,
+      kind: opts.kind,
+      model: opts.model,
+      input_tokens: u?.input_tokens ?? 0,
+      output_tokens: u?.output_tokens ?? 0,
+      cache_read_tokens: u?.cache_read_input_tokens ?? 0,
+      cache_write_tokens: u?.cache_creation_input_tokens ?? 0,
+      cost_usd: u ? costUsd(opts.model, u) : 0,
+      ok: opts.ok ?? (opts.kind === "reject" ? false : true),
+    };
+    const admin = createAdminClient();
+    const { error } = await admin.from("ai_calls").insert(opts.note ? { ...row, note: opts.note } : row);
+    // without migration 0003 the note column is missing – keep the row anyway
+    if (error && opts.note) await admin.from("ai_calls").insert(row);
   } catch (e) {
     console.error("logAiCall", e);
   }

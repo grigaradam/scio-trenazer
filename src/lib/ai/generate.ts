@@ -355,7 +355,7 @@ ${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst
     try {
       const response = await anthropic().messages.parse({
         model: AI.model,
-        max_tokens: 24000,
+        max_tokens: 20000, // non-streaming requests must stay under the SDK's 10-minute ceiling (~21k)
         output_config: { effort: "high", format: zodOutputFormat(GeneratedSchema) },
         system: GENERATOR_SYSTEM,
         messages: [{ role: "user", content: prompt }],
@@ -405,6 +405,11 @@ ${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst
   });
 
   const results = await Promise.all(jobs);
+  if (!dryRun) {
+    for (const r of results) {
+      if ("rejected" in r && r.rejected) await logAiCall({ userId, kind: "reject", model: AI.model, note: `${type}: ${r.rejected}`.slice(0, 1000) });
+    }
+  }
   const outcome: GenerationOutcome = { accepted: [], rejected: [] };
   for (const r of results) {
     if ("accepted" in r && r.accepted) outcome.accepted.push(r.accepted);
