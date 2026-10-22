@@ -1,0 +1,2103 @@
+{
+  "id": "osp-2025-12-b",
+  "exam": "osp",
+  "title": "OSP – Prosinec 2025, varianta B",
+  "date": "2025-12",
+  "variant": "B",
+  "source": "OSP_NSZ_2025_2026_T1_B-2.pdf",
+  "stats": {
+    "participants": 2000,
+    "mean": 28.2,
+    "median": 28.0,
+    "sd": 12.1,
+    "maxScore": 66.0,
+    "minScore": -22.0
+  },
+  "sections": [
+    {
+      "id": "verbal",
+      "title": "Verbální oddíl",
+      "timeLimitSec": 2100,
+      "groups": [
+        {
+          "id": "g01",
+          "taskType": "doplnovani",
+          "instruction": "V každém z následujících krátkých textů jsou dvě nebo tři prázdná místa, která značí, že ve větě bylo něco vynecháno. Vyberte z nabízených možností dvojici nebo trojici slov, která se v daném pořadí významově a stylisticky **nejlépe** hodí do příslušného textu jako celku.",
+          "questions": [
+            {
+              "n": 1,
+              "stem": "Vodní doprava je v České republice ______; není divu – vždyť nemáme moře a úseky splavných řek jsou zde ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "potřebná – drahé"
+                    },
+                    {
+                      "key": "B",
+                      "text": "popelkou – krátké"
+                    },
+                    {
+                      "key": "C",
+                      "text": "významná – krátce"
+                    },
+                    {
+                      "key": "D",
+                      "text": "výjimkou – všude"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Druhá část věty („není divu – nemáme moře…“) vysvětluje, proč vodní doprava u nás nemá velký význam: je „popelkou“, protože splavné úseky jsou „krátké“. „Významná“ a „potřebná“ odporují zdůvodnění, „krátce“ a „všude“ nejsou gramaticky ani významově vhodné."
+            },
+            {
+              "n": 2,
+              "stem": "______ lesní úseky po zpevněných komunikacích mohou být poněkud ______, proto je dobře, že celý okruh doprovázejí panely naučné stezky, které cyklistům cestu zpříjemní.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Neoznačené – nebezpečné"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Rozsáhlé – nepřehledné"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Asfaltové – nesjízdné"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Dlouhé – monotónní"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Dlouhé“ úseky po zpevněných cestách mohou být „monotónní“ (jednotvárné), a proto je dobře, že cestu zpestří naučná stezka. U ostatních dvojic panely naučné stezky problém (nebezpečí, nepřehlednost, nesjízdnost) neřeší."
+            },
+            {
+              "n": 3,
+              "stem": "______ úspěchu mladé zpěvačky bylo pozvání na ______ festival, který byl ______ měsíce dopředu.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Potvrzením – světoznámý – vyprodaný"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Završením – komorní – organizovaný"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Ukončením – populární – připravovaný"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Výsledkem – velkolepý – vyžádaný"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Pozvání na „světoznámý“ festival „potvrzuje“ úspěch zpěvačky a festival bývá „vyprodaný“ měsíce dopředu. „Ukončením úspěchu“ nedává smysl, „komorní“ festival úspěch nezavršuje a festival „vyžádaný měsíce dopředu“ není ustálené spojení."
+            }
+          ]
+        },
+        {
+          "id": "g02",
+          "taskType": "analogie",
+          "instruction": "Vyberte z dvojic výrazů nabízených v odpovědích tu, po jejímž doplnění na vynechaná místa v zadání (v uvedeném pořadí) bude významový vztah mezi výrazy vpravo od rovnítka **nejpodobnější** významovému vztahu mezi výrazy vlevo od rovnítka (**pořadí výrazů ve dvojicích je důležité**).",
+          "questions": [
+            {
+              "n": 4,
+              "stem": "NOC : ______ = TÝDEN : ______",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "půlnoc – čtvrtek"
+                    },
+                    {
+                      "key": "B",
+                      "text": "tma – víkend"
+                    },
+                    {
+                      "key": "C",
+                      "text": "hvězdy – dny"
+                    },
+                    {
+                      "key": "D",
+                      "text": "postel – práce"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Půlnoc je prostředek noci a čtvrtek je prostřední (čtvrtý ze sedmi) den týdne: NOC : půlnoc = TÝDEN : čtvrtek (celek : jeho prostřední část). U dvojice „tma – víkend“ je vztah nesourodý (vlastnost noci × konec týdne)."
+            },
+            {
+              "n": 5,
+              "stem": "HRNEK : ______ = ______ : BENZÍN",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "čaj – nádrž"
+                    },
+                    {
+                      "key": "B",
+                      "text": "objem – kvalita"
+                    },
+                    {
+                      "key": "C",
+                      "text": "nádoba – palivo"
+                    },
+                    {
+                      "key": "D",
+                      "text": "kuchyň – pumpa"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Do hrnku se dává čaj, do nádrže benzín: HRNEK : čaj = nádrž : BENZÍN (nádoba : obsah, při zachování pořadí). U dvojice „nádoba – palivo“ by vztah byl obecný pojem : nadřazený pojem, což neodpovídá."
+            },
+            {
+              "n": 6,
+              "stem": "ROZMAZLENÝ : ______ = ROZVAŘENÝ : ______",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "výchova – potravina"
+                    },
+                    {
+                      "key": "B",
+                      "text": "rodič – jídlo"
+                    },
+                    {
+                      "key": "C",
+                      "text": "péče – var"
+                    },
+                    {
+                      "key": "D",
+                      "text": "dítě – kuchař"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Rozmazlený je ten, kdo dostal přílišnou péči, rozvařené je to, co bylo přílišně vařeno (var): ROZMAZLENÝ : péče = ROZVAŘENÝ : var (důsledek : jeho příčina v nadměrné míře). V ostatních dvojicích se vztah na obou stranách liší."
+            }
+          ]
+        },
+        {
+          "id": "g03",
+          "taskType": "synonyma",
+          "instruction": "V každé z následujících úloh vyberte z nabízených možností **A až D** ten výraz, který se v kontextu uvedené věty nejvíce blíží významu podtrženého výrazu (**synonymum**). Z možností **E až H** pak vyberte ten výraz, který se v kontextu uvedené věty nejvíce blíží **opačnému** významu podtrženého výrazu (**antonymum**).",
+          "questions": [
+            {
+              "n": 7,
+              "stem": "Pořád <u>lamentoval</u> nad svým zpackaným životem.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "dumal"
+                    },
+                    {
+                      "key": "B",
+                      "text": "bědoval"
+                    },
+                    {
+                      "key": "C",
+                      "text": "rozjímal"
+                    },
+                    {
+                      "key": "D",
+                      "text": "rokoval"
+                    }
+                  ],
+                  "answer": "B"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "žvanil"
+                    },
+                    {
+                      "key": "F",
+                      "text": "neuvažoval"
+                    },
+                    {
+                      "key": "G",
+                      "text": "jásal"
+                    },
+                    {
+                      "key": "H",
+                      "text": "spekuloval"
+                    }
+                  ],
+                  "answer": "G"
+                }
+              ],
+              "solution": "„Lamentovat“ znamená naříkat, bědovat. Opakem je projevovat radost – jásat. Ostatní možnosti (rokovat, rozjímat, dumat, spekulovat, žvanit, neuvažovat) se k nářku nevztahují."
+            },
+            {
+              "n": 8,
+              "stem": "Ačkoli květák nemá mnoho příznivců, jedná se o velmi <u>variabilně</u> použitelnou surovinu, ze které lze vytvořit například i pizzu nebo přílohu k masu.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "nestále"
+                    },
+                    {
+                      "key": "B",
+                      "text": "různorodě"
+                    },
+                    {
+                      "key": "C",
+                      "text": "odlišně"
+                    },
+                    {
+                      "key": "D",
+                      "text": "jinak"
+                    }
+                  ],
+                  "answer": "B"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "obyčejně"
+                    },
+                    {
+                      "key": "F",
+                      "text": "jednoznačně"
+                    },
+                    {
+                      "key": "G",
+                      "text": "všedně"
+                    },
+                    {
+                      "key": "H",
+                      "text": "jednotvárně"
+                    }
+                  ],
+                  "answer": "H"
+                }
+              ],
+              "solution": "„Variabilně použitelný“ znamená použitelný mnoha různými způsoby, tedy „různorodě“. Opakem je použitelnost jen jedním způsobem – „jednotvárně“. „Nestále“ označuje proměnlivost v čase, ne rozmanitost použití."
+            },
+            {
+              "n": 9,
+              "stem": "Největší ozdobou celé královské koruny byly <u>blyštivé</u> drahokamy, kterými byla po obvodu osázena.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jasné"
+                    },
+                    {
+                      "key": "B",
+                      "text": "lesklé"
+                    },
+                    {
+                      "key": "C",
+                      "text": "světlé"
+                    },
+                    {
+                      "key": "D",
+                      "text": "ozářené"
+                    }
+                  ],
+                  "answer": "B"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "mlhavé"
+                    },
+                    {
+                      "key": "F",
+                      "text": "matné"
+                    },
+                    {
+                      "key": "G",
+                      "text": "tmavé"
+                    },
+                    {
+                      "key": "H",
+                      "text": "hrubé"
+                    }
+                  ],
+                  "answer": "F"
+                }
+              ],
+              "solution": "„Blyštivý“ znamená třpytivý, lesklý. Opakem lesklého povrchu je „matný“; tmavý kámen se přitom může blyštět."
+            }
+          ]
+        },
+        {
+          "id": "g04",
+          "taskType": "nesoulad",
+          "instruction": "V každém z následujících textů je právě jedna část, která do něj svým vyzněním **nezapadá**. U každé z úloh zvolte možnost, která obsahuje právě tu část textu, jež **není v souladu s jeho celkovým vyzněním**.",
+          "questions": [
+            {
+              "n": 10,
+              "stem": "K výrobě a provozu vlastního akvária s mořskou vodou stačí nadšení a šikovné ruce. Zprvu je nutné zvážit velikost akvária i složení jeho osazenstva z méně náročných druhů ryb. Technické vybavení je další nezbytnou součástí, které je třeba věnovat pozornost, čas a finance. Také nelze zanedbat filtraci, teplotu vody a ohlídat množství přítomných minerálních látek. Začátečník by se proto měl před jeho pořízením vždy opřít o zkušenost nějakého profesionálního akvaristy. Mořská akvária jsou dnes sice hitem, ale je velmi náročné založit je a zvládnout jejich údržbu, a proto je nemůže mít doma každý.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "K výrobě a provozu vlastního akvária s mořskou vodou stačí nadšení a šikovné ruce."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Zprvu je nutné zvážit velikost akvária i složení jeho osazenstva z méně náročných druhů ryb."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Začátečník by se proto měl před jeho pořízením vždy opřít o zkušenost nějakého profesionálního akvaristy."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Mořská akvária jsou dnes sice hitem, ale je velmi náročné založit je a zvládnout jejich údržbu, a proto je nemůže mít doma každý."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Text zdůrazňuje, jak náročné je mořské akvárium založit a udržovat (nutné vybavení, finance, rada profesionála). Tvrzení, že k tomu „stačí nadšení a šikovné ruce“, je s tímto vyzněním v rozporu."
+            },
+            {
+              "n": 11,
+              "stem": "Obřad královské secí orby je starobylý rituál, který se v Thajsku koná u příležitosti začátku vegetačního období rýže. Koná se každoročně začátkem května, přesné datum určují bráhmanští kněží. Během něho dva posvátní býci vyorají královským pluhem brázdu a poté sám král zaseje požehnaná zrnka rýže. Tím dává symbolický pokyn oráčům, že i oni mohou začít se sklizní. Rituál je starý 700 let a byl přerušen pouze krátce v 19. století. Dodnes se těší velké sledovanosti.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Koná se každoročně začátkem května, přesné datum určují bráhmanští kněží."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Během něho dva posvátní býci vyorají královským pluhem brázdu a poté sám král zaseje požehnaná zrnka rýže."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Tím dává symbolický pokyn oráčům, že i oni mohou začít se sklizní."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Rituál je starý 700 let a byl přerušen pouze krátce v 19. století."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Obřad secí orby se koná na začátku vegetačního období, král zasévá rýži – dává tedy pokyn k setí, nikoli ke sklizni. Zmínka o sklizni do textu nezapadá."
+            },
+            {
+              "n": 12,
+              "stem": "Studené a sychravé počasí nadcházejících měsíců je obdobím roku, kdy nás nejčastěji dostihne rýma, kašel, chřipka či nachlazení. A jedním z nejefektivnějších způsobů, jak se potíží zbavit, je horký bylinkový čaj. Ve srovnání s léky mají bylinné nápoje velkou výhodu. Obsažené léčivé látky jsou už rozpuštěné ve vodě, takže je tělo rychleji vstřebá. Navíc celý organizmus se při pití prohřívá, což přispívá k uvolnění dýchacích cest. Nezapomínejme proto na návštěvu lékárny a nákup nezbytných léků proti chřipce i multivitaminových tablet. Při virových onemocněních, bolestech hlavy a nachlazení pomáhá nejlépe mateřídouška, lípa a další byliny. Není náhodou, že bylinkářství je uznávanou metodou léčby.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Ve srovnání s léky mají bylinné nápoje velkou výhodu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Navíc celý organizmus se při pití prohřívá, což přispívá k uvolnění dýchacích cest."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Nezapomínejme proto na návštěvu lékárny a nákup nezbytných léků proti chřipce i multivitaminových tablet."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Není náhodou, že bylinkářství je uznávanou metodou léčby."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Text vyzdvihuje bylinkové čaje jako účinnější alternativu k lékům. Výzva k nákupu léků a vitaminů v lékárně, uvozená navíc slovem „proto“, s tímto vyzněním nesouhlasí."
+            },
+            {
+              "n": 13,
+              "stem": "Služby jsou tu od toho, aby sloužily lidem. Aby designéři mohli služby zodpovědně navrhovat, potřebují lidem co nejlépe porozumět. To znamená komunikovat s nimi a zjistit, jaké problémy mají, jak je řeší, a jak lze dané řešení funkčně vylepšit. Vyzvědět, jaké mají potřeby a motivace, aby na ně pak mohli odpovídat a navrhnout řešení, které je pro lidi atraktivní. Proto je nejefektivnější, když designéři pracují tzv. „od stolu“ a spoléhají se především na pomoc specialistů. Designéři služeb jsou odborníky na svou práci, zatímco lidé jsou odborníky na své životy a problémy, které jim designéři pomáhají řešit.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Služby jsou tu od toho, aby sloužily lidem."
+                    },
+                    {
+                      "key": "B",
+                      "text": "To znamená komunikovat s nimi a zjistit, jaké problémy mají, jak je řeší, a jak lze dané řešení funkčně vylepšit."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Proto je nejefektivnější, když designéři pracují tzv. „od stolu“ a spoléhají se především na pomoc specialistů."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Designéři služeb jsou odborníky na svou práci, zatímco lidé jsou odborníky na své životy a problémy, které jim designéři pomáhají řešit."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Text zdůrazňuje, že designéři musí s lidmi komunikovat a poznat jejich potřeby, protože lidé jsou odborníky na své problémy. Práce „od stolu“ s oporou jen ve specialistech je s tím v přímém rozporu."
+            },
+            {
+              "n": 14,
+              "stem": "Po každém bloku krátkých filmů festivaloví diváci hlasují. Bezprostředně poté se vyhodnotí vítěz. Hlasovací lístky mají na sobě natištěnou stupnici 1–4, na níž podle spokojenosti s filmem zatrhnou jedno z čísel. Nejlepší je jednička, nejhorší čtyřka. Všechny lístky se koncem každého dne svážejí do festivalového centra, kde se sčítají. Na konci filmového festivalu se veřejnost dozví jméno vítězného snímku při slavnostním vyhlášení. Následují gratulace a předání cen.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Bezprostředně poté se vyhodnotí vítěz."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Nejlepší je jednička, nejhorší čtyřka."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Na konci filmového festivalu se veřejnost dozví jméno vítězného snímku při slavnostním vyhlášení."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Následují gratulace a předání cen."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Podle textu se lístky sčítají až v centru na konci každého dne a vítěz se oznamuje na konci festivalu. Vyhodnocení vítěze „bezprostředně“ po hlasování tomu odporuje."
+            },
+            {
+              "n": 15,
+              "stem": "Splašení motorkáři, kteří se bezhlavě řítí po silnicích všech typů, jsou stále hůře zvladatelnou částí řidičů. Podle mluvčí města Dubá, které je vyhlášeným místem motorkářských srazů, mají město i policie v boji s neukázněnými motorkáři řadu efektivních možností. „Na digitální ukazatele rychlosti u vjezdu do města reagují pouze řidiči automobilů. Motorkáři je v té rychlosti ani neregistrují,“ podotkla. Také pro policejní hlídky je rychle jedoucí motocykl těžko zastavitelný, nechtějí-li riskovat nebezpečnou honičku v plném provozu. Spoléhat mohou prakticky jen na fotografie s údajem o okamžité rychlosti a následné dopátrání majitele motocyklu. Jenže ten, když už se jej podaří na mnohdy rozmazané fotografii identifikovat, se leckdy schová za institut osoby blízké. Pak nezbývá, než případ odložit.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Splašení motorkáři, kteří se bezhlavě řítí po silnicích všech typů, jsou stále hůře zvladatelnou částí řidičů."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Podle mluvčí města Dubá, které je vyhlášeným místem motorkářských srazů, mají město i policie v boji s neukázněnými motorkáři řadu efektivních možností."
+                    },
+                    {
+                      "key": "C",
+                      "text": "„Na digitální ukazatele rychlosti u vjezdu do města reagují pouze řidiči automobilů. Motorkáři je v té rychlosti ani neregistrují,“ podotkla."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Jenže ten, když už se jej podaří na mnohdy rozmazané fotografii identifikovat, se leckdy schová za institut osoby blízké."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Celý text popisuje, jak málo účinné jsou prostředky města i policie proti rychlým motorkářům (ukazatele nepomáhají, zastavit je nelze, případy se odkládají). Tvrzení o „řadě efektivních možností“ tomu odporuje."
+            }
+          ]
+        },
+        {
+          "id": "g05",
+          "taskType": "vyplyvani",
+          "instruction": "Všechny následující úlohy řešte **pouze** na základě informací uvedených v textu či z něho vyplývajících.",
+          "questions": [
+            {
+              "n": 16,
+              "stem": "Zaslechnout z úst univerzitního profesora tvrzení, že člověk je vybaven čtyřmi základními chutěmi – sladkou, slanou, hořkou a kyselou –, není výjimečná událost. Pátou základní chuť umami sice popsal japonský chemik Ikeda už v roce 1908, ale širší veřejnost se s její existencí příliš nesžila a zůstává u čtyř základních chutí, jak je stanovil už Aristoteles. Přitom umami, tj. chuť glutamátu, drtivé většině lidí chutná, protože signalizuje zdroje aminokyselin.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Chuť umami doprovází jídla, která jsou pro většinu lidí sice chutná, avšak zdraví škodlivá."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Aristoteles nemohl ve své době popsat chuť umami, protože ještě nebyl objeven koncept aminokyselin."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Řada univerzitních profesorů tvrdí, že chuť umami popsaná chemikem Ikedou ve skutečnosti vůbec neexistuje."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Přestože chemik Ikeda definoval vedle Aristotelem stanovených čtyř chutí pátou již před více než 100 lety, tato chuť stále bývá opomíjena."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Ikeda popsal umami v roce 1908 (tedy před více než 100 lety), přesto veřejnost zůstává u čtyř Aristotelových chutí – chuť je tedy opomíjena. Text netvrdí, že by profesoři existenci umami popírali, ani že by jídla s umami byla škodlivá, ani proč ji Aristoteles nepopsal."
+            },
+            {
+              "n": 17,
+              "stem": "Česká firma Mapotic vyvinula a spustila novou verzi aplikace na sledování žraloků pro americkou neziskovou organizaci OCEARCH. Ta sbírá data o pohybu žraloků v oceánech a změnách jejich migračních tras pomocí technologie satelitních polohovacích zařízení, tzv. tagů, na žraločích hřbetních ploutvích. Jejich cesty už pozoruje na internetu vedle expertů i mnoho laiků a původní technologie už pro současné počty sledovaných dravců nestačila. Biologové a výzkumné týmy tak díky příspěvku české firmy mnohem detailněji sledují a vyhodnocují žraločí pohyb a na základě toho mohou lépe porozumět změnám probíhajícím v oceánech.\n\nKteré/á z následujících tvrzení vyplývá/ají z uvedeného textu?\n\n1) Česká firma Mapotic přispěla vývojem aplikace k rozvoji mořského vědeckého výzkumu.\n\n2) Organizace OCEARCH ovlivňuje prostřednictvím satelitních technologií migrační trasy žraloků.\n\n3) Česká firma Mapotic podpořila výzkum americké organizace OCEARCH zaměřený na sledování žraloků.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen 1"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen 2"
+                    },
+                    {
+                      "key": "C",
+                      "text": "1 a 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2 a 3"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Díky aplikaci Mapoticu biologové detailněji sledují pohyb žraloků a lépe rozumějí změnám v oceánech (tvrzení 1) a firma tak podpořila výzkum OCEARCH zaměřený na sledování žraloků (tvrzení 3). Tvrzení 2 neplatí – OCEARCH migrační trasy jen sleduje, neovlivňuje."
+            },
+            {
+              "n": 18,
+              "stem": "Vědci využili umělou inteligenci D3M k simulaci výseku vesmíru v podobě krychle o hraně 600 milionů světelných let. Ukázalo se, že D3M takovou simulaci zvládá již za neuvěřitelných 30 milisekund, vědci však nebyli nejvíce překvapeni rychlostí simulací. Šokovalo je hlavně to, že D3M dovede velmi přesně simulovat vesmír, i když se změní některé ze vstupních parametrů, například množství temné hmoty. Jak je to možné, je podle nich velká záhada, na jejímž objasnění teď chtějí intenzivně pracovat.\n\nKteré/á z následujících tvrzení vyplývá/ají z uvedeného textu?\n\n1) Vědci se hodlají intenzivně zabývat otázkou vlivu množství temné hmoty na vývoj vesmíru, kterou nastolily simulace umělou inteligencí D3M.\n\n2) Umělá inteligence D3M dokáže provést simulaci výseku vesmíru velmi rychle – za pouhých 30 milisekund.\n\n3) Více než rychlost simulace vědce při využití umělé inteligence D3M překvapila její schopnost přesně simulovat vesmír i při změně vstupních parametrů.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen 2"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen 3"
+                    },
+                    {
+                      "key": "C",
+                      "text": "1 a 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2 a 3"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Tvrzení 2 a 3 přímo vyplývají z textu (simulace za 30 milisekund; vědce nejvíc šokovala přesnost i při změně parametrů). Tvrzení 1 nevyplývá – vědci chtějí zkoumat, jak je možné, že D3M simuluje tak přesně, nikoli vliv temné hmoty na vývoj vesmíru."
+            },
+            {
+              "n": 19,
+              "stem": "Na vrcholu německého Javoru jsou dvě budovy podobné hvězdárnám, jde však o kryty radarových zařízení. Radary byly instalovány během studené války ke sledování letového provozu ve východním bloku, co nejblíže k tehdejší československé hranici. Zařízení bylo uvedeno do provozu v roce 1983, původně se dvěma radary, po rekonstrukci v roce 1996 zůstala vybavena radarem již jen jedna budova. Letecký obranný systém na Javoru je nyní provozován jako součást integrovaného systému protivzdušné obrany NATO.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Radary na Javoru byly součástí československého leteckého obranného systému."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Od roku 1996 je na Javoru již jen jedna ze dvou původních budov."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Na začátku 90. let byla na Javoru nejméně jedna budova vybavená radarem."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Součástí integrovaného systému protivzdušné obrany NATO byly původně dva radary na Javoru."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Zařízení bylo v provozu od roku 1983 se dvěma radary a teprve po rekonstrukci v roce 1996 zůstal radar jen v jedné budově – na začátku 90. let tedy byla radarem vybavena nejméně jedna budova. Radary byly německé (sledovaly východní blok), obě budovy stojí dál a o původní příslušnosti k NATO text nic neříká."
+            },
+            {
+              "n": 20,
+              "stem": "Poměrně malé zastoupení hliníkových nápojových plechovek v ročním objemu odpadů je důvodem, proč se u nás na jejich třídění neklade tak velký důraz jako na plast či sklo. Hliníkové obaly mají ale v rámci životního cyklu mnohem větší dopad na životní prostředí. Problém je totiž zejména v jejich výrobě z bauxitu, při které vzniká toxický a potenciálně velmi nebezpečný červený kal; ten způsobil v roce 2010 ekologickou katastrofu v Maďarsku. Kvůli protržené hrázi odkaliště tehdy zemřelo 10 lidí.\n\nKteré/á z následujících tvrzení vyplývá/ají z uvedeného textu?\n\n1) Zájem o třídění plechovek je zatím nízký kvůli ekologické náročnosti během recyklace.\n\n2) Ekologická zátěž je u výroby hliníkových nápojových obalů ve srovnání se sklem a plastem vyšší.\n\n3) Bauxit, který vzniká jako odpad při výrobě nápojových plechovek, je skrytým ekologickým rizikem.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "žádné"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen 2"
+                    },
+                    {
+                      "key": "C",
+                      "text": "1 a 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2 a 3"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text uvádí, že hliníkové obaly mají (oproti plastu a sklu, s nimiž je srovnává) mnohem větší dopad na životní prostředí a problém je zejména v jejich výrobě – tvrzení 2 vyplývá. Nízký důraz na třídění je dán malým objemem plechovek v odpadu, ne náročností recyklace (1 neplatí), a bauxit je surovina, odpadem je červený kal (3 neplatí)."
+            },
+            {
+              "n": 21,
+              "stem": "V polovině roku 1943 sloužilo v německých jednotkách asi 340 tanků Panther. Ty byly poprvé nasazeny do boje v bitvě u Kurska, ovšem stalo se tak příliš brzy, bez řádného odzkoušení a odstranění dětských nedostatků, takže jejich výkon zůstal daleko za očekáváním. Mnoho strojů odpadlo pro technické obtíže (v průběhu několika dnů bylo vyřazeno 150 tanků). Od druhé poloviny roku 1943 se však díky drobným úpravám Panthery začaly konečně osvědčovat. Společně se sovětským T-34 se Panther stal jedním z nejlepších tanků druhé světové války, ovšem německý průmysl jich kvůli vysokým nákladům na výrobu nebyl schopen vyprodukovat dostatečné množství.\n\nKteré/á z následujících tvrzení vyplývá/ají z uvedeného textu?\n\n1) Náklady na výrobu byly u tanku Panther vyšší než u sovětského tanku T-34.\n\n2) První bojové nasazení tanků Panther neskončilo příliš úspěšně.\n\n3) V roce 1943 se pozitivně projevily některé úpravy tanku Panther.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen 2"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen 3"
+                    },
+                    {
+                      "key": "C",
+                      "text": "1 a 2"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2 a 3"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Tvrzení 2 vyplývá (výkon při prvním nasazení u Kurska „zůstal daleko za očekáváním“) a tvrzení 3 také (od druhé poloviny roku 1943 se díky úpravám Panthery začaly osvědčovat). Tvrzení 1 nevyplývá – text zmiňuje vysoké výrobní náklady Pantheru, ale náklady na T-34 s nimi nesrovnává."
+            },
+            {
+              "n": 22,
+              "stem": "Opencard je určena pro obyvatele Prahy, cestující, kteří využívají služeb Pražské integrované dopravy, a cizince. Pokud je žadatel mladší 15 let, musí jím podávanou žádost o vydání Opencard podepsat jeho zákonný zástupce. Stejné ustanovení platí i pro nesvéprávné osoby svěřené do péče zákonného zástupce.\n\nKteré/á z následujících tvrzení vyplývá/ají z uvedeného textu?\n\n1) Pokud má cizinec Opencard, využívá pravidelně služeb Pražské integrované dopravy.\n\n2) I nesvéprávné osoby mohou podat žádost o vydání Opencard.\n\n3) Cestující využívající služeb Pražské integrované dopravy musí vlastnit Opencard.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "žádné"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen 2"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen 1 a 2"
+                    },
+                    {
+                      "key": "D",
+                      "text": "všechna tři"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Pro nesvéprávné osoby platí stejné ustanovení jako pro děti – jejich žádost musí podepsat zákonný zástupce, žádost tedy podat mohou (tvrzení 2). Z toho, že je karta určena i cizincům, neplyne, že ji mají jen pravidelní cestující (1), ani že ji musí mít každý cestující (3)."
+            },
+            {
+              "n": 23,
+              "stem": "Dvě vítězství v soutěžích v rámci prestižní mezinárodní konference NeurIPS 2022 si připsali odborníci na umělou inteligenci z FIT ČVUT. Vědci vyhráli soutěž na modelaci atmosféry exoplanet a soutěž o nejpřesnější předpověď počasí, například extrémních srážek v rozvojových zemích. Zmíněné konference zaměřené na strojové učení se v New Orleans zúčastnilo 10 tisíc odborníků na umělou inteligenci z celého světa.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Vědci z FIT ČVUT porazili v soutěži 10 tisíc odborníků na umělou inteligenci."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Konference NeurIPS 2022 zaměřená na strojové učení se konala v New Orleans."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Vědci použili strojové učení k ovlivnění atmosféry rozvojových zemí."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Právě dva vědci z FIT ČVUT byli mezi vítězi soutěže NeurIPS 2022."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Z textu plyne, že konference NeurIPS 2022 zaměřená na strojové učení proběhla v New Orleans. Text uvádí dvě vítězství (ne dva vědce), 10 tisíc odborníků byli účastníci konference (ne soupeři v soutěži) a vědci atmosféru nijak neovlivňovali, jen ji modelovali."
+            }
+          ]
+        },
+        {
+          "id": "g06",
+          "taskType": "porozumeni",
+          "instruction": "Přečtěte si uvedený text a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textu píše nebo co z textu vyplývá.",
+          "passage": "Island vyhlásil stav nouze poté, co série zemětřesení vyvolala obavy z erupce sopky Fagradalsfjall na poloostrově Reykjanes. Úřady nařídily preventivní evakuaci třem tisícům obyvatel přilehlého města Grindavík. Islandský meteorologický úřad (IMO) uvedl, že se obává, že pod zemí se nachází velké množství magmatu, které by se mohlo dostat na povrch. „Pravděpodobnost erupce značně stoupla. Domnívám se, že erupci můžeme očekávat zanedlouho, za pár hodin či dní,“ prohlásil vulkanolog Thorvaldur Thórdarson z Islandské univerzity ve státním rozhlase.\n\nV okolí sopky byly v posledních týdnech zaznamenány tisíce otřesů. Ve čtvrtek úřady kvůli zvýšené seismické aktivitě v oblasti uzavřely geotermální lázně Modrá laguna, které jsou největší turistickou atrakcí země. Od konce října bylo na jihozápadě Islandu, kde leží i Fagradalsfjall, zaznamenáno více než 20 tisíc otřesů.\n\nIslandský úřad pro civilní ochranu uvedl, že se rozhodl pro evakuaci, protože IMO nemůže vyloučit, že magmatický tunel, který se v současnosti tvoří, by mohl dosáhnout do Grindavíku. Vyzval proto obyvatele, aby opustili město. Zdůraznil, že evakuace není nouzová, ale preventivní. Obyvatelé proto mají zachovat klid, protože je dostatek času, nehrozí bezprostřední nebezpečí. Policie reguluje vjezd do města s přibližně 3 000 obyvateli, aby byl zajištěn plynulý průběh evakuace. IMO v sobotním prohlášení uvedl, že se výrazně změnila seismická aktivita a otřesy se během předchozího dne přesunuly ke Grindavíku. Magma se pravděpodobně rozšířilo pod město. Není možné přesně určit, zda a kde se může vynořit.\n\nIsland je jedním z nejaktivnějších regionů na světě. Nachází se zde přibližně 30 aktivních vulkanických lokalit. Sopka Fagradalsfjall, která se nachází nedaleko hlavního města Reykjavíku, vybuchla i loni v srpnu, kdy přilákala pozornost mnoha zvědavců. Úřady tehdy všechny varovaly, aby tam nechodili. Výbuchy zmíněné sopky na poloostrově Reykjanes byly zaznamenány rovněž v letech 2021, 2022 a letos v létě. Ve všech případech jim předcházely delší série zemětřesení. Při žádné z těchto erupcí nebyly ohroženy obydlené oblasti, takže evakuace nebyla nutná.",
+          "passageTitle": "TEXT K ÚLOHÁM 24 AŽ 26",
+          "questions": [
+            {
+              "n": 24,
+              "stem": "Která z následujících možností nejlépe vyjadřuje, jak se podle uvedeného textu liší současná situace na poloostrově Reykjanes od situace při erupcích sopky v minulých letech?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Erupce v minulých letech nezpůsobily žádné škody."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Erupce v minulých letech byly nepředvídatelné."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Erupcím v minulých letech nepředcházela seismická aktivita."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Při erupcích v minulých letech nebyl ohrožen Grindavík."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text uvádí, že při minulých erupcích (2021, 2022, letos v létě) nebyly ohroženy obydlené oblasti a evakuace nebyla nutná, zatímco nyní hrozí, že magma dosáhne až do Grindavíku. Předcházející zemětřesení byla i dříve, o škodách ani nepředvídatelnosti text nemluví."
+            },
+            {
+              "n": 25,
+              "stem": "Které z následujících tvrzení o poloze sopky Fagradalsfjall **nevyplývá** z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Nachází se na jihozápadě Islandu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Nachází se na poloostrově Reykjanes."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Nachází se poblíž Grindavíku."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nachází se severně od Reykjavíku."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text uvádí, že sopka leží na jihozápadě Islandu, na poloostrově Reykjanes, u přilehlého města Grindavík a „nedaleko“ Reykjavíku. Že by ležela severně od Reykjavíku, z textu neplyne."
+            },
+            {
+              "n": 26,
+              "stem": "Která z následujících možností nejlépe popisuje reakci úřadů na riziko erupce zmíněné v uvedeném textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "nařízení evakuace, uzavření turistického cíle"
+                    },
+                    {
+                      "key": "B",
+                      "text": "provádění silničních kontrol, nařízení nouzové evakuace"
+                    },
+                    {
+                      "key": "C",
+                      "text": "nařízení evakuace, monitorování seismické aktivity"
+                    },
+                    {
+                      "key": "D",
+                      "text": "vyhlášení stavu nouze, informování turistů o nebezpečí"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Úřady nařídily preventivní evakuaci Grindavíku a kvůli seismické aktivitě uzavřely lázně Modrá laguna, největší turistickou atrakci. Evakuace výslovně nebyla nouzová, o informování turistů ani silničních kontrolách text nemluví a monitorování otřesů není popsáno jako reakce úřadů na riziko."
+            }
+          ]
+        },
+        {
+          "id": "g07",
+          "taskType": "porozumeni",
+          "instruction": "Přečtěte si uvedený text a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textu píše nebo co z textu vyplývá.",
+          "passage": "Brněnský Lifetech je možná svou velikostí spíše menší firmou, na kontě už má ale úctyhodný seznam realizací. Za dobu své 26leté existence totiž tato společnost vyvinula hned několik technologií na čištění vody a vzduchu, které se nyní nacházejí na mnoha lokalitách od Německa až po Singapur, a dokonce se plaví i po světovém oceánu. Zájem o unikátní tuzemská zařízení navíc v poslední době významně narůstá, takže Lifetech chce své působení v zahraničí ještě navýšit.\n\nOd konkurentů se firma odlišuje třeba tím, že kromě rozsáhlé řady standardizovaných zařízení vyrábí i velmi specializovaná řešení dle konkrétních požadavků zákazníka či charakteru aplikace. „Chceme také dosáhnout toho, aby byly všechny naše technologie přátelské k životnímu prostředí a aby zároveň vedly ke snížení provozních nákladů koncových uživatelů. Obě tyto věci jsou pro Lifetech prioritou, často i za cenu našeho nižšího zisku,“ říká ředitel a zakladatel společnosti Jiří Dřímal.\n\nHned od svého počátku se Lifetech zabýval mnoha velkými projekty, o nichž by možná mnozí řekli, že je tak malá společnost nemůže zvládnout. Jednou z těchto realizací bylo zavedení nových technologií do úpravny vody Hosov, jež sloužila pro desetitisíce lidí. „Prostě jsme věřili, že to dokážeme, a nakonec se nám to opravdu povedlo v pouhých třech lidech. Díky našim znalostem jsme navíc provozovateli ušetřili značné náklady, takže jsme postupně získávali další zakázky,“ tvrdí Dřímal, podle něhož byla další výhodou jeho firmy i nižší cena oproti konkurenci.\n\nZhruba před patnácti lety se Lifetech začal zabývat také odstraňováním pesticidů z vody. Jejich přítomnost byla velkým problémem třeba v severních Čechách, kde naměřili koncentraci, která několikanásobně překračovala normy: „Nikdo tehdy nevěděl, co s tím. My jsme ale dokázali vyvinout zařízení, jež zvládlo vodu velmi dobře vyčistit.“ Výhodou této technologie byla navíc i skutečnost, že ke svému provozu nepotřebovala žádnou chemii. Některé chemické látky se sice v Česku do pitné vody ze zákona dávat musejí, ovšem jejich množství se díky instalaci zařízení od Lifetechu výrazně snížilo. Právě tato zařízení na čištění vody se v současnosti dostávají do popředí zájmu, a to díky přísným evropským normám na kvalitu vod.\n\nDřímal ovšem upozorňuje, že kvalitnější a zdravější voda tu mohla být už dávno. „Technologie schopné zajistit čistší životní prostředí existují dlouhou dobu, bohužel se ale nenašlo mnoho firem, které by je samy od sebe nasazovaly. V současnosti tedy pouze doháníme něco, co už mohlo být dávno vyřešené.“",
+          "passageTitle": "TEXT K ÚLOHÁM 27 AŽ 29",
+          "questions": [
+            {
+              "n": 27,
+              "stem": "Které z následujících tvrzení vyplývá z komentáře zakladatele společnosti v posledním odstavci?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Jiné společnosti se zajímají pouze o zisk a kvalitnější a zdravější voda je pro ně vedlejší."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Ostatní firmy se při výrobě svých technologií nezaměřují na čistší životní prostředí."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Dostupné technologie pro čistší životní prostředí zůstávaly mnohými firmami nevyužity."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Pitná voda mohla být již dávno zbavena veškerých chemikálií."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Dřímal říká, že technologie pro čistší prostředí existují dlouho, ale nenašlo se mnoho firem, které by je samy od sebe nasazovaly – zůstávaly tedy mnohými firmami nevyužity. Že by jiné firmy šly jen po zisku nebo že by voda mohla být zbavena „veškerých“ chemikálií, z textu neplyne."
+            },
+            {
+              "n": 28,
+              "stem": "Na kterou z následujících otázek je na základě informací v uvedeném textu možné jednoznačně odpovědět?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Ve kterých všech zemích se nacházejí zařízení firmy Lifetech?"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Proč se firma Lifetech na začátku rozhodla rozšířit své působení do zahraničí?"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Ve kterém konkrétním kraji byl největší problém s vysokou koncentrací chemických látek ve vodě?"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Před kolika lety byla založena firma Lifetech?"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text uvádí „za dobu své 26leté existence“, firma tedy byla založena před 26 lety. Úplný výčet zemí, důvod prvotní expanze ani konkrétní kraj (zmíněny jsou jen „severní Čechy“ jako příklad) text neuvádí."
+            },
+            {
+              "n": 29,
+              "stem": "Jakým způsobem vysvětluje Jiří Dřímal snahu firmy Lifetech používat technologie snižující provozní náklady koncových uživatelů?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Považuje to za méně důležité než expanzi do zahraničí."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Považuje to za důležitější než zvyšování vlastního zisku."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Považuje to za nepodstatné v rámci dlouhodobého úspěchu firmy."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Považuje to za podřízené prioritě vlastního zisku."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Dřímal říká, že šetrnost k prostředí a nižší provozní náklady uživatelů jsou pro firmu prioritou „často i za cenu našeho nižšího zisku“ – staví je tedy nad vlastní zisk."
+            }
+          ]
+        },
+        {
+          "id": "g08",
+          "taskType": "dva_texty",
+          "instruction": "Přečtěte si oba texty v zadání a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textech píše nebo co z textů vyplývá.",
+          "passage": "**Text 1**\n\nKdyž přišla na svět moje matka, žily na světě méně než tři miliardy lidí. Když jsem se narodila já, bylo jich téměř pět miliard, a v roce 2020 jich bylo 7,7 miliardy. Moje dcera se ale nejspíš jednou dožije počátku nové éry: okamžiku, kdy počet lidí na planetě začne klesat. Téměř polovina světové populace nyní žije v zemi, kde se průměrný počet dětí na jednu ženu pohybuje pod hodnotou, která by udržela populaci na stabilní úrovni. Tempo růstu populace klesá všude. I v subsaharské Africe, kde populace roste nejrychleji, se míra porodnosti snižuje, a časem i zde přestane počet lidí narůstat.\n\nPoslední zpráva OSN z roku 2019 předpovídá, že růst světové populace se zhruba do roku 2100 ustálí, zatímco studie v časopise Lancet předpovídá, že počet lidí na světě dosáhne v roce 2064 vrcholu 9,7 miliardy a do roku 2100 klesne na 8,8 miliardy.\n\nLeckdo si řekne, že je to pro naši planetu vlastně dobrá zpráva. Rychlý růst populace přispěl ke značnému zatížení životního prostředí. A v rozvojových zemích jde klesající porodnost obvykle ruku v ruce s tím, že tamní ženy získávají vyšší vzdělání a více příležitostí.\n\nKlesající tempo růstu populace bychom ale neměli oslavovat bez ohledu na jeho příčiny. V některých zemích mají lidé méně dětí, než by sami chtěli. Důvodem může být příliš dlouhá pracovní doba, příliš drahé bydlení i vzdělání a malá podpora mateřství.\n\nNemůžeme nikomu určovat počet dětí, které by měl mít. Pokud však někteří lidé nemají děti, které podle vlastních slov chtějí, pak je to varovné znamení. Měli bychom mu věnovat pozornost, a ne nad ním pokrčit rameny, protože lidí je na planetě i tak příliš mnoho.\n\n**Text 2**\n\nJe správné, že se v poslední době hodně hovoří o změnách klimatu a o globálním oteplování, nicméně vědci a politici se bojí vyslovit hlavní příčinu ekologických problémů – začalo nás být na planetě příliš mnoho a stav se neustále zhoršuje. Pro srovnání: kolem roku 1800 žila na planetě miliarda lidí. Pamatuji, jak se relativně nedávno v roce 1987 „slavil“ pětimiliardtý člověk na světě. A náš počet stále stoupá, i když tempo růstu už se lehce zpomaluje. Pokud se ale něco zásadního nezmění, tak se růst nezastaví. Deseti miliard lidí na planetě dosáhneme patrně kolem roku 2050.\n\nNavíc dnešní člověk za sebou nechává mnohem větší ekologickou stopu než jeho předchůdci z minulých staletí. Spotřeba dnešních lidí je násobně větší a nic moc na tom nezmění, že místo igelitových tašek začne lidstvo používat papírové a přestane létat na dovolené k moři.\n\nA teď přijde něco nepopulárního, za co mě „humanisté“ asi ukamenují – vyspělý svět musí započít intenzivněji apelovat na rozvojové země, které jsou hlavní aktuální příčinou přelidnění planety. K diskuzi nutno dát, zda kupříkladu rozvojovou pomoc nepodmínit závazkem na snížení porodnosti. Ano, to zní tvrdě, ale jiné cesty patrně není. Rozhodně to zde není myšleno nějak kolonialisticky, či dokonce rasisticky, ale zachránit planetu Zemi, na které by žilo třeba patnáct či dvacet miliard lidí, by asi opravdu nebylo možné.",
+          "passageTitle": "TEXT K ÚLOHÁM 30 AŽ 33",
+          "questions": [
+            {
+              "n": 30,
+              "stem": "Která z následujících možností nejlépe popisuje, jaký je vztah mezi uvedenými texty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Autor prvního textu reaguje na druhý text, souhlasí s některými argumenty ve druhém textu a doplňuje je o vlastní stanoviska."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Texty jsou na sobě nezávislé, zabývají se stejným tématem, ale soustředí se na jiné aspekty dané problematiky."
+                    },
+                    {
+                      "key": "C",
+                      "text": "První text je přímou reakcí na druhý text, přičemž autor prvního textu hodnotí závěry autora druhého textu převážně kriticky."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Autor druhého textu reaguje na první text, souhlasí s hlavními závěry prvního textu a přidává na jejich podporu vlastní argumenty."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Žádný z textů na druhý neodkazuje ani nereaguje. Oba se týkají vývoje počtu lidí na planetě, první se však soustředí na klesající porodnost a její příčiny, druhý na přelidnění jako příčinu ekologických problémů."
+            },
+            {
+              "n": 31,
+              "stem": "Která z následujících možností nejlépe vystihuje, jakým způsobem by každý z autorů chtěl řešit problém zvyšujícího se počtu lidí na planetě?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Autor prvního textu žádné řešení nenavrhuje; autor druhého textu by apeloval na jednotlivé lidi, aby se dobrovolně rozhodli mít menší počet dětí."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Autor prvního textu žádné řešení nenavrhuje; autor druhého textu by vyvíjel tlak na rozvojové země, aby snížily míru porodnosti."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Autor prvního textu doporučuje např. omezení podpory mateřství; autor druhého textu by se zaměřil na snížení porodnosti pouze v rozvojových zemích."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Autor prvního textu by pouze vyzýval lidi k dobrovolnému omezení počtu dětí; autor druhého textu by chtěl, aby se všechny země zavázaly k omezení porodnosti a využily k tomu všechny dostupné prostředky."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Autorka prvního textu růst populace jako problém k řešení nepředkládá (spíše upozorňuje na rizika poklesu porodnosti), žádné řešení tedy nenavrhuje. Autor druhého textu chce, aby vyspělý svět apeloval na rozvojové země, např. podmínil rozvojovou pomoc závazkem snížit porodnost – tedy vyvíjel na ně tlak."
+            },
+            {
+              "n": 32,
+              "stem": "Které z následujících tvrzení je obsaženo ve druhém textu a současně je v rozporu s informacemi uvedenými v prvním textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Zachránit planetu Zemi, na které by žilo třeba patnáct či dvacet miliard lidí, by asi nebylo možné."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Dnešní člověk za sebou nechává mnohem větší ekologickou stopu než jeho předchůdci z minulých staletí."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Vědci a politici se bojí vyslovit hlavní příčinu ekologických problémů."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Pokud se něco zásadního nezmění, tak se růst počtu lidí na planetě nezastaví."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "První text uvádí, že tempo růstu klesá všude, růst se zhruba do roku 2100 ustálí a počet lidí pak začne klesat – bez jakékoli zásadní změny. Tvrzení druhého textu, že se růst bez zásadní změny nezastaví, je s tím v rozporu. Ostatní tvrzení první text nevyvrací."
+            },
+            {
+              "n": 33,
+              "stem": "V názoru na které z následujících tvrzení se autoři v uvedených textech nejvíce shodují?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Rozvojové země by měly být vyzývány k tomu, aby usilovaly o snížení porodnosti u svých obyvatel."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Nárůst velikosti světové populace znamenal zvýšenou zátěž pro životní prostředí."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Pro stabilizaci počtu lidí žijících na planetě by bylo nutné zásadně zvýšit současnou nízkou porodnost."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Zvyšování počtu lidí představuje největší ekologický problém budoucnosti."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "První text uvádí, že rychlý růst populace přispěl ke značnému zatížení životního prostředí, druhý považuje přelidnění za hlavní příčinu ekologických problémů. Na tom se shodují; výzvy rozvojovým zemím a „největší problém“ jsou jen názorem druhého autora a zvýšení porodnosti nepožaduje žádný."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analytic",
+      "title": "Analytický oddíl",
+      "timeLimitSec": 3000,
+      "groups": [
+        {
+          "id": "g09",
+          "taskType": "data",
+          "instruction": "Není dovoleno používat kalkulačky! Není-li uvedeno jinak, jsou všechna použitá čísla reálná a zapsaná v desítkové soustavě. Čáry, které se jeví jako přímé, považujte za přímky. Číslo umístěné u části geometrického obrazce označuje velikost této části. **O velikosti neoznačených částí obrazců nelze činit žádné předpoklady.** Geometrické úlohy řešte pomocí matematických znalostí, nikoli odhadem či měřením z obrázku. Obsahuje-li úloha proměnnou, je třeba pro řešení uvažovat všechny její přípustné hodnoty. Úlohy řešte v libovolném pořadí. Žádná úloha nenavazuje na výsledek předchozích úloh.",
+          "passage": "Body v grafu znázorňují pro všech 21 studentů, kteří psali ukázkový test a zkouškový test, počet bodů získaných z ukázkového testu a ze zkoušky (tj. zkouškového testu). Bodové hodnocení nabývá jen celých čísel.",
+          "passageTitle": "TEXT K ÚLOHÁM 34 AŽ 36",
+          "figure": "/figures/osp-2025-12-b/g09.png",
+          "questions": [
+            {
+              "n": 34,
+              "stem": "Nejvíce o kolik se lišil zisk v ukázkovém testu a u zkoušky pro jednoho studenta?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "o 7 bodů"
+                    },
+                    {
+                      "key": "B",
+                      "text": "o 8 bodů"
+                    },
+                    {
+                      "key": "C",
+                      "text": "o 10 bodů"
+                    },
+                    {
+                      "key": "D",
+                      "text": "o 13 bodů"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Největší rozdíl má student se 15 body ze zkoušky a 7 body z ukázkového testu: $15 - 7 = 8$. Další velké rozdíly jsou jen 7 ([15; 22]) a 6 ([21; 15], [17; 11])."
+            },
+            {
+              "n": 35,
+              "stem": "Celkem kolik studentů získalo z ukázkového testu méně bodů než ze zkoušky?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "7"
+                    },
+                    {
+                      "key": "B",
+                      "text": "8"
+                    },
+                    {
+                      "key": "C",
+                      "text": "9"
+                    },
+                    {
+                      "key": "D",
+                      "text": "14"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Body pod diagonálou (zkouška; ukázkový): [5; 1], [15; 7], [15; 14], [17; 11], [18; 13], [20; 18], [21; 15] – celkem 7 studentů."
+            },
+            {
+              "n": 36,
+              "stem": "Jaký byl průměrný počet bodů ze zkoušky u všech studentů, kteří měli méně než 10 bodů z ukázkového testu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "3,5"
+                    },
+                    {
+                      "key": "B",
+                      "text": "5,4"
+                    },
+                    {
+                      "key": "C",
+                      "text": "6,5"
+                    },
+                    {
+                      "key": "D",
+                      "text": "7,2"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Méně než 10 bodů z ukázkového testu má 6 studentů (ukázkový 3, 7, 5, 1, 8, 7) se zkouškou 2, 4, 5, 5, 8, 15. Průměr $\\frac{39}{6} = 6{,}5$."
+            }
+          ]
+        },
+        {
+          "id": "g10",
+          "taskType": "data",
+          "instruction": "Není dovoleno používat kalkulačky! Není-li uvedeno jinak, jsou všechna použitá čísla reálná a zapsaná v desítkové soustavě. Čáry, které se jeví jako přímé, považujte za přímky. Číslo umístěné u části geometrického obrazce označuje velikost této části. **O velikosti neoznačených částí obrazců nelze činit žádné předpoklady.** Geometrické úlohy řešte pomocí matematických znalostí, nikoli odhadem či měřením z obrázku. Obsahuje-li úloha proměnnou, je třeba pro řešení uvažovat všechny její přípustné hodnoty. Úlohy řešte v libovolném pořadí. Žádná úloha nenavazuje na výsledek předchozích úloh.",
+          "passage": "Firma uložila všem svým 200 zaměstnancům, aby během pondělí vyřešili online test o bezpečnosti práce. Test je možné zahájit kdykoli po 9.00, po zahájení ho není možné přerušit a je nutné ho dokončit nejpozději ve 14.00, jinak doba na řešení testu není nijak omezena. Test je možné ukončit úspěšně, nebo neúspěšně. Každý zaměstnanec má právě jeden pokus.\n\nV tabulce je uveden ke každému času přehled aktuálních počtů zaměstnanců právě řešících test a těch, kteří již test ukončili.\n\n| čas | test právě řeší | test již ukončili – úspěšně | test již ukončili – neúspěšně |\n|---|---|---|---|\n| 10.00 | 30 | 40 | 5 |\n| 11.00 | 55 | 75 | 15 |\n| 12.00 | 30 | 125 | 25 |\n| 13.00 | 5 | 160 | 30 |",
+          "passageTitle": "TEXT K ÚLOHÁM 37 AŽ 39",
+          "questions": [
+            {
+              "n": 37,
+              "stem": "Celkem kolik zaměstnanců k 12.00 ještě **nezahájilo** test?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "5"
+                    },
+                    {
+                      "key": "B",
+                      "text": "10"
+                    },
+                    {
+                      "key": "C",
+                      "text": "20"
+                    },
+                    {
+                      "key": "D",
+                      "text": "50"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Ve 12.00 test řeší 30 zaměstnanců a ukončilo ho $125 + 25 = 150$. Test tedy zahájilo 180 zaměstnanců a nezahájilo $200 - 180 = 20$."
+            },
+            {
+              "n": 38,
+              "stem": "Celkem kolik zaměstnanců dokončilo test (ať úspěšně, nebo neúspěšně) později než v 11.00, ale nejpozději ve 12.00?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "25"
+                    },
+                    {
+                      "key": "B",
+                      "text": "30"
+                    },
+                    {
+                      "key": "C",
+                      "text": "50"
+                    },
+                    {
+                      "key": "D",
+                      "text": "60"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "V 11.00 bylo hotovo $75 + 15 = 90$ zaměstnanců, ve 12.00 $125 + 25 = 150$. V daném intervalu tedy test dokončilo $150 - 90 = 60$ zaměstnanců."
+            },
+            {
+              "n": 39,
+              "stem": "Ve kterých z uvedených časů byl mezi všemi dosavadními absolventy testu podíl úspěšných nižší než 80 %?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "v žádném"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen ve 13.00"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen v každém z dvojice 11.00, 12.00"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v každém z uvedených časů"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Podíly úspěšných: 10.00 $\\frac{40}{45} \\approx 88{,}9\\ \\%$, 11.00 $\\frac{75}{90} \\approx 83{,}3\\ \\%$, 12.00 $\\frac{125}{150} \\approx 83{,}3\\ \\%$, 13.00 $\\frac{160}{190} \\approx 84{,}2\\ \\%$. Nižší než 80 % není v žádném čase."
+            }
+          ]
+        },
+        {
+          "id": "g11",
+          "taskType": "porovnani",
+          "instruction": "V následujících úlohách porovnejte hodnoty výrazů uvedených v buňkách vlevo a vpravo a zvolte odpověď:\n\n- (A) pokud hodnota vlevo je větší,\n- (B) pokud hodnota vpravo je větší,\n- (C) pokud jsou si hodnoty rovny,\n- (D) pokud nelze jednoznačně určit, která hodnota je větší (tj. nelze jednoznačně rozhodnout, je-li hodnota vlevo větší než hodnota vpravo, menší než hodnota vpravo, nebo stejně velká jako hodnota vpravo).\n\nInformace týkající se jednoho nebo obou výrazů jsou uvedeny vždy nad oběma výrazy.",
+          "questions": [
+            {
+              "n": 40,
+              "stem": "$x > 0$",
+              "compare": {
+                "left": "jedna sedmina z $\\frac{x}{24}$",
+                "right": "jedna osmina z $\\frac{x}{21}$"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Vlevo $\\frac{1}{7} \\cdot \\frac{x}{24} = \\frac{x}{168}$, vpravo $\\frac{1}{8} \\cdot \\frac{x}{21} = \\frac{x}{168}$. Hodnoty jsou si rovny."
+            },
+            {
+              "n": 41,
+              "stem": "Alena je dvakrát starší než Jirka.",
+              "compare": {
+                "left": "Alenin věk před 10 lety",
+                "right": "Jirkův věk za 10 let"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Je-li Jirkovi $j$ let, Aleně je $2j$. Porovnáváme $2j - 10$ a $j + 10$: pro $j < 20$ je větší pravá strana, pro $j = 20$ se rovnají, pro $j > 20$ je větší levá. Nelze určit."
+            },
+            {
+              "n": 42,
+              "stem": "$x$ je celé číslo",
+              "compare": {
+                "left": "$x^2 \\cdot 2^5$",
+                "right": "$x^5 \\cdot 2^2$"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Pro $x = 0$ jsou obě strany 0, pro $x = 1$ je vlevo 32 a vpravo 4, pro $x = 3$ je vlevo $9 \\cdot 32 = 288$ a vpravo $243 \\cdot 4 = 972$. Výsledek porovnání závisí na $x$."
+            },
+            {
+              "n": 43,
+              "stem": "Meziměsíční změna ceny výrobku v lednu 2025 činila +2 %. Meziroční změna ceny téhož výrobku v lednu 2025 činila +3 %.",
+              "compare": {
+                "left": "cena výrobku v prosinci 2024",
+                "right": "cena výrobku v lednu 2024"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Je-li cena v lednu 2025 $c$, pak cena v prosinci 2024 je $\\frac{c}{1{,}02}$ a v lednu 2024 $\\frac{c}{1{,}03}$. Dělíme-li menším číslem, vyjde větší hodnota, takže cena v prosinci 2024 (vlevo) je vyšší."
+            },
+            {
+              "n": 44,
+              "stem": "Je dáno kladné celé číslo $x$.",
+              "compare": {
+                "left": "aritmetický průměr čísel $\\frac{x}{4}, x, 4x$",
+                "right": "aritmetický průměr čísel $\\frac{x}{2}, x, 2x$"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Vlevo $\\frac{1}{3}\\left(\\frac{x}{4} + x + 4x\\right) = 1{,}75x$, vpravo $\\frac{1}{3}\\left(\\frac{x}{2} + x + 2x\\right) = \\frac{7x}{6} \\approx 1{,}17x$. Pro kladné $x$ je větší hodnota vlevo."
+            },
+            {
+              "n": 45,
+              "stem": "",
+              "compare": {
+                "left": "aritmetický průměr všech celých nezáporných čísel menších než 10",
+                "right": "5"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Celá nezáporná čísla menší než 10 jsou 0 až 9, jejich součet je 45 a je jich 10, průměr je tedy $4{,}5 < 5$. Větší je hodnota vpravo."
+            }
+          ]
+        },
+        {
+          "id": "g12",
+          "taskType": "dostatecnost",
+          "instruction": "Každá z následujících úloh se skládá z otázky a dvou tvrzení, označených jako (1) a (2), která obsahují určité informace. Některé úlohy také obsahují úvodní informace. S využitím všech těchto informací, znalostí matematiky a objektivních známých faktů (tj. např. kolik dní má červenec, co znamená pojem zleva doprava...) rozhodněte, zda jsou dané informace **dostačující pro určení jednoznačné odpovědi** na otázku v zadání.",
+          "questions": [
+            {
+              "n": 46,
+              "stem": "Petr se do práce může dostat čtyřmi způsoby: na kole, autem, tramvají nebo metrem. Který způsob dopravy je pro Petra nejpomalejší?\n\nTvrzení (1) Jízda na kole zabere více času než jízda metrem i než jízda tramvají.\n\nTvrzení (2) Jízda metrem zabere více času než jízda tramvají, ale méně času než jízda autem.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Z (1) víme jen, že kolo je pomalejší než metro a tramvaj; o autu nic. Z (2) plyne tramvaj < metro < auto; o kole nic. Ani dohromady nevíme, zda je pomalejší kolo, nebo auto (obě jsou pomalejší než metro), takže ani obě tvrzení nestačí."
+            },
+            {
+              "n": 47,
+              "stem": "Platí pro reálná čísla $x$ a $y$ vztah $2x > y$?\n\nTvrzení (1) $-x < -\\frac{y}{2}$\n\nTvrzení (2) $4x^2 > y^2$",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Z (1) vynásobením $-2$ dostaneme $2x > y$ – odpověď je jednoznačně „ano“. Z (2) plyne jen $|2x| > |y|$: pro $x = 1, y = 0$ vztah platí, pro $x = -1, y = 0$ ne. Dostačující je právě jedno tvrzení."
+            },
+            {
+              "n": 48,
+              "stem": "Alex píše diplomovou práci, každý den napíše právě 5 000 znaků, což odpovídá jedné dvacetině stanoveného minimálního rozsahu diplomové práce. Maximální rozsah diplomové práce není stanoven. Kdy bude mít Alex svoji diplomovou práci dopsanou?\n\nTvrzení (1) Alex začal psát diplomovou práci 1. ledna.\n\nTvrzení (2) 10. ledna měl z diplomové práce Alex napsaných 50 000 znaků.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "A",
+                  "alsoAccepted": [
+                    "D"
+                  ]
+                }
+              ],
+              "solution": "Minimální rozsah je $20 \\cdot 5\\,000 = 100\\,000$ znaků, tedy 20 dní psaní. Z (1) dopíše 20. ledna; z (2) mu po 10. lednu zbývá 50 000 znaků, tj. 10 dní, tedy opět 20. ledna – každé tvrzení samo stačí. Podle rozhodnutí NOK byla uznána i odpověď „Ani obě tvrzení dohromady nejsou dostačující“: maximální rozsah práce není stanoven, takže není jisté, že Alex práci ukončí hned po dosažení minimálního rozsahu."
+            },
+            {
+              "n": 49,
+              "stem": "Je kladné číslo $A$ celé?\n\nTvrzení (1) Polovina čísla $A$ je celé číslo.\n\nTvrzení (2) Dvojnásobek čísla $A$ je celé číslo.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Z (1): polovina $A$ je celé číslo, takže $A$ je sudé celé číslo – odpověď je jednoznačně „ano“, (1) stačí. Z (2): $2A$ celé připouští např. $A = 1$ (celé) i $A = \\frac{1}{2}$ (necelé), (2) nestačí. Dostačující je tedy právě jedno tvrzení."
+            }
+          ]
+        },
+        {
+          "id": "g13",
+          "taskType": "slovni",
+          "instruction": "Vyřešte následující slovní úlohy",
+          "questions": [
+            {
+              "n": 50,
+              "stem": "Obvod čtyřúhelníka se stranami $a$, $b$, $c$, $d$ je 80 cm. Strana $a$ je o 8 cm kratší než strana $c$, strana $b$ je o 4 cm delší než strana $a$, strana $d$ je dvakrát delší než strana $b$. Jakou délku má strana $c$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "12 cm"
+                    },
+                    {
+                      "key": "B",
+                      "text": "16 cm"
+                    },
+                    {
+                      "key": "C",
+                      "text": "20 cm"
+                    },
+                    {
+                      "key": "D",
+                      "text": "24 cm"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Označme $a$. Pak $c = a + 8$, $b = a + 4$, $d = 2b = 2a + 8$. Obvod: $a + (a+4) + (a+8) + (2a+8) = 5a + 20 = 80$, tedy $a = 12$, $b = 16$, $c = 20$, $d = 32$ cm. Strana $c$ měří 20 cm."
+            },
+            {
+              "n": 51,
+              "stem": "Dvě třetiny pokusné populace bakterií tvořili před začátkem experimentu jedinci bílé formy, zbylou třetinu jedinci černé formy. Jedinci bílé formy zdvojnásobí každých 30 minut svůj počet, jedinci černé formy zdvojnásobí svůj počet každých 20 minut. Celkem kolik jedinců bude mít pokusná populace bakterií po dvou hodinách experimentu, čítala-li na začátku 3 000 jedinců?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "96 000"
+                    },
+                    {
+                      "key": "B",
+                      "text": "144 000"
+                    },
+                    {
+                      "key": "C",
+                      "text": "169 000"
+                    },
+                    {
+                      "key": "D",
+                      "text": "192 000"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Bílých je na začátku 2 000 a za 2 hodiny se zdvojnásobí čtyřikrát: $2\\,000 \\cdot 2^4 = 32\\,000$. Černých je 1 000 a zdvojnásobí se šestkrát: $1\\,000 \\cdot 2^6 = 64\\,000$. Celkem $96\\,000$."
+            },
+            {
+              "n": 52,
+              "stem": "V pondělí ráno při východu slunce bylo na horách $N$ cm sněhu. Každý den se rovnoměrnou rychlostí sníží výška sněhové pokrývky o jednu desetinu oproti stavu ráno při východu slunce (v noci sněhu neubývá). Který den klesne výška sněhové pokrývky poprvé na méně než tři čtvrtiny $N$ cm?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "ve středu"
+                    },
+                    {
+                      "key": "B",
+                      "text": "ve čtvrtek"
+                    },
+                    {
+                      "key": "C",
+                      "text": "v pátek"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v sobotu"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Každý den zůstane $\\frac{9}{10}$ ranního stavu: ráno v úterý $0{,}9N$, ve středu $0{,}81N$ (stále více než $0{,}75N$) a během středy klesne na $0{,}729N$. Pod tři čtvrtiny se tedy dostane poprvé ve středu."
+            },
+            {
+              "n": 53,
+              "stem": "Za každou z prvních pěti minut hovoru zaplatí zákazník ve všední den 2 Kč, každá další minuta je o 25 % dražší než ta předchozí. O víkendu je každý hovor o 20 % levnější než stejně dlouhý hovor ve všední den. Jaký je rozdíl mezi cenami šestiminutového hovoru ve všední den a o víkendu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "3,50 Kč"
+                    },
+                    {
+                      "key": "B",
+                      "text": "3,75 Kč"
+                    },
+                    {
+                      "key": "C",
+                      "text": "2,50 Kč"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2,25 Kč"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Ve všední den: $5 \\cdot 2 + 2 \\cdot 1{,}25 = 10 + 2{,}5 = 12{,}5$ Kč. O víkendu je hovor o 20 % levnější, rozdíl je tedy $0{,}2 \\cdot 12{,}5 = 2{,}50$ Kč."
+            },
+            {
+              "n": 54,
+              "stem": "Jaký objem má kvádr s výškou 10 cm a obsahem podstavy 32,5 cm$^2$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "32,5 cm$^3$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "325 cm$^2$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "325 cm$^3$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "3 250 cm$^3$"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Objem kvádru = obsah podstavy · výška $= 32{,}5 \\cdot 10 = 325$ cm$^3$ (objem se udává v krychlových jednotkách)."
+            },
+            {
+              "n": 55,
+              "stem": "Je-li 20. července úterý, který den v týdnu je 20. září téhož roku?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "pondělí"
+                    },
+                    {
+                      "key": "B",
+                      "text": "čtvrtek"
+                    },
+                    {
+                      "key": "C",
+                      "text": "sobota"
+                    },
+                    {
+                      "key": "D",
+                      "text": "neděle"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Červenec i srpen mají po 31 dnech, od 20. července do 20. září tedy uplyne 62 dní. $62 = 8 \\cdot 7 + 6$, den v týdnu se posune o 6: úterý + 6 = pondělí."
+            }
+          ]
+        },
+        {
+          "id": "g14",
+          "taskType": "vyrazy",
+          "instruction": "Vyřešte následující úlohy založené na textu nebo matematickém výrazu.",
+          "questions": [
+            {
+              "n": 56,
+              "stem": "V lednu stálo sako $s$ Kč a kalhoty $k$ Kč. V únoru bylo sako o 20 % zdraženo a kalhoty o 20 % zlevněny, celková cena saka a kalhot se ale nezměnila. Který z následujících vztahů uvedenou situaci vyjadřuje?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$1{,}2s = 0{,}8k$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$s + 0{,}2 = k - 0{,}2$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$0{,}2s + 0{,}2k = s + k$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$0{,}2s = 0{,}2k$"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Platí $1{,}2s + 0{,}8k = s + k$, tedy $0{,}2s = 0{,}2k$ (zdražení saka se musí rovnat zlevnění kalhot)."
+            },
+            {
+              "n": 57,
+              "stem": "Na zámku platí dospělý vstupné $x$ Kč, dítě $y$ Kč. Nejvýše 2 dospělí a 4 děti si mohou koupit rodinné vstupné ve výši $r$ Kč. Platí vztahy:\n\n$r = \\frac{3}{4} \\cdot (2x + 4y)$\n\n$y = \\frac{x}{2}$\n\nČemu se rovná částka, kterou ušetří dva dospělí a čtyři děti při koupi rodinného vstupného oproti nákupu jednotlivých vstupenek?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "dvojnásobku vstupného pro dospělého"
+                    },
+                    {
+                      "key": "B",
+                      "text": "čtvrtině vstupného pro dospělého"
+                    },
+                    {
+                      "key": "C",
+                      "text": "vstupnému pro dospělého"
+                    },
+                    {
+                      "key": "D",
+                      "text": "vstupnému pro dítě"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Dosadíme $y = \\frac{x}{2}$: jednotlivé vstupenky stojí $2x + 4y = 2x + 2x = 4x$, rodinné vstupné $r = \\frac{3}{4} \\cdot 4x = 3x$. Úspora je $4x - 3x = x$, tedy vstupné pro jednoho dospělého."
+            },
+            {
+              "n": 58,
+              "stem": "Operace $\\#$ je definována vztahem $a \\# b = \\frac{2 - b}{a - 2}$. Pro které $a$ platí vztah $a \\# 6 = 1$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$-2$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$-1$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$0$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$6$"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "$a \\# 6 = \\frac{2 - 6}{a - 2} = \\frac{-4}{a - 2} = 1$, tedy $a - 2 = -4$ a $a = -2$."
+            },
+            {
+              "n": 59,
+              "stem": "Funkce $f$ je definována vztahem $f(x) = 2 - \\frac{2}{x}$. Čemu se rovná $f\\left(f\\left(\\frac{1}{2}\\right)\\right)$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$-1$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$1$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$2$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$3$"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "$f\\left(\\frac{1}{2}\\right) = 2 - \\frac{2}{1/2} = 2 - 4 = -2$, potom $f(-2) = 2 - \\frac{2}{-2} = 2 + 1 = 3$."
+            }
+          ]
+        },
+        {
+          "id": "g15",
+          "taskType": "podminky",
+          "instruction": "Každá z následujících úloh je založena na textu a na souboru podmínek. Rozlišujte, které podmínky se týkají celé série úloh a které podmínky jsou uvedeny pouze pro jednu jedinou úlohu. U některých úloh může být užitečné pomoci si hrubým náčrtkem.",
+          "passage": "Dívky Alena, Blanka a Dana a chlapci Emil, Filip a Honza vyráběli švestkové knedlíky na knedlíkovou party; každý z nich vyrobil jiný počet knedlíků (ve vzestupném pořadí 13, 15, 17, 23, 26, 30). Víme, že:\n\n- Dana vyrobila více knedlíků než právě jeden z chlapců.\n- Emil vyrobil více knedlíků než Honza, který vyrobil právě 15 knedlíků.\n- Jedna z dívek vyrobila právě dvakrát více knedlíků než jeden z chlapců.",
+          "passageTitle": "TEXT K ÚLOHÁM 60 AŽ 63",
+          "questions": [
+            {
+              "n": 60,
+              "stem": "Při platnosti kterého z následujících tvrzení by bylo možné jednoznačné určit, kdo vyrobil 26 knedlíků?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Dana vyrobila 17 knedlíků."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Nejméně knedlíků vyrobila dívka."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Emil vyrobil o 10 knedlíků více než Blanka."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Všichni chlapci vyrobili dohromady 64 knedlíků."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Honza má 15, Emil víc. Dívka se dvojnásobkem počtu chlapce může mít jen 30 = 2 · 15 (jiné dvojnásobky v nabídce nejsou). Dana překonává právě jednoho chlapce (Honzu), takže má 17 a Emil i Filip mají víc (23 a 26 v libovolném pořadí); zbylá dívka má 13. Platí tedy: Honza 15, Dana 17, {Emil, Filip} = {23, 26}, {Alena, Blanka} = {13, 30}. Možnosti A, B, D platí vždy. Podle C je Emil = Blanka + 10, což jde jen jako $23 = 13 + 10$; Emil má tedy 23 a 26 knedlíků vyrobil Filip."
+            },
+            {
+              "n": 61,
+              "stem": "Které z následujících tvrzení je v rozporu s uvedenými podmínkami?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Dana vyrobila právě 26 knedlíků."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Jedna z dívek vyrobila nejvíce knedlíků ze všech."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Jedna z dívek vyrobila nejméně knedlíků ze všech."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Honza vyrobil více knedlíků než právě jedna dívka."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Honza má 15, Emil víc. Dívka se dvojnásobkem počtu chlapce může mít jen 30 = 2 · 15 (jiné dvojnásobky v nabídce nejsou). Dana překonává právě jednoho chlapce (Honzu), takže má 17 a Emil i Filip mají víc (23 a 26 v libovolném pořadí); zbylá dívka má 13. Platí tedy: Honza 15, Dana 17, {Emil, Filip} = {23, 26}, {Alena, Blanka} = {13, 30}. Dana má vždy 17, nemůže tedy mít 26. Ostatní tvrzení platí (13 i 30 mají dívky, Honza s 15 překoná jen dívku se 13)."
+            },
+            {
+              "n": 62,
+              "stem": "Kdo mohl vyrobit právě 23 knedlíků?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen Filip"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen Alena"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen kdokoli z dvojice Emil, Filip"
+                    },
+                    {
+                      "key": "D",
+                      "text": "kdokoli z trojice Blanka, Emil, Filip"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Honza má 15, Emil víc. Dívka se dvojnásobkem počtu chlapce může mít jen 30 = 2 · 15 (jiné dvojnásobky v nabídce nejsou). Dana překonává právě jednoho chlapce (Honzu), takže má 17 a Emil i Filip mají víc (23 a 26 v libovolném pořadí); zbylá dívka má 13. Platí tedy: Honza 15, Dana 17, {Emil, Filip} = {23, 26}, {Alena, Blanka} = {13, 30}. Počet 23 tedy mohl mít Emil, nebo Filip."
+            },
+            {
+              "n": 63,
+              "stem": "U koho lze jednoznačně určit, kolik knedlíků vyrobil/a?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen u každého z dvojice Dana, Emil"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen u každého z dvojice Dana, Honza"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen u každého z dvojice Emil, Honza"
+                    },
+                    {
+                      "key": "D",
+                      "text": "u každého z trojice Dana, Honza, Emil"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Honza má 15, Emil víc. Dívka se dvojnásobkem počtu chlapce může mít jen 30 = 2 · 15 (jiné dvojnásobky v nabídce nejsou). Dana překonává právě jednoho chlapce (Honzu), takže má 17 a Emil i Filip mají víc (23 a 26 v libovolném pořadí); zbylá dívka má 13. Platí tedy: Honza 15, Dana 17, {Emil, Filip} = {23, 26}, {Alena, Blanka} = {13, 30}. Jednoznačně je určen jen Honza (15) a Dana (17)."
+            }
+          ]
+        },
+        {
+          "id": "g16",
+          "taskType": "podminky",
+          "instruction": "Každá z následujících úloh je založena na textu a na souboru podmínek. Rozlišujte, které podmínky se týkají celé série úloh a které podmínky jsou uvedeny pouze pro jednu jedinou úlohu. U některých úloh může být užitečné pomoci si hrubým náčrtkem.",
+          "passage": "Gymnázium plánuje workshopy, a to zvlášť pro každou ze čtyř tříd (kvinta, sexta, septima, oktáva) v jiný den (pondělí, úterý, středa, čtvrtek). Každý workshop bude v jiné ze čtyř učeben (v 1. patře jsou učebny 1a, 1b; v 2. patře jsou učebny 2a, 2b). Víme, že:\n\n- Ani kvinta, ani septima nebudou mít workshop v 1. patře.\n- Workshop, který proběhne v úterý v 2. patře, nebude mít kvinta.\n- Ve středu bude workshop v 1. patře.\n- Workshop oktávy proběhne v učebně 1a.",
+          "passageTitle": "TEXT K ÚLOHÁM 64 AŽ 66",
+          "questions": [
+            {
+              "n": 64,
+              "stem": "Který den může mít workshop kvinta?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen v pondělí"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen v kterýkoli den z dvojice pondělí, čtvrtek"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen v kterýkoli den z dvojice pondělí, středa"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v kterýkoli den z trojice pondělí, středa, čtvrtek"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Kvinta i septima jsou ve 2. patře, v 1. patře jsou tedy oktáva (1a) a sexta (1b). Ve středu je workshop v 1. patře (oktáva, nebo sexta). Druhá podmínka říká, že v úterý proběhne workshop ve 2. patře a nemá ho kvinta – v úterý tedy má workshop septima. Kvinta nemůže ve středu (1. patro) ani v úterý, zbývá pondělí nebo čtvrtek (obojí je možné)."
+            },
+            {
+              "n": 65,
+              "stem": "Ve kterých všech učebnách může proběhnout workshop ve čtvrtek?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen v kterékoli z dvojice 1a, 1b"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen v kterékoli z dvojice 1b, 2a"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen v kterékoli z trojice 1b, 2a, 2b"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v kterékoli z uvedených učeben"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Kvinta i septima jsou ve 2. patře, v 1. patře jsou tedy oktáva (1a) a sexta (1b). Ve středu je workshop v 1. patře (oktáva, nebo sexta). Druhá podmínka říká, že v úterý proběhne workshop ve 2. patře a nemá ho kvinta – v úterý tedy má workshop septima. Ve čtvrtek může mít workshop kvinta (2a nebo 2b), nebo ta z dvojice oktáva, sexta, která ho nemá ve středu (1a nebo 1b). Možné jsou všechny čtyři učebny."
+            },
+            {
+              "n": 66,
+              "stem": "Pokud by platilo, že v pondělí bude workshop v učebně 2b, který den by mohl být workshop v učebně 2a?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen v úterý"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen v kterémkoli dnu z dvojice úterý, středa"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen v kterémkoli dnu z dvojice úterý, čtvrtek"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v kterémkoli dnu z trojice úterý, středa, čtvrtek"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Kvinta i septima jsou ve 2. patře, v 1. patře jsou tedy oktáva (1a) a sexta (1b). Ve středu je workshop v 1. patře (oktáva, nebo sexta). Druhá podmínka říká, že v úterý proběhne workshop ve 2. patře a nemá ho kvinta – v úterý tedy má workshop septima. V pondělí ve 2. patře (2b) tedy musí být kvinta a septima, která má workshop v úterý, má učebnu 2a. Učebna 2a je tak obsazena jen v úterý."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

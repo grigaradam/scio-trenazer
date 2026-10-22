@@ -1,0 +1,59 @@
+import type { AnswerMap } from "@/lib/content/public";
+import type { TestResult } from "@/lib/scoring";
+
+export interface Profile {
+  id: string;
+  display_name: string | null;
+  exam: string;
+  onboarded: boolean;
+  xp: number;
+  streak_current: number;
+  streak_best: number;
+  last_active_date: string | null;
+  daily_goal_min: number;
+  practice_time_limit_sec: number | null;
+  created_at: string;
+}
+
+export interface AttemptRow {
+  id: string;
+  user_id: string;
+  exam: string;
+  test_id: string;
+  is_diagnostic: boolean;
+  status: "in_progress" | "completed";
+  section_index: number;
+  time_left: { verbal: number; analytic: number };
+  answers: AnswerMap;
+  flags: number[];
+  pause_count: number;
+  active_seconds: number;
+  started_at: string;
+  updated_at: string;
+  completed_at: string | null;
+  score: number | null;
+  max_score: number | null;
+  result: TestResult | null;
+}
+
+export interface MistakeRow {
+  id: string;
+  user_id: string;
+  exam: string;
+  task_ref: string;
+  task_type: string;
+  source: "test" | "practice";
+  attempt_id: string | null;
+  status: "open" | "fixed";
+  tries: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StudyDay {
+  day: string;
+  seconds: number;
+  tasks: number;
+  correct: number;
+  xp: number;
+}
