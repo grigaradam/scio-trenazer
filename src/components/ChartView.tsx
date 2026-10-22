@@ -39,17 +39,12 @@ function labelLines(s: string, max = 12) {
 }
 
 export function ChartView({ chart }: { chart: ChartSpec }) {
-  const [hover, setHover] = useState<{ c: number; s: number } | null>(null);
   const { ref, w } = useWidth();
-  const info =
-    hover &&
-    `${chart.categories[hover.c]}${chart.series.length > 1 || chart.kind === "pie" ? ` – ${chart.series[hover.s].name}` : ""}: ${fmt(chart.series[hover.s].values[hover.c])}${chart.unit ? ` ${chart.unit}` : ""}`;
-
   return (
     <figure className="chart-root select-none">
       {chart.title && <figcaption className="mb-2 text-center text-sm font-bold">{chart.title}</figcaption>}
       <div ref={ref}>
-        {chart.kind === "pie" ? <Pie chart={chart} hover={hover} setHover={setHover} W={w} /> : <Cartesian chart={chart} hover={hover} setHover={setHover} W={w} />}
+        {chart.kind === "pie" ? <Pie chart={chart} W={w} /> : <Cartesian chart={chart} W={w} />}
       </div>
       {(chart.series.length > 1 || chart.kind === "pie") && (
         <div className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted">
@@ -61,19 +56,16 @@ export function ChartView({ chart }: { chart: ChartSpec }) {
           ))}
         </div>
       )}
-      <div className="mt-1 min-h-5 text-center text-xs font-semibold text-muted">{info ?? `Klepni na ${chart.kind === "pie" ? "výseč" : chart.kind === "line" ? "bod" : "sloupec"} pro přesnou hodnotu`}</div>
     </figure>
   );
 }
 
-type HoverProps = {
+type ChartProps = {
   chart: ChartSpec;
-  hover: { c: number; s: number } | null;
-  setHover: (h: { c: number; s: number } | null) => void;
   W: number;
 };
 
-function Cartesian({ chart, hover, setHover, W }: HoverProps) {
+function Cartesian({ chart, W }: ChartProps) {
   const n = chart.categories.length;
   const step = chart.yStep && chart.yStep > 0 ? chart.yStep : 1;
   const totals = chart.categories.map((_, i) => chart.series.reduce((sum, s) => sum + (s.values[i] ?? 0), 0));
@@ -144,9 +136,8 @@ function Cartesian({ chart, hover, setHover, W }: HoverProps) {
               <g key={s.name}>
                 <polyline points={pts.map((p) => p.join(",")).join(" ")} fill="none" stroke={SERIES[si]} strokeWidth={2.5} strokeLinejoin="round" />
                 {pts.map(([px, py], i) => (
-                  <g key={i} onMouseEnter={() => setHover({ c: i, s: si })} onClick={() => setHover({ c: i, s: si })} className="cursor-pointer">
-                    <circle cx={px} cy={py} r={14} fill="transparent" />
-                    <circle cx={px} cy={py} r={hover?.c === i && hover.s === si ? 7 : 5} fill={SERIES[si]} stroke="var(--surface)" strokeWidth={2} />
+                  <g key={i}>
+                    <circle cx={px} cy={py} r={5} fill={SERIES[si]} stroke="var(--surface)" strokeWidth={2} />
                   </g>
                 ))}
               </g>
@@ -175,10 +166,7 @@ function Cartesian({ chart, hover, setHover, W }: HoverProps) {
                         fill={SERIES[si]}
                         stroke="var(--surface)"
                         strokeWidth={1}
-                        opacity={hover && (hover.c !== i || hover.s !== si) ? 0.55 : 1}
-                        onMouseEnter={() => setHover({ c: i, s: si })}
-                        onClick={() => setHover({ c: i, s: si })}
-                        className="cursor-pointer transition-opacity"
+                       
                       />
                     );
                   })}
@@ -199,10 +187,7 @@ function Cartesian({ chart, hover, setHover, W }: HoverProps) {
                       key={si}
                       d={`M${x},${y(0)} V${r2(top + r)} Q${x},${top} ${r2(x + r)},${top} H${r2(x + bw - r)} Q${r2(x + bw)},${top} ${r2(x + bw)},${r2(top + r)} V${y(0)} Z`}
                       fill={SERIES[si]}
-                      opacity={hover && (hover.c !== i || hover.s !== si) ? 0.55 : 1}
-                      onMouseEnter={() => setHover({ c: i, s: si })}
-                      onClick={() => setHover({ c: i, s: si })}
-                      className="cursor-pointer transition-opacity"
+                     
                     />
                   );
                 })}
@@ -213,7 +198,7 @@ function Cartesian({ chart, hover, setHover, W }: HoverProps) {
   );
 }
 
-function Pie({ chart, hover, setHover, W }: HoverProps) {
+function Pie({ chart, W }: ChartProps) {
   const values = chart.series[0]?.values ?? [];
   const total = values.reduce((a, b) => a + b, 0) || 1;
   const cx = W / 2;
@@ -234,14 +219,12 @@ function Pie({ chart, hover, setHover, W }: HoverProps) {
         const lx = r2(cx + (r + 14) * Math.cos(mid));
         const ly = r2(cy + (r + 14) * Math.sin(mid));
         return (
-          <g key={i} onMouseEnter={() => setHover({ c: i, s: 0 })} onClick={() => setHover({ c: i, s: 0 })} className="cursor-pointer">
+          <g key={i}>
             <path
               d={values.length === 1 ? `M${cx - r},${cy} a${r},${r} 0 1,0 ${2 * r},0 a${r},${r} 0 1,0 ${-2 * r},0` : `M${cx},${cy} L${p0[0]},${p0[1]} A${r},${r} 0 ${large} 1 ${p1[0]},${p1[1]} Z`}
               fill={SERIES[i % SERIES.length]}
               stroke="var(--surface)"
               strokeWidth={2}
-              opacity={hover && hover.c !== i ? 0.55 : 1}
-              className="transition-opacity"
             />
             <text x={lx} y={ly} textAnchor={Math.cos(mid) > 0.2 ? "start" : Math.cos(mid) < -0.2 ? "end" : "middle"} dominantBaseline="middle" fontSize="14" fontWeight="700" fill="var(--text)">
               {fmt(pct)} %

@@ -224,7 +224,8 @@ function rpc(name: string, a: Record<string, unknown>) {
   return Promise.resolve().then(() => ({ data: JSON.parse(JSON.stringify(run())), error: null }));
 }
 
-export const isDemo = () => process.env.DEMO_MODE === "1" && process.env.NODE_ENV !== "production";
+export const isDemo = () =>
+  process.env.DEMO_MODE === "1" && (process.env.NODE_ENV !== "production" || process.env.DEMO_ALLOW_PROD === "1");
 
 export function createDemoClient() {
   return { from: (name: string) => new Query(name), rpc };

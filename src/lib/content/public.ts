@@ -21,12 +21,25 @@ export function stripQuestion(q: Question): PublicQuestion {
   };
 }
 
+/** Whitelist of client-visible fields (AI payloads carry internal notes such as trap design). */
 export function stripGroup(g: Group): PublicGroup {
-  return { ...g, questions: g.questions.map(stripQuestion) };
+  return {
+    id: g.id,
+    taskType: g.taskType,
+    instruction: g.instruction,
+    ...(g.passage ? { passage: g.passage } : {}),
+    ...(g.passageTitle ? { passageTitle: g.passageTitle } : {}),
+    ...(g.figure ? { figure: g.figure } : {}),
+    ...(g.chart ? { chart: g.chart } : {}),
+    questions: g.questions.map(stripQuestion),
+  };
 }
 
 export function stripTest(t: TestFile): PublicTest {
-  return { ...t, sections: t.sections.map((s) => ({ ...s, groups: s.groups.map(stripGroup) })) };
+  return {
+    ...t,
+    sections: t.sections.map((s) => ({ id: s.id, title: s.title, timeLimitSec: s.timeLimitSec, groups: s.groups.map(stripGroup) })),
+  };
 }
 
 export const testRef = (testId: string, n: number) => `test:${testId}:${n}`;

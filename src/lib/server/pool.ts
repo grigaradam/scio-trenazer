@@ -1,7 +1,7 @@
 import "server-only";
 import { after } from "next/server";
 import { tryBudget } from "@/lib/ai/client";
-import { generateTasks } from "@/lib/ai/generate";
+import { GENERATOR_VERSION, generateTasks } from "@/lib/ai/generate";
 import type { ExamId, TaskType } from "@/lib/content/types";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -10,14 +10,21 @@ const BUFFER = 1;
 const MAX_ATTEMPTS = 3;
 const inflight = new Set<string>();
 
-async function waitingCount(userId: string, exam: ExamId, type: TaskType) {
+/** Unseen pool tasks for a user, current generator version only (older, easier tasks are skipped). */
+export async function pickUnseen(userId: string, exam: ExamId, type: TaskType, limit: number) {
   const { data } = await createAdminClient().rpc("pick_generated_tasks", {
     p_user: userId,
     p_exam: exam,
     p_type: type,
-    p_limit: BUFFER,
+    p_limit: 60,
   });
-  return (data ?? []).length;
+  return ((data ?? []) as { id: string; payload: { v?: number } & Record<string, unknown>; served_count: number }[])
+    .filter((t) => (t.payload.v ?? 1) >= GENERATOR_VERSION)
+    .slice(0, limit);
+}
+
+async function waitingCount(userId: string, exam: ExamId, type: TaskType) {
+  return (await pickUnseen(userId, exam, type, BUFFER)).length;
 }
 
 /**

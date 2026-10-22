@@ -9,6 +9,7 @@ import type { PublicGroup } from "@/lib/content/public";
 import type { OptionKey, TaskType } from "@/lib/content/types";
 import { achievementDef } from "@/lib/gamification";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
+import { emitLiveStats } from "@/lib/liveStats";
 import { Explanation } from "./Explanation";
 import { GroupContext, QuestionBody, type Tone } from "./QuestionView";
 import { RichText } from "./RichText";
@@ -158,6 +159,7 @@ export function PracticeSession({
         return;
       }
       seen.current.push(ref);
+      emitLiveStats({ type: "answer", xp: j.xp ?? 0, streak: j.streak });
       setFeedback({ correct: j.correct, answer: j.answer, solution: j.solution, xp: j.xp, fixed: j.fixed, timeout });
       setStats((s) => ({
         done: s.done + 1,

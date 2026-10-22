@@ -6,7 +6,7 @@ import { taskTypeMeta } from "@/lib/content/exams";
 import { genRef, stripGroup } from "@/lib/content/public";
 import type { Group, TaskType } from "@/lib/content/types";
 import { apiUser } from "@/lib/server/auth";
-import { ensureTaskBuffer } from "@/lib/server/pool";
+import { ensureTaskBuffer, pickUnseen } from "@/lib/server/pool";
 import { resolveTask } from "@/lib/server/tasks";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -54,10 +54,8 @@ export async function POST(req: Request) {
   }
 
   // 2) a pooled AI task this user has never seen
-  const pick = async () => {
-    const { data } = await admin.rpc("pick_generated_tasks", { p_user: user.id, p_exam: meta.exam, p_type: type, p_limit: 3 });
-    return (data ?? []) as { id: string; payload: Group; served_count: number }[];
-  };
+  const pick = async () =>
+    (await pickUnseen(user.id, meta.exam, meta.id, 3)) as unknown as { id: string; payload: Group; served_count: number }[];
   let available = await pick();
 
   // 3) nothing left → generate fresh ones (counts against the daily AI budget)

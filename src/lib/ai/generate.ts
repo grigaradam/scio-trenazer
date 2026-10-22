@@ -40,6 +40,9 @@ const GeneratedSchema = z.object({
       compare: z.object({ left: z.string(), right: z.string() }).nullable(),
       parts: z.array(PartSchema),
       solution: z.string(),
+      trapDesign: z
+        .string()
+        .describe("Interní: ke každé špatné možnosti napiš, jakou konkrétní chybu nebo past představuje a proč je lákavá."),
     }),
   ),
 });
@@ -50,17 +53,27 @@ const ValidationSchema = z.object({
     .array(z.array(z.string()))
     .describe("Tvoje vlastní řešení: pro každou úlohu pole písmen (jedno na každou část)."),
   reasoning: z.string().describe("Stručně, jak jsi úlohy vyřešil(a)."),
+  predictedSuccess: z
+    .number()
+    .describe("Odhad: kolik % průměrných uchazečů o VŠ by úlohu vyřešilo správně (reálné úlohy Scio OSP mají typicky 30–60 %)."),
+  shortcut: z
+    .boolean()
+    .describe("true, pokud jde správnou odpověď najít povrchním trikem bez skutečného řešení (jediná gramaticky sedící, nejdelší/nejkonkrétnější možnost, zjevně nesmyslné distraktory, odpověď je přímo opsaná z textu)."),
   scores: z.object({
+    distractors: z.number().describe("1–10: síla chytáků – jsou špatné možnosti věrohodné a odpovídají typickým chybám?"),
     unambiguous: z.number().describe("1–10: má každá část právě jednu obhajitelnou správnou odpověď?"),
     czech: z.number().describe("1–10: gramatická a stylistická správnost češtiny, smysluplnost vět."),
     real_words: z.number().describe("1–10: existují všechna slova a platí uvedené významové vztahy (synonyma/antonyma/analogie)?"),
     scio_style: z.number().describe("1–10: odpovídá styl a formát skutečným úlohám Scio OSP?"),
-    difficulty: z.number().describe("1–10: odpovídá obtížnost reálnému testu (10 = přesně jako Scio)?"),
+    difficulty: z.number().describe("1–10: odpovídá obtížnost reálnému testu Scio (10 = přesně jako Scio, ≤6 = výrazně lehčí)?"),
   }),
   issues: z.array(z.string()).describe("Konkrétní problémy; prázdné pole, pokud žádné."),
   verdict: z.enum(["accept", "reject"]),
 });
 export type Validation = z.infer<typeof ValidationSchema>;
+
+/** Bump when generation/validation rules get stricter – older pool tasks are no longer served. */
+export const GENERATOR_VERSION = 2;
 
 // ------------------------------------------------------------------ canonical option texts
 
@@ -82,6 +95,14 @@ const SUFFICIENCY_OPTIONS = [
 const GENERATOR_SYSTEM = `Jsi autor úloh pro test Obecných studijních předpokladů (OSP) společnosti Scio.
 Tvoříš NOVÉ úlohy, které jsou k nerozeznání od skutečných úloh Scio: stejný formát, styl, délka, obtížnost a pravidla.
 
+OBTÍŽNOST JE KLÍČOVÁ. Reálné testy OSP mají průměrnou úspěšnost kolem 45–55 % – úlohy jsou zrádné, ne lehké.
+Cíl: úlohu správně vyřeší 30–60 % průměrných uchazečů o VŠ. Proto:
+- Každá úloha obsahuje aspoň jeden promyšlený chyták. Nejlákavější distraktor musí na první pohled vypadat správně
+  a odhalí ho až pečlivé čtení nebo výpočet.
+- Každá špatná možnost odpovídá konkrétní typické chybě (popiš ji v trapDesign). Žádný distraktor nesmí být zjevný nesmysl.
+- Odpověď nesmí jít uhodnout povrchně (nejdelší možnost, jediná gramaticky sedící, opsaná věta z textu, „střední“ číslo).
+- Žádné „školní“ jednokrokové příklady – matematika má 2–3 kroky, verbální úlohy vyžadují přesné porozumění.
+
 Zásady:
 - Drž se přesně pravidel typu úlohy a vzorů. Vzory NIKDY nekopíruj ani nepřeformulovávej – vymysli jiné téma,
   jiná slova, jiná čísla a jiný kontext. Obměňuj dostatečně (jiná oblast života, vědy, historie, techniky…).
@@ -100,9 +121,12 @@ Zásady:
 const VALIDATOR_SYSTEM = `Jsi přísný recenzent úloh pro test OSP (Scio). Dostaneš úlohu BEZ klíče.
 1) Vyřeš ji sám, pečlivě a nezávisle (matematiku přepočítej, logiku ověř výčtem, u textů vycházej jen z textu).
 2) Posuď kvalitu: jednoznačnost, gramatiku a smysluplnost češtiny, existenci slov a správnost významových vztahů,
-   shodu se stylem Scio a obtížnost. Buď kritický – do databáze smí jen úlohy, které by mohly být ve skutečném testu.
+   shodu se stylem Scio, sílu chytáků a obtížnost.
+3) Posuď obtížnost realisticky: reálné úlohy OSP mají úspěšnost typicky 30–60 %. Úloha, kterou by vyřešilo přes 70 %
+   uchazečů, je pro tuto databázi PŘÍLIŠ LEHKÁ. Hledej zkratky: jde odpověď najít bez skutečného řešení?
+   Jsou distraktory jen „vata“? Je chyták dost zrádný?
 verdict = "reject", pokud má úloha víc obhajitelných odpovědí, žádnou správnou odpověď, chybu v češtině,
-neexistující slovo, nesmyslný vztah, chybu ve výpočtu nebo je zjevně mimo styl Scio.`;
+neexistující slovo, nesmyslný vztah, chybu ve výpočtu, je zjevně mimo styl Scio, nebo je příliš lehká / bez chytáku.`;
 
 function pickExamples(exam: ExamId, type: TaskType, count: number) {
   const pool = groupsOfType(exam, type).filter(
@@ -250,7 +274,7 @@ async function validate(group: Group, type: TaskType): Promise<Validation> {
     messages: [
       {
         role: "user",
-        content: `Typ úlohy: ${meta?.name}\nPravidla typu: ${meta?.rules}\n\n${taskToPrompt(group, group.questions, false)}`,
+        content: `Typ úlohy: ${meta?.name}\nPravidla typu: ${meta?.rules}\nTypické chytáky Scio u tohoto typu: ${meta?.traps}\n\n${taskToPrompt(group, group.questions, false)}`,
       },
     ],
   });
@@ -263,8 +287,11 @@ function accepts(group: Group, v: Validation) {
     q.parts.every((p, pi) => (v.answers[qi]?.[pi] ?? "").trim().toUpperCase().replace(/[()]/g, "") === p.answer),
   );
   const s = v.scores;
-  const scoresOk = [s.unambiguous, s.czech, s.real_words, s.scio_style].every((x) => x >= 7) && s.difficulty >= 6;
-  return { ok: keyMatches && scoresOk && v.verdict === "accept", keyMatches };
+  const scoresOk =
+    [s.unambiguous, s.czech, s.real_words].every((x) => x >= 8) &&
+    [s.scio_style, s.difficulty, s.distractors].every((x) => x >= 7);
+  const hardEnough = !v.shortcut && v.predictedSuccess >= 20 && v.predictedSuccess <= 70;
+  return { ok: keyMatches && scoresOk && hardEnough && v.verdict === "accept", keyMatches, hardEnough };
 }
 
 function dataFormatInstruction(useChart: boolean, kind: (typeof CHART_KINDS)[number]) {
@@ -313,6 +340,9 @@ ${meta.groupSize > 1 ? `Úloha je skupina ${meta.groupSize} otázek ke společn�
 Pravidla typu:
 ${meta.rules}
 
+Chytáky typické pro tento typ (zabuduj je):
+${meta.traps}
+
 Skutečné úlohy Scio jako vzor (styl, délka, obtížnost – NEKOPÍROVAT):
 ${examplesText}
 
@@ -323,8 +353,8 @@ ${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst
     try {
       const response = await anthropic().messages.parse({
         model: AI.model,
-        max_tokens: 16000,
-        output_config: { effort: "medium", format: zodOutputFormat(GeneratedSchema) },
+        max_tokens: 24000,
+        output_config: { effort: "high", format: zodOutputFormat(GeneratedSchema) },
         system: GENERATOR_SYSTEM,
         messages: [{ role: "user", content: prompt }],
       });
@@ -338,18 +368,23 @@ ${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst
       const verdict = accepts(group, validation);
       if (!verdict.ok) {
         return {
-          rejected: `validátor: ${verdict.keyMatches ? "" : "jiná odpověď než klíč; "}${validation.issues.join("; ")} ${JSON.stringify(validation.scores)}`,
+          rejected: `validátor: ${verdict.keyMatches ? "" : "jiná odpověď než klíč; "}${verdict.hardEnough ? "" : `příliš lehká (úspěšnost ${validation.predictedSuccess} %, zkratka ${validation.shortcut}); `}${validation.issues.join("; ")} ${JSON.stringify(validation.scores)}`,
         };
       }
       const s = validation.scores;
-      const quality = (s.unambiguous + s.czech + s.real_words + s.scio_style + s.difficulty) / 5;
+      const quality = (s.unambiguous + s.czech + s.real_words + s.scio_style + s.difficulty + s.distractors) / 6;
       if (dryRun) return { accepted: { id: "dry-run", group: { ...group, topic: gen.topic } as Group, validation } };
       const { data, error } = await createAdminClient()
         .from("generated_tasks")
         .insert({
           exam,
           task_type: type,
-          payload: { ...group, topic: gen.topic },
+          payload: {
+            ...group,
+            topic: gen.topic,
+            v: GENERATOR_VERSION,
+            trapDesign: gen.questions.map((q) => q.trapDesign),
+          },
           quality,
           validator: validation,
           model: AI.model,
