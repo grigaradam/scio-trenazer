@@ -13,7 +13,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(params.get("code") ?? "");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(params.get("error") === "confirm" ? "Odkaz pro potvrzení vypršel. Zkus se přihlásit." : null);
 
@@ -76,7 +76,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           autoComplete="off"
           autoCapitalize="off"
           spellCheck={false}
-          placeholder="Přístupový kód"
+          placeholder="Přístupový kód (XXXX-XXXX)"
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />

@@ -67,9 +67,12 @@ const DEFAULTS: Record<string, () => Row> = {
   task_seen: () => ({ created_at: new Date().toISOString() }),
   achievements: () => ({ unlocked_at: new Date().toISOString() }),
   explanations: () => ({ created_at: new Date().toISOString() }),
+  invite_codes: () => ({ created_at: new Date().toISOString(), used_at: null, used_by: null, revoked: false, note: null }),
 };
 
 const KEYS: Record<string, string[]> = {
+  invite_codes: ["code"],
+  daily_traffic: ["day", "user_id"],
   profiles: ["id"],
   mistakes: ["user_id", "task_ref"],
   task_seen: ["user_id", "task_ref"],
@@ -119,6 +122,11 @@ class Query implements PromiseLike<{ data: unknown; error: null; count?: number 
   }
   eq(col: string, val: unknown) {
     this.filters.push((r) => r[col] === val);
+    return this;
+  }
+  like(col: string, pattern: string) {
+    const re = new RegExp("^" + pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/%/g, ".*") + "$");
+    this.filters.push((r) => re.test(String(r[col] ?? "")));
     return this;
   }
   gte(col: string, val: unknown) {
@@ -212,6 +220,23 @@ function rpc(name: string, a: Record<string, unknown>) {
         .filter((t) => t.task_type === a.p_type && !seen.has(`gen:${t.id}`))
         .slice(0, a.p_limit as number);
     }
+    if (name === "claim_invite") {
+      const code = String(a.p_code).trim().toUpperCase();
+      const row = table("invite_codes").find((r) => r.code === code && !r.used_at && !r.revoked);
+      if (!row) return false;
+      row.used_at = new Date().toISOString();
+      return true;
+    }
+    if (name === "track_view") {
+      const day = today();
+      const rows = table("daily_traffic");
+      let r = rows.find((x) => x.user_id === a.p_user && x.day === day);
+      if (!r) rows.push((r = { day, user_id: a.p_user, views: 0 }));
+      r.views = (r.views as number) + 1;
+      const p = table("profiles").find((x) => x.id === a.p_user);
+      if (p) p.last_seen_at = new Date().toISOString();
+      return null;
+    }
     if (name === "bump_ai_usage") {
       const rows = table("ai_usage");
       let r = rows.find((x) => x.user_id === a.p_user && x.day === today() && x.kind === a.p_kind);
@@ -227,6 +252,24 @@ function rpc(name: string, a: Record<string, unknown>) {
 export const isDemo = () =>
   process.env.DEMO_MODE === "1" && (process.env.NODE_ENV !== "production" || process.env.DEMO_ALLOW_PROD === "1");
 
+const auth = {
+  admin: {
+    async listUsers() {
+      const users = table("auth_users");
+      if (!users.length) users.push({ id: DEMO_USER.id, email: DEMO_USER.email, created_at: new Date().toISOString() });
+      return { data: { users: JSON.parse(JSON.stringify(users)) }, error: null };
+    },
+    async createUser(opts: { email: string; user_metadata?: { display_name?: string } }) {
+      const users = table("auth_users");
+      if (users.some((u) => u.email === opts.email)) return { data: { user: null }, error: { message: "User already registered" } };
+      const user = { id: crypto.randomUUID(), email: opts.email, created_at: new Date().toISOString() };
+      users.push(user);
+      table("profiles").push({ id: user.id, display_name: opts.user_metadata?.display_name ?? null, xp: 0, streak_current: 0, streak_best: 0, onboarded: false, daily_goal_min: 20, blocked: false });
+      return { data: { user }, error: null };
+    },
+  },
+};
+
 export function createDemoClient() {
-  return { from: (name: string) => new Query(name), rpc };
+  return { from: (name: string) => new Query(name), rpc, auth };
 }

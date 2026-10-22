@@ -26,17 +26,24 @@ const currentUser = cache(async (): Promise<SessionUser | null> => {
   return { id: claims.sub, email: (claims.email as string | undefined) ?? null };
 });
 
-/** For pages: the signed-in user or a redirect to /login. */
-export async function requireUser() {
+/** For pages: the signed-in user or a redirect to /login. Blocked accounts go to /reactivate. */
+export async function requireUser(opts: { allowBlocked?: boolean } = {}) {
   const user = await currentUser();
   if (!user) redirect("/login");
+  if (!opts.allowBlocked && (await getProfile(user.id)).blocked) redirect("/reactivate");
   return { user };
 }
 
-/** For route handlers: the user, or a 401 response to return. */
-export async function apiUser() {
+/** For route handlers: the user, or a 401/403 response to return. */
+export async function apiUser(opts: { allowBlocked?: boolean } = {}) {
   const user = await currentUser();
   if (!user) return { user: null, error: NextResponse.json({ error: "Nepřihlášen" }, { status: 401 }) } as const;
+  if (!opts.allowBlocked && (await getProfile(user.id)).blocked) {
+    return {
+      user: null,
+      error: NextResponse.json({ error: "Platnost přístupu vypršela – zadej nový přístupový kód.", blocked: true }, { status: 403 }),
+    } as const;
+  }
   return { user, error: null } as const;
 }
 

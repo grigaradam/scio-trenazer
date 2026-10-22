@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { BottomNav, SideNav } from "@/components/AppNav";
 import { Logo } from "@/components/Logo";
+import { PageTracker } from "@/components/PageTracker";
 import { StatPills } from "@/components/StatPills";
 import { getProfile, requireUser } from "@/lib/server/auth";
 import { czToday } from "@/lib/server/queries";
@@ -45,6 +46,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-6 lg:px-8 lg:pb-12 lg:pt-8">{children}</main>
       </div>
       <BottomNav badge={openMistakes ?? 0} />
+      <PageTracker />
     </div>
   );
 }

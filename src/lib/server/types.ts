@@ -13,6 +13,10 @@ export interface Profile {
   daily_goal_min: number;
   practice_time_limit_sec: number | null;
   created_at: string;
+  /** Access expired – user must enter a new invite code (needs migration 0002). */
+  blocked?: boolean;
+  last_seen_at?: string | null;
+  invite_code?: string | null;
 }
 
 export interface AttemptRow {

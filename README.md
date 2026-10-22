@@ -16,9 +16,10 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres + 
 
 ### 1. Supabase
 1. Na [supabase.com](https://supabase.com) založ nový projekt (Free, region **Central EU (Frankfurt)**).
-2. **SQL Editor → New query** → vlož celý obsah [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) → **Run**.
+2. **SQL Editor → New query** → vlož celý obsah [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) → **Run**,
+   pak totéž s [`supabase/migrations/0002_admin.sql`](supabase/migrations/0002_admin.sql) (kódy, blokace, náklady AI, návštěvnost).
 3. **Authentication → Sign In / Providers**: vypni **Allow new users to sign up**. Registrace jde jen přes aplikaci
-   s přístupovým kódem (`SIGNUP_ACCESS_CODE`), účty zakládá server – nikdo cizí se nezaregistruje přímo přes Supabase.
+   s jednorázovým kódem z `/dashboard`, účty zakládá server – nikdo cizí se nezaregistruje přímo přes Supabase.
 4. **Authentication → URL Configuration**: *Site URL* = adresa z Vercelu (např. `https://scio-trenazer.vercel.app`),
    do *Redirect URLs* přidej `https://scio-trenazer.vercel.app/**` a `http://localhost:3000/**`.
 5. **Project Settings → API Keys**: zkopíruj *Project URL*, *Publishable key* a *Secret key*.
@@ -32,7 +33,8 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres + 
 1. [vercel.com/new](https://vercel.com/new) → importuj tento GitHub repozitář (Framework: Next.js, nic neměň).
 2. **Environment Variables** – podle [`.env.example`](.env.example):
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`, `ANTHROPIC_API_KEY`
-   a **`SIGNUP_ACCESS_CODE`** (přístupový kód pro registraci – rozdáváš ho jen ty; bez něj je registrace vypnutá).
+   a **`ADMIN_USERNAME`** + **`ADMIN_PASSWORD`** (přihlášení do `/dashboard`: jednorázové kódy a pozvánky, uživatelé,
+   blokace, náklady AI, recyklace otázek, návštěvnost).
 3. **Deploy**. Pak doplň Vercel URL do Supabase (krok 1.4).
 
 ### 4. (Volitelně) předgenerovat tréninkové úlohy

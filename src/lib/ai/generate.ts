@@ -8,6 +8,7 @@ import { AI } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { anthropic } from "./client";
 import { taskToPrompt } from "./format";
+import { logAiCall } from "./usage";
 
 // ------------------------------------------------------------------ schemas
 
@@ -264,7 +265,7 @@ export function structuralIssues(group: Group, type: TaskType): string[] {
   return issues;
 }
 
-async function validate(group: Group, type: TaskType): Promise<Validation> {
+async function validate(group: Group, type: TaskType, userId?: string): Promise<Validation> {
   const meta = taskTypeMeta(type);
   const response = await anthropic().messages.parse({
     model: AI.validatorModel,
@@ -278,6 +279,7 @@ async function validate(group: Group, type: TaskType): Promise<Validation> {
       },
     ],
   });
+  await logAiCall({ userId, kind: "validate", model: AI.validatorModel, usage: response.usage, ok: Boolean(response.parsed_output) });
   if (!response.parsed_output) throw new Error(`Validator parse failed (${response.stop_reason})`);
   return response.parsed_output;
 }
@@ -359,12 +361,13 @@ ${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst
         messages: [{ role: "user", content: prompt }],
       });
       const gen = response.parsed_output;
+      if (!dryRun) await logAiCall({ userId, kind: "generate", model: AI.model, usage: response.usage, ok: Boolean(gen) });
       if (!gen) return { rejected: `generátor nevrátil platný JSON (${response.stop_reason})` };
       const group = toGroup(gen, type);
       const issues = structuralIssues(group, type);
       if (issues.length) return { rejected: `struktura: ${issues.join("; ")}` };
 
-      const validation = await validate(group, type);
+      const validation = await validate(group, type, dryRun ? undefined : userId);
       const verdict = accepts(group, validation);
       if (!verdict.ok) {
         return {

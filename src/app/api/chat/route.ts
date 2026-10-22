@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { aiErrorResponse, spendBudget } from "@/lib/ai/client";
 import { streamChat } from "@/lib/ai/chat";
+import { logAiCall } from "@/lib/ai/usage";
+import { AI } from "@/lib/env";
 import { apiUser } from "@/lib/server/auth";
 import { resolveTask } from "@/lib/server/tasks";
 
@@ -33,6 +35,7 @@ export async function POST(req: Request) {
         stream.on("text", (delta) => controller.enqueue(encoder.encode(delta)));
         try {
           const final = await stream.finalMessage();
+          await logAiCall({ userId: user.id, kind: "chat", model: AI.model, usage: final.usage });
           if (final.stop_reason === "refusal") controller.enqueue(encoder.encode("\n\n(Na tohle ti bohužel neodpovím.)"));
         } catch (e) {
           console.error("chat stream", e);

@@ -6,6 +6,7 @@ import { AI } from "@/lib/env";
 import type { ResolvedTask } from "@/lib/server/tasks";
 import { anthropic } from "./client";
 import { taskToPrompt } from "./format";
+import { logAiCall } from "./usage";
 
 export const ExplanationSchema = z.object({
   verdict: z.string().describe("Jedna věta: která odpověď je správná a proč (s ==zvýrazněním== klíčového důvodu)."),
@@ -31,7 +32,7 @@ Zásady zvýrazňování (vychází z výzkumu signaling principle a von Restorf
 - Žádné nadpisy, žádné úvody typu „Skvělá otázka“. Krátké věty.
 Správná odpověď je daná klíčem – nikdy ji nezpochybňuj, vysvětli, proč platí.`;
 
-export async function generateExplanation(task: ResolvedTask): Promise<Explanation> {
+export async function generateExplanation(task: ResolvedTask, userId?: string): Promise<Explanation> {
   const meta = taskTypeMeta(task.taskType);
   const response = await anthropic().messages.parse({
     model: AI.model,
@@ -45,6 +46,7 @@ export async function generateExplanation(task: ResolvedTask): Promise<Explanati
       },
     ],
   });
+  await logAiCall({ userId, kind: "explain", model: AI.model, usage: response.usage, ok: Boolean(response.parsed_output) });
   if (!response.parsed_output) throw new Error(`Explanation parse failed (stop_reason ${response.stop_reason})`);
   return response.parsed_output;
 }
