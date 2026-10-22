@@ -223,21 +223,32 @@ function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
   async function fill() {
     setRunning(true);
     const queue = [...missing];
-    // 3 types at a time – each request generates up to 2 tasks in parallel
+    // 3 types at a time, one task per request
     const worker = async () => {
       for (let r = queue.shift(); r; r = queue.shift()) {
-        setStatus((s) => ({ ...s, [r.type]: "⏳ generuji…" }));
-        try {
-          const res = await fetch("/api/admin/pool", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ type: r.type, target: 2 }),
-          });
-          const j = await res.json();
-          setStatus((s) => ({ ...s, [r.type]: res.ok ? `✓ ${j.stock} připraveno${j.rejected ? ` (${j.rejected} zamítnuto)` : ""}` : `✗ ${j.error ?? "chyba"}` }));
-        } catch {
-          setStatus((s) => ({ ...s, [r.type]: "✗ vypršel čas – zkus znovu" }));
+        let stock = r.ready;
+        let rejected = 0;
+        // one task per request; up to 5 tries per type to reach 2 ready tasks
+        for (let tries = 0; tries < 5 && stock < 2; tries++) {
+          setStatus((s) => ({ ...s, [r.type]: `⏳ generuji… (${stock}/2${rejected ? `, ${rejected} zamítnuto` : ""})` }));
+          try {
+            const res = await fetch("/api/admin/pool", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ type: r.type, target: 2 }),
+            });
+            const j = await res.json();
+            if (!res.ok) {
+              setStatus((s) => ({ ...s, [r.type]: `✗ ${j.error ?? "chyba"}` }));
+              break;
+            }
+            stock = j.stock;
+            rejected += j.rejected;
+          } catch {
+            rejected++;
+          }
         }
+        setStatus((s) => ({ ...s, [r.type]: `${stock >= 2 ? "✓" : "⚠"} ${stock} připraveno${rejected ? ` · ${rejected} zamítnuto` : ""}` }));
       }
     };
     await Promise.all([worker(), worker(), worker()]);

@@ -15,13 +15,13 @@ export async function POST(req: Request) {
   const meta = taskTypeMeta(type);
   if (!meta) return NextResponse.json({ error: "Neznámý typ" }, { status: 400 });
 
-  const started = Date.now();
+  // one candidate per request (generate → validate → optional revision) keeps well under the 300 s limit;
+  // the dashboard calls this repeatedly until the type is stocked
   let stock = await poolStock(meta.exam, meta.id);
   let rejected = 0;
-  // up to 2 rounds, as long as there is time left in this request
-  for (let round = 0; round < 2 && stock < target && Date.now() - started < 150_000; round++) {
-    const out = await generateTasks({ exam: meta.exam, type: meta.id, count: target - stock });
-    rejected += out.rejected.length;
+  if (stock < target) {
+    const out = await generateTasks({ exam: meta.exam, type: meta.id, count: 1, deadline: Date.now() + 270_000 });
+    rejected = out.rejected.length;
     stock = await poolStock(meta.exam, meta.id);
   }
   return NextResponse.json({ type, stock, rejected });

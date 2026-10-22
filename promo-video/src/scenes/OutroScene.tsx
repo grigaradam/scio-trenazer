@@ -6,7 +6,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { C, clamp, display, gradientText, sans } from "../theme";
-import { LogoTile, Pill, fadeUp, usePop } from "../ui";
+import { LogoLockup, Pill, fadeUp, usePop } from "../ui";
 import { Sfx } from "../audio";
 
 const features = [
@@ -28,7 +28,7 @@ export const OutroScene: React.FC = () => {
       style={{
         alignItems: "center",
         justifyContent: "center",
-        gap: 50,
+        gap: 44,
         opacity: interpolate(
           frame,
           [durationInFrames - 24, durationInFrames - 1],
@@ -40,24 +40,22 @@ export const OutroScene: React.FC = () => {
       <div
         style={{
           scale: logo,
-          rotate: `${interpolate(logo, [0, 1], [20, 0])}deg`,
+          rotate: `${interpolate(logo, [0, 1], [8, 0])}deg`,
         }}
       >
-        <LogoTile size={170} />
+        <LogoLockup size={150} />
       </div>
       <div
         style={{
           fontFamily: display,
           fontWeight: 800,
-          fontSize: 140,
-          letterSpacing: -5,
-          lineHeight: 1,
+          fontSize: 112,
+          letterSpacing: -4,
+          lineHeight: 1.05,
           color: C.textOnDark,
           display: "flex",
-          gap: 36,
-          flexWrap: "wrap",
-          justifyContent: "center",
-          maxWidth: 1500,
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <span style={fadeUp(frame, 16, 60)}>Nanečisto teď.</span>

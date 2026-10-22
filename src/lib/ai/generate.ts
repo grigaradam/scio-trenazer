@@ -348,8 +348,12 @@ export async function generateTasks(opts: {
   userId?: string;
   /** Generate + validate only, don't touch the database (quality testing). */
   dryRun?: boolean;
+  /** Epoch ms by which the work must finish (serverless time limit). Revisions are skipped when time runs short. */
+  deadline?: number;
 }): Promise<GenerationOutcome> {
-  const { exam, type, count, userId, dryRun } = opts;
+  const { exam, type, count, userId, dryRun, deadline } = opts;
+  // a revision round = generate + validate again ≈ up to 2.5 min
+  const timeForRevision = () => !deadline || Date.now() + 150_000 < deadline;
   const meta = taskTypeMeta(type);
   if (!meta) throw new Error(`Neznámý typ úlohy ${type}`);
   const topics = dryRun ? [] : await recentTopics(exam, type);
@@ -445,6 +449,10 @@ ${ACCEPTANCE_CRITERIA}`;
         // remember why it failed (the generator learns from this) and give it one chance to fix it
         lastReason = attempt ? `[po opravě] ${problem}` : problem;
         await logReject(lastReason);
+        if (attempt === 0 && !timeForRevision()) {
+          lastReason = `${problem} [bez opravy – došel čas]`;
+          break;
+        }
         if (attempt === 0) {
           conversation.push(
             { role: "assistant", content: JSON.stringify(gen) },

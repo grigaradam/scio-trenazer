@@ -37,12 +37,13 @@ export function ensureTaskBuffer(userId: string, exam: ExamId, type: TaskType) {
     const key = `${userId}:${type}`;
     if (inflight.has(key)) return; // a top-up for this user/type is already running on this instance
     inflight.add(key);
+    const deadline = Date.now() + 270_000; // background work shares the request's 300 s limit
     try {
-      for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      for (let attempt = 0; attempt < MAX_ATTEMPTS && Date.now() + 120_000 < deadline; attempt++) {
         const missing = BUFFER - (await waitingCount(userId, exam, type));
         if (missing <= 0) return;
         if (!(await tryBudget(userId, "generate"))) return;
-        await generateTasks({ exam, type, count: missing, userId }); // candidates run in parallel
+        await generateTasks({ exam, type, count: missing, userId, deadline }); // candidates run in parallel
       }
     } catch (e) {
       console.error("task buffer top-up", e);

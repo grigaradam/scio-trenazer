@@ -63,10 +63,11 @@ export async function POST(req: Request) {
     const over = await spendBudget(user.id, "generate");
     if (over) return over;
     const started = Date.now();
-    let outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id });
+    const deadline = started + 270_000; // stay under the 300 s function limit
+    let outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id, deadline });
     // both candidates rejected and there is still time left in this request → one more round
-    if (!outcome.accepted.length && Date.now() - started < 110_000) {
-      outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id });
+    if (!outcome.accepted.length && Date.now() + 150_000 < deadline) {
+      outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id, deadline });
     }
     if (!outcome.accepted.length) {
       return NextResponse.json(

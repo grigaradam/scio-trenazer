@@ -269,3 +269,22 @@ export const LogoTile: React.FC<{ size: number }> = ({ size }) => (
     </svg>
   </div>
 );
+
+/** Logo mark + "nanečisto" wordmark, like src/components/Logo.tsx. */
+export const LogoLockup: React.FC<{ size: number }> = ({ size }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: size * 0.3 }}>
+    <LogoTile size={size} />
+    <span
+      style={{
+        fontFamily: display,
+        fontWeight: 800,
+        fontSize: size * 0.82,
+        letterSpacing: -size * 0.025,
+        lineHeight: 1,
+        color: C.textOnDark,
+      }}
+    >
+      nane<span style={{ color: C.brand400 }}>čisto</span>
+    </span>
+  </div>
+);

@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { C, clamp, display, easeOut, gradientText, sans } from "../theme";
-import { fadeUp, LogoTile, Pill, usePop } from "../ui";
+import { fadeUp, LogoLockup, Pill, usePop } from "../ui";
 import { Sfx } from "../audio";
 
 const chips = [
@@ -54,36 +54,34 @@ export const IntroScene: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 46,
+          gap: 44,
         }}
       >
         <div
           style={{
             scale: logo,
-            rotate: `${interpolate(logo, [0, 1], [-25, 0])}deg`,
+            rotate: `${interpolate(logo, [0, 1], [-8, 0])}deg`,
           }}
         >
-          <LogoTile size={190} />
+          <LogoLockup size={170} />
         </div>
 
         <div
           style={{
             fontFamily: display,
             fontWeight: 800,
-            fontSize: 150,
+            fontSize: 84,
             lineHeight: 1,
-            letterSpacing: -5,
+            letterSpacing: -2,
             color: C.textOnDark,
             display: "flex",
-            gap: 40,
+            gap: 24,
             alignItems: "baseline",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            maxWidth: 1500,
+            whiteSpace: "nowrap",
           }}
         >
-          <span style={fadeUp(frame, 22, 70)}>Nanečisto</span>
-          <span style={fadeUp(frame, 30, 70)}>teď.</span>
+          <span style={fadeUp(frame, 24, 50)}>Nanečisto</span>
+          <span style={fadeUp(frame, 30, 50)}>teď.</span>
           <span
             style={{
               ...gradientText(C.brand400, C.teal400),
@@ -101,7 +99,7 @@ export const IntroScene: React.FC = () => {
             ...fadeUp(frame, 64),
             fontFamily: sans,
             fontWeight: 500,
-            fontSize: 44,
+            fontSize: 40,
             color: C.mutedOnDark,
           }}
         >
