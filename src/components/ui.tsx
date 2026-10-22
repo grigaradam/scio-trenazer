@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
@@ -38,9 +39,31 @@ export function Button({
   variant = "primary",
   size = "md",
   className,
+  loading,
+  disabled,
+  children,
   ...props
-}: ComponentProps<"button"> & { variant?: Variant; size?: Size }) {
-  return <button className={buttonClass(variant, size, className)} {...props} />;
+}: ComponentProps<"button"> & { variant?: Variant; size?: Size; loading?: boolean }) {
+  return (
+    <button className={buttonClass(variant, size, className)} disabled={disabled || loading} aria-busy={loading} {...props}>
+      {loading && <Loader2 className="h-4 w-4 shrink-0 animate-spin" strokeWidth={3} />}
+      {children}
+    </button>
+  );
+}
+
+export function Spinner({ className, label }: { className?: string; label?: string }) {
+  return (
+    <span className={clsx("inline-flex items-center gap-2 text-sm font-semibold text-muted", className)} role="status">
+      <Loader2 className="h-4 w-4 animate-spin text-brand-500" strokeWidth={3} />
+      {label}
+    </span>
+  );
+}
+
+/** Shimmering placeholder block. */
+export function Skeleton({ className }: { className?: string }) {
+  return <div className={clsx("skeleton rounded-2xl", className)} />;
 }
 
 export function ButtonLink({
@@ -53,7 +76,7 @@ export function ButtonLink({
 }
 
 export function Card({ className, ...props }: ComponentProps<"div">) {
-  return <div className={clsx("rounded-3xl border-2 border-border bg-surface p-5", className)} {...props} />;
+  return <div className={clsx("rounded-3xl border-2 border-border bg-surface p-4 sm:p-5", className)} {...props} />;
 }
 
 export function Badge({

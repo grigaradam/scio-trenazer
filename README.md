@@ -50,6 +50,7 @@ npm run dev                  # http://localhost:3000
 - `npm run validate:content` – kontrola všech testů v `content/osp/tests/`
 - `npm run typecheck`, `npm run lint`, `npm run build`
 - `http://localhost:3000/dev/<testId>` (jen v dev režimu) – náhled testu se všemi klíči a řešeními
+- `npm run dev:demo` – celá aplikace bez Supabase (databáze v paměti, fiktivní uživatel) na http://localhost:3001 – na UI testování
 
 ## AI a náklady
 - Výchozí model `claude-opus-5-5` (nejvyšší kvalita). Pro úsporu nastav `AI_MODEL=claude-haiku-5-5` (~40× levnější).

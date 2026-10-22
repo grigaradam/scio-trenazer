@@ -9,7 +9,8 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "validate:content": "node scripts/validate-content.mjs",
-    "pool": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/generate-pool.ts"
+    "pool": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/generate-pool.ts",
+    "dev:demo": "DEMO_MODE=1 next dev --port 3001"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.1.0",

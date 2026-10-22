@@ -39,6 +39,7 @@ export function ReviewTask({
   const [explain, setExplain] = useState(false);
   const [xp, setXp] = useState(0);
   const [shake, setShake] = useState(false);
+  const [revealing, setRevealing] = useState(false);
 
   async function check() {
     setStatus("checking");
@@ -63,6 +64,7 @@ export function ReviewTask({
   }
 
   async function showSolution() {
+    setRevealing(true);
     const r = await fetch("/api/reveal", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ref: taskRef }) });
     const j = await r.json();
     if (r.ok) {
@@ -70,6 +72,7 @@ export function ReviewTask({
       if (status !== "right") setSelected(given ?? selected);
       onResolved?.(false);
     }
+    setRevealing(false);
   }
 
   if (startRevealed && !reveal && status === "idle") {
@@ -107,11 +110,11 @@ export function ReviewTask({
               </p>
             )}
             <div className="flex flex-col gap-2 sm:flex-row">
-              <Button variant={tone} className="flex-1" disabled={!complete || status === "checking"} onClick={check}>
-                <RotateCcw className="h-4 w-4" /> {status === "wrong" ? "Zkontrolovat znovu" : "Zkontrolovat"}
+              <Button variant={tone} className="sm:flex-1" disabled={!complete} loading={status === "checking"} onClick={check}>
+                {status !== "checking" && <RotateCcw className="h-4 w-4" />} {status === "wrong" ? "Zkontrolovat znovu" : "Zkontrolovat"}
               </Button>
-              <Button variant="secondary" onClick={showSolution}>
-                <Eye className="h-4 w-4" /> Ukázat řešení
+              <Button variant="secondary" onClick={showSolution} loading={revealing}>
+                {!revealing && <Eye className="h-4 w-4" />} Ukázat řešení
               </Button>
             </div>
           </div>

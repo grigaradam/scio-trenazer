@@ -33,27 +33,36 @@ export default async function PracticeHub() {
                 <Link
                   key={t.id}
                   href={`/app/practice/${t.id}`}
-                  className={`group relative flex flex-col rounded-3xl border-2 bg-surface p-4 shadow-[0_4px_0_0_var(--border)] transition hover:-translate-y-0.5 ${weakest?.type === t.id ? "border-rose-300 dark:border-rose-800" : "border-border"}`}
+                  className={`group relative flex items-center gap-3 rounded-3xl border-2 bg-surface p-3 shadow-[0_4px_0_0_var(--border)] transition hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none sm:flex-col sm:items-stretch sm:p-4 ${weakest?.type === t.id ? "border-rose-300 dark:border-rose-800" : "border-border"}`}
                 >
-                  <div className="flex items-start justify-between gap-2">
+                  <div className="flex shrink-0 items-start justify-between gap-2">
                     <span className="text-3xl transition group-hover:scale-110">{t.emoji}</span>
-                    <div className="flex flex-col items-end gap-1">
+                    <div className="flex flex-col items-end gap-1 max-sm:hidden">
                       {weakest?.type === t.id && <Badge tone="bad">nejslabší</Badge>}
                       {s.openMistakes > 0 && <Badge tone="warn">{s.openMistakes} k opravě</Badge>}
                     </div>
                   </div>
-                  <div className="mt-2 font-display font-extrabold">{t.name}</div>
-                  <div className="mt-0.5 flex-1 text-sm text-muted">{t.description}</div>
-                  <div className="mt-3">
-                    <div className="mb-1 flex justify-between text-xs font-bold text-muted">
-                      <span>{s.accuracy !== null ? `úspěšnost ${Math.round(s.accuracy * 100)} %` : "zatím bez dat"}</span>
-                      <span>{s.practiceCount ? `${s.practiceCount}× trénováno` : ""}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 font-display font-extrabold sm:mt-2">
+                      <span className="truncate sm:whitespace-normal">{t.name}</span>
+                      {s.openMistakes > 0 && (
+                        <span className="shrink-0 rounded-full bg-amber-100 px-1.5 text-[11px] font-bold text-amber-800 sm:hidden dark:bg-amber-900/40 dark:text-amber-300">
+                          {s.openMistakes}
+                        </span>
+                      )}
                     </div>
-                    <ProgressBar
-                      value={s.accuracy ?? 0}
-                      className="h-2"
-                      barClassName={(s.accuracy ?? 0) >= 0.7 ? "bg-emerald-500" : (s.accuracy ?? 0) >= 0.4 ? "bg-amber-400" : "bg-rose-500"}
-                    />
+                    <div className="mt-0.5 hidden flex-1 text-sm text-muted sm:block">{t.description}</div>
+                    <div className="mt-1.5 sm:mt-3">
+                      <div className="mb-1 flex justify-between text-xs font-bold text-muted">
+                        <span>{s.accuracy !== null ? `úspěšnost ${Math.round(s.accuracy * 100)} %` : "zatím bez dat"}</span>
+                        <span>{s.practiceCount ? `${s.practiceCount}×` : ""}</span>
+                      </div>
+                      <ProgressBar
+                        value={s.accuracy ?? 0}
+                        className="h-2"
+                        barClassName={(s.accuracy ?? 0) >= 0.7 ? "bg-emerald-500" : (s.accuracy ?? 0) >= 0.4 ? "bg-amber-400" : "bg-rose-500"}
+                      />
+                    </div>
                   </div>
                 </Link>
               );

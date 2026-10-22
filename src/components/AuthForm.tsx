@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { startNavProgress } from "./NavProgress";
 import { Button } from "./ui";
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
@@ -25,6 +26,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        startNavProgress();
         router.replace(params.get("next") ?? "/app");
         router.refresh();
       } else {
@@ -38,6 +40,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         });
         if (error) throw error;
         if (data.session) {
+          startNavProgress();
           router.replace("/app/onboarding");
           router.refresh();
         } else setSent(true);
@@ -79,8 +82,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         onChange={(e) => setPassword(e.target.value)}
       />
       {error && <p className="rounded-xl bg-rose-100 px-3 py-2 text-sm font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">{error}</p>}
-      <Button type="submit" size="lg" className="w-full" disabled={busy}>
-        {busy ? "Moment…" : mode === "login" ? "Přihlásit se" : "Vytvořit účet"}
+      <Button type="submit" size="lg" className="w-full" loading={busy}>
+        {busy ? (mode === "login" ? "Přihlašuji…" : "Zakládám účet…") : mode === "login" ? "Přihlásit se" : "Vytvořit účet"}
       </Button>
       <p className="pt-2 text-center text-sm text-muted">
         {mode === "login" ? (

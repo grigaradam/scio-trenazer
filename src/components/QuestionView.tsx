@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { PublicGroup, PublicQuestion } from "@/lib/content/public";
 import type { OptionKey } from "@/lib/content/types";
 import { RichText } from "./RichText";
+import { ZoomableImage } from "./ZoomableImage";
 
 export type Tone = "verbal" | "analytic";
 
@@ -26,6 +27,8 @@ export function GroupContext({
   showInstruction?: boolean;
 }) {
   const [open, setOpen] = useState(!compact);
+  const [full, setFull] = useState(false);
+  const long = (group.instruction?.length ?? 0) > 180;
   return (
     <div className="space-y-3">
       {showInstruction && group.instruction && (
@@ -40,7 +43,16 @@ export function GroupContext({
               {open ? "▾" : "▸"} Instrukce
             </button>
           ) : null}
-          {open && <RichText className={compact ? "mt-1" : ""}>{group.instruction}</RichText>}
+          {open && (
+            <>
+              <RichText className={clsx(compact && "mt-1", long && !full && "max-sm:line-clamp-3")}>{group.instruction}</RichText>
+              {long && (
+                <button onClick={() => setFull(!full)} className="mt-1 text-xs font-bold text-brand-600 sm:hidden dark:text-brand-300">
+                  {full ? "Skrýt" : "Zobrazit celou instrukci"}
+                </button>
+              )}
+            </>
+          )}
         </div>
       )}
       {(group.passage || group.figure) && (
@@ -50,8 +62,9 @@ export function GroupContext({
           )}
           {group.passage && <RichText className="text-[15px]">{group.passage}</RichText>}
           {group.figure && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={group.figure} alt="Graf / obrázek k úlohám" className="mx-auto mt-3 max-h-[480px] w-auto max-w-full rounded-lg bg-white p-1" />
+            <div className="mt-3">
+              <ZoomableImage src={group.figure} alt="Graf / obrázek k úlohám" className="mx-auto max-h-[480px] w-auto max-w-full rounded-lg bg-white p-1" />
+            </div>
           )}
         </div>
       )}
@@ -92,8 +105,7 @@ export function QuestionBody({
         </div>
       )}
       {question.figure && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={question.figure} alt="Obrázek k úloze" className="mx-auto max-h-[420px] w-auto max-w-full rounded-lg bg-white p-1" />
+        <ZoomableImage src={question.figure} alt="Obrázek k úloze" className="mx-auto max-h-[420px] w-auto max-w-full rounded-lg bg-white p-1" />
       )}
       {question.parts.map((part, pi) => (
         <div key={pi} className={clsx(wrongShake && "animate-shake")}>
@@ -107,7 +119,12 @@ export function QuestionBody({
               {part.label === "synonymum" ? "≈ synonymum" : "≠ antonymum"}
             </div>
           )}
-          <div className={clsx("grid gap-2", part.options.every((o) => o.text.length < 40) && "sm:grid-cols-2")}>
+          <div
+            className={clsx(
+              "grid gap-2",
+              part.options.every((o) => o.text.length <= 12 && !o.text.includes("$")) ? "grid-cols-2" : part.options.every((o) => o.text.length < 40) && "sm:grid-cols-2",
+            )}
+          >
             {part.options.map((o) => {
               const isSel = selected[pi] === o.key;
               const isAns = reveal?.answer[pi] === o.key;

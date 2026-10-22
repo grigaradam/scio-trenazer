@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export interface ScorePoint {
@@ -58,6 +58,11 @@ export function ScoreChart({ data }: { data: ScorePoint[] }) {
 /** GitHub-style heatmap of daily study minutes (sequential, one hue). */
 export function Heatmap({ days, goalMin }: { days: Record<string, { min: number; tasks: number }>; goalMin: number }) {
   const [hover, setHover] = useState<string | null>(null);
+  const scroller = useRef<HTMLDivElement>(null);
+  // start scrolled to the current week on narrow screens
+  useEffect(() => {
+    if (scroller.current) scroller.current.scrollLeft = scroller.current.scrollWidth;
+  }, []);
   const weeks = useMemo(() => {
     const fmt = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Prague" });
     const today = new Date();
@@ -79,7 +84,7 @@ export function Heatmap({ days, goalMin }: { days: Record<string, { min: number;
   const info = hover ? days[hover] : null;
   return (
     <div>
-      <div className="scroll-thin overflow-x-auto pb-1">
+      <div ref={scroller} className="scroll-thin overflow-x-auto pb-1">
         <div className="flex w-max gap-[3px]">
           {weeks.map((col, i) => (
             <div key={i} className="flex flex-col gap-[3px]">
@@ -104,7 +109,7 @@ export function Heatmap({ days, goalMin }: { days: Record<string, { min: number;
         <span className="min-h-4">
           {hover
             ? `${new Date(hover).toLocaleDateString("cs-CZ", { weekday: "short", day: "numeric", month: "long" })}: ${info?.min ?? 0} min · ${info?.tasks ?? 0} úloh`
-            : "Najeď na den pro detail"}
+            : "Klepni nebo najeď na den"}
         </span>
         <span className="flex items-center gap-1">
           méně

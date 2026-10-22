@@ -95,11 +95,31 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Grid/flex children may shrink below their content (prevents horizontal overflow on phones). */
+.grid > * {
+  min-width: 0;
+}
+
+/* Comfortable tap targets and no double-tap zoom delay. */
+button,
+a,
+select,
+label {
+  touch-action: manipulation;
 }
 
 /* ---------- rich text (questions, explanations) ---------- */
 .rich {
   line-height: 1.65;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.rich a {
+  overflow-wrap: anywhere;
 }
 .rich p + p,
 .rich p + ul,
@@ -227,6 +247,27 @@ body {
     animation-duration: 0.01s;
     animation-delay: 0s;
   }
+}
+
+/* top navigation progress bar */
+@keyframes nav-load {
+  0% { width: 0%; }
+  6% { width: 30%; }
+  100% { width: 88%; }
+}
+
+/* skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 0%, color-mix(in srgb, var(--surface-2) 55%, var(--surface)) 50%, var(--surface-2) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
 }
 
 /* nice thin scrollbars */

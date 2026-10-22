@@ -74,7 +74,7 @@ export function PracticeSession({
   const [selected, setSelected] = useState<(OptionKey | null)[]>([]);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [loading, setLoading] = useState(true);
-  const [tip, setTip] = useState(0);
+  const [tip, setTip] = useState(-1);
   const [error, setError] = useState<string | null>(null);
   const [empty, setEmpty] = useState(false);
   const [stats, setStats] = useState({ done: 0, correct: 0, xp: 0, row: 0 });
@@ -83,6 +83,7 @@ export function PracticeSession({
   const [explain, setExplain] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const seen = useRef<string[]>([]);
 
   useStudyHeartbeat(!loading && !empty);
@@ -134,19 +135,24 @@ export function PracticeSession({
   useEffect(() => {
     if (!loading) return;
     const i = setInterval(() => setTip((t) => (t + 1) % LOADING_TIPS.length), 2500);
-    return () => clearInterval(i);
+    return () => {
+      clearInterval(i);
+      setTip(-1);
+    };
   }, [loading]);
 
   const submit = useCallback(
     async (timeout = false) => {
       if (!ref || !question || feedback) return;
       const answer = timeout ? question.parts.map(() => null) : selected;
+      setSubmitting(true);
       const r = await fetch("/api/practice/answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ref, answer, timeMs: Date.now() - startedAt, timeLimitSec: limit, reveal: true }),
       });
       const j = await r.json();
+      setSubmitting(false);
       if (!r.ok) {
         setError(j.error ?? "Chyba");
         return;
@@ -258,8 +264,8 @@ export function PracticeSession({
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="flex rounded-xl bg-surface-2 p-1 text-sm font-bold">
+      <div className="scroll-thin -mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+        <div className="flex shrink-0 rounded-xl bg-surface-2 p-1 text-[13px] font-bold sm:text-sm">
           {(
             [
               ["mix", "Mix"],
@@ -273,18 +279,18 @@ export function PracticeSession({
                 setMode(m);
                 load(m);
               }}
-              className={clsx("rounded-lg px-3 py-1.5", mode === m ? "bg-surface shadow-sm" : "text-muted")}
+              className={clsx("whitespace-nowrap rounded-lg px-2.5 py-1.5 sm:px-3", mode === m ? "bg-surface shadow-sm" : "text-muted")}
             >
               {label}
             </button>
           ))}
         </div>
-        <label className="flex items-center gap-1.5 rounded-xl bg-surface-2 px-3 py-1.5 text-sm font-bold">
+        <label className="flex shrink-0 items-center gap-1.5 rounded-xl bg-surface-2 px-3 py-2 text-[13px] font-bold sm:text-sm">
           <Timer className="h-4 w-4 text-muted" />
           <select
             value={limit ?? ""}
             onChange={(e) => changeLimit(e.target.value ? Number(e.target.value) : null)}
-            className="bg-transparent outline-none"
+            className="bg-transparent text-base outline-none sm:text-sm"
           >
             {LIMITS.map((l) => (
               <option key={l.label} value={l.value ?? ""}>
@@ -299,8 +305,10 @@ export function PracticeSession({
       {loading && (
         <div className="grid place-items-center rounded-3xl border-2 border-dashed border-border py-20 text-center">
           <Sparkles className="h-10 w-10 animate-pulse text-brand-500" />
-          <div className="mt-3 font-bold">{mode === "mistakes" ? "Načítám tvoje chyby…" : LOADING_TIPS[tip]}</div>
-          <div className="mt-1 text-sm text-muted">Nová AI úloha může trvat až minutu, další už budou připravené.</div>
+          <div className="mt-3 font-bold">{mode === "mistakes" || tip < 0 ? "Načítám úlohu…" : LOADING_TIPS[tip]}</div>
+          {tip >= 0 && mode !== "mistakes" && (
+            <div className="mt-1 animate-fade-up text-sm text-muted">Nová AI úloha může trvat až minutu, další už budou připravené.</div>
+          )}
         </div>
       )}
 
@@ -418,7 +426,7 @@ export function PracticeSession({
                   Nevím
                 </Button>
                 <div className="flex-1" />
-                <Button variant={tone} size="lg" disabled={!selected.every(Boolean)} onClick={() => submit()}>
+                <Button variant={tone} size="lg" disabled={!selected.every(Boolean)} loading={submitting} onClick={() => submit()}>
                   Zkontrolovat
                 </Button>
               </>

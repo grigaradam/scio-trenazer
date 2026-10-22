@@ -279,10 +279,10 @@ export function ResultsView({ test, result, activeSeconds, pauses, isNew, xp, ac
       </section>
 
       <section className="flex flex-col gap-3 sm:flex-row">
-        <ButtonLink href="/app/mistakes" size="lg" className="flex-1">
+        <ButtonLink href="/app/mistakes" size="lg" className="sm:flex-1">
           🎯 Trénovat moje slabiny
         </ButtonLink>
-        <ButtonLink href="/app/tests" size="lg" variant="secondary" className="flex-1">
+        <ButtonLink href="/app/tests" size="lg" variant="secondary" className="sm:flex-1">
           📝 Další test
         </ButtonLink>
       </section>

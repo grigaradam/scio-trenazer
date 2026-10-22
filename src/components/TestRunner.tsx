@@ -9,6 +9,7 @@ import type { OptionKey, SectionId } from "@/lib/content/types";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { Modal } from "./Modal";
 import { GroupContext, QuestionBody } from "./QuestionView";
+import { startNavProgress } from "./NavProgress";
 import { Button } from "./ui";
 
 type Phase = "intro" | "running" | "between" | "submitting";
@@ -49,6 +50,7 @@ export function TestRunner({ attemptId, test, initial }: Props) {
 
   // refs so intervals/unload handlers always see fresh state
   const state = useRef({ answers, flags, timeLeft, sectionIndex, phase });
+  const activeAcc = useRef(0); // active seconds not yet sent to the server
   useEffect(() => {
     state.current = { answers, flags, timeLeft, sectionIndex, phase };
   });
@@ -59,11 +61,13 @@ export function TestRunner({ attemptId, test, initial }: Props) {
   const save = useCallback(
     async (extra: Record<string, unknown> = {}, keepalive = false) => {
       const s = state.current;
+      const activeSeconds = Math.min(600, activeAcc.current);
+      activeAcc.current -= activeSeconds;
       try {
         const r = await fetch(`/api/attempts/${attemptId}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answers: s.answers, flags: s.flags, timeLeft: s.timeLeft, sectionIndex: s.sectionIndex, ...extra }),
+          body: JSON.stringify({ answers: s.answers, flags: s.flags, timeLeft: s.timeLeft, sectionIndex: s.sectionIndex, activeSeconds, ...extra }),
           keepalive,
         });
         setSaveError(!r.ok && r.status !== 409);
@@ -112,7 +116,7 @@ export function TestRunner({ attemptId, test, initial }: Props) {
     const r = await fetch(`/api/attempts/${attemptId}/submit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ answers: state.current.answers }),
+      body: JSON.stringify({ answers: state.current.answers, activeSeconds: Math.min(600, activeAcc.current) }),
     });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) {
@@ -121,6 +125,7 @@ export function TestRunner({ attemptId, test, initial }: Props) {
       return;
     }
     const q = new URLSearchParams({ new: "1", xp: String(data.xp ?? 0), ach: (data.achievements ?? []).join(",") });
+    startNavProgress();
     router.replace(`/app/results/${attemptId}?${q}`);
   }, [attemptId, router]);
 
@@ -146,6 +151,7 @@ export function TestRunner({ attemptId, test, initial }: Props) {
       if (acc < 1) return;
       const whole = Math.floor(acc);
       acc -= whole;
+      activeAcc.current += whole;
       const before = state.current.timeLeft[section.id];
       const after = Math.max(0, before - whole);
       state.current = { ...state.current, timeLeft: { ...state.current.timeLeft, [section.id]: after } };
@@ -264,7 +270,11 @@ export function TestRunner({ attemptId, test, initial }: Props) {
             <Play className="h-5 w-5" /> {resumed ? "Pokračovat" : `Začít ${s.id === "verbal" ? "verbální" : "analytický"} oddíl`}
           </Button>
           {phase === "intro" && (
-            <Button variant="ghost" className="mt-2 w-full" onClick={() => router.push("/app")}>
+            <Button variant="ghost" className="mt-2 w-full" onClick={() => {
+                startNavProgress();
+                startNavProgress();
+              router.push("/app");
+              }}>
               Zpět na přehled
             </Button>
           )}
@@ -447,6 +457,7 @@ export function TestRunner({ attemptId, test, initial }: Props) {
             onClick={async () => {
               setPhase("intro");
               await save();
+              startNavProgress();
               router.push("/app");
             }}
           >

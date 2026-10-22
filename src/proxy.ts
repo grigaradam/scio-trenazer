@@ -5,7 +5,7 @@ import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/env";
 // Refreshes the Supabase session cookie on every navigation and guards /app.
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
-  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) return response;
+  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY || process.env.DEMO_MODE === "1") return response;
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     cookies: {

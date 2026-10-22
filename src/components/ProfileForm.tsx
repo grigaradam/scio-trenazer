@@ -50,7 +50,7 @@ export function ProfileForm({ name, goal }: { name: string; goal: number }) {
           </div>
         </div>
         <div className="text-sm text-muted">Zkouška: OSP (další zkoušky připravujeme)</div>
-        <Button type="submit" disabled={state === "saving"}>
+        <Button type="submit" loading={state === "saving"}>
           {state === "saving" ? "Ukládám…" : state === "saved" ? "Uloženo ✓" : "Uložit"}
         </Button>
       </form>

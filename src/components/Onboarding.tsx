@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { EXAMS } from "@/lib/content/exams";
 import { Logo } from "./Logo";
+import { startNavProgress } from "./NavProgress";
 import { Button } from "./ui";
 
 const GOALS = [
@@ -40,8 +41,12 @@ export function Onboarding({ name }: { name: string }) {
         });
         const data = await a.json();
         if (!a.ok) throw new Error(data.error ?? "Chyba");
+        startNavProgress();
         router.push(`/app/test/${data.id}`);
-      } else router.push("/app");
+      } else {
+        startNavProgress();
+        router.push("/app");
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Chyba");
       setBusy(false);
@@ -149,7 +154,7 @@ export function Onboarding({ name }: { name: string }) {
           <p className="mt-4 text-sm text-muted">Připrav si papír, tužku a 90 minut klidu. 💪</p>
           {error && <p className="mt-3 text-sm font-medium text-rose-600">{error}</p>}
           <div className="mt-8 flex flex-col gap-3">
-            <Button size="lg" onClick={() => finish(true)} disabled={busy}>
+            <Button size="lg" onClick={() => finish(true)} loading={busy}>
               {busy ? "Připravuji…" : "Spustit úvodní test"}
             </Button>
             <Button variant="ghost" onClick={() => finish(false)} disabled={busy}>

@@ -59,7 +59,7 @@ export default async function Dashboard() {
         </h1>
         <p className="mt-1 text-muted">
           {activeToday
-            ? `Dnes už máš splněno – streak ${profile.streak_current} ${profile.streak_current === 1 ? "den" : profile.streak_current < 5 ? "dny" : "dní"}. Přidej ještě něco navíc!`
+            ? `Dnes už máš splněno – streak ${profile.streak_current} ${dayWord(profile.streak_current)}. Přidej ještě něco navíc!`
             : profile.streak_current > 0
               ? `Vyřeš dnes aspoň jednu úlohu, ať neztratíš ${profile.streak_current}denní streak.`
               : "Každý den aspoň chvilka. Pravidelnost je víc než jednorázové šprtání."}
@@ -94,39 +94,47 @@ export default async function Dashboard() {
         </Card>
       )}
 
-      <section className="grid gap-4 sm:grid-cols-3">
-        <Card className="flex items-center gap-4">
-          <Ring value={goal} size={72} stroke={9} color={goal >= 1 ? "#10b981" : "var(--color-brand-500)"}>
-            <span className="text-sm">{goal >= 1 ? "✓" : `${Math.round(goal * 100)}%`}</span>
+      <section className="grid grid-cols-3 gap-2 sm:gap-4">
+        <Card className="flex flex-col items-center gap-2 p-3 text-center sm:flex-row sm:gap-4 sm:p-5 sm:text-left">
+          <Ring value={goal} size={56} stroke={7} color={goal >= 1 ? "#10b981" : "var(--color-brand-500)"}>
+            <span className="text-xs">{goal >= 1 ? "✓" : `${Math.round(goal * 100)}%`}</span>
           </Ring>
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-muted">Denní cíl</div>
-            <div className="font-display text-2xl font-extrabold">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted sm:text-xs">Denní cíl</div>
+            <div className="font-display text-lg font-extrabold sm:text-2xl">
               {todayMin}
-              <span className="text-base text-muted">/{profile.daily_goal_min} min</span>
+              <span className="text-xs text-muted sm:text-base">/{profile.daily_goal_min} min</span>
             </div>
           </div>
         </Card>
-        <Card className="flex items-center gap-4">
-          <div className="grid h-[72px] w-[72px] place-items-center rounded-full bg-orange-100 text-4xl dark:bg-orange-900/30">
-            <Flame className={`h-9 w-9 ${activeToday ? "text-orange-500" : "text-muted"}`} />
+        <Card className="flex flex-col items-center gap-2 p-3 text-center sm:flex-row sm:gap-4 sm:p-5 sm:text-left">
+          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-orange-100 dark:bg-orange-900/30">
+            <Flame className={`h-7 w-7 ${activeToday ? "animate-flame text-orange-500" : "text-muted"}`} />
           </div>
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-muted">Streak</div>
-            <div className="font-display text-2xl font-extrabold">
-              {profile.streak_current} <span className="text-base text-muted">dní</span>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted sm:text-xs">Streak</div>
+            <div className="font-display text-lg font-extrabold sm:text-2xl">
+              {profile.streak_current} <span className="text-xs text-muted sm:text-base">{dayWord(profile.streak_current)}</span>
             </div>
-            <div className="text-xs text-muted">rekord {profile.streak_best}</div>
+            <div className="hidden text-xs text-muted sm:block">rekord {profile.streak_best}</div>
           </div>
         </Card>
-        <Card>
-          <div className="flex items-center justify-between">
+        <Card className="flex flex-col items-center gap-2 p-3 text-center sm:items-stretch sm:p-5 sm:text-left">
+          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-600 font-display text-2xl font-extrabold text-white sm:hidden">
+            {lvl.level}
+          </div>
+          <div className="hidden items-center justify-between sm:flex">
             <div className="text-xs font-bold uppercase tracking-wider text-muted">Level {lvl.level}</div>
             <Badge tone="brand">{levelTitle(lvl.level)}</Badge>
           </div>
-          <div className="mt-1 font-display text-2xl font-extrabold">{profile.xp} XP</div>
-          <ProgressBar value={lvl.progress} className="mt-2" />
-          <div className="mt-1 text-xs text-muted">ještě {lvl.toNext} XP do levelu {lvl.level + 1}</div>
+          <div className="w-full">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-muted sm:hidden">{levelTitle(lvl.level)}</div>
+            <div className="font-display text-lg font-extrabold sm:text-2xl">
+              {profile.xp} <span className="text-xs text-muted sm:text-base">XP</span>
+            </div>
+            <ProgressBar value={lvl.progress} className="mt-1 h-2 sm:mt-2 sm:h-3" />
+            <div className="mt-1 hidden text-xs text-muted sm:block">ještě {lvl.toNext} XP do levelu {lvl.level + 1}</div>
+          </div>
         </Card>
       </section>
 
@@ -142,18 +150,26 @@ export default async function Dashboard() {
                 <Link
                   key={t.type}
                   href={`/app/practice/${t.type}`}
-                  className="group animate-fade-up rounded-3xl border-2 border-border bg-surface p-4 shadow-[0_4px_0_0_var(--border)] transition hover:-translate-y-0.5"
+                  className="group flex animate-fade-up items-center gap-3 rounded-3xl border-2 border-border bg-surface p-3 shadow-[0_4px_0_0_var(--border)] transition hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none sm:block sm:p-4"
                   style={{ animationDelay: `${i * 80}ms` }}
                 >
                   <div className="flex items-start justify-between">
                     <span className="text-3xl">{meta.emoji}</span>
-                    {t.openMistakes > 0 && <Badge tone="bad">{t.openMistakes} chyb</Badge>}
+                    {t.openMistakes > 0 && (
+                      <Badge tone="bad" className="max-sm:hidden">
+                        {t.openMistakes} chyb
+                      </Badge>
+                    )}
                   </div>
-                  <div className="mt-2 font-display font-extrabold">{meta.name}</div>
-                  <div className="mt-1 text-sm text-muted">
-                    {t.accuracy !== null ? `úspěšnost ${Math.round(t.accuracy * 100)} %` : "zatím bez dat"}
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate font-display font-extrabold sm:mt-2 sm:whitespace-normal">{meta.name}</div>
+                    <div className="text-sm text-muted sm:mt-1">
+                      {t.accuracy !== null ? `úspěšnost ${Math.round(t.accuracy * 100)} %` : "zatím bez dat"}
+                      {t.openMistakes > 0 && <span className="text-rose-500 sm:hidden"> · {t.openMistakes} chyb</span>}
+                    </div>
                   </div>
-                  <div className="mt-3 flex items-center gap-1 text-sm font-bold text-brand-600">
+                  <ArrowRight className="h-5 w-5 shrink-0 text-brand-600 sm:hidden" />
+                  <div className="mt-3 hidden items-center gap-1 text-sm font-bold text-brand-600 sm:flex">
                     Trénovat <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                   </div>
                 </Link>
@@ -240,4 +256,8 @@ function lastDays(n: number) {
 
 function pragueHour() {
   return Number(new Intl.DateTimeFormat("cs-CZ", { hour: "numeric", hour12: false, timeZone: "Europe/Prague" }).format(new Date()));
+}
+
+function dayWord(n: number) {
+  return n === 1 ? "den" : n >= 2 && n <= 4 ? "dny" : "dní";
 }

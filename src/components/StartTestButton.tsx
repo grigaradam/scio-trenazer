@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import { startNavProgress } from "./NavProgress";
 import { Button } from "./ui";
 
 export function StartTestButton({
@@ -28,7 +29,7 @@ export function StartTestButton({
         variant={variant}
         size={size}
         className="w-full"
-        disabled={busy}
+        loading={busy}
         onClick={async () => {
           setBusy(true);
           setError(null);
@@ -43,6 +44,7 @@ export function StartTestButton({
             setBusy(false);
             return;
           }
+          startNavProgress();
           router.push(`/app/test/${j.id}`);
         }}
       >
