@@ -100,6 +100,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
                   ["validate", "Kontrola úloh"],
                   ["explain", "Vysvětlení"],
                   ["chat", "Chat"],
+                  ["learn", "Učení z chyb"],
                 ] as const
               ).map(([k, label]) => (
                 <tr key={k} className="border-t border-border">
@@ -132,6 +133,8 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         <PoolStock rows={p.byType} />
       </Card>
 
+      <Learning rows={stats.learning} />
+
       {stats.rejects.length > 0 && (
         <Card>
           <h2 className="font-display text-lg font-extrabold">Zamítnuté AI úlohy (posledních {stats.rejects.length})</h2>
@@ -150,6 +153,64 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
       <InviteCodes invites={stats.invites} />
       <Users users={stats.users} />
     </div>
+  );
+}
+
+function Learning({ rows }: { rows: AdminStats["learning"] }) {
+  const total = rows.reduce((a, r) => ({ first: a.first + r.first, revised: a.revised + r.revised, failed: a.failed + r.failed }), { first: 0, revised: 0, failed: 0 });
+  const all = total.first + total.revised + total.failed;
+  const pct = (x: number, n: number) => (n ? `${Math.round((x / n) * 100)} %` : "–");
+  return (
+    <Card>
+      <h2 className="font-display text-lg font-extrabold">Učení generátoru (14 dní)</h2>
+      <p className="mb-3 text-sm text-muted">
+        Generátor si pamatuje důvody zamítnutí a z nich si dělá pravidla (max. 8 krátkých bodů na typ, přepisují se –
+        nerostou). Cíl: co nejvíc úloh projde napoprvé.
+      </p>
+      <div className="grid grid-cols-3 gap-2">
+        <Mini label="Napoprvé" value={pct(total.first, all)} hint={`${total.first} úloh`} />
+        <Mini label="Po opravě" value={pct(total.revised, all)} hint={`${total.revised} úloh`} />
+        <Mini label="Zahozeno" value={pct(total.failed, all)} hint={`${total.failed} úloh`} />
+      </div>
+      <div className="scroll-thin mt-4 overflow-x-auto">
+        <table className="w-full min-w-[560px] text-sm">
+          <thead className="text-left text-xs uppercase text-muted">
+            <tr>
+              <th className="py-1">Typ úlohy</th>
+              <th className="py-1 text-right">Napoprvé</th>
+              <th className="py-1 text-right">Po opravě</th>
+              <th className="py-1 text-right">Zahozeno</th>
+              <th className="py-1 pl-3">Naučená pravidla</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => {
+              const n = r.first + r.revised + r.failed;
+              return (
+                <tr key={r.type} className="border-t border-border align-top">
+                  <td className="py-1.5">
+                    {taskTypeMeta(r.type)?.emoji} {taskTypeMeta(r.type)?.name ?? r.type}
+                  </td>
+                  <td className="py-1.5 text-right tabular-nums">{n ? `${r.first} (${pct(r.first, n)})` : "–"}</td>
+                  <td className="py-1.5 text-right tabular-nums">{r.revised || "–"}</td>
+                  <td className="py-1.5 text-right tabular-nums">{r.failed || "–"}</td>
+                  <td className="py-1.5 pl-3">
+                    {r.lessons ? (
+                      <details>
+                        <summary className="cursor-pointer text-xs font-bold text-brand-600">zobrazit · {ago(r.lessonsAt)}</summary>
+                        <pre className="mt-1 whitespace-pre-wrap font-sans text-xs text-muted">{r.lessons}</pre>
+                      </details>
+                    ) : (
+                      <span className="text-xs text-muted">zatím žádná</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </Card>
   );
 }
 

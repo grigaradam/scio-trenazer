@@ -8,7 +8,9 @@ import { AI } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { anthropic } from "./client";
 import { taskToPrompt } from "./format";
+import { getLessons, lessonsBlock, refreshLessons, type Lessons } from "./lessons";
 import { logAiCall } from "./usage";
+import { after } from "next/server";
 
 // ------------------------------------------------------------------ schemas
 
@@ -296,6 +298,28 @@ function accepts(group: Group, v: Validation) {
   return { ok: keyMatches && scoresOk && hardEnough && v.verdict === "accept", keyMatches, hardEnough };
 }
 
+/** The validator's acceptance bar, given to the generator so it can self-check before answering. */
+const ACCEPTANCE_CRITERIA = `KRITÉRIA, PODLE KTERÝCH ÚLOHU NEZÁVISLE OHODNOTÍ VALIDÁTOR (musí projít všechna):
+- validátor úlohu vyřeší sám a musí dojít k TVÉMU klíči – každá část má právě jednu obhajitelnou odpověď;
+- čeština bez chyb, všechna slova existují, významové vztahy platí (≥ 8/10);
+- styl Scio, obtížnost a síla chytáků ≥ 7/10;
+- odhad úspěšnosti uchazečů 20–70 % (ne lehčí, ne nesmyslně těžká), žádná povrchní zkratka k odpovědi.
+Než odpovíš, úlohu si sám vyřeš od nuly, jako bys klíč neznal, a zkontroluj každé kritérium. Najdeš-li problém, oprav ho.`;
+
+function rejectionText(group: Group, verdict: ReturnType<typeof accepts>, v: Validation) {
+  const parts: string[] = [];
+  if (!verdict.keyMatches) {
+    const theirs = group.questions.map((q, qi) => `úloha ${qi + 1}: validátor ${v.answers[qi]?.join("/") ?? "?"}, klíč ${q.parts.map((p) => p.answer).join("/")}`);
+    parts.push(`jiná odpověď než klíč (${theirs.join("; ")})`);
+  }
+  if (!verdict.hardEnough) parts.push(`příliš lehká nebo se zkratkou (odhad úspěšnosti ${v.predictedSuccess} %, zkratka ${v.shortcut})`);
+  if (v.issues.length) parts.push(v.issues.join("; "));
+  const s = v.scores;
+  const low = Object.entries(s).filter(([k, x]) => x < (["unambiguous", "czech", "real_words"].includes(k) ? 8 : 7));
+  if (low.length) parts.push(`nízké skóre: ${low.map(([k, x]) => `${k} ${x}`).join(", ")}`);
+  return parts.join(" | ");
+}
+
 function dataFormatInstruction(useChart: boolean, kind: (typeof CHART_KINDS)[number]) {
   if (!useChart)
     return "Data zadej jako Markdown TABULKU v poli passage (pod krátký popis situace). Pole chart = null.";
@@ -331,6 +355,8 @@ export async function generateTasks(opts: {
   const topics = dryRun ? [] : await recentTopics(exam, type);
   const chartFirst = type === "data" ? (dryRun ? Math.random() < 0.5 : await preferChart(exam)) : false;
 
+  const lessons: Lessons | null = dryRun ? null : await getLessons(type).catch(() => null);
+
   const jobs = Array.from({ length: count }, async (_, i) => {
     const examples = pickExamples(exam, type, meta.groupSize > 1 ? 2 : 4);
     const examplesText = examples
@@ -344,70 +370,113 @@ ${meta.rules}
 
 Chytáky typické pro tento typ (zabuduj je):
 ${meta.traps}
-
+${lessonsBlock(lessons)}
 Skutečné úlohy Scio jako vzor (styl, délka, obtížnost – NEKOPÍROVAT):
 ${examplesText}
 
 ${topics.length ? `Témata, která už v databázi jsou (vyhni se jim):\n- ${topics.slice(0, 30).join("\n- ")}\n` : ""}
 Variace č. ${i + 1}: zvol téma z jiné oblasti než vzory${i % 2 ? " a mírně vyšší obtížnost" : ""}.
-${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst, CHART_KINDS[Math.floor(Math.random() * CHART_KINDS.length)]) : "Pole chart nastav na null."}`;
+${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst, CHART_KINDS[Math.floor(Math.random() * CHART_KINDS.length)]) : "Pole chart nastav na null."}
+
+${ACCEPTANCE_CRITERIA}`;
+
+    const logReject = (reason: string) =>
+      dryRun ? Promise.resolve() : logAiCall({ userId, kind: "reject", model: AI.model, note: `${type}: ${reason}`.slice(0, 1000) });
 
     try {
-      const response = await anthropic().messages.parse({
-        model: AI.model,
-        max_tokens: 20000, // non-streaming requests must stay under the SDK's 10-minute ceiling (~21k)
-        output_config: { effort: AI.generatorEffort, format: zodOutputFormat(GeneratedSchema) },
-        system: GENERATOR_SYSTEM,
-        messages: [{ role: "user", content: prompt }],
-      });
-      const gen = response.parsed_output;
-      if (!dryRun) await logAiCall({ userId, kind: "generate", model: AI.model, usage: response.usage, ok: Boolean(gen) });
-      if (!gen) return { rejected: `generátor nevrátil platný JSON (${response.stop_reason})` };
-      const group = toGroup(gen, type);
-      const issues = structuralIssues(group, type);
-      if (issues.length) return { rejected: `struktura: ${issues.join("; ")}` };
-
-      const validation = await validate(group, type, dryRun ? undefined : userId);
-      const verdict = accepts(group, validation);
-      if (!verdict.ok) {
-        return {
-          rejected: `validátor: ${verdict.keyMatches ? "" : "jiná odpověď než klíč; "}${verdict.hardEnough ? "" : `příliš lehká (úspěšnost ${validation.predictedSuccess} %, zkratka ${validation.shortcut}); `}${validation.issues.join("; ")} ${JSON.stringify(validation.scores)}`,
-        };
-      }
-      const s = validation.scores;
-      const quality = (s.unambiguous + s.czech + s.real_words + s.scio_style + s.difficulty + s.distractors) / 6;
-      if (dryRun) return { accepted: { id: "dry-run", group: { ...group, topic: gen.topic } as Group, validation } };
-      const { data, error } = await createAdminClient()
-        .from("generated_tasks")
-        .insert({
-          exam,
-          task_type: type,
-          payload: {
-            ...group,
-            topic: gen.topic,
-            v: GENERATOR_VERSION,
-            trapDesign: gen.questions.map((q) => q.trapDesign),
-          },
-          quality,
-          validator: validation,
+      // attempt 0 = fresh task, attempt 1 = the same task revised with the validator's feedback
+      const conversation: { role: "user" | "assistant"; content: string }[] = [{ role: "user", content: prompt }];
+      let lastReason = "";
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const response = await anthropic().messages.parse({
           model: AI.model,
-          seed_refs: examples.map((e) => `${e.test.id}:${e.group.id}`),
-          created_by: userId ?? null,
-        })
-        .select("id")
-        .single();
-      if (error) return { rejected: `db: ${error.message}` };
-      return { accepted: { id: data.id as string, group, validation } };
+          max_tokens: 20000, // non-streaming requests must stay under the SDK's 10-minute ceiling (~21k)
+          output_config: { effort: AI.generatorEffort, format: zodOutputFormat(GeneratedSchema) },
+          system: GENERATOR_SYSTEM,
+          messages: conversation,
+        });
+        const gen = response.parsed_output;
+        if (!dryRun) await logAiCall({ userId, kind: "generate", model: AI.model, usage: response.usage, ok: Boolean(gen) });
+        if (!gen) {
+          lastReason = `generátor nevrátil platný JSON (${response.stop_reason})`;
+          await logReject(lastReason);
+          break;
+        }
+        const group = toGroup(gen, type);
+        const issues = structuralIssues(group, type);
+        let problem = "";
+        let validation: Validation | null = null;
+        if (issues.length) {
+          problem = `struktura: ${issues.join("; ")}`;
+        } else {
+          validation = await validate(group, type, dryRun ? undefined : userId);
+          const verdict = accepts(group, validation);
+          if (!verdict.ok) problem = `validátor: ${rejectionText(group, verdict, validation)}`;
+        }
+
+        if (!problem && validation) {
+          const s = validation.scores;
+          const quality = (s.unambiguous + s.czech + s.real_words + s.scio_style + s.difficulty + s.distractors) / 6;
+          if (dryRun) return { accepted: { id: "dry-run", group: { ...group, topic: gen.topic } as Group, validation } };
+          const { data, error } = await createAdminClient()
+            .from("generated_tasks")
+            .insert({
+              exam,
+              task_type: type,
+              payload: {
+                ...group,
+                topic: gen.topic,
+                v: GENERATOR_VERSION,
+                trapDesign: gen.questions.map((q) => q.trapDesign),
+              },
+              quality,
+              validator: validation,
+              model: AI.model,
+              seed_refs: examples.map((e) => `${e.test.id}:${e.group.id}`),
+              created_by: userId ?? null,
+            })
+            .select("id")
+            .single();
+          if (error) return { rejected: `db: ${error.message}` };
+          await logAiCall({ userId, kind: "accept", model: AI.model, note: `${type}: ${attempt ? "revised" : "first"}` });
+          return { accepted: { id: data.id as string, group, validation } };
+        }
+
+        // remember why it failed (the generator learns from this) and give it one chance to fix it
+        lastReason = attempt ? `[po opravě] ${problem}` : problem;
+        await logReject(lastReason);
+        if (attempt === 0) {
+          conversation.push(
+            { role: "assistant", content: JSON.stringify(gen) },
+            {
+              role: "user",
+              content: `Úlohu nezávislý validátor ZAMÍTL. Důvod: ${problem}
+${validation ? `Validátorovo řešení: ${validation.reasoning.slice(0, 1500)}` : ""}
+
+Oprav úlohu tak, aby všechny výtky zmizely a prošla kritérii. Pokud měl validátor u klíče pravdu, oprav klíč;
+pokud ne, uprav zadání nebo možnosti tak, aby byla odpověď jednoznačná. Je-li úloha příliš lehká, přidej
+skutečný chyták a zvyš obtížnost. Vrať celou opravenou úlohu ve stejném formátu.`,
+            },
+          );
+        }
+      }
+      return { rejected: lastReason || "neznámý důvod" };
     } catch (err) {
       console.error("generateTasks", err);
-      return { rejected: err instanceof Error ? err.message : "chyba" };
+      const reason = err instanceof Error ? err.message : "chyba";
+      await logReject(`chyba: ${reason}`);
+      return { rejected: reason };
     }
   });
 
   const results = await Promise.all(jobs);
-  if (!dryRun) {
-    for (const r of results) {
-      if ("rejected" in r && r.rejected) await logAiCall({ userId, kind: "reject", model: AI.model, note: `${type}: ${r.rejected}`.slice(0, 1000) });
+  if (!dryRun && results.some((r) => "rejected" in r)) {
+    // distill new lessons from the latest rejections (after the response when possible)
+    const learn = () => refreshLessons(type).catch((e) => console.error("refreshLessons", e));
+    try {
+      after(learn);
+    } catch {
+      await learn();
     }
   }
   const outcome: GenerationOutcome = { accepted: [], rejected: [] };

@@ -17,7 +17,7 @@ export function costUsd(model: string, u: Pick<Anthropic.Usage, "input_tokens" |
   return (u.input_tokens * p.input + cacheWrite * p.input * 1.25 + cacheRead * p.cacheRead + u.output_tokens * p.output) / 1e6;
 }
 
-export type AiCallKind = "explain" | "chat" | "generate" | "validate" | "reject";
+export type AiCallKind = "explain" | "chat" | "generate" | "validate" | "reject" | "accept" | "learn";
 
 /** Logs one Claude API call with its token usage and cost (never throws). */
 export async function logAiCall(opts: {

@@ -65,6 +65,7 @@ export interface AdminStats {
   };
   traffic: { day: string; users: number; views: number; minutes: number }[];
   rejects: { at: string; note: string }[];
+  learning: { type: string; first: number; revised: number; failed: number; lessons: string | null; lessonsAt: string | null }[];
   users: AdminUserRow[];
   invites: InviteRow[];
 }
@@ -92,6 +93,13 @@ export async function loadAdminStats(): Promise<AdminStats> {
     admin.from("daily_traffic").select("day,user_id,views").gte("day", week[0]),
   ]);
   const migrationMissing = Boolean(aiRes.error || invitesRes.error || trafficRes.error);
+  const since = new Date(Date.now() - 14 * 86400000).toISOString();
+  const [outcomesRes, lessonsRes] = await Promise.all([
+    admin.from("ai_calls").select("kind,note").in("kind", ["accept", "reject"]).gte("created_at", since).limit(5000),
+    admin.from("generator_lessons").select("task_type,lessons,updated_at"),
+  ]);
+  const outcomes = (outcomesRes.error ? [] : (outcomesRes.data ?? [])) as { kind: string; note: string | null }[];
+  const lessonRows = (lessonsRes.error ? [] : (lessonsRes.data ?? [])) as { task_type: string; lessons: string; updated_at: string }[];
   const rejectsRes = await admin
     .from("ai_calls")
     .select("created_at,note")
@@ -209,6 +217,18 @@ export async function loadAdminStats(): Promise<AdminStats> {
     rejects: ((rejectsRes.error ? [] : rejectsRes.data) ?? [])
       .filter((r) => r.note)
       .map((r) => ({ at: r.created_at as string, note: r.note as string })),
+    learning: TASK_TYPES.filter((m) => m.exam === "osp").map((m) => {
+      const mine = outcomes.filter((o) => o.note?.startsWith(`${m.id}:`));
+      const lesson = lessonRows.find((l) => l.task_type === m.id);
+      return {
+        type: m.id,
+        first: mine.filter((o) => o.kind === "accept" && o.note?.endsWith("first")).length,
+        revised: mine.filter((o) => o.kind === "accept" && o.note?.endsWith("revised")).length,
+        failed: mine.filter((o) => o.kind === "reject" && /\[po opravě\]|generátor nevrátil|: chyba:/.test(o.note ?? "")).length,
+        lessons: lesson?.lessons ?? null,
+        lessonsAt: lesson?.updated_at ?? null,
+      };
+    }),
     users,
     invites: invites.map((i) => ({
       code: i.code,

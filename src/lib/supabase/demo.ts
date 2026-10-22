@@ -124,6 +124,10 @@ class Query implements PromiseLike<{ data: unknown; error: null; count?: number 
     this.filters.push((r) => r[col] === val);
     return this;
   }
+  in(col: string, vals: unknown[]) {
+    this.filters.push((r) => vals.includes(r[col]));
+    return this;
+  }
   like(col: string, pattern: string) {
     const re = new RegExp("^" + pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/%/g, ".*") + "$");
     this.filters.push((r) => re.test(String(r[col] ?? "")));
