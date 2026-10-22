@@ -3,7 +3,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { taskTypeMeta } from "@/lib/content/exams";
 import { groupsOfType } from "@/lib/content/load";
-import type { ExamId, Group, OptionKey, Question, TaskType } from "@/lib/content/types";
+import type { ChartSpec, ExamId, Group, OptionKey, Question, TaskType } from "@/lib/content/types";
 import { AI } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { anthropic } from "./client";
@@ -17,11 +17,23 @@ const PartSchema = z.object({
   options: z.array(OptionSchema),
   answer: z.string(),
 });
+const ChartSchema = z.object({
+  kind: z.enum(["bar", "stacked", "line", "pie"]),
+  title: z.string().nullable(),
+  xLabel: z.string().nullable(),
+  yLabel: z.string().nullable(),
+  unit: z.string().nullable(),
+  yStep: z.number().nullable().describe("Krok mřížky osy y (bar/stacked/line). Každá hodnota musí být jeho násobkem."),
+  categories: z.array(z.string()),
+  series: z.array(z.object({ name: z.string(), values: z.array(z.number()) })),
+});
+
 const GeneratedSchema = z.object({
   topic: z.string().describe("Krátké téma úlohy (3–6 slov), slouží k hlídání opakování."),
   instruction: z.string(),
   passageTitle: z.string().nullable(),
   passage: z.string().nullable(),
+  chart: ChartSchema.nullable().describe("Jen u úloh s grafem, jinak null."),
   questions: z.array(
     z.object({
       stem: z.string(),
@@ -100,6 +112,22 @@ function pickExamples(exam: ExamId, type: TaskType, count: number) {
   return shuffled.slice(0, count);
 }
 
+/** For data tasks: keep charts and tables 50/50 in the pool. */
+async function preferChart(exam: ExamId) {
+  const { data } = await createAdminClient()
+    .from("generated_tasks")
+    .select("payload")
+    .eq("exam", exam)
+    .eq("task_type", "data")
+    .order("created_at", { ascending: false })
+    .limit(40);
+  const rows = (data ?? []).map((r) => Boolean((r.payload as Group).chart));
+  const charts = rows.filter(Boolean).length;
+  return charts <= rows.length - charts;
+}
+
+const CHART_KINDS = ["bar", "line", "stacked", "pie"] as const;
+
 async function recentTopics(exam: ExamId, type: TaskType) {
   const { data } = await createAdminClient()
     .from("generated_tasks")
@@ -136,8 +164,50 @@ function toGroup(gen: Generated, type: TaskType): Group {
     instruction: gen.instruction.trim() || meta?.description || "",
     ...(gen.passage?.trim() ? { passage: gen.passage.trim() } : {}),
     ...(gen.passageTitle?.trim() ? { passageTitle: gen.passageTitle.trim() } : {}),
+    ...(gen.chart ? { chart: cleanChart(gen.chart) } : {}),
     questions,
   };
+}
+
+function cleanChart(c: z.infer<typeof ChartSchema>): ChartSpec {
+  return {
+    kind: c.kind,
+    ...(c.title?.trim() ? { title: c.title.trim() } : {}),
+    ...(c.xLabel?.trim() ? { xLabel: c.xLabel.trim() } : {}),
+    ...(c.yLabel?.trim() ? { yLabel: c.yLabel.trim() } : {}),
+    ...(c.unit?.trim() ? { unit: c.unit.trim() } : {}),
+    ...(c.kind !== "pie" && c.yStep ? { yStep: c.yStep } : {}),
+    categories: c.categories.map((x) => x.trim()),
+    series: c.series.map((s) => ({ name: s.name.trim(), values: s.values })),
+  };
+}
+
+/** Problems with a chart's data (empty = OK). */
+export function chartIssues(c: ChartSpec): string[] {
+  const issues: string[] = [];
+  const n = c.categories.length;
+  if (n < 2 || n > 8) issues.push("graf: 2–8 kategorií");
+  if (!c.series.length || c.series.length > 4) issues.push("graf: 1–4 řady");
+  for (const s of c.series) {
+    if (s.values.length !== n) issues.push(`graf: řada ${s.name} nemá ${n} hodnot`);
+    if (s.values.some((v) => !Number.isFinite(v) || v < 0)) issues.push(`graf: řada ${s.name} má neplatné hodnoty`);
+  }
+  if (c.kind === "pie") {
+    if (c.series.length !== 1) issues.push("koláč: právě 1 řada");
+    if (n > 6) issues.push("koláč: max. 6 výsečí");
+  } else {
+    const step = c.yStep ?? 0;
+    if (!(step > 0)) issues.push("graf: chybí yStep");
+    else {
+      const max = c.kind === "stacked"
+        ? Math.max(...c.categories.map((_, i) => c.series.reduce((sum, s) => sum + (s.values[i] ?? 0), 0)))
+        : Math.max(...c.series.flatMap((s) => s.values));
+      if (max / step > 14) issues.push("graf: příliš husté dělení osy");
+      const off = c.series.some((s) => s.values.some((v) => Math.abs(v / step - Math.round(v / step)) > 1e-9));
+      if (off) issues.push("graf: hodnoty neleží na mřížce (násobky yStep)");
+    }
+  }
+  return issues;
 }
 
 /** Deterministic structural checks. Returns a list of problems (empty = OK). */
@@ -146,7 +216,9 @@ export function structuralIssues(group: Group, type: TaskType): string[] {
   const meta = taskTypeMeta(type);
   if (!group.questions.length) issues.push("žádné úlohy");
   if (meta && meta.groupSize > 1 && group.questions.length < 2) issues.push("málo úloh ve skupině");
-  if (meta && meta.groupSize > 1 && !group.passage) issues.push("chybí společný text");
+  if (meta && meta.groupSize > 1 && !group.passage && !group.chart) issues.push("chybí společný text");
+  if (group.chart) issues.push(...chartIssues(group.chart));
+  if (type === "data" && !group.chart && !/\|.*\|/.test(group.passage ?? "")) issues.push("chybí tabulka nebo graf");
   for (const q of group.questions) {
     if (!q.stem && !q.compare) issues.push(`úloha ${q.n}: prázdné zadání`);
     if (type === "porovnani" && !q.compare) issues.push(`úloha ${q.n}: chybí výrazy vlevo/vpravo`);
@@ -195,6 +267,16 @@ function accepts(group: Group, v: Validation) {
   return { ok: keyMatches && scoresOk && v.verdict === "accept", keyMatches };
 }
 
+function dataFormatInstruction(useChart: boolean, kind: (typeof CHART_KINDS)[number]) {
+  if (!useChart)
+    return "Data zadej jako Markdown TABULKU v poli passage (pod krátký popis situace). Pole chart = null.";
+  const names = { bar: "sloupcový (bar)", line: "spojnicový (line)", stacked: "skládaný sloupcový (stacked)", pie: "koláčový (pie)" };
+  return `Data zadej jako GRAF v poli chart, typ ${names[kind]}. passage obsahuje jen krátký popis situace (bez tabulky a bez opakování hodnot).
+Pravidla grafu: 2–8 kategorií, 1–4 řady (koláč: 1 řada, max. 6 výsečí, hodnoty v procentech se součtem 100).
+U sloupcového/spojnicového/skládaného grafu zvol yStep (např. 1, 2, 5, 10, 20, 50, 100) a VŠECHNY hodnoty musí být násobky yStep,
+aby šly přesně odečíst z mřížky; maximum osy max. 14 kroků. Vyplň xLabel, yLabel a unit. Otázky se ptají na čtení a výpočty z grafu.`;
+}
+
 // ------------------------------------------------------------------ public API
 
 export interface GenerationOutcome {
@@ -218,6 +300,7 @@ export async function generateTasks(opts: {
   const meta = taskTypeMeta(type);
   if (!meta) throw new Error(`Neznámý typ úlohy ${type}`);
   const topics = dryRun ? [] : await recentTopics(exam, type);
+  const chartFirst = type === "data" ? (dryRun ? Math.random() < 0.5 : await preferChart(exam)) : false;
 
   const jobs = Array.from({ length: count }, async (_, i) => {
     const examples = pickExamples(exam, type, meta.groupSize > 1 ? 2 : 4);
@@ -234,7 +317,8 @@ Skutečné úlohy Scio jako vzor (styl, délka, obtížnost – NEKOPÍROVAT):
 ${examplesText}
 
 ${topics.length ? `Témata, která už v databázi jsou (vyhni se jim):\n- ${topics.slice(0, 30).join("\n- ")}\n` : ""}
-Variace č. ${i + 1}: zvol téma z jiné oblasti než vzory${i % 2 ? " a mírně vyšší obtížnost" : ""}.`;
+Variace č. ${i + 1}: zvol téma z jiné oblasti než vzory${i % 2 ? " a mírně vyšší obtížnost" : ""}.
+${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst, CHART_KINDS[Math.floor(Math.random() * CHART_KINDS.length)]) : "Pole chart nastav na null."}`;
 
     try {
       const response = await anthropic().messages.parse({

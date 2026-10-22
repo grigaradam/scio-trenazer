@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ContentPreview } from "@/components/dev/ContentPreview";
+import { ChartSamples } from "@/components/dev/ChartSamples";
 import { TestRunner } from "@/components/TestRunner";
 import { getTest, getTests } from "@/lib/content/load";
 import { stripTest } from "@/lib/content/public";
@@ -9,6 +10,7 @@ export default async function DevPreview({ params, searchParams }: PageProps<"/d
   if (process.env.NODE_ENV !== "development") notFound();
   const { testId } = await params;
   const sp = await searchParams;
+  if (testId === "charts") return <ChartSamples />;
   const test = testId === "index" ? getTests("osp")[0] : getTest(testId);
   if (!test) notFound();
   if (sp.runner) {

@@ -62,6 +62,22 @@ export interface Question {
   excluded?: boolean;
 }
 
+/** Chart drawn by the app (used by AI-generated data tasks). Values sit on multiples of yStep. */
+export interface ChartSpec {
+  kind: "bar" | "stacked" | "line" | "pie";
+  title?: string;
+  xLabel?: string;
+  yLabel?: string;
+  /** Unit shown on the value axis / tooltip, e.g. "%", "tis. Kč", "osob". */
+  unit?: string;
+  /** Grid step of the value axis (bar/stacked/line); every value is a multiple of it. */
+  yStep?: number;
+  /** Category labels (x axis, or pie slices). */
+  categories: string[];
+  /** One entry per series (pie: exactly one series). */
+  series: { name: string; values: number[] }[];
+}
+
 export interface Group {
   /** Unique within the test, e.g. "g01". */
   id: string;
@@ -74,6 +90,8 @@ export interface Group {
   passageTitle?: string;
   /** Shared figure (graph/table image) for the whole group. */
   figure?: string;
+  /** Shared chart rendered from data (AI-generated data tasks). */
+  chart?: ChartSpec;
   questions: Question[];
 }
 

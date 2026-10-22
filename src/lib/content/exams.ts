@@ -166,8 +166,9 @@ export const TASK_TYPES: TaskTypeMeta[] = [
     description: "Čtení a výpočty z tabulek a grafů.",
     groupSize: 3,
     rules:
-      "Společná data jako Markdown tabulka (graf převeď na tabulku hodnot) s krátkým popisem situace. 3 otázky: " +
-      "kolik / rozdíl / podíl / průměr / v kterých případech platí podmínka. Výpočty proveditelné bez kalkulačky.",
+      "Společná data s krátkým popisem situace – buď jako GRAF (pole chart: sloupcový, skládaný, spojnicový nebo koláčový), " +
+      "nebo jako Markdown tabulka v passage. 3 otázky: kolik / rozdíl / podíl / průměr / změna / v kterých případech platí " +
+      "podmínka. Výpočty proveditelné bez kalkulačky. U grafu musí jít hodnoty přesně odečíst z mřížky.",
   },
   {
     id: "porovnani",

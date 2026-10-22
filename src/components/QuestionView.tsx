@@ -5,6 +5,7 @@ import { Check, X } from "lucide-react";
 import { useState } from "react";
 import type { PublicGroup, PublicQuestion } from "@/lib/content/public";
 import type { OptionKey } from "@/lib/content/types";
+import { ChartView } from "./ChartView";
 import { RichText } from "./RichText";
 import { ZoomableImage } from "./ZoomableImage";
 
@@ -55,12 +56,17 @@ export function GroupContext({
           )}
         </div>
       )}
-      {(group.passage || group.figure) && (
+      {(group.passage || group.figure || group.chart) && (
         <div className="rounded-2xl border-2 border-border bg-surface p-4">
           {group.passageTitle && (
             <div className="mb-2 text-xs font-extrabold uppercase tracking-wider text-muted">{group.passageTitle}</div>
           )}
           {group.passage && <RichText className="text-[15px]">{group.passage}</RichText>}
+          {group.chart && (
+            <div className={group.passage ? "mt-3" : ""}>
+              <ChartView chart={group.chart} />
+            </div>
+          )}
           {group.figure && (
             <div className="mt-3">
               <ZoomableImage src={group.figure} alt="Graf / obrázek k úlohám" className="mx-auto max-h-[480px] w-auto max-w-full rounded-lg bg-white p-1" />
