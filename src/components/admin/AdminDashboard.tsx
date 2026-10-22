@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Ban, Check, Copy, Link2, LogOut, RefreshCw, Unlock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { taskTypeMeta } from "@/lib/content/exams";
+import { TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
 import type { AdminStats } from "@/lib/server/admin-stats";
 import { Logo } from "../Logo";
 import { Badge, Button, Card } from "../ui";
@@ -134,13 +134,15 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
       </Card>
 
       <Learning rows={stats.learning} />
+      <TestGenerate />
+      <ClaudeReport stats={stats} />
 
       {stats.rejects.length > 0 && (
         <Card>
-          <h2 className="font-display text-lg font-extrabold">Zamítnuté AI úlohy (posledních {stats.rejects.length})</h2>
+          <h2 className="font-display text-lg font-extrabold">Zamítnuté AI úlohy (posledních {Math.min(15, stats.rejects.length)})</h2>
           <p className="mb-3 text-sm text-muted">Proč úloha neprošla kontrolou – pomáhá ladit generátor.</p>
           <ul className="space-y-2 text-sm">
-            {stats.rejects.map((r, i) => (
+            {stats.rejects.slice(0, 15).map((r, i) => (
               <li key={i} className="rounded-xl bg-surface-2 px-3 py-2">
                 <span className="mr-2 text-xs font-bold text-muted">{ago(r.at)}</span>
                 <span className="break-words">{r.note}</span>
@@ -154,6 +156,133 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
       <Users users={stats.users} />
     </div>
   );
+}
+
+function TestGenerate() {
+  const router = useRouter();
+  const [running, setRunning] = useState(false);
+  const [status, setStatus] = useState<Record<string, string>>({});
+  const types = useMemo(() => TASK_TYPES.filter((t) => t.exam === "osp"), []);
+
+  async function run() {
+    setRunning(true);
+    setStatus({});
+    const queue = [...types];
+    const worker = async () => {
+      for (let t = queue.shift(); t; t = queue.shift()) {
+        setStatus((s) => ({ ...s, [t.id]: "⏳ generuji…" }));
+        try {
+          const res = await fetch("/api/admin/pool", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ type: t.id, force: true }),
+          });
+          const j = await res.json();
+          setStatus((s) => ({
+            ...s,
+            [t.id]: !res.ok ? `✗ ${j.error ?? "chyba"}` : j.accepted ? "✓ prošla" : `✗ zamítnuta: ${(j.reason ?? "").slice(0, 160)}`,
+          }));
+        } catch {
+          setStatus((s) => ({ ...s, [t.id]: "✗ vypršel čas" }));
+        }
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    setRunning(false);
+    router.refresh();
+  }
+
+  const done = Object.values(status).filter((v) => !v.startsWith("⏳"));
+  const ok = done.filter((v) => v.startsWith("✓")).length;
+  return (
+    <Card>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="font-display text-lg font-extrabold">Test generátoru</h2>
+          <p className="text-sm text-muted">Vygeneruje po 1 úloze od každého ze 13 typů (≈ 13 úloh, uloží se do zásoby, když projdou).</p>
+        </div>
+        <Button size="sm" loading={running} onClick={run}>
+          Vygenerovat 1 od každého
+        </Button>
+      </div>
+      {Object.keys(status).length > 0 && (
+        <>
+          <div className="mt-3 text-sm font-bold">
+            Prošlo {ok} / {done.length}
+            {running ? " (běží…)" : ""}
+          </div>
+          <ul className="mt-2 space-y-1 text-sm">
+            {types.map((t) =>
+              status[t.id] ? (
+                <li key={t.id} className="flex gap-2">
+                  <span className="w-44 shrink-0">
+                    {t.emoji} {t.name}
+                  </span>
+                  <span className={clsx("min-w-0 break-words", status[t.id].startsWith("✓") ? "text-emerald-600" : status[t.id].startsWith("✗") ? "text-rose-600" : "text-muted")}>
+                    {status[t.id]}
+                  </span>
+                </li>
+              ) : null,
+            )}
+          </ul>
+        </>
+      )}
+    </Card>
+  );
+}
+
+function ClaudeReport({ stats }: { stats: AdminStats }) {
+  const { copied, copy } = useCopy();
+  const report = useMemo(() => buildReport(stats), [stats]);
+  return (
+    <Card>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="font-display text-lg font-extrabold">Report pro Clauda</h2>
+          <p className="text-sm text-muted">Zkopíruj a vlož do chatu – obsahuje vše potřebné k ladění generátoru.</p>
+        </div>
+        <Button size="sm" onClick={() => copy("report", report)}>
+          {copied === "report" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          {copied === "report" ? "Zkopírováno" : "Zkopírovat report"}
+        </Button>
+      </div>
+      <details className="mt-3">
+        <summary className="cursor-pointer text-xs font-bold text-brand-600">Náhled ({report.length} znaků)</summary>
+        <pre className="scroll-thin mt-2 max-h-80 overflow-auto whitespace-pre-wrap rounded-xl bg-surface-2 p-3 font-mono text-[11px]">{report}</pre>
+      </details>
+    </Card>
+  );
+}
+
+function buildReport(stats: AdminStats) {
+  const lines: string[] = [];
+  const name = (t: string) => taskTypeMeta(t)?.name ?? t;
+  lines.push(`# Report generátoru – ${new Date().toLocaleString("cs-CZ")}`);
+  lines.push(`Konfigurace: ${Object.entries(stats.config).map(([k, v]) => `${k}=${v}`).join(", ")}`);
+  const c = stats.cost;
+  lines.push(
+    `Náklady: celkem $${c.total.toFixed(2)}, 7 dní $${c.week.toFixed(2)} | ` +
+      Object.entries(c.byKind).map(([k, v]) => `${k}: ${v.calls}× $${v.cost.toFixed(3)}`).join(", "),
+  );
+  const p = stats.pool;
+  lines.push(`Zásoba: vytvořeno ${p.generated}, zobrazeno ${p.serves}, recyklováno ${p.recycledServes}, cena/zobrazení ${p.costPerServe !== null ? `$${p.costPerServe.toFixed(3)}` : "–"}`);
+  lines.push("");
+  lines.push("## Úspěšnost po typech (14 dní): napoprvé / po opravě / zahozeno | připraveno v zásobě");
+  for (const r of stats.learning) {
+    const ready = p.byType.find((b) => b.type === r.type)?.ready ?? 0;
+    lines.push(`- ${name(r.type)} (${r.type}): ${r.first} / ${r.revised} / ${r.failed} | zásoba ${ready}`);
+  }
+  lines.push("");
+  lines.push("## Naučená pravidla");
+  for (const r of stats.learning.filter((x) => x.lessons)) {
+    lines.push(`### ${name(r.type)}`);
+    lines.push(r.lessons!.trim());
+  }
+  if (!stats.learning.some((x) => x.lessons)) lines.push("(zatím žádná)");
+  lines.push("");
+  lines.push(`## Posledních ${stats.rejects.length} důvodů zamítnutí (nejnovější nahoře)`);
+  for (const r of stats.rejects) lines.push(`- [${new Date(r.at).toLocaleString("cs-CZ")}] ${r.note}`);
+  return lines.join("\n");
 }
 
 function Learning({ rows }: { rows: AdminStats["learning"] }) {

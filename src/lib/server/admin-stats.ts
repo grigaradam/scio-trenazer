@@ -1,6 +1,7 @@
 import "server-only";
 import { GENERATOR_VERSION } from "@/lib/ai/generate";
 import { TASK_TYPES } from "@/lib/content/exams";
+import { AI } from "@/lib/env";
 import { levelInfo } from "@/lib/gamification";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { czToday } from "./queries";
@@ -65,6 +66,7 @@ export interface AdminStats {
   };
   traffic: { day: string; users: number; views: number; minutes: number }[];
   rejects: { at: string; note: string }[];
+  config: Record<string, string | number>;
   learning: { type: string; first: number; revised: number; failed: number; lessons: string | null; lessonsAt: string | null }[];
   users: AdminUserRow[];
   invites: InviteRow[];
@@ -105,7 +107,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
     .select("created_at,note")
     .eq("kind", "reject")
     .order("created_at", { ascending: false })
-    .limit(15);
+    .limit(40);
 
   const authUsers = usersRes.data?.users ?? [];
   const profiles = (profilesRes.data ?? []) as Profile[];
@@ -182,8 +184,8 @@ export async function loadAdminStats(): Promise<AdminStats> {
     },
     cost: {
       total: sum(ai.map((a) => Number(a.cost_usd))),
-      today: sum(ai.filter((a) => a.created_at.slice(0, 10) === today).map((a) => Number(a.cost_usd))),
-      week: sum(ai.filter((a) => a.created_at.slice(0, 10) >= weekStart).map((a) => Number(a.cost_usd))),
+      today: sum(ai.filter((a) => (a.created_at ?? "").slice(0, 10) === today).map((a) => Number(a.cost_usd))),
+      week: sum(ai.filter((a) => (a.created_at ?? "").slice(0, 10) >= weekStart).map((a) => Number(a.cost_usd))),
       byKind,
     },
     pool: {
@@ -217,6 +219,14 @@ export async function loadAdminStats(): Promise<AdminStats> {
     rejects: ((rejectsRes.error ? [] : rejectsRes.data) ?? [])
       .filter((r) => r.note)
       .map((r) => ({ at: r.created_at as string, note: r.note as string })),
+    config: {
+      generator: `${AI.model} (${AI.generatorEffort})`,
+      validator: `${AI.validatorModel} (${AI.validatorEffort})`,
+      explain: AI.explainModel,
+      chat: AI.chatModel,
+      generatorVersion: GENERATOR_VERSION,
+      dailyGenerateLimit: AI.dailyGenerateLimit,
+    },
     learning: TASK_TYPES.filter((m) => m.exam === "osp").map((m) => {
       const mine = outcomes.filter((o) => o.note?.startsWith(`${m.id}:`));
       const lesson = lessonRows.find((l) => l.task_type === m.id);

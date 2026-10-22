@@ -67,6 +67,7 @@ const DEFAULTS: Record<string, () => Row> = {
   task_seen: () => ({ created_at: new Date().toISOString() }),
   achievements: () => ({ unlocked_at: new Date().toISOString() }),
   explanations: () => ({ created_at: new Date().toISOString() }),
+  ai_calls: () => ({ id: Date.now() + Math.random(), created_at: new Date().toISOString(), note: null }),
   invite_codes: () => ({ created_at: new Date().toISOString(), used_at: null, used_by: null, revoked: false, note: null }),
 };
 
