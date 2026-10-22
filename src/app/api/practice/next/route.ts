@@ -1,4 +1,4 @@
-import { after, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 import { generateTasks } from "@/lib/ai/generate";
 import { spendBudget } from "@/lib/ai/client";
@@ -6,6 +6,7 @@ import { taskTypeMeta } from "@/lib/content/exams";
 import { genRef, stripGroup } from "@/lib/content/public";
 import type { Group, TaskType } from "@/lib/content/types";
 import { apiUser } from "@/lib/server/auth";
+import { ensureTaskBuffer } from "@/lib/server/pool";
 import { resolveTask } from "@/lib/server/tasks";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -39,6 +40,8 @@ export async function POST(req: Request) {
     if (candidate) {
       const task = await resolveTask(candidate.task_ref);
       if (task) {
+        // prepare a fresh task in the background, so it's ready when the mistakes run out
+        if (mode === "mix") ensureTaskBuffer(user.id, meta.exam, meta.id);
         return NextResponse.json({
           kind: "mistake",
           refs: [task.ref],
@@ -76,16 +79,8 @@ export async function POST(req: Request) {
   await admin.from("task_seen").upsert({ user_id: user.id, task_ref: genRef(task.id) });
   await admin.from("generated_tasks").update({ served_count: task.served_count + 1 }).eq("id", task.id);
 
-  // keep a small buffer ready for the next request
-  if (available.length <= 1) {
-    after(async () => {
-      try {
-        await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id });
-      } catch (e) {
-        console.error("background top-up", e);
-      }
-    });
-  }
+  // always keep one pre-generated task of this type waiting for the next request
+  ensureTaskBuffer(user.id, meta.exam, meta.id);
 
   const group = task.payload;
   return NextResponse.json({

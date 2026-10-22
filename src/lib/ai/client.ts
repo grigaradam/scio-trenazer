@@ -31,6 +31,14 @@ export async function spendBudget(userId: string, kind: AiKind) {
   return null;
 }
 
+/** Silent budget check for background work: true = allowed (and counted). */
+export async function tryBudget(userId: string, kind: AiKind) {
+  if (!AI.enabled) return false;
+  const limit = kind === "chat" ? AI.dailyChatLimit : kind === "explain" ? AI.dailyExplainLimit : AI.dailyGenerateLimit;
+  const { data } = await createAdminClient().rpc("bump_ai_usage", { p_user: userId, p_kind: kind });
+  return typeof data !== "number" || data <= limit;
+}
+
 export function aiErrorResponse(err: unknown) {
   console.error("AI error", err);
   if (err instanceof Anthropic.RateLimitError)

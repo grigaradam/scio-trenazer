@@ -20,6 +20,6 @@ export const AI = {
   validatorModel: process.env.AI_VALIDATOR_MODEL || process.env.AI_MODEL || "claude-opus-5-5",
   dailyChatLimit: Number(process.env.AI_DAILY_CHAT_LIMIT ?? 60),
   dailyExplainLimit: Number(process.env.AI_DAILY_EXPLAIN_LIMIT ?? 40),
-  dailyGenerateLimit: Number(process.env.AI_DAILY_GENERATE_LIMIT ?? 15),
+  dailyGenerateLimit: Number(process.env.AI_DAILY_GENERATE_LIMIT ?? 40),
   enabled: Boolean(process.env.ANTHROPIC_API_KEY),
 };
