@@ -133,6 +133,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         <PoolStock rows={p.byType} />
       </Card>
 
+      <AutoGenerate auto={stats.autogen} />
       <Learning rows={stats.learning} />
       <TestGenerate />
       <ClaudeReport stats={stats} />
@@ -155,6 +156,119 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
       <InviteCodes invites={stats.invites} />
       <Users users={stats.users} />
     </div>
+  );
+}
+
+function AutoGenerate({ auto }: { auto: AdminStats["autogen"] }) {
+  const router = useRouter();
+  const { copied, copy } = useCopy();
+  const [busy, setBusy] = useState(false);
+  const [workers, setWorkers] = useState(auto.workers);
+  const [error, setError] = useState<string | null>(null);
+  const origin = typeof window === "undefined" ? "" : window.location.origin;
+
+  async function patch(body: Record<string, unknown>) {
+    setBusy(true);
+    setError(null);
+    const r = await fetch("/api/admin/autogen", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) setError(j.error ?? "Chyba");
+    // start right away instead of waiting for the next cron minute
+    if (r.ok && body.enabled) await fetch("/api/autogen/tick", { method: "POST" });
+    setBusy(false);
+    router.refresh();
+  }
+
+  const cronSql = `-- Plánovač: každou minutu zavolá generátor (spusť jednou v Supabase → SQL Editor)
+select cron.unschedule(jobid) from cron.job where jobname = 'autogen-tick';
+select cron.schedule('autogen-tick', '* * * * *', $$
+  select net.http_post(
+    url := '${origin}/api/autogen/tick',
+    headers := '{"Authorization": "Bearer ${auto.secret ?? "DOPLN_AUTOGEN_SECRET"}", "Content-Type": "application/json"}'::jsonb,
+    body := '{}'::jsonb,
+    timeout_milliseconds := 5000
+  );
+$$);`;
+
+  const cronAlive = auto.cronAlive;
+  const waitingCredits = Boolean(auto.creditsExhaustedAt);
+
+  return (
+    <Card className={clsx(auto.enabled && "border-emerald-300 dark:border-emerald-800")}>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="font-display text-lg font-extrabold">Nekonečné generování {auto.enabled ? "🟢" : "⚪"}</h2>
+          <p className="text-sm text-muted">
+            Běží na serveru i se zavřeným webem, dokud ho nevypneš nebo nedojde kredit. Vždy doplňuje typ, kterého je nejméně.
+          </p>
+        </div>
+        {auto.available && (
+          <div className="flex items-center gap-2">
+            <select
+              value={workers}
+              disabled={busy}
+              onChange={(e) => {
+                setWorkers(Number(e.target.value));
+                patch({ workers: Number(e.target.value) });
+              }}
+              className="h-9 rounded-xl border-2 border-border bg-surface px-2 text-base font-bold sm:text-sm"
+              title="Kolik úloh se generuje souběžně"
+            >
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <option key={n} value={n}>
+                  {n}× souběžně
+                </option>
+              ))}
+            </select>
+            <Button size="sm" variant={auto.enabled ? "danger" : "success"} loading={busy} onClick={() => patch({ enabled: !auto.enabled })}>
+              {auto.enabled ? "Vypnout" : "Zapnout"}
+            </Button>
+          </div>
+        )}
+      </div>
+      {error && <p className="mt-2 text-sm font-semibold text-rose-600">{error}</p>}
+
+      {!auto.available ? (
+        <p className="mt-3 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
+          Nejdřív spusť v Supabase SQL Editoru migraci <code>supabase/migrations/0005_autogen.sql</code>.
+        </p>
+      ) : (
+        <>
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <Mini label="Pracuje" value={`${auto.busy} / ${auto.workers}`} hint="generátorů právě teď" />
+            <Mini label="Vytvořeno" value={num(auto.generatedSinceStart)} hint="od zapnutí" />
+            <Mini label="Utraceno" value={usd(auto.costSinceStart)} hint="od zapnutí" />
+            <Mini label="Plánovač" value={cronAlive ? "běží" : "neběží"} hint={auto.lastTickAt ? `naposledy ${ago(auto.lastTickAt)}` : "zatím nikdy"} />
+          </div>
+          {waitingCredits && (
+            <p className="mt-3 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
+              💳 Došel kredit nebo API klíč nefunguje ({ago(auto.creditsExhaustedAt)}). Generování čeká a každých 30 min to zkusí
+              znovu – po dobití pokračuje samo.
+            </p>
+          )}
+          {auto.lastError && !waitingCredits && <p className="mt-2 text-xs text-muted">Poslední chyba: {auto.lastError}</p>}
+          {!cronAlive && (
+            <div className="mt-4 rounded-2xl border-2 border-dashed border-border p-3">
+              <div className="text-sm font-bold">Aby generování běželo i se zavřeným webem, nastav jednou plánovač:</div>
+              <ol className="mt-1 list-decimal space-y-1 pl-5 text-sm text-muted">
+                {!auto.secret && (
+                  <li>
+                    Ve Vercelu přidej proměnnou <code>AUTOGEN_SECRET</code> (libovolný dlouhý náhodný text) a dej Redeploy.
+                  </li>
+                )}
+                <li>Zkopíruj SQL níže a spusť ho v Supabase → SQL Editor.</li>
+                <li>Do minuty se tu „Plánovač“ přepne na „běží“.</li>
+              </ol>
+              <pre className="scroll-thin mt-2 max-h-56 overflow-auto rounded-xl bg-surface-2 p-3 font-mono text-[11px]">{cronSql}</pre>
+              <Button size="sm" variant="secondary" className="mt-2" disabled={!auto.secret} onClick={() => copy("cron", cronSql)}>
+                {copied === "cron" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {copied === "cron" ? "Zkopírováno" : "Zkopírovat SQL"}
+              </Button>
+            </div>
+          )}
+        </>
+      )}
+    </Card>
   );
 }
 

@@ -27,6 +27,8 @@ function store(): Store {
           created_at: new Date().toISOString(),
         },
       ],
+      autogen_state: [{ id: 1, enabled: false, workers: 2, credits_exhausted_at: null, last_tick_at: null, last_error: null, started_at: null }],
+      autogen_leases: Array.from({ length: 6 }, (_, slot) => ({ slot, lease_until: new Date(0).toISOString(), runs: 0 })),
     };
   }
   return g.__demoStore;
@@ -240,6 +242,17 @@ function rpc(name: string, a: Record<string, unknown>) {
       r.views = (r.views as number) + 1;
       const p = table("profiles").find((x) => x.id === a.p_user);
       if (p) p.last_seen_at = new Date().toISOString();
+      return null;
+    }
+    if (name === "autogen_claim") {
+      const now = Date.now();
+      const free = table("autogen_leases").filter((l) => (l.slot as number) < (a.p_workers as number) && new Date(l.lease_until as string).getTime() < now);
+      free.forEach((l) => (l.lease_until = new Date(now + (a.p_seconds as number) * 1000).toISOString()));
+      return free.map((l) => l.slot);
+    }
+    if (name === "autogen_release") {
+      const l = table("autogen_leases").find((x) => x.slot === a.p_slot);
+      if (l) l.lease_until = new Date(0).toISOString();
       return null;
     }
     if (name === "bump_ai_usage") {

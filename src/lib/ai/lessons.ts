@@ -54,8 +54,9 @@ export async function getLessons(type: TaskType): Promise<Lessons> {
     recent: recentRes.error
       ? []
       : ((recentRes.data ?? []) as { note: string | null }[])
-          .map((r) => (r.note ? stripType(r.note, type).slice(0, MAX_RECENT_CHARS) : ""))
-          .filter(Boolean),
+          .map((r) => (r.note ? stripType(r.note, type) : ""))
+          .filter((n) => n && !n.startsWith("chyba:"))
+          .map((n) => n.slice(0, MAX_RECENT_CHARS)),
   };
 }
 
@@ -103,7 +104,10 @@ export async function refreshLessons(type: TaskType) {
       .limit(MAX_DISTILL_INPUT),
     admin.from("ai_calls").select("id", { count: "exact", head: true }).eq("kind", "accept").like("note", `${type}:%`),
   ]);
-  const reasons = ((rejects ?? []) as { note: string | null }[]).map((r) => `- ${stripType(r.note ?? "", type).slice(0, 300)}`);
+  const reasons = ((rejects ?? []) as { note: string | null }[])
+    .map((r) => stripType(r.note ?? "", type))
+    .filter((n) => n && !n.startsWith("chyba:")) // API/credit errors are not the generator's fault
+    .map((n) => `- ${n.slice(0, 300)}`);
   if (!reasons.length) return;
 
   const response = await anthropic().messages.create({

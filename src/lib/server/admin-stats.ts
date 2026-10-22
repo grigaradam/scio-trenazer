@@ -67,6 +67,20 @@ export interface AdminStats {
   traffic: { day: string; users: number; views: number; minutes: number }[];
   rejects: { at: string; note: string }[];
   config: Record<string, string | number>;
+  autogen: {
+    available: boolean;
+    enabled: boolean;
+    workers: number;
+    busy: number;
+    lastTickAt: string | null;
+    cronAlive: boolean;
+    creditsExhaustedAt: string | null;
+    lastError: string | null;
+    startedAt: string | null;
+    generatedSinceStart: number;
+    costSinceStart: number;
+    secret: string | null;
+  };
   learning: { type: string; first: number; revised: number; failed: number; lessons: string | null; lessonsAt: string | null }[];
   users: AdminUserRow[];
   invites: InviteRow[];
@@ -87,7 +101,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
     admin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
     admin.from("profiles").select("*"),
     admin.from("study_days").select("user_id,day,seconds,tasks"),
-    admin.from("generated_tasks").select("id,created_by,served_count,task_type,v:payload->v"),
+    admin.from("generated_tasks").select("id,created_by,served_count,task_type,created_at,v:payload->v"),
     admin.from("task_seen").select("task_ref", { count: "exact", head: true }).like("task_ref", "gen:%"),
     admin.from("ai_calls").select("user_id,kind,cost_usd,created_at,ok"),
     admin.from("attempts").select("user_id").eq("status", "completed"),
@@ -102,6 +116,12 @@ export async function loadAdminStats(): Promise<AdminStats> {
   ]);
   const outcomes = (outcomesRes.error ? [] : (outcomesRes.data ?? [])) as { kind: string; note: string | null }[];
   const lessonRows = (lessonsRes.error ? [] : (lessonsRes.data ?? [])) as { task_type: string; lessons: string; updated_at: string }[];
+  const [autoStateRes, leasesRes] = await Promise.all([
+    admin.from("autogen_state").select("*").eq("id", 1).maybeSingle(),
+    admin.from("autogen_leases").select("slot,lease_until"),
+  ]);
+  const autoState = autoStateRes.error ? null : (autoStateRes.data as Record<string, unknown> | null);
+  const autoStart = (autoState?.started_at as string | null) ?? null;
   const rejectsRes = await admin
     .from("ai_calls")
     .select("created_at,note")
@@ -219,6 +239,20 @@ export async function loadAdminStats(): Promise<AdminStats> {
     rejects: ((rejectsRes.error ? [] : rejectsRes.data) ?? [])
       .filter((r) => r.note)
       .map((r) => ({ at: r.created_at as string, note: r.note as string })),
+    autogen: {
+      available: Boolean(autoState),
+      enabled: Boolean(autoState?.enabled),
+      workers: Number(autoState?.workers ?? 2),
+      busy: ((leasesRes.error ? [] : leasesRes.data) ?? []).filter((l) => new Date(l.lease_until as string).getTime() > now).length,
+      lastTickAt: (autoState?.last_tick_at as string | null) ?? null,
+      cronAlive: Boolean(autoState?.last_tick_at && now - new Date(autoState.last_tick_at as string).getTime() < 150_000),
+      creditsExhaustedAt: (autoState?.credits_exhausted_at as string | null) ?? null,
+      lastError: (autoState?.last_error as string | null) ?? null,
+      startedAt: autoStart,
+      generatedSinceStart: autoStart ? gen.filter((g) => !g.created_by && (g as { created_at?: string }).created_at && (g as { created_at?: string }).created_at! >= autoStart).length : 0,
+      costSinceStart: autoStart ? sum(ai.filter((a) => !a.user_id && (a.created_at ?? "") >= autoStart).map((a) => Number(a.cost_usd))) : 0,
+      secret: process.env.AUTOGEN_SECRET ?? null,
+    },
     config: {
       generator: `${AI.model} (${AI.generatorEffort})`,
       validator: `${AI.validatorModel} (${AI.validatorEffort})`,
