@@ -108,7 +108,7 @@ export const TASK_TYPES: TaskTypeMeta[] = [
     groupSize: 1,
     rules:
       "Jedna věta s jedním podtrženým výrazem <u>…</u> (často méně běžné, knižní nebo expresivní slovo). " +
-      "Dvě části: synonymum (možnosti A–D) a antonymum (možnosti E–H), každá ve stejném slovním druhu a tvaru jako podtržený výraz. " +
+      "Pole parts má VŽDY 2 položky: {label: synonymum, možnosti A–D} a {label: antonymum, možnosti E–H}, každá ve stejném slovním druhu a tvaru jako podtržený výraz. " +
       "Synonymum i antonymum musí být skutečná existující česká slova a vztah musí platit V KONTEXTU věty. " +
       "Distraktory: slova tematicky blízká, ale s jiným významem, nebo synonyma jiného významu mnohoznačného slova.",
     traps:

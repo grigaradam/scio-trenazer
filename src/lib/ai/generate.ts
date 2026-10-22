@@ -54,7 +54,10 @@ type Generated = z.infer<typeof GeneratedSchema>;
 const ValidationSchema = z.object({
   answers: z
     .array(z.array(z.string()))
-    .describe("Tvoje vlastní řešení: pro každou úlohu pole písmen (jedno na každou část)."),
+    .describe(
+      "Tvoje vlastní řešení: pro každou úlohu pole písmen, JEDNO PÍSMENO NA KAŽDOU ČÁST. " +
+        "Synonyma/antonyma mají 2 části → 2 písmena, např. [[\"C\", \"F\"]]. Ostatní úlohy 1 písmeno, např. [[\"B\"]].",
+    ),
   reasoning: z.string().describe("Stručně, jak jsi úlohy vyřešil(a)."),
   predictedSuccess: z
     .number()
@@ -125,9 +128,12 @@ const VALIDATOR_SYSTEM = `Jsi přísný recenzent úloh pro test OSP (Scio). Dos
 1) Vyřeš ji sám, pečlivě a nezávisle (matematiku přepočítej, logiku ověř výčtem, u textů vycházej jen z textu).
 2) Posuď kvalitu: jednoznačnost, gramatiku a smysluplnost češtiny, existenci slov a správnost významových vztahů,
    shodu se stylem Scio, sílu chytáků a obtížnost.
-3) Posuď obtížnost realisticky: reálné úlohy OSP mají úspěšnost typicky 30–60 %. Úloha, kterou by vyřešilo přes 70 %
-   uchazečů, je pro tuto databázi PŘÍLIŠ LEHKÁ. Hledej zkratky: jde odpověď najít bez skutečného řešení?
-   Jsou distraktory jen „vata“? Je chyták dost zrádný?
+3) Posuď obtížnost realisticky VŮČI PŘILOŽENÝM SKUTEČNÝM ÚLOHÁM SCIO stejného typu – ty jsou měřítkem.
+   Úloha má být srovnatelně náročná jako ony, NE těžší. Reálné úlohy OSP mají úspěšnost zhruba 30–75 %.
+   Úloha, kterou by vyřešilo přes 75 % uchazečů, je příliš lehká. Hledej zkratky: jde odpověď najít bez skutečného
+   řešení? Jsou distraktory jen „vata“? Je chyták srovnatelně zrádný jako u skutečných úloh?
+Do answers uveď u každé úlohy jedno písmeno za KAŽDOU část (synonyma/antonyma = 2 písmena).
+Všechny texty (reasoning, issues) piš česky.
 verdict = "reject", pokud má úloha víc obhajitelných odpovědí, žádnou správnou odpověď, chybu v češtině,
 neexistující slovo, nesmyslný vztah, chybu ve výpočtu, je zjevně mimo styl Scio, nebo je příliš lehká / bez chytáku.`;
 
@@ -269,6 +275,10 @@ export function structuralIssues(group: Group, type: TaskType): string[] {
 
 async function validate(group: Group, type: TaskType, userId?: string): Promise<Validation> {
   const meta = taskTypeMeta(type);
+  // real Scio tasks of the same type anchor the difficulty judgement (keys included – they're reference only)
+  const reference = pickExamples("osp", type, meta && meta.groupSize > 1 ? 1 : 2)
+    .map((e, i) => `### Skutečná úloha Scio ${i + 1} (měřítko obtížnosti)\n${taskToPrompt(e.group)}`)
+    .join("\n\n");
   const response = await anthropic().messages.parse({
     model: AI.validatorModel,
     max_tokens: 16000,
@@ -277,7 +287,7 @@ async function validate(group: Group, type: TaskType, userId?: string): Promise<
     messages: [
       {
         role: "user",
-        content: `Typ úlohy: ${meta?.name}\nPravidla typu: ${meta?.rules}\nTypické chytáky Scio u tohoto typu: ${meta?.traps}\n\n${taskToPrompt(group, group.questions, false)}`,
+        content: `Typ úlohy: ${meta?.name}\nPravidla typu: ${meta?.rules}\nTypické chytáky Scio u tohoto typu: ${meta?.traps}\n\n${reference}\n\n### POSUZOVANÁ ÚLOHA (bez klíče)\n${taskToPrompt(group, group.questions, false)}`,
       },
     ],
   });
@@ -286,15 +296,23 @@ async function validate(group: Group, type: TaskType, userId?: string): Promise<
   return response.parsed_output;
 }
 
+/** Validator letters for one question, one per part. Tolerates "C/F", "C, F" or "(C)" in a single string. */
+function validatorLetters(v: Validation, qi: number) {
+  return (v.answers[qi] ?? []).flatMap((a) => a.toUpperCase().match(/[A-H]/g) ?? []);
+}
+
 function accepts(group: Group, v: Validation) {
-  const keyMatches = group.questions.every((q, qi) =>
-    q.parts.every((p, pi) => (v.answers[qi]?.[pi] ?? "").trim().toUpperCase().replace(/[()]/g, "") === p.answer),
-  );
+  const keyMatches = group.questions.every((q, qi) => {
+    const letters = validatorLetters(v, qi);
+    return q.parts.every((p, pi) => letters[pi] === p.answer);
+  });
   const s = v.scores;
+  // correctness bars stay strict; style/difficulty bars match real Scio tasks (not "harder than Scio")
   const scoresOk =
     [s.unambiguous, s.czech, s.real_words].every((x) => x >= 8) &&
-    [s.scio_style, s.difficulty, s.distractors].every((x) => x >= 7);
-  const hardEnough = !v.shortcut && v.predictedSuccess >= 20 && v.predictedSuccess <= 70;
+    s.scio_style >= 7 &&
+    [s.difficulty, s.distractors].every((x) => x >= 6);
+  const hardEnough = !v.shortcut && v.predictedSuccess >= 20 && v.predictedSuccess <= 75;
   return { ok: keyMatches && scoresOk && hardEnough && v.verdict === "accept", keyMatches, hardEnough };
 }
 
@@ -302,20 +320,21 @@ function accepts(group: Group, v: Validation) {
 const ACCEPTANCE_CRITERIA = `KRITÉRIA, PODLE KTERÝCH ÚLOHU NEZÁVISLE OHODNOTÍ VALIDÁTOR (musí projít všechna):
 - validátor úlohu vyřeší sám a musí dojít k TVÉMU klíči – každá část má právě jednu obhajitelnou odpověď;
 - čeština bez chyb, všechna slova existují, významové vztahy platí (≥ 8/10);
-- styl Scio, obtížnost a síla chytáků ≥ 7/10;
-- odhad úspěšnosti uchazečů 20–70 % (ne lehčí, ne nesmyslně těžká), žádná povrchní zkratka k odpovědi.
+- styl Scio ≥ 7/10, obtížnost a síla chytáků ≥ 6/10 – srovnatelné se skutečnými úlohami Scio daného typu;
+- odhad úspěšnosti uchazečů 20–75 % (ne lehčí, ne nesmyslně těžká), žádná povrchní zkratka k odpovědi;
+- u synonym/antonym přesně 2 části (synonymum A–D, antonymum E–H).
 Než odpovíš, úlohu si sám vyřeš od nuly, jako bys klíč neznal, a zkontroluj každé kritérium. Najdeš-li problém, oprav ho.`;
 
 function rejectionText(group: Group, verdict: ReturnType<typeof accepts>, v: Validation) {
   const parts: string[] = [];
   if (!verdict.keyMatches) {
-    const theirs = group.questions.map((q, qi) => `úloha ${qi + 1}: validátor ${v.answers[qi]?.join("/") ?? "?"}, klíč ${q.parts.map((p) => p.answer).join("/")}`);
+    const theirs = group.questions.map((q, qi) => `úloha ${qi + 1}: validátor ${validatorLetters(v, qi).join("/") || "?"}, klíč ${q.parts.map((p) => p.answer).join("/")}`);
     parts.push(`jiná odpověď než klíč (${theirs.join("; ")})`);
   }
   if (!verdict.hardEnough) parts.push(`příliš lehká nebo se zkratkou (odhad úspěšnosti ${v.predictedSuccess} %, zkratka ${v.shortcut})`);
   if (v.issues.length) parts.push(v.issues.join("; "));
   const s = v.scores;
-  const low = Object.entries(s).filter(([k, x]) => x < (["unambiguous", "czech", "real_words"].includes(k) ? 8 : 7));
+  const low = Object.entries(s).filter(([k, x]) => x < (["unambiguous", "czech", "real_words"].includes(k) ? 8 : k === "scio_style" ? 7 : 6));
   if (low.length) parts.push(`nízké skóre: ${low.map(([k, x]) => `${k} ${x}`).join(", ")}`);
   return parts.join(" | ");
 }

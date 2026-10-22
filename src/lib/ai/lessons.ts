@@ -20,6 +20,14 @@ const MAX_DISTILL_INPUT = 20;
 
 const stripType = (note: string, type: string) => note.replace(new RegExp(`^${type}:\\s*`), "");
 
+/**
+ * Rejections before this moment were judged by older validator rules (stricter difficulty bar,
+ * synonym answers counted wrong by a bug) – they no longer steer the generator.
+ */
+const CRITERIA_EPOCH = "2026-10-22T21:34:00Z"; // deploy of the fixed validator
+/** Lessons distilled from bad data are discarded per type and re-learned from fresh rejections. */
+const LESSON_RESET: Partial<Record<TaskType, string>> = { synonyma: CRITERIA_EPOCH };
+
 export interface Lessons {
   lessons: string | null;
   recent: string[];
@@ -28,17 +36,21 @@ export interface Lessons {
 export async function getLessons(type: TaskType): Promise<Lessons> {
   const admin = createAdminClient();
   const [lessonRes, recentRes] = await Promise.all([
-    admin.from("generator_lessons").select("lessons").eq("task_type", type).maybeSingle(),
+    admin.from("generator_lessons").select("lessons,updated_at").eq("task_type", type).maybeSingle(),
     admin
       .from("ai_calls")
       .select("note")
       .eq("kind", "reject")
       .like("note", `${type}:%`)
+      .gte("created_at", CRITERIA_EPOCH)
       .order("created_at", { ascending: false })
       .limit(MAX_RECENT),
   ]);
+  const reset = LESSON_RESET[type];
+  const stale = Boolean(reset && lessonRes.data?.updated_at && (lessonRes.data.updated_at as string) < reset);
   return {
-    lessons: lessonRes.error ? null : (((lessonRes.data?.lessons as string | undefined) ?? "").slice(0, MAX_LESSON_CHARS) || null),
+    lessons:
+      lessonRes.error || stale ? null : (((lessonRes.data?.lessons as string | undefined) ?? "").slice(0, MAX_LESSON_CHARS) || null),
     recent: recentRes.error
       ? []
       : ((recentRes.data ?? []) as { note: string | null }[])
@@ -67,9 +79,16 @@ export async function refreshLessons(type: TaskType) {
     .eq("task_type", type)
     .maybeSingle();
   if (lessonErr) return; // migration 0004 not applied yet
+  const reset = LESSON_RESET[type];
+  const stale = Boolean(reset && current?.updated_at && (current.updated_at as string) < reset);
+  const since = !current?.updated_at || stale ? CRITERIA_EPOCH : (current.updated_at as string);
 
-  let newQuery = admin.from("ai_calls").select("id", { count: "exact", head: true }).eq("kind", "reject").like("note", `${type}:%`);
-  if (current?.updated_at) newQuery = newQuery.gte("created_at", current.updated_at as string);
+  const newQuery = admin
+    .from("ai_calls")
+    .select("id", { count: "exact", head: true })
+    .eq("kind", "reject")
+    .like("note", `${type}:%`)
+    .gte("created_at", since > CRITERIA_EPOCH ? since : CRITERIA_EPOCH);
   const { count } = await newQuery;
   if ((count ?? 0) < REFRESH_AFTER) return;
 
@@ -79,6 +98,7 @@ export async function refreshLessons(type: TaskType) {
       .select("note")
       .eq("kind", "reject")
       .like("note", `${type}:%`)
+      .gte("created_at", CRITERIA_EPOCH)
       .order("created_at", { ascending: false })
       .limit(MAX_DISTILL_INPUT),
     admin.from("ai_calls").select("id", { count: "exact", head: true }).eq("kind", "accept").like("note", `${type}:%`),
@@ -103,7 +123,7 @@ export async function refreshLessons(type: TaskType) {
 Přijatých úloh zatím: ${accepted ?? 0}
 
 Dosavadní pravidla:
-${(current?.lessons as string | undefined) ?? "(zatím žádná)"}
+${stale ? "(zatím žádná)" : ((current?.lessons as string | undefined) ?? "(zatím žádná)")}
 
 Poslední důvody zamítnutí (nejnovější nahoře):
 ${reasons.join("\n")}`,
