@@ -15,7 +15,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [name, setName] = useState("");
   const [code, setCode] = useState(params.get("code") ?? "");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(params.get("error") === "confirm" ? "Odkaz pro potvrzení vypršel. Zkus se přihlásit." : null);
+  const [error, setError] = useState<string | null>(
+    params.get("error") === "confirm"
+      ? "Odkaz pro potvrzení vypršel. Zkus se přihlásit."
+      : params.get("error") === "gone"
+        ? "Tenhle účet už neexistuje. Přihlas se jiným, nebo se zaregistruj znovu."
+        : null,
+  );
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
