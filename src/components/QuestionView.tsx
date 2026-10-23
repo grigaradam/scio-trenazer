@@ -61,7 +61,11 @@ export function GroupContext({
           {group.passageTitle && (
             <div className="mb-2 text-xs font-extrabold uppercase tracking-wider text-muted">{group.passageTitle}</div>
           )}
-          {group.passage && <RichText className="text-[15px]">{group.passage}</RichText>}
+          {group.passage && (
+            <RichText className="text-[15px]" quoteSource>
+              {group.passage}
+            </RichText>
+          )}
           {group.chart && (
             <div className={group.passage ? "mt-3" : ""}>
               <ChartView chart={group.chart} />
@@ -97,7 +101,11 @@ export function QuestionBody({
 }) {
   return (
     <div className="space-y-4">
-      {question.stem && <RichText className="text-[16px] font-medium">{question.stem}</RichText>}
+      {question.stem && (
+        <RichText className="text-[16px] font-medium" quoteSource>
+          {question.stem}
+        </RichText>
+      )}
       {question.compare && (
         <div className="grid grid-cols-2 overflow-hidden rounded-2xl border-2 border-border">
           <div className="border-r-2 border-border p-3 text-center">

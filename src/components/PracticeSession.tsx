@@ -341,7 +341,7 @@ export function PracticeSession({
       )}
 
       {task && question && !loading && (
-        <div className="animate-fade-up space-y-4">
+        <div className="animate-fade-up space-y-4" data-task-scope>
           <div className="flex items-center justify-between gap-2">
             <Badge tone={task.kind === "mistake" ? "warn" : "brand"}>{task.kind === "mistake" ? "🔁 " : "✨ "}{task.origin}</Badge>
             {task.group.questions.length > 1 && (

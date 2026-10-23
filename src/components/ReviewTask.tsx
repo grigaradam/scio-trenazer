@@ -89,7 +89,7 @@ export function ReviewTask({
   const complete = selected.every(Boolean);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-task-scope>
       <GroupContext group={group} tone={tone} />
       <div className="rounded-3xl border-2 border-border bg-surface p-4 sm:p-5">
         {!reveal && given && (

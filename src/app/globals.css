@@ -243,6 +243,41 @@ label {
   }
 }
 
+/* [[Quotes]] from the task text in explanations, and their place in the text (lib/quotes.ts). */
+.rich cite {
+  font-style: normal;
+  text-decoration: underline 2px var(--color-brand-500);
+  text-underline-offset: 3px;
+  border-radius: 0.25em;
+}
+.rich cite[role="button"]:not([data-missing]) {
+  cursor: pointer;
+}
+.rich cite[role="button"]:not([data-missing])::after {
+  content: "↑";
+  margin-left: 0.15em;
+  font-size: 0.8em;
+  font-weight: 800;
+  color: var(--color-brand-500);
+}
+.rich cite[role="button"]:not([data-missing]):hover,
+.rich cite[role="button"]:focus-visible {
+  background: color-mix(in srgb, var(--color-brand-500) 14%, transparent);
+  outline: none;
+}
+::highlight(scio-quote) {
+  text-decoration: underline 2px var(--color-brand-500);
+}
+::highlight(scio-quote-active) {
+  background-color: color-mix(in srgb, var(--color-marker) 75%, transparent);
+  text-decoration: underline 2px var(--color-brand-500);
+}
+@media (prefers-color-scheme: dark) {
+  ::highlight(scio-quote-active) {
+    background-color: rgba(250, 204, 21, 0.35);
+  }
+}
+
 /* Underline "pen stroke" for key terms (**bold** inside explanations). */
 .explain strong {
   background-image: linear-gradient(currentColor, currentColor);

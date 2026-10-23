@@ -4,10 +4,11 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import type { PluggableList } from "unified";
+import { QUOTE_RE } from "./quotes";
 
 const schema = {
   ...defaultSchema,
-  tagNames: [...(defaultSchema.tagNames ?? []), "u", "mark"],
+  tagNames: [...(defaultSchema.tagNames ?? []), "u", "mark", "cite"],
   attributes: {
     ...defaultSchema.attributes,
     code: ["className"],
@@ -179,6 +180,7 @@ const TOKEN = /(`+)[\s\S]*?\1|\\\[[\s\S]+?\\\]|\\\([\s\S]+?\\\)|(?<!\\)\$\$[\s\S
  * - $$…$$ on its own line becomes a display block; inside a sentence it stays inline in \displaystyle,
  * - TeX is repaired (see repairTex/inlineTex), code spans are left alone,
  * - ==text== → <mark>, also when the highlight contains math,
+ * - [[quote from the task text]] → <cite> (see lib/quotes.ts),
  * - a number and its % sign stay on one line.
  */
 export function preprocess(src: string) {
@@ -199,6 +201,7 @@ export function preprocess(src: string) {
       return hold(`$$\n${before}${body.replace(/\n/g, `\n${before}`)}\n${before}$$`);
     })
     .replace(/==([^=\n][^\n]*?)==/g, "<mark>$1</mark>")
+    .replace(QUOTE_RE, "<cite>$1</cite>")
     .replace(/(\d) ([%‰])/g, "$1\u00a0$2") // "80 %" never splits across lines
     // "$a$$b$" would read as a $$ delimiter, so adjacent formulas get a word joiner in between
     .replace(/\u0000(\d+)\u0000(?=(\u0000)?)/g, (_, i: string, next?: string) => math[Number(i)] + (next ? "\u2060" : ""));

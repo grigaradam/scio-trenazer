@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { aiErrorResponse, spendBudget } from "@/lib/ai/client";
-import { generateExplanation } from "@/lib/ai/explain";
+import { EXPLAIN_VERSION, QUOTE_TYPES, generateExplanation } from "@/lib/ai/explain";
 import { AI } from "@/lib/env";
 import { apiUser } from "@/lib/server/auth";
 import { resolveTask } from "@/lib/server/tasks";
@@ -19,13 +19,15 @@ export async function POST(req: Request) {
 
   const admin = createAdminClient();
   const { data: cached } = await admin.from("explanations").select("content").eq("task_ref", task.ref).maybeSingle();
-  if (cached) return NextResponse.json({ explanation: cached.content, answer: task.question.parts.map((p) => p.answer) });
+  // explanations cached before [[quotes]] existed are regenerated once for the task types that use them
+  const stale = cached && QUOTE_TYPES.includes(task.taskType) && (cached.content as { v?: number }).v !== EXPLAIN_VERSION;
+  if (cached && !stale) return NextResponse.json({ explanation: cached.content, answer: task.question.parts.map((p) => p.answer) });
 
   const over = await spendBudget(user.id, "explain");
   if (over) return over;
   try {
     const explanation = await generateExplanation(task, user.id);
-    await admin.from("explanations").upsert({ task_ref: task.ref, content: explanation, model: AI.explainModel });
+    await admin.from("explanations").upsert({ task_ref: task.ref, content: { ...explanation, v: EXPLAIN_VERSION }, model: AI.explainModel });
     return NextResponse.json({ explanation, answer: task.question.parts.map((p) => p.answer) });
   } catch (err) {
     return aiErrorResponse(err);
