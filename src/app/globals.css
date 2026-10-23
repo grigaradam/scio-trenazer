@@ -194,6 +194,16 @@ label {
 .rich .katex {
   font-size: 1.08em;
 }
+/* Breathing room so tall inline formulas (fractions, roots) on adjacent lines don't touch. */
+.rich .katex-html > .base {
+  margin-block: 0.25em;
+}
+/* Punctuation glued into a formula box (see rehypeGlueMath) keeps the look of the surrounding text. */
+.rich .katex .math-glue {
+  font-family: var(--font-sans);
+  font-size: calc(1em / 1.08);
+  font-style: normal;
+}
 .rich .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
