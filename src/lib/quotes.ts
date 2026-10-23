@@ -86,9 +86,25 @@ export function setActiveQuote(range: Range | null) {
   else CSS.highlights.delete("scio-quote-active");
 }
 
+/** Nearest ancestor that scrolls on its own (e.g. the test review sheet), or null for the page. */
+function scrollParent(el: Element | null): HTMLElement | null {
+  for (let n = el?.parentElement; n && n !== document.body; n = n.parentElement) {
+    const { overflowY } = getComputedStyle(n);
+    if ((overflowY === "auto" || overflowY === "scroll") && n.scrollHeight > n.clientHeight) return n;
+  }
+  return null;
+}
+
 /** Scrolls the quoted place into view (unless it is already comfortably visible). */
 export function scrollToRange(range: Range) {
   const r = range.getBoundingClientRect();
-  if (r.top > 80 && r.bottom < window.innerHeight - 160) return;
-  window.scrollTo({ top: window.scrollY + r.top - window.innerHeight / 3, behavior: "smooth" });
+  const start = range.startContainer;
+  const box = scrollParent(start instanceof Element ? start : start.parentElement);
+  // visible area of the scroller; the margins keep clear of sticky headers and bottom action bars
+  const top = box ? box.getBoundingClientRect().top : 0;
+  const height = box ? box.clientHeight : window.innerHeight;
+  if (r.top - top > 80 && r.bottom - top < height - 160) return;
+  const delta = r.top - top - height / 3;
+  if (box) box.scrollBy({ top: delta, behavior: "smooth" });
+  else window.scrollBy({ top: delta, behavior: "smooth" });
 }
