@@ -35,7 +35,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
         <div className="px-2">
           <Logo small />
         </div>
-        <SideNav badge={openMistakes ?? 0} />
+        <SideNav badge={openMistakes ?? 0} avatar={profile.avatar_url} />
         <div className="mt-auto px-2">{pills}</div>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
@@ -45,7 +45,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
         </header>
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-6 lg:px-8 lg:pb-12 lg:pt-8">{children}</main>
       </div>
-      <BottomNav badge={openMistakes ?? 0} />
+      <BottomNav badge={openMistakes ?? 0} avatar={profile.avatar_url} />
       <PageTracker />
     </div>
   );
