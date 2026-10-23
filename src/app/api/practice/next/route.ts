@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { generateTasks } from "@/lib/ai/generate";
 import { spendBudget } from "@/lib/ai/client";
-import { taskTypeMeta } from "@/lib/content/exams";
+import { type TaskTypeMeta, taskTypeMeta } from "@/lib/content/exams";
 import { genRef, stripGroup } from "@/lib/content/public";
 import type { Group, TaskType } from "@/lib/content/types";
 import { apiUser } from "@/lib/server/auth";
@@ -13,7 +13,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
 export const maxDuration = 300;
 
 const Body = z.object({
-  type: z.string(),
+  /** one type, or several for a mixed session (each task comes from one of them) */
+  type: z.string().optional(),
+  types: z.array(z.string()).max(50).optional(),
   mode: z.enum(["mix", "mistakes", "new"]).default("mix"),
   exclude: z.array(z.string()).default([]),
 });
@@ -21,18 +23,22 @@ const Body = z.object({
 export async function POST(req: Request) {
   const { user, error } = await apiUser();
   if (error) return error;
-  const { type, mode, exclude } = Body.parse(await req.json());
-  const meta = taskTypeMeta(type);
-  if (!meta) return NextResponse.json({ error: "Neznámý typ úlohy" }, { status: 400 });
+  const { type, types, mode, exclude } = Body.parse(await req.json());
+  const metas = [...new Set(types ?? (type ? [type] : []))].map(taskTypeMeta);
+  if (!metas.length || metas.some((m) => !m)) return NextResponse.json({ error: "Neznámý typ úlohy" }, { status: 400 });
+  const pool = metas as TaskTypeMeta[];
   const admin = createAdminClient();
 
   // 1) open mistakes first (spaced: least recently touched first)
   if (mode !== "new") {
     const { data: mistakes } = await admin
       .from("mistakes")
-      .select("task_ref")
+      .select("task_ref,task_type")
       .eq("user_id", user.id)
-      .eq("task_type", type)
+      .in(
+        "task_type",
+        pool.map((m) => m.id),
+      )
       .eq("status", "open")
       .order("updated_at", { ascending: true })
       .limit(50);
@@ -41,9 +47,11 @@ export async function POST(req: Request) {
       const task = await resolveTask(candidate.task_ref);
       if (task) {
         // prepare a fresh task in the background, so it's ready when the mistakes run out
-        if (mode === "mix") ensureTaskBuffer(user.id, meta.exam, meta.id);
+        const meta = taskTypeMeta(task.taskType);
+        if (mode === "mix" && meta) ensureTaskBuffer(user.id, meta.exam, meta.id);
         return NextResponse.json({
           kind: "mistake",
+          type: task.taskType,
           refs: [task.ref],
           group: stripGroup(task.group),
           origin: task.origin.kind === "test" ? `${task.origin.testTitle}, úloha ${task.origin.n}` : "Tvoje dřívější chyba",
@@ -53,10 +61,19 @@ export async function POST(req: Request) {
     if (mode === "mistakes") return NextResponse.json({ kind: "empty" });
   }
 
-  // 2) a pooled AI task this user has never seen
-  const pick = async () =>
+  // 2) a pooled AI task this user has never seen – in a mix, from a random type that has one ready
+  const pick = async (meta: TaskTypeMeta) =>
     (await pickUnseen(user.id, meta.exam, meta.id, 3)) as unknown as { id: string; payload: Group; served_count: number }[];
-  let available = await pick();
+  const order = [...pool].sort(() => Math.random() - 0.5);
+  let meta = order[0];
+  let available: Awaited<ReturnType<typeof pick>> = [];
+  for (const m of order) {
+    available = await pick(m);
+    if (available.length) {
+      meta = m;
+      break;
+    }
+  }
 
   // 3) nothing left → generate fresh ones (counts against the daily AI budget)
   if (!available.length) {
@@ -64,10 +81,10 @@ export async function POST(req: Request) {
     if (over) return over;
     const started = Date.now();
     const deadline = started + 270_000; // stay under the 300 s function limit
-    let outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id, deadline });
+    let outcome = await generateTasks({ exam: meta.exam, type: meta.id as TaskType, count: 2, userId: user.id, deadline });
     // both candidates rejected and there is still time left in this request → one more round
     if (!outcome.accepted.length && Date.now() + 150_000 < deadline) {
-      outcome = await generateTasks({ exam: meta.exam, type: type as TaskType, count: 2, userId: user.id, deadline });
+      outcome = await generateTasks({ exam: meta.exam, type: meta.id as TaskType, count: 2, userId: user.id, deadline });
     }
     if (!outcome.accepted.length) {
       return NextResponse.json(
@@ -75,7 +92,7 @@ export async function POST(req: Request) {
         { status: 502 },
       );
     }
-    available = await pick();
+    available = await pick(meta);
   }
   const task = available[0];
   if (!task) return NextResponse.json({ error: "Žádná úloha k dispozici" }, { status: 500 });
@@ -89,6 +106,7 @@ export async function POST(req: Request) {
   const group = task.payload;
   return NextResponse.json({
     kind: "generated",
+    type: meta.id,
     refs: group.questions.map((_, i) => genRef(task.id, i)),
     group: stripGroup(group),
     origin: "Nová úloha (AI, ověřená)",

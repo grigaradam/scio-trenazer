@@ -25,7 +25,7 @@ export default async function PracticeTypePage({ params, searchParams }: PagePro
   const mode = sp.mode === "mistakes" || sp.mode === "new" ? sp.mode : "mix";
   return (
     <PracticeSession
-      type={meta.id}
+      types={[meta.id]}
       name={meta.name}
       emoji={meta.emoji}
       tone={meta.section === "verbal" ? "verbal" : "analytic"}

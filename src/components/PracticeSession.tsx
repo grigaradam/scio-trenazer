@@ -5,6 +5,7 @@ import { ArrowLeft, Sparkles, Timer } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { celebrate } from "@/lib/celebrate";
+import { taskTypeMeta } from "@/lib/content/exams";
 import type { PublicGroup } from "@/lib/content/public";
 import type { OptionKey, TaskType } from "@/lib/content/types";
 import { count } from "@/lib/czech";
@@ -21,6 +22,7 @@ type Mode = "mix" | "mistakes" | "new";
 
 interface Loaded {
   kind: "mistake" | "generated";
+  type: TaskType;
   refs: string[];
   group: PublicGroup;
   origin: string;
@@ -53,7 +55,7 @@ const LOADING_TIPS = [
 ];
 
 export function PracticeSession({
-  type,
+  types,
   name,
   emoji,
   tone,
@@ -61,7 +63,8 @@ export function PracticeSession({
   initialLimit,
   initialMode,
 }: {
-  type: TaskType;
+  /** one type, or several for a mixed session */
+  types: TaskType[];
   name: string;
   emoji: string;
   tone: Tone;
@@ -90,6 +93,9 @@ export function PracticeSession({
 
   useStudyHeartbeat(!loading && !empty);
 
+  const mixed = types.length > 1;
+  const taskMeta = task ? taskTypeMeta(task.type) : undefined;
+  const taskTone: Tone = mixed && taskMeta ? (taskMeta.section === "verbal" ? "verbal" : "analytic") : tone;
   const question = task?.group.questions[qi];
   const ref = task?.refs[qi];
 
@@ -104,7 +110,7 @@ export function PracticeSession({
         const r = await fetch("/api/practice/next", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ type, mode: m, exclude: seen.current.slice(-30) }),
+          body: JSON.stringify({ types, mode: m, exclude: seen.current.slice(-30) }),
         });
         const j = await r.json();
         if (!r.ok) throw new Error(j.error ?? "Nepodařilo se načíst úlohu.");
@@ -123,7 +129,7 @@ export function PracticeSession({
         setLoading(false);
       }
     },
-    [mode, type],
+    [mode, types],
   );
 
   useEffect(() => {
@@ -263,6 +269,7 @@ export function PracticeSession({
             {accuracy !== null && <span>· {accuracy} % správně</span>}
             {stats.xp > 0 && <span className="text-brand-600">· +{stats.xp} XP</span>}
             {stats.row >= 3 && <span className="text-orange-500">· 🔥 {stats.row} v řadě</span>}
+            {mixed && stats.done === 0 && <span>· {count(types.length, "typ", "typy", "typů")} úloh</span>}
           </div>
         </div>
       </div>
@@ -327,7 +334,7 @@ export function PracticeSession({
       {empty && !loading && (
         <div className="rounded-3xl border-2 border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-900 dark:bg-emerald-900/20">
           <div className="text-4xl">🏆</div>
-          <p className="mt-2 font-display text-xl font-extrabold">Všechny chyby tohoto typu máš opravené!</p>
+          <p className="mt-2 font-display text-xl font-extrabold">{mixed ? "Všechny chyby ve vybraných typech máš opravené!" : "Všechny chyby tohoto typu máš opravené!"}</p>
           <Button
             className="mt-4"
             onClick={() => {
@@ -342,6 +349,11 @@ export function PracticeSession({
 
       {task && question && !loading && (
         <div className="animate-fade-up space-y-4" data-task-scope>
+          {mixed && taskMeta && (
+            <div className={clsx("font-display text-lg font-extrabold", taskTone === "verbal" ? "text-verbal-600" : "text-analytic-600")}>
+              {taskMeta.emoji} {taskMeta.name}
+            </div>
+          )}
           <div className="flex items-center justify-between gap-2">
             <Badge tone={task.kind === "mistake" ? "warn" : "brand"}>{task.kind === "mistake" ? "🔁 " : "✨ "}{task.origin}</Badge>
             {task.group.questions.length > 1 && (
@@ -350,7 +362,7 @@ export function PracticeSession({
               </span>
             )}
           </div>
-          <GroupContext group={task.group} tone={tone} compact={qi > 0} />
+          <GroupContext group={task.group} tone={taskTone} compact={qi > 0} />
           <div className="rounded-3xl border-2 border-border bg-surface p-4 sm:p-5">
             {left !== null && (
               <div className="mb-3 flex items-center gap-2">
@@ -365,7 +377,7 @@ export function PracticeSession({
             )}
             <QuestionBody
               question={question}
-              tone={tone}
+              tone={taskTone}
               selected={selected}
               onSelect={feedback ? undefined : (p, k) => setSelected((s) => s.map((x, i) => (i === p ? k : x)))}
               reveal={feedback ? { answer: feedback.answer } : null}
@@ -429,7 +441,7 @@ export function PracticeSession({
                   Nevím
                 </Button>
                 <div className="flex-1" />
-                <Button variant={tone} size="lg" disabled={!selected.every(Boolean)} loading={submitting} onClick={() => submit()}>
+                <Button variant={taskTone} size="lg" disabled={!selected.every(Boolean)} loading={submitting} onClick={() => submit()}>
                   Zkontrolovat
                 </Button>
               </>

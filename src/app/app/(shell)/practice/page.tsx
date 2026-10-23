@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MixPicker } from "@/components/MixPicker";
 import { Badge, ProgressBar } from "@/components/ui";
 import { SECTION_META, taskTypesFor } from "@/lib/content/exams";
 import type { SectionId } from "@/lib/content/types";
@@ -21,6 +22,7 @@ export default async function PracticeHub() {
           kvality a nikdy se ti nezopakuje.
         </p>
       </div>
+      <MixPicker mistakes={Object.fromEntries(stats.map((s) => [s.type, s.openMistakes]))} />
       {(["verbal", "analytic"] as SectionId[]).map((section) => (
         <section key={section}>
           <h2 className={`mb-3 font-display text-xl font-bold ${section === "verbal" ? "text-verbal-600" : "text-analytic-600"}`}>
