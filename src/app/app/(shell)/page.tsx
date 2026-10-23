@@ -4,7 +4,9 @@ import { StartTestButton } from "@/components/StartTestButton";
 import { Badge, ButtonLink, Card, ProgressBar, Ring, SectionTitle } from "@/components/ui";
 import { taskTypeMeta } from "@/lib/content/exams";
 import { levelInfo, levelTitle } from "@/lib/gamification";
+import { count, plural } from "@/lib/czech";
 import { getProfile, requireUser } from "@/lib/server/auth";
+import { greetingName } from "@/lib/server/names";
 import { czToday, getAttempts, getMistakes, getStudyDays, getTypeStats, testTitle } from "@/lib/server/queries";
 
 export const metadata = { title: "Přehled" };
@@ -55,11 +57,11 @@ export default async function Dashboard() {
     <div className="space-y-8">
       <section className="animate-fade-up">
         <h1 className="font-display text-3xl font-extrabold">
-          {greeting}, {profile.display_name ?? "studente"}! {activeToday ? "🔥" : "👋"}
+          {greeting}, {greetingName(profile) ?? "studente"}! {activeToday ? "🔥" : "👋"}
         </h1>
         <p className="mt-1 text-muted">
           {activeToday
-            ? `Dnes už máš splněno – streak ${profile.streak_current} ${dayWord(profile.streak_current)}. Přidej ještě něco navíc!`
+            ? `Dnes už máš splněno – streak ${count(profile.streak_current, "den", "dny", "dní")}. Přidej ještě něco navíc!`
             : profile.streak_current > 0
               ? `Vyřeš dnes aspoň jednu úlohu, ať neztratíš ${profile.streak_current}denní streak.`
               : "Každý den aspoň chvilka. Pravidelnost je víc než jednorázové šprtání."}
@@ -114,7 +116,7 @@ export default async function Dashboard() {
           <div>
             <div className="text-[10px] font-bold uppercase tracking-wider text-muted sm:text-xs">Streak</div>
             <div className="font-display text-lg font-extrabold sm:text-2xl">
-              {profile.streak_current} <span className="text-xs text-muted sm:text-base">{dayWord(profile.streak_current)}</span>
+              {profile.streak_current} <span className="text-xs text-muted sm:text-base">{plural(profile.streak_current, "den", "dny", "dní")}</span>
             </div>
             <div className="hidden text-xs text-muted sm:block">rekord {profile.streak_best}</div>
           </div>
@@ -157,7 +159,7 @@ export default async function Dashboard() {
                     <span className="text-3xl">{meta.emoji}</span>
                     {t.openMistakes > 0 && (
                       <Badge tone="bad" className="max-sm:hidden">
-                        {t.openMistakes} chyb
+                        {count(t.openMistakes, "chyba", "chyby", "chyb")}
                       </Badge>
                     )}
                   </div>
@@ -165,7 +167,7 @@ export default async function Dashboard() {
                     <div className="truncate font-display font-extrabold sm:mt-2 sm:whitespace-normal">{meta.name}</div>
                     <div className="text-sm text-muted sm:mt-1">
                       {t.accuracy !== null ? `úspěšnost ${Math.round(t.accuracy * 100)} %` : "zatím bez dat"}
-                      {t.openMistakes > 0 && <span className="text-rose-500 sm:hidden"> · {t.openMistakes} chyb</span>}
+                      {t.openMistakes > 0 && <span className="text-rose-500 sm:hidden"> · {count(t.openMistakes, "chyba", "chyby", "chyb")}</span>}
                     </div>
                   </div>
                   <ArrowRight className="h-5 w-5 shrink-0 text-brand-600 sm:hidden" />
@@ -239,7 +241,7 @@ export default async function Dashboard() {
         >
           <Target className="h-8 w-8 text-rose-500" />
           <div className="flex-1">
-            <div className="font-display text-lg font-extrabold">{openMistakes.length} úloh čeká na opravu</div>
+            <div className="font-display text-lg font-extrabold">{count(openMistakes.length, "úloha čeká", "úlohy čekají", "úloh čeká")} na opravu</div>
             <div className="text-sm text-muted">Každá opravená chyba = +15 XP a o kus jistější výsledek.</div>
           </div>
           <ArrowRight className="h-6 w-6 text-rose-500" />
@@ -256,8 +258,4 @@ function lastDays(n: number) {
 
 function pragueHour() {
   return Number(new Intl.DateTimeFormat("cs-CZ", { hour: "numeric", hour12: false, timeZone: "Europe/Prague" }).format(new Date()));
-}
-
-function dayWord(n: number) {
-  return n === 1 ? "den" : n >= 2 && n <= 4 ? "dny" : "dní";
 }

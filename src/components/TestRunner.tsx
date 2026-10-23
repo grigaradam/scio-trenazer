@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AnswerMap, PublicGroup, PublicQuestion, PublicTest } from "@/lib/content/public";
 import type { OptionKey, SectionId } from "@/lib/content/types";
+import { count } from "@/lib/czech";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { Modal } from "./Modal";
 import { GroupContext, QuestionBody } from "./QuestionView";
@@ -470,7 +471,7 @@ export function TestRunner({ attemptId, test, initial }: Props) {
         <div className="text-4xl">{modal === "end" ? "➡️" : "🏁"}</div>
         <h2 className="mt-2 font-display text-2xl font-extrabold">{modal === "end" ? "Ukončit verbální oddíl?" : "Odevzdat test?"}</h2>
         <p className="mt-2 text-muted">
-          Vyplněno {answeredCount} z {items.length} úloh
+          Vyplněno {answeredCount} z {count(items.length, "úlohy", "úloh", "úloh")}
           {flags.filter((n) => items.some((it) => it.q.n === n)).length > 0 &&
             `, označeno ${flags.filter((n) => items.some((it) => it.q.n === n)).length}`}
           . Zbývá {fmt(remaining)}.

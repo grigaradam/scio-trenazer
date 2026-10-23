@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
 import { bindInvite, claimInvite, releaseInvite } from "@/lib/server/invites";
+import { refreshVocative } from "@/lib/server/names";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const Body = z.object({
@@ -22,11 +23,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Neplatný nebo už použitý přístupový kód." }, { status: 403 });
   }
 
+  const displayName = name || email.split("@")[0];
   const { data, error } = await createAdminClient().auth.admin.createUser({
     email,
     password,
     email_confirm: true,
-    user_metadata: { display_name: name || email.split("@")[0] },
+    user_metadata: { display_name: displayName },
   });
   if (error || !data.user) {
     await releaseInvite(code); // the code stays usable
@@ -37,5 +39,7 @@ export async function POST(req: Request) {
     );
   }
   await bindInvite(code, data.user.id);
+  const userId = data.user.id;
+  after(() => refreshVocative(userId, displayName));
   return NextResponse.json({ ok: true });
 }

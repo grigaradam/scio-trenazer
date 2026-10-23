@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { count } from "@/lib/czech";
 
 export interface ScorePoint {
   date: string;
@@ -108,7 +109,7 @@ export function Heatmap({ days, goalMin }: { days: Record<string, { min: number;
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-muted">
         <span className="min-h-4">
           {hover
-            ? `${new Date(hover).toLocaleDateString("cs-CZ", { weekday: "short", day: "numeric", month: "long" })}: ${info?.min ?? 0} min · ${info?.tasks ?? 0} úloh`
+            ? `${new Date(hover).toLocaleDateString("cs-CZ", { weekday: "short", day: "numeric", month: "long" })}: ${info?.min ?? 0} min · ${count(info?.tasks ?? 0, "úloha", "úlohy", "úloh")}`
             : "Klepni nebo najeď na den"}
         </span>
         <span className="flex items-center gap-1">

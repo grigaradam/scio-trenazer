@@ -5,6 +5,7 @@ import { ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { taskTypeMeta } from "@/lib/content/exams";
+import { count } from "@/lib/czech";
 import type { PublicGroup } from "@/lib/content/public";
 import type { TaskType } from "@/lib/content/types";
 import { ReviewTask } from "./ReviewTask";
@@ -40,7 +41,7 @@ export function MistakesView({ items, fixedCount, totalOpen }: { items: Item[]; 
         <h1 className="font-display text-3xl font-extrabold">Moje slabiny</h1>
         <EmptyState emoji="🏆" title={fixedCount ? "Všechno opraveno!" : "Zatím žádné chyby"}>
           {fixedCount
-            ? `Opravil(a) jsi už ${fixedCount} chyb. Udělej další test nebo trénuj nové úlohy.`
+            ? `Opravil(a) jsi už ${count(fixedCount, "chybu", "chyby", "chyb")}. Udělej další test nebo trénuj nové úlohy.`
             : "Až uděláš test nebo trénink, sem se uloží úlohy, které ti nešly. Každý den si je můžeš otevřít a opravit."}
         </EmptyState>
         <div className="flex justify-center gap-3">

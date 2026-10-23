@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { celebrate } from "@/lib/celebrate";
 import type { PublicGroup } from "@/lib/content/public";
 import type { OptionKey, TaskType } from "@/lib/content/types";
+import { count } from "@/lib/czech";
 import { achievementDef } from "@/lib/gamification";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { emitLiveStats } from "@/lib/liveStats";
@@ -258,7 +259,7 @@ export function PracticeSession({
             {emoji} {name}
           </h1>
           <div className="flex flex-wrap gap-2 text-xs font-bold text-muted">
-            <span>{stats.done} úloh</span>
+            <span>{count(stats.done, "úloha", "úlohy", "úloh")}</span>
             {accuracy !== null && <span>· {accuracy} % správně</span>}
             {stats.xp > 0 && <span className="text-brand-600">· +{stats.xp} XP</span>}
             {stats.row >= 3 && <span className="text-orange-500">· 🔥 {stats.row} v řadě</span>}

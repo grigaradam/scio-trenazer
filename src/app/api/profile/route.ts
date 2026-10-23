@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
 import { apiUser } from "@/lib/server/auth";
+import { refreshVocative } from "@/lib/server/names";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const Body = z.object({
@@ -17,5 +18,6 @@ export async function PATCH(req: Request) {
   const body = Body.parse(await req.json());
   const { error: dbError } = await createAdminClient().from("profiles").update(body).eq("id", user.id);
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 });
+  if (body.display_name) after(() => refreshVocative(user.id, body.display_name));
   return NextResponse.json({ ok: true });
 }

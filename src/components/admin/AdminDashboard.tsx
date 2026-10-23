@@ -5,6 +5,7 @@ import { Ban, Check, Copy, Link2, LogOut, RefreshCw, Unlock } from "lucide-react
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
+import { count, plural } from "@/lib/czech";
 import type { AdminStats } from "@/lib/server/admin-stats";
 import { Logo } from "../Logo";
 import { Badge, Button, Card } from "../ui";
@@ -70,7 +71,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         <Kpi label="Online teď" value={num(t.onlineNow)} hint="aktivní v posledních 5 min" accent />
         <Kpi label="Aktivní dnes" value={num(t.activeToday)} hint={`za 7 dní ${t.activeWeek}`} />
         <Kpi label="Uživatelé" value={num(t.users)} hint={t.blocked ? `${t.blocked} zablokováno` : "nikdo zablokovaný"} />
-        <Kpi label="Odučeno celkem" value={`${num(t.hours, 1)} h`} hint={`${num(t.tasksSolved)} úloh · ${t.testsCompleted} testů`} />
+        <Kpi label="Odučeno celkem" value={`${num(t.hours, 1)} h`} hint={`${num(t.tasksSolved)} ${plural(t.tasksSolved, "úloha", "úlohy", "úloh")} · ${count(t.testsCompleted, "test", "testy", "testů")}`} />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
@@ -101,6 +102,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
                   ["explain", "Vysvětlení"],
                   ["chat", "Chat"],
                   ["learn", "Učení z chyb"],
+                  ["name", "Skloňování jmen"],
                 ] as const
               ).map(([k, label]) => (
                 <tr key={k} className="border-t border-border">
@@ -122,7 +124,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Mini label="Vytvořeno otázek" value={num(p.generated)} hint={p.acceptRate !== null ? `prošlo kontrolou ${Math.round(p.acceptRate * 100)} % pokusů` : undefined} />
-          <Mini label="Zobrazeno celkem" value={num(p.serves)} hint={`${num(p.servedTasks)} různých otázek`} />
+          <Mini label="Zobrazeno celkem" value={num(p.serves)} hint={`${num(p.servedTasks)} ${plural(p.servedTasks, "různá otázka", "různé otázky", "různých otázek")}`} />
           <Mini label="Zrecyklováno" value={num(p.recycledServes)} hint={`${num(p.sharedTasks)} otázek dostalo víc lidí`} />
           <Mini
             label="Využití otázky"
@@ -414,9 +416,9 @@ function Learning({ rows }: { rows: AdminStats["learning"] }) {
         nerostou). Cíl: co nejvíc úloh projde napoprvé.
       </p>
       <div className="grid grid-cols-3 gap-2">
-        <Mini label="Napoprvé" value={pct(total.first, all)} hint={`${total.first} úloh`} />
-        <Mini label="Po opravě" value={pct(total.revised, all)} hint={`${total.revised} úloh`} />
-        <Mini label="Zahozeno" value={pct(total.failed, all)} hint={`${total.failed} úloh`} />
+        <Mini label="Napoprvé" value={pct(total.first, all)} hint={count(total.first, "úloha", "úlohy", "úloh")} />
+        <Mini label="Po opravě" value={pct(total.revised, all)} hint={count(total.revised, "úloha", "úlohy", "úloh")} />
+        <Mini label="Zahozeno" value={pct(total.failed, all)} hint={count(total.failed, "úloha", "úlohy", "úloh")} />
       </div>
       <div className="scroll-thin mt-4 overflow-x-auto">
         <table className="w-full min-w-[560px] text-sm">

@@ -4,6 +4,8 @@ import type { TestResult } from "@/lib/scoring";
 export interface Profile {
   id: string;
   display_name: string | null;
+  /** Czech vocative of display_name for greetings ("Adame"); needs migration 0006. */
+  display_name_vocative?: string | null;
   exam: string;
   onboarded: boolean;
   xp: number;
