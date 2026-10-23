@@ -54,6 +54,7 @@ const DEFAULTS: Record<string, () => Row> = {
     score: null,
     max_score: null,
     result: null,
+    retake_section: null,
   }),
   mistakes: () => ({
     id: crypto.randomUUID(),

@@ -42,6 +42,10 @@ Stejně tak u verbálního oddílu zkontroluj vizuálně podtržená slova (syno
   matematika KaTeX `$\frac{56}{x}$`, `$x^2$`, `$\sqrt{2}$`, `$\cdot$`, desetinná čárka `$4{,}5$`,
   jednotky `cm$^2$`/`$42{,}5\ \text{cm}^3$`. Prázdné místo ve větě = `______` (6 podtržítek).
   Tabulky převeď na GFM markdown tabulky (když jdou rozumně přepsat), jinak výřez obrázku.
+  Tabulka se sloučenými buňkami v záhlaví (např. „prodáno" nad sloupci leden–duben) se NESMÍ
+  zplošťovat do „prodáno – leden": zapiš ji jako HTML `<table>` s `<thead>` (`<th rowspan>`/`<th colspan>`
+  přesně jako v PDF) a `<tbody>` (popisek řádku `<th scope="row">`, hodnoty `<td>`), bez prázdných řádků
+  uvnitř. Hodnoty buněk opiš beze změny.
   V JSON správně escapuj zpětná lomítka (`"$\\frac{1}{2}$"`).
 - Možnosti: přesný text bez „(A)". Synonyma: `parts` = 2 části:
   `{label:"synonymum", options A–D}` a `{label:"antonymum", options E–H}`, každá s vlastním `answer`.

@@ -3,6 +3,7 @@ import { ResultsView } from "@/components/ResultsView";
 import { getTest } from "@/lib/content/load";
 import { stripTest } from "@/lib/content/public";
 import { requireUser } from "@/lib/server/auth";
+import { emptySection } from "@/lib/scoring";
 import { compareLastTests, getAttempt, getAttempts, testTitle } from "@/lib/server/queries";
 
 export const metadata = { title: "Výsledky" };
@@ -37,6 +38,7 @@ export default async function ResultsPage({ params, searchParams }: PageProps<"/
           : null
       }
       isDiagnostic={attempt.is_diagnostic}
+      retakeSection={attempt.retake_section ? null : emptySection(attempt.result)}
     />
   );
 }

@@ -1,8 +1,9 @@
 "use client";
 
 import clsx from "clsx";
-import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Clock, Dumbbell, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Clock, Dumbbell, RotateCcw, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { achievementDef } from "@/lib/gamification";
 import { SECTION_META, taskTypeMeta } from "@/lib/content/exams";
@@ -11,8 +12,9 @@ import { testRef } from "@/lib/content/public";
 import type { SectionId, TaskType } from "@/lib/content/types";
 import { celebrate } from "@/lib/celebrate";
 import type { QuestionResult, TestResult } from "@/lib/scoring";
+import { startNavProgress } from "./NavProgress";
 import { ReviewTask } from "./ReviewTask";
-import { Badge, ButtonLink, Card, ProgressBar, Ring, SectionTitle } from "./ui";
+import { Badge, Button, ButtonLink, Card, ProgressBar, Ring, SectionTitle } from "./ui";
 
 interface Props {
   attemptId: string;
@@ -25,6 +27,8 @@ interface Props {
   achievements: string[];
   comparison: { previousTitle: string; previousPercent: number; rows: { type: TaskType; now: number | null; before: number | null; delta: number | null }[] } | null;
   isDiagnostic: boolean;
+  // section left completely empty that may be filled in once afterwards
+  retakeSection: SectionId | null;
 }
 
 const fmtScore = (x: number) => x.toLocaleString("cs-CZ", { maximumFractionDigits: 1 });
@@ -35,7 +39,7 @@ const statusColor: Record<QuestionResult["status"], string> = {
   blank: "bg-surface border-border text-muted",
 };
 
-export function ResultsView({ test, result, activeSeconds, pauses, isNew, xp, achievements, comparison, isDiagnostic }: Props) {
+export function ResultsView({ attemptId, test, result, activeSeconds, pauses, isNew, xp, achievements, comparison, isDiagnostic, retakeSection }: Props) {
   const [open, setOpen] = useState<number | null>(null);
   const [filter, setFilter] = useState<"missed" | "all">("missed");
 
@@ -122,6 +126,8 @@ export function ResultsView({ test, result, activeSeconds, pauses, isNew, xp, ac
           {result.percentile !== null && <span>· percentil je odhad podle statistik tohoto testu</span>}
         </div>
       </section>
+
+      {retakeSection && <RetakeBanner attemptId={attemptId} section={retakeSection} />}
 
       {isNew && (xp > 0 || achievements.length > 0) && (
         <section className="flex flex-wrap gap-3">
@@ -339,5 +345,41 @@ export function ResultsView({ test, result, activeSeconds, pauses, isNew, xp, ac
         </div>
       )}
     </div>
+  );
+}
+
+function RetakeBanner({ attemptId, section }: { attemptId: string; section: SectionId }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const name = section === "verbal" ? "verbální" : "analytický";
+  return (
+    <section className="animate-fade-up rounded-3xl border-2 border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-900/20 sm:p-5">
+      <div className="font-display text-lg font-extrabold">{section === "verbal" ? "Verbální" : "Analytický"} oddíl je úplně prázdný</div>
+      <p className="mt-1 text-sm text-muted">
+        Nejspíš se ti odpovědi neuložily. Můžeš ho jednorázově dodělat – dostaneš na něj plný čas, druhý oddíl zůstane, jak
+        jsi ho odevzdal, a výsledek testu se přepočítá.
+      </p>
+      {error && <p className="mt-2 text-sm font-bold text-rose-600">{error}</p>}
+      <Button
+        className="mt-3"
+        loading={busy}
+        onClick={async () => {
+          setBusy(true);
+          setError(null);
+          const r = await fetch(`/api/attempts/${attemptId}/retake`, { method: "POST" }).catch(() => null);
+          if (!r?.ok) {
+            const data = await r?.json().catch(() => ({}));
+            setError(data?.error ?? "Nepovedlo se, zkus to znovu.");
+            setBusy(false);
+            return;
+          }
+          startNavProgress();
+          router.push(`/app/test/${attemptId}`);
+        }}
+      >
+        <RotateCcw className="h-4 w-4" /> Dodělat {name} oddíl
+      </Button>
+    </section>
   );
 }

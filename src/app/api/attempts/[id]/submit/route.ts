@@ -30,13 +30,15 @@ export async function POST(req: Request, ctx: RouteContext<"/api/attempts/[id]/s
   const answers = body.answers ?? attempt.answers ?? {};
   const result = scoreTest(test, answers);
   const activeSeconds = (attempt.active_seconds ?? 0) + Math.round(body.activeSeconds ?? 0);
+  // a retake of one section keeps the original finish date so the test history isn't reordered
+  const retake = attempt.retake_section as "verbal" | "analytic" | null | undefined;
 
   const { error: upErr } = await admin
     .from("attempts")
     .update({
       status: "completed",
       answers,
-      completed_at: new Date().toISOString(),
+      completed_at: retake && attempt.completed_at ? attempt.completed_at : new Date().toISOString(),
       updated_at: new Date().toISOString(),
       score: result.score,
       max_score: result.maxScore,
@@ -64,10 +66,29 @@ export async function POST(req: Request, ctx: RouteContext<"/api/attempts/[id]/s
     );
   }
 
-  const correctCount = result.questions.filter((q) => q.status === "correct").length;
-  const xp = XP.testCompleted + Math.max(0, Math.round(result.score * XP.testPerPoint));
+  // Questions of the retaken section that were blank before and are right now came in as
+  // mistakes with the first submit; drop those the student hasn't touched since.
+  if (retake) {
+    const fixed = result.questions.filter((q) => q.section === retake && q.status === "correct");
+    if (fixed.length) {
+      await admin
+        .from("mistakes")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("attempt_id", id)
+        .eq("tries", 0)
+        .in("task_ref", fixed.map((q) => testRef(test.id, q.n)));
+    }
+  }
+
+  // a retake only counts its own section and the points it added – no second completion bonus
+  const counted = retake ? result.questions.filter((q) => q.section === retake) : result.questions;
+  const correctCount = counted.filter((q) => q.status === "correct").length;
+  const xp = retake
+    ? Math.max(0, Math.round((result.score - Number(attempt.score ?? 0)) * XP.testPerPoint))
+    : XP.testCompleted + Math.max(0, Math.round(result.score * XP.testPerPoint));
   // active test time is already counted by heartbeats; here we count the tasks
-  await recordActivity(user.id, { tasks: result.questions.length, correct: correctCount, xp });
+  await recordActivity(user.id, { tasks: counted.length, correct: correctCount, xp });
   const achievements = await checkAchievements(user.id);
   return NextResponse.json({ ok: true, xp, achievements });
 }

@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight, Flag, LogOut, Pause, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { AnswerMap, PublicGroup, PublicQuestion, PublicTest } from "@/lib/content/public";
 import type { OptionKey, SectionId } from "@/lib/content/types";
 import { count } from "@/lib/czech";
@@ -20,6 +20,8 @@ interface Props {
   attemptId: string;
   test: PublicTest;
   initial: { sectionIndex: number; timeLeft: TimeLeft; answers: AnswerMap; flags: number[]; resumed: boolean };
+  // one-time retake of a section left empty in a finished test – only that section is worked on
+  retakeSection?: SectionId | null;
 }
 
 const fmt = (s: number) => {
@@ -28,7 +30,99 @@ const fmt = (s: number) => {
   return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 };
 
-export function TestRunner({ attemptId, test, initial }: Props) {
+// Local backup of the running attempt, written every second, so nothing is lost when the
+// connection drops or the tab dies before the next server save.
+interface Backup {
+  answers: AnswerMap;
+  flags: number[];
+  timeLeft: TimeLeft;
+  sectionIndex: number;
+  activeSeconds: number;
+}
+const backupKey = (id: string) => `attempt-backup:${id}`;
+function readBackup(id: string): Backup | null {
+  try {
+    const raw = localStorage.getItem(backupKey(id));
+    return raw ? (JSON.parse(raw) as Backup) : null;
+  } catch {
+    return null;
+  }
+}
+function writeBackup(id: string, b: Backup) {
+  try {
+    localStorage.setItem(backupKey(id), JSON.stringify(b));
+  } catch {}
+}
+function clearBackup(id: string) {
+  try {
+    localStorage.removeItem(backupKey(id));
+  } catch {}
+}
+const totalLeft = (t: TimeLeft) => t.verbal + t.analytic;
+
+// resolves when the browser is back online, or after a while to retry anyway
+const waitForNetwork = () =>
+  new Promise<void>((resolve) => {
+    const done = () => {
+      clearTimeout(t);
+      window.removeEventListener("online", done);
+      resolve();
+    };
+    const t = setTimeout(done, 5000);
+    window.addEventListener("online", done);
+  });
+
+const subscribeNothing = () => () => {};
+
+// The local backup only exists in the browser, so the runner mounts after hydration with the
+// newer of server copy and backup. Time left only goes down while working, so the snapshot
+// with less time left is the newer one.
+export function TestRunner({ attemptId, test, initial, retakeSection = null }: Props) {
+  // a retake gets its own backup, the one from the first run would look newer
+  const backupId = retakeSection ? `${attemptId}:retake` : attemptId;
+  const isClient = useSyncExternalStore(subscribeNothing, () => true, () => false);
+  const merged = useMemo(() => {
+    if (!isClient) return null;
+    const b = readBackup(backupId);
+    if (!b) return { initial, restored: false, activeSeconds: 0 };
+    if (totalLeft(b.timeLeft) > totalLeft(initial.timeLeft)) {
+      clearBackup(backupId); // stale, the attempt continued elsewhere
+      return { initial, restored: false, activeSeconds: 0 };
+    }
+    const idx = Math.max(initial.sectionIndex, b.sectionIndex);
+    return {
+      initial: {
+        sectionIndex: idx === 0 && b.timeLeft.verbal <= 0 ? 1 : idx,
+        timeLeft: b.timeLeft,
+        answers: b.answers ?? {},
+        flags: b.flags ?? [],
+        resumed: true,
+      },
+      restored: true,
+      activeSeconds: b.activeSeconds ?? 0,
+    };
+  }, [isClient, backupId, initial]);
+  if (!merged) return null;
+  return (
+    <Runner
+      attemptId={attemptId}
+      backupId={backupId}
+      test={test}
+      initial={merged.initial}
+      retakeSection={retakeSection}
+      pendingActiveSeconds={merged.activeSeconds}
+    />
+  );
+}
+
+function Runner({
+  attemptId,
+  backupId,
+  test,
+  initial,
+  retakeSection,
+  pendingActiveSeconds,
+}: Props & { backupId: string; pendingActiveSeconds: number }) {
   const router = useRouter();
   const [phase, setPhase] = useState<Phase>("intro");
   const [sectionIndex, setSectionIndex] = useState(initial.sectionIndex);
@@ -40,8 +134,10 @@ export function TestRunner({ attemptId, test, initial }: Props) {
   const [modal, setModal] = useState<null | "exit" | "end" | "submit">(null);
   const [toast, setToast] = useState<string | null>(null);
   const [saveError, setSaveError] = useState(false);
+  const [offline, setOffline] = useState(false);
 
   const section = test.sections[sectionIndex];
+  const lastSection = sectionIndex === 1 || Boolean(retakeSection);
   const tone = section.id === "verbal" ? "verbal" : "analytic";
   const items = useMemo(
     () => section.groups.flatMap((g) => g.questions.map((q) => ({ group: g, q }))),
@@ -51,32 +147,68 @@ export function TestRunner({ attemptId, test, initial }: Props) {
 
   // refs so intervals/unload handlers always see fresh state
   const state = useRef({ answers, flags, timeLeft, sectionIndex, phase });
-  const activeAcc = useRef(0); // active seconds not yet sent to the server
+  const activeAcc = useRef(pendingActiveSeconds); // active seconds not yet sent to the server
   useEffect(() => {
     state.current = { answers, flags, timeLeft, sectionIndex, phase };
+    if (phase === "running" || phase === "between") {
+      writeBackup(backupId, { answers, flags, timeLeft, sectionIndex, activeSeconds: activeAcc.current });
+    }
   });
 
   useStudyHeartbeat(phase === "running" && !paused);
 
   // ------------------------------------------------------------------ saving
+  // saves run one after another so an older snapshot never overwrites a newer one
+  const queue = useRef<Promise<void>>(Promise.resolve());
   const save = useCallback(
-    async (extra: Record<string, unknown> = {}, keepalive = false) => {
-      const s = state.current;
-      const activeSeconds = Math.min(600, activeAcc.current);
-      activeAcc.current -= activeSeconds;
-      try {
-        const r = await fetch(`/api/attempts/${attemptId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answers: s.answers, flags: s.flags, timeLeft: s.timeLeft, sectionIndex: s.sectionIndex, activeSeconds, ...extra }),
-          keepalive,
-        });
-        setSaveError(!r.ok && r.status !== 409);
-      } catch {
-        setSaveError(true);
-      }
+    (extra: Record<string, unknown> = {}, keepalive = false) => {
+      const run = async () => {
+        const s = state.current;
+        const activeSeconds = Math.min(600, activeAcc.current);
+        activeAcc.current -= activeSeconds;
+        try {
+          const r = await fetch(`/api/attempts/${attemptId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ answers: s.answers, flags: s.flags, timeLeft: s.timeLeft, sectionIndex: s.sectionIndex, activeSeconds, ...extra }),
+            keepalive,
+          });
+          if (!r.ok) activeAcc.current += activeSeconds;
+          setSaveError(!r.ok && r.status !== 409);
+        } catch {
+          activeAcc.current += activeSeconds;
+          setSaveError(true);
+        }
+      };
+      // the page is going away – don't wait behind a pending request
+      if (keepalive) return run();
+      return (queue.current = queue.current.then(run));
     },
     [attemptId],
+  );
+
+  // track connectivity; push everything to the server as soon as we're back online
+  useEffect(() => {
+    const update = () => setOffline(!navigator.onLine);
+    const onOnline = () => {
+      update();
+      if (state.current.phase === "running" || state.current.phase === "between") save();
+    };
+    update();
+    window.addEventListener("online", onOnline);
+    window.addEventListener("offline", update);
+    return () => {
+      window.removeEventListener("online", onOnline);
+      window.removeEventListener("offline", update);
+    };
+  }, [save]);
+
+  // leaving the test page inside the app (back button, link) doesn't fire beforeunload
+  useEffect(
+    () => () => {
+      if (state.current.phase === "running" || state.current.phase === "between") save({}, true);
+    },
+    [save],
   );
 
   // debounce answer saves
@@ -89,12 +221,15 @@ export function TestRunner({ attemptId, test, initial }: Props) {
   // periodic time save + on hide
   useEffect(() => {
     if (phase !== "running" && phase !== "between") return;
-    const i = setInterval(() => save(), 10000);
+    const i = setInterval(() => save(), 5000);
     const onHide = () => document.visibilityState === "hidden" && save({}, true);
+    const onPageHide = () => save({}, true); // mobile Safari skips beforeunload
     document.addEventListener("visibilitychange", onHide);
+    window.addEventListener("pagehide", onPageHide);
     return () => {
       clearInterval(i);
       document.removeEventListener("visibilitychange", onHide);
+      window.removeEventListener("pagehide", onPageHide);
     };
   }, [phase, save]);
 
@@ -114,32 +249,44 @@ export function TestRunner({ attemptId, test, initial }: Props) {
   const submit = useCallback(async () => {
     setPhase("submitting");
     setModal(null);
-    const r = await fetch(`/api/attempts/${attemptId}/submit`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ answers: state.current.answers, activeSeconds: Math.min(600, activeAcc.current) }),
-    });
+    let r: Response;
+    // without a connection keep retrying – the answers stay safe in the local backup
+    for (;;) {
+      try {
+        r = await fetch(`/api/attempts/${attemptId}/submit`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answers: state.current.answers, activeSeconds: Math.min(600, activeAcc.current) }),
+        });
+        break;
+      } catch {
+        setOffline(true);
+        await waitForNetwork();
+      }
+    }
+    setOffline(!navigator.onLine);
     const data = await r.json().catch(() => ({}));
     if (!r.ok) {
       setToast(data.error ?? "Odevzdání se nepovedlo, zkus to znovu.");
       setPhase("running");
       return;
     }
+    clearBackup(backupId);
     const q = new URLSearchParams({ new: "1", xp: String(data.xp ?? 0), ach: (data.achievements ?? []).join(",") });
     startNavProgress();
     router.replace(`/app/results/${attemptId}?${q}`);
-  }, [attemptId, router]);
+  }, [attemptId, backupId, router]);
 
   const endSection = useCallback(() => {
     setModal(null);
-    if (state.current.sectionIndex === 0) {
+    if (state.current.sectionIndex === 0 && !retakeSection) {
       setTimeLeft((t) => ({ ...t, verbal: 0 }));
       setPhase("between");
       setTimeout(() => save({ timeLeft: { ...state.current.timeLeft, verbal: 0 } }), 0);
     } else {
       submit();
     }
-  }, [save, submit]);
+  }, [save, submit, retakeSection]);
 
   useEffect(() => {
     if (phase !== "running" || paused) return;
@@ -161,12 +308,12 @@ export function TestRunner({ attemptId, test, initial }: Props) {
       if (before > 60 && after <= 60) setToast("Poslední minuta! ⏰");
       if (after <= 0) {
         clearInterval(i);
-        setToast(state.current.sectionIndex === 0 ? "Čas verbálního oddílu vypršel" : "Čas vypršel – odevzdávám test");
+        setToast(state.current.sectionIndex === 0 && !retakeSection ? "Čas verbálního oddílu vypršel" : "Čas vypršel – odevzdávám test");
         endSection();
       }
     }, 250);
     return () => clearInterval(i);
-  }, [phase, paused, section.id, endSection]);
+  }, [phase, paused, section.id, endSection, retakeSection]);
 
   const remaining = timeLeft[section.id];
 
@@ -230,6 +377,12 @@ export function TestRunner({ attemptId, test, initial }: Props) {
               🎉 Verbální oddíl je za tebou! Teď se k němu už nelze vrátit.
             </div>
           )}
+          {retakeSection && (
+            <div className="mb-4 rounded-2xl bg-brand-50 p-3 text-center font-bold text-brand-700 dark:bg-brand-900/30 dark:text-brand-300">
+              Dodatečně děláš jen {retakeSection === "verbal" ? "verbální" : "analytický"} oddíl. Druhý oddíl zůstává, jak jsi ho
+              odevzdal.
+            </div>
+          )}
           {resumed && (
             <div className="mb-4 rounded-2xl bg-amber-50 p-3 text-center font-bold text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
               Pokračuješ v rozdělaném testu – dokonči ho! 💪
@@ -289,7 +442,12 @@ export function TestRunner({ attemptId, test, initial }: Props) {
       <main className="grid min-h-dvh place-items-center px-4">
         <div className="text-center">
           <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-brand-200 border-t-brand-600" />
-          <div className="font-display text-xl font-bold">Vyhodnocuji test…</div>
+          <div className="font-display text-xl font-bold">{offline ? "Čekám na připojení…" : "Vyhodnocuji test…"}</div>
+          {offline && (
+            <p className="mt-2 max-w-sm text-sm text-muted">
+              Odpovědi jsou uložené v zařízení. Jakmile se připojíš, test se odevzdá sám – stránku nezavírej.
+            </p>
+          )}
         </div>
       </main>
     );
@@ -297,7 +455,7 @@ export function TestRunner({ attemptId, test, initial }: Props) {
 
   const low = remaining <= 300;
   const isLast = cur === items.length - 1;
-  const longPassage = (item.group.passage?.length ?? 0) > 700;
+  const longPassage = (item.group.passage?.replace(/<[^>]+>/g, "").length ?? 0) > 700; // HTML tables: count text only
 
   return (
     <div className="min-h-dvh">
@@ -331,7 +489,14 @@ export function TestRunner({ attemptId, test, initial }: Props) {
             Vyplněno {answeredCount}/{items.length}
           </div>
           <div className="ml-auto flex items-center gap-1.5">
-            {saveError && <span className="mr-1 text-xs font-bold text-amber-600">⚠ neuloženo</span>}
+            {(offline || saveError) && (
+              <span
+                className="mr-1 text-xs font-bold text-amber-600"
+                title="Postup se průběžně ukládá v zařízení a na server se odešle, jakmile bude připojení."
+              >
+                {offline ? "⚠ offline – ukládám v zařízení" : "⚠ ukládám v zařízení"}
+              </span>
+            )}
             <Button variant="secondary" size="sm" onClick={() => { setPaused(true); save({ pause: true }); }} aria-label="Pauza">
               <Pause className="h-4 w-4" />
               <span className="hidden sm:inline">Pauza</span>
@@ -411,13 +576,13 @@ export function TestRunner({ attemptId, test, initial }: Props) {
           </div>
           <div className="hidden flex-1 sm:block" />
           {isLast ? (
-            <Button variant={tone} onClick={() => setModal(sectionIndex === 0 ? "end" : "submit")}>
-              {sectionIndex === 0 ? "Ukončit oddíl" : "Odevzdat test"}
+            <Button variant={tone} onClick={() => setModal(lastSection ? "submit" : "end")}>
+              {lastSection ? "Odevzdat test" : "Ukončit oddíl"}
             </Button>
           ) : (
             <>
-              <Button variant="ghost" size="sm" className="max-sm:hidden" onClick={() => setModal(sectionIndex === 0 ? "end" : "submit")}>
-                {sectionIndex === 0 ? "Ukončit oddíl" : "Odevzdat"}
+              <Button variant="ghost" size="sm" className="max-sm:hidden" onClick={() => setModal(lastSection ? "submit" : "end")}>
+                {lastSection ? "Odevzdat" : "Ukončit oddíl"}
               </Button>
               <Button variant={tone} onClick={() => setCur((c) => Math.min(items.length - 1, c + 1))}>
                 Další <ChevronRight className="h-5 w-5" />

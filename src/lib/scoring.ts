@@ -34,6 +34,16 @@ export interface TestResult {
   questions: QuestionResult[];
 }
 
+// A section with no answer at all while the other one was worked on – almost always lost
+// answers rather than a choice, so the student may fill it in once afterwards.
+export function emptySection(result: TestResult): SectionId | null {
+  const answered = (b: Bucket) => b.correct + b.wrong + b.partial;
+  const { verbal, analytic } = result.sections;
+  if (verbal.max > 0 && answered(verbal) === 0 && answered(analytic) > 0) return "verbal";
+  if (analytic.max > 0 && answered(analytic) === 0 && answered(verbal) > 0) return "analytic";
+  return null;
+}
+
 const emptyBucket = (): Bucket => ({ correct: 0, wrong: 0, blank: 0, partial: 0, score: 0, max: 0 });
 
 export function scoreQuestion(q: Question, given: (OptionKey | null)[] | undefined) {

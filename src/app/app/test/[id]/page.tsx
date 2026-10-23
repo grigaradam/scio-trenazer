@@ -17,10 +17,11 @@ export default async function TestPage({ params }: PageProps<"/app/test/[id]">) 
   if (!test) notFound();
 
   const full = Object.fromEntries(test.sections.map((s) => [s.id, s.timeLimitSec]));
-  const resumed =
-    Object.keys(attempt.answers ?? {}).length > 0 ||
-    attempt.section_index > 0 ||
-    attempt.time_left.verbal < full.verbal;
+  const retake = attempt.retake_section ?? null;
+  // a retake starts with the other section's answers already there, so only time tells
+  const resumed = retake
+    ? attempt.time_left[retake] < full[retake]
+    : Object.keys(attempt.answers ?? {}).length > 0 || attempt.section_index > 0 || attempt.time_left.verbal < full.verbal;
 
   // a verbal section whose time ran out continues with the analytic one
   const sectionIndex = attempt.section_index === 0 && attempt.time_left.verbal <= 0 ? 1 : attempt.section_index;
@@ -36,6 +37,7 @@ export default async function TestPage({ params }: PageProps<"/app/test/[id]">) 
         flags: attempt.flags ?? [],
         resumed,
       }}
+      retakeSection={retake}
     />
   );
 }

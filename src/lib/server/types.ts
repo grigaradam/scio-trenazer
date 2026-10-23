@@ -1,5 +1,6 @@
 import type { AnswerMap } from "@/lib/content/public";
 import type { TestResult } from "@/lib/scoring";
+import type { SectionId } from "@/lib/content/types";
 
 export interface Profile {
   id: string;
@@ -40,6 +41,7 @@ export interface AttemptRow {
   score: number | null;
   max_score: number | null;
   result: TestResult | null;
+  retake_section?: SectionId | null; // set once a one-time retake of an empty section was granted
 }
 
 export interface MistakeRow {
