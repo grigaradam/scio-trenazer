@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 
+/* dark: follows <html data-theme>, set from the user's choice or the system (lib/theme.ts) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-bricolage), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -73,23 +76,21 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f0d17;
-    --surface: #18151f;
-    --surface-2: #221e2c;
-    --border: #2e2a3a;
-    --text: #efedf6;
-    --muted: #a19bb5;
-    --color-marker: #facc15;
-    --series-1: #3987e5;
-    --series-2: #d95926;
-    --series-3: #199e70;
-    --series-4: #c98500;
-    --series-5: #d55181;
-    --series-6: #9085e9;
-    color-scheme: dark;
-  }
+:root[data-theme="dark"] {
+  --bg: #0f0d17;
+  --surface: #18151f;
+  --surface-2: #221e2c;
+  --border: #2e2a3a;
+  --text: #efedf6;
+  --muted: #a19bb5;
+  --color-marker: #facc15;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #9085e9;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -231,11 +232,9 @@ label {
   animation: marker-sweep 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
   animation-delay: calc(var(--mark-i, 0) * 0.35s + 0.25s);
 }
-@media (prefers-color-scheme: dark) {
-  .rich mark {
-    color: #fff7c2;
-    background-image: linear-gradient(100deg, rgba(250, 204, 21, 0) 0%, rgba(250, 204, 21, 0.38) 6%, rgba(250, 204, 21, 0.3) 94%, rgba(250, 204, 21, 0) 100%);
-  }
+[data-theme="dark"] .rich mark {
+  color: #fff7c2;
+  background-image: linear-gradient(100deg, rgba(250, 204, 21, 0) 0%, rgba(250, 204, 21, 0.38) 6%, rgba(250, 204, 21, 0.3) 94%, rgba(250, 204, 21, 0) 100%);
 }
 @keyframes marker-sweep {
   to {
@@ -272,10 +271,8 @@ label {
   background-color: color-mix(in srgb, var(--color-marker) 75%, transparent);
   text-decoration: underline 2px var(--color-brand-500);
 }
-@media (prefers-color-scheme: dark) {
-  ::highlight(scio-quote-active) {
-    background-color: rgba(250, 204, 21, 0.35);
-  }
+[data-theme="dark"] ::highlight(scio-quote-active) {
+  background-color: rgba(250, 204, 21, 0.35);
 }
 
 /* Underline "pen stroke" for key terms (**bold** inside explanations). */
@@ -288,10 +285,8 @@ label {
   animation-delay: 0.6s;
   color: var(--color-brand-700);
 }
-@media (prefers-color-scheme: dark) {
-  .explain strong {
-    color: var(--color-brand-300);
-  }
+[data-theme="dark"] .explain strong {
+  color: var(--color-brand-300);
 }
 @keyframes underline-draw {
   to {

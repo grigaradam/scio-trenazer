@@ -1,4 +1,6 @@
+import { AvatarUpload } from "@/components/AvatarUpload";
 import { ProfileForm } from "@/components/ProfileForm";
+import { ThemePicker } from "@/components/ThemePicker";
 import { Card, ProgressBar } from "@/components/ui";
 import { AI } from "@/lib/env";
 import { levelInfo, levelTitle } from "@/lib/gamification";
@@ -19,9 +21,7 @@ export default async function ProfilePage() {
     <div className="space-y-6">
       <h1 className="font-display text-3xl font-extrabold">Profil</h1>
       <Card className="flex items-center gap-4">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-analytic-500 font-display text-2xl font-extrabold text-white">
-          {(profile.display_name ?? user.email ?? "?").slice(0, 1).toUpperCase()}
-        </div>
+        <AvatarUpload url={profile.avatar_url ?? null} fallback={(profile.display_name ?? user.email ?? "?").slice(0, 1).toUpperCase()} />
         <div className="min-w-0 flex-1">
           <div className="truncate font-display text-xl font-extrabold">{profile.display_name}</div>
           <div className="truncate text-sm text-muted">{user.email}</div>
@@ -33,6 +33,8 @@ export default async function ProfilePage() {
       </Card>
 
       <ProfileForm name={profile.display_name ?? ""} goal={profile.daily_goal_min} />
+
+      <ThemePicker />
 
       <Card>
         <div className="font-display font-extrabold">AI dnes</div>

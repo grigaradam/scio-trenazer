@@ -7,6 +7,8 @@ export interface Profile {
   display_name: string | null;
   /** Czech vocative of display_name for greetings ("Adame"); needs migration 0006. */
   display_name_vocative?: string | null;
+  /** Public URL of the profile picture in the "avatars" bucket (needs migration 0009). */
+  avatar_url?: string | null;
   exam: string;
   onboarded: boolean;
   xp: number;

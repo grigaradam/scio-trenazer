@@ -289,6 +289,34 @@ const auth = {
   },
 };
 
+// Storage stub: files are kept in memory and served back as data URLs.
+const storage = {
+  from(bucket: string) {
+    const files = table(`storage_${bucket}`);
+    return {
+      async upload(path: string, body: Blob | ArrayBuffer, opts?: { contentType?: string }) {
+        const bytes = Buffer.from(body instanceof Blob ? await body.arrayBuffer() : body);
+        files.push({ path, url: `data:${opts?.contentType ?? "application/octet-stream"};base64,${bytes.toString("base64")}` });
+        return { data: { path }, error: null };
+      },
+      getPublicUrl(path: string) {
+        return { data: { publicUrl: (files.find((f) => f.path === path)?.url as string) ?? "" } };
+      },
+      async list(prefix: string) {
+        const data = files.filter((f) => (f.path as string).startsWith(`${prefix}/`)).map((f) => ({ name: (f.path as string).slice(prefix.length + 1) }));
+        return { data, error: null };
+      },
+      async remove(paths: string[]) {
+        for (const p of paths) {
+          const i = files.findIndex((f) => f.path === p);
+          if (i >= 0) files.splice(i, 1);
+        }
+        return { data: null, error: null };
+      },
+    };
+  },
+};
+
 export function createDemoClient() {
-  return { from: (name: string) => new Query(name), rpc, auth };
+  return { from: (name: string) => new Query(name), rpc, auth, storage };
 }
