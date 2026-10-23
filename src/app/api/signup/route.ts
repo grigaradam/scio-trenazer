@@ -1,4 +1,4 @@
-import { after, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 import { bindInvite, claimInvite, releaseInvite } from "@/lib/server/invites";
 import { refreshVocative } from "@/lib/server/names";
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     );
   }
   await bindInvite(code, data.user.id);
-  const userId = data.user.id;
-  after(() => refreshVocative(userId, displayName));
+  // awaited so the onboarding greeting right after sign-up already uses it (cached names are instant)
+  await refreshVocative(data.user.id, displayName);
   return NextResponse.json({ ok: true });
 }

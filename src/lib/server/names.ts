@@ -55,6 +55,14 @@ export function greetingName(profile: Profile) {
   return profile.display_name_vocative || profile.display_name;
 }
 
+/** Like greetingName, but waits for a missing vocative – for pages the user sees right after setting the name. */
+export async function greetingNameNow(profile: Profile) {
+  if (profile.display_name && profile.display_name_vocative === null) {
+    return (await refreshVocative(profile.id, profile.display_name)) || profile.display_name;
+  }
+  return profile.display_name_vocative || profile.display_name;
+}
+
 /**
  * Fills profiles.display_name_vocative for the user's current name (never throws).
  * Falls back to the name itself, so a name that can't be resolved isn't asked again on every visit.
@@ -63,8 +71,10 @@ export async function refreshVocative(userId: string, name: string | null | unde
   try {
     const vocative = name?.trim() ? ((await vocativeOf(name)) ?? name.trim()) : null;
     await createAdminClient().from("profiles").update({ display_name_vocative: vocative }).eq("id", userId);
+    return vocative;
   } catch (e) {
     console.error("refreshVocative", e);
+    return null;
   }
 }
 
