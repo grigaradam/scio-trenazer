@@ -437,7 +437,7 @@ export function PracticeSession({
               </>
             ) : (
               <>
-                <Button variant="ghost" onClick={() => submit()} className="max-sm:hidden" disabled={selected.some(Boolean)}>
+                <Button variant="ghost" onClick={() => submit()} disabled={selected.some(Boolean)}>
                   Nevím
                 </Button>
                 <div className="flex-1" />

@@ -84,14 +84,15 @@ export function BottomNav({ badge, avatar }: { badge?: number; avatar?: string |
   const { path, pending, setPending } = usePendingNav();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
-      <div className="mx-auto grid max-w-lg grid-cols-6">
+      {/* 62px + 2px border = 64px, the offset the practice action bar sits on */}
+      <div className="mx-auto grid h-[62px] max-w-lg grid-cols-6">
         {NAV.map(({ href, label, icon }) => (
           <Link
             key={href}
             href={href}
             onClick={() => !isActive(currentPath(), href) && setPending(href)}
             className={clsx(
-              "relative flex flex-col items-center gap-0.5 py-2 text-[10px] font-bold active:scale-90 transition-transform",
+              "relative flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold active:scale-90 transition-transform",
               pending === href && "animate-pulse",
               isActive(path, href) ? "text-brand-600 dark:text-brand-300" : "text-muted",
             )}
