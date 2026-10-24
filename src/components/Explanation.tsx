@@ -64,15 +64,16 @@ function useQuotes(rootRef: React.RefObject<HTMLDivElement | null>, deps: unknow
   );
 }
 
-/** Fetches (cached) AI explanation and reveals it step by step. */
-export function Explanation({ taskRef, given }: { taskRef: string; given?: (OptionKey | null)[] }) {
-  const [data, setData] = useState<ExplanationData | null>(null);
+/** Fetches (cached) AI explanation and reveals it step by step. `preset` skips the fetch (dev previews). */
+export function Explanation({ taskRef, given, preset }: { taskRef: string; given?: (OptionKey | null)[]; preset?: ExplanationData }) {
+  const [data, setData] = useState<ExplanationData | null>(preset ?? null);
   const [error, setError] = useState<string | null>(null);
   const [shown, setShown] = useState(1);
   const rootRef = useRef<HTMLDivElement>(null);
   const onQuote = useQuotes(rootRef, [data, shown]);
 
   useEffect(() => {
+    if (preset) return;
     let alive = true;
     fetch("/api/explain", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ref: taskRef }) })
       .then(async (r) => {
@@ -85,7 +86,7 @@ export function Explanation({ taskRef, given }: { taskRef: string; given?: (Opti
     return () => {
       alive = false;
     };
-  }, [taskRef]);
+  }, [taskRef, preset]);
 
   if (error) return <p className="rounded-2xl bg-rose-50 p-3 text-sm font-medium text-rose-700 dark:bg-rose-900/30 dark:text-rose-300">{error}</p>;
   if (!data)
@@ -116,7 +117,9 @@ export function Explanation({ taskRef, given }: { taskRef: string; given?: (Opti
           <li key={i} className="flex animate-fade-up gap-3">
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-600 text-sm font-extrabold text-white">{i + 1}</span>
             <div className="min-w-0 flex-1">
-              <div className="font-bold">{s.title}</div>
+              <RichText className="font-bold" inline onQuote={onQuote}>
+                {s.title}
+              </RichText>
               <RichText className="text-[15px]" onQuote={onQuote}>
                 {s.body}
               </RichText>

@@ -6,8 +6,9 @@ import { createRequire } from "node:module";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
-import { ALL_SAMPLES } from "../src/components/dev/mathCorpus";
+import { ALL_SAMPLES, SAMPLE_CHART, SAMPLE_EXPLANATION, SAMPLE_GROUP } from "../src/components/dev/mathCorpus";
 import { preprocess, rehypePlugins, remarkPlugins } from "../src/lib/markdown";
+import { toPlainText } from "../src/lib/plainMath";
 
 type Node = { type: string; value?: string; tagName?: string; properties?: Record<string, unknown>; children?: Node[] };
 
@@ -47,6 +48,10 @@ function check(src: string): string[] {
     for (const ch of n.children ?? []) walk(ch, math, code);
   };
   walk(tree, false, false);
+  // plain-text fallback (chart labels, previews) must not show TeX either
+  const plain = toPlainText(src);
+  if (/\\[a-zA-Z]|\^\{|_\{/.test(plain) || (/\$/.test(plain) && !src.includes("\\$")))
+    issues.push(`plain text keeps TeX: «${plain.slice(0, 80)}»`);
   return issues;
 }
 
@@ -72,6 +77,7 @@ async function main() {
   checkKatexVersions();
   const args = process.argv.slice(2);
   const inputs: [string, string][] = ALL_SAMPLES.map((s, i) => [`corpus#${i}`, s]);
+  strings({ SAMPLE_CHART, SAMPLE_EXPLANATION, SAMPLE_GROUP }, "components", inputs);
   if (!args.includes("--corpus-only")) {
     for (const f of readdirSync("content/osp/tests")) strings(JSON.parse(readFileSync(`content/osp/tests/${f}`, "utf8")), f, inputs);
   }

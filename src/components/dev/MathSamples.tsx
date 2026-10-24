@@ -1,13 +1,22 @@
 "use client";
 
+import { ChartView } from "../ChartView";
+import { Explanation } from "../Explanation";
+import { GroupContext } from "../QuestionView";
 import { RichText } from "../RichText";
-import { MATH_SAMPLES } from "./mathCorpus";
+import { MATH_SAMPLES, SAMPLE_CHART, SAMPLE_EXPLANATION, SAMPLE_GROUP } from "./mathCorpus";
 
 // Visual QA of math formatting: each sample as body text and as an answer option (inline RichText).
 export function MathSamples() {
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-6">
       <h1 className="font-display text-2xl font-extrabold">Matematika – vizuální kontrola</h1>
+      <section className="space-y-3">
+        <h2 className="font-display text-xl font-bold">Komponenty (nadpisy, graf, vysvětlení)</h2>
+        <GroupContext group={SAMPLE_GROUP} tone="analytic" />
+        <ChartView chart={SAMPLE_CHART} />
+        <Explanation taskRef="dev:math" preset={SAMPLE_EXPLANATION} />
+      </section>
       {MATH_SAMPLES.map((s) => (
         <section key={s.title} className="space-y-3">
           <h2 className="font-display text-xl font-bold">{s.title}</h2>

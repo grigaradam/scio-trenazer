@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ChartSpec } from "@/lib/content/types";
+import { toPlainText } from "@/lib/plainMath";
+import { RichText } from "./RichText";
 
 // Categorical slots in fixed order (validated palette; light/dark steps live in globals.css).
 const SERIES = ["var(--series-1)", "var(--series-2)", "var(--series-3)", "var(--series-4)", "var(--series-5)", "var(--series-6)"];
@@ -42,7 +44,11 @@ export function ChartView({ chart }: { chart: ChartSpec }) {
   const { ref, w } = useWidth();
   return (
     <figure className="chart-root select-none">
-      {chart.title && <figcaption className="mb-2 text-center text-sm font-bold">{chart.title}</figcaption>}
+      {chart.title && (
+        <figcaption className="mb-2 text-center text-sm font-bold">
+          <RichText inline>{chart.title}</RichText>
+        </figcaption>
+      )}
       <div ref={ref}>
         {chart.kind === "pie" ? <Pie chart={chart} W={w} /> : <Cartesian chart={chart} W={w} />}
       </div>
@@ -50,8 +56,8 @@ export function ChartView({ chart }: { chart: ChartSpec }) {
         <div className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted">
           {(chart.kind === "pie" ? chart.categories : chart.series.map((s) => s.name)).map((name, i) => (
             <span key={name} className="flex items-center gap-1.5">
-              <i className="h-3 w-3 rounded-[3px]" style={{ background: SERIES[i % SERIES.length] }} />
-              {name}
+              <i className="h-3 w-3 shrink-0 rounded-[3px]" style={{ background: SERIES[i % SERIES.length] }} />
+              <RichText inline>{name}</RichText>
             </span>
           ))}
         </div>
@@ -74,7 +80,7 @@ function Cartesian({ chart, W }: ChartProps) {
   const pw = W - M.left - M.right;
   const band0 = pw / n;
   // rotate category labels when they don't fit horizontally
-  const longest = Math.max(...chart.categories.map((c) => c.length));
+  const longest = Math.max(...chart.categories.map((c) => toPlainText(c).length));
   const rotate = longest * 6.6 > band0 - 4;
   const bottom = rotate ? Math.min(110, 28 + longest * 4.9) + (chart.xLabel ? 18 : 0) : M.bottom;
   const HH = H + (rotate ? bottom - M.bottom : 0);
@@ -85,7 +91,7 @@ function Cartesian({ chart, W }: ChartProps) {
   const labelEvery = ticks.length > 8 ? 2 : 1;
 
   return (
-    <svg viewBox={`0 0 ${W} ${HH}`} className="h-auto w-full" role="img" aria-label={chart.title ?? "Graf"}>
+    <svg viewBox={`0 0 ${W} ${HH}`} className="h-auto w-full" role="img" aria-label={chart.title ? toPlainText(chart.title) : "Graf"}>
       {/* grid + y labels */}
       {ticks.map((t, i) => (
         <g key={t}>
@@ -99,13 +105,13 @@ function Cartesian({ chart, W }: ChartProps) {
       ))}
       {chart.yLabel && (
         <text x={14} y={M.top + ph / 2} transform={`rotate(-90 14 ${M.top + ph / 2})`} textAnchor="middle" fontSize="12" fill="var(--muted)">
-          {chart.yLabel}
-          {chart.unit ? ` [${chart.unit}]` : ""}
+          {toPlainText(chart.yLabel)}
+          {chart.unit ? ` [${toPlainText(chart.unit)}]` : ""}
         </text>
       )}
 
       {/* x labels */}
-      {chart.categories.map((c, i) => {
+      {chart.categories.map(toPlainText).map((c, i) => {
         const cx = r2(M.left + band * (i + 0.5));
         const ty = HH - bottom + 16;
         return rotate ? (
@@ -124,7 +130,7 @@ function Cartesian({ chart, W }: ChartProps) {
       })}
       {chart.xLabel && (
         <text x={r2(M.left + pw / 2)} y={HH - 6} textAnchor="middle" fontSize="12" fill="var(--muted)">
-          {chart.xLabel}
+          {toPlainText(chart.xLabel)}
         </text>
       )}
 
@@ -207,7 +213,7 @@ function Pie({ chart, W }: ChartProps) {
   const PH = 2 * r + 60;
   const starts = values.reduce<number[]>((acc, v, i) => [...acc, (acc[i] ?? -Math.PI / 2) + (v / total) * Math.PI * 2], [-Math.PI / 2]);
   return (
-    <svg viewBox={`0 0 ${W} ${PH}`} className="h-auto w-full" role="img" aria-label={chart.title ?? "Koláčový graf"}>
+    <svg viewBox={`0 0 ${W} ${PH}`} className="h-auto w-full" role="img" aria-label={chart.title ? toPlainText(chart.title) : "Koláčový graf"}>
       {values.map((v, i) => {
         const a0 = starts[i];
         const a1 = starts[i + 1];

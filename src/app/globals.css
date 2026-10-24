@@ -194,6 +194,9 @@ label {
 }
 .rich .katex {
   font-size: 1.08em;
+  /* uppercase/tracked headings must not change the math (a/b ≠ A/B) */
+  text-transform: none;
+  letter-spacing: normal;
 }
 /* Breathing room so tall inline formulas (fractions, roots) on adjacent lines don't touch. */
 .rich .katex-html > .base {

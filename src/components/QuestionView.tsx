@@ -59,7 +59,9 @@ export function GroupContext({
       {(group.passage || group.figure || group.chart) && (
         <div className="rounded-2xl border-2 border-border bg-surface p-4">
           {group.passageTitle && (
-            <div className="mb-2 text-xs font-extrabold uppercase tracking-wider text-muted">{group.passageTitle}</div>
+            <RichText className="mb-2 text-xs font-extrabold uppercase tracking-wider text-muted" inline>
+              {group.passageTitle}
+            </RichText>
           )}
           {group.passage && (
             <RichText className="text-[15px]" quoteSource>

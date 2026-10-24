@@ -8,6 +8,7 @@ import { taskTypeMeta } from "@/lib/content/exams";
 import { count } from "@/lib/czech";
 import type { PublicGroup } from "@/lib/content/public";
 import type { TaskType } from "@/lib/content/types";
+import { toPlainText } from "@/lib/plainMath";
 import { ReviewTask } from "./ReviewTask";
 import { Badge, ButtonLink, Card, EmptyState } from "./ui";
 
@@ -118,7 +119,7 @@ export function MistakesView({ items, fixedCount, totalOpen }: { items: Item[]; 
           {list.map((i) => {
             const meta = taskTypeMeta(i.type)!;
             const q = i.group.questions[0];
-            const preview = (q.stem || q.compare?.left || i.group.passage || "").replace(/[*_$<>\\]|\/?u>/g, "").slice(0, 110);
+            const preview = toPlainText(q.stem || q.compare?.left || i.group.passage || "").slice(0, 110);
             const isFixed = fixed.includes(i.ref);
             return (
               <button

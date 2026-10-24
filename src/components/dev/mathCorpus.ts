@@ -1,3 +1,7 @@
+import type { ExplanationData } from "../Explanation";
+import type { PublicGroup } from "@/lib/content/public";
+import type { ChartSpec } from "@/lib/content/types";
+
 // Math formatting QA corpus: every construct the content, generator or AI explanations may produce.
 // Rendered visually at /dev/math and checked automatically by scripts/check-math.ts.
 
@@ -178,3 +182,39 @@ export const MATH_SAMPLES: { title: string; items: string[] }[] = [
 ];
 
 export const ALL_SAMPLES = MATH_SAMPLES.flatMap((s) => s.items);
+
+// Every text field of the components that render content, filled with math.
+export const SAMPLE_EXPLANATION: ExplanationData = {
+  verdict: "Správně je ==(A)==: každé z tvrzení samo stačí, protože $3 \\mid x$.",
+  steps: [
+    { title: "Tvrzení (1): $6 \\mid 5x$", body: "Když $6 \\mid 5x$, pak i $3 \\mid 5x$. Platí tedy $3 \\mid x$." },
+    { title: "Tvrzení (2): $18 \\mid 12x$", body: "Zapíšeme $12x = 18k$, tedy $2x = 3k$, takže ==$3 \\mid x$==." },
+    { title: "Zlomek v nadpisu: $\\frac{\\frac{1}{2}}{\\frac{3}{4}} = \\frac{2}{3}$, $\\sqrt[3]{8}$, $x^{2}$", body: "$$\\frac{a}{b}$$" },
+  ],
+  options: [
+    { key: "A", correct: true, why: "$x = 3k$ splňuje obě tvrzení." },
+    { key: "B", correct: false, why: "Vychází $\\frac{1}{2}$, ne $\\frac{2}{3}$." },
+  ],
+  trap: "Zapomenout, že $\\gcd(5, 3) = 1$.",
+  tip: "Dělitelnost: $a \\mid bc$ a $\\gcd(a, b) = 1 \\Rightarrow a \\mid c$.",
+};
+export const SAMPLE_CHART: ChartSpec = {
+  kind: "bar",
+  title: "Obsah $S$ v cm$^2$ pro $r = \\frac{1}{2}$ až $2$",
+  xLabel: "poloměr $r$ [cm]",
+  yLabel: "obsah $S = \\pi r^2$",
+  unit: "cm$^2$",
+  categories: ["$r = \\frac{1}{2}$", "$r = 1$", "$r = \\sqrt{2}$", "$r = 2$"],
+  series: [
+    { name: "$S$ přesně", values: [1, 3, 6, 13] },
+    { name: "$S \\approx 3{,}14 \\cdot r^2$", values: [1, 3, 6, 12] },
+  ],
+};
+export const SAMPLE_GROUP = {
+  id: "dev",
+  taskType: "data",
+  instruction: "Instrukce s $\\frac{1}{2}$ a $x^2$.",
+  passageTitle: "Text k úlohám: $\\frac{a}{b}$ a $\\sqrt{2}$",
+  passage: "Výchozí text: $V = \\frac{4}{3}\\pi r^3$.",
+  questions: [],
+} as unknown as PublicGroup;

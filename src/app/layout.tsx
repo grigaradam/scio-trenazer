@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
+import { MathLeakWatcher } from "@/components/dev/MathLeakWatcher";
 import { NavProgress } from "@/components/NavProgress";
 import { ThemeSync } from "@/components/ThemeSync";
 import { THEME_SCRIPT } from "@/lib/theme";
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <NavProgress />
         </Suspense>
         <ThemeSync />
+        {process.env.NODE_ENV === "development" && <MathLeakWatcher />}
         {children}
       </body>
     </html>
