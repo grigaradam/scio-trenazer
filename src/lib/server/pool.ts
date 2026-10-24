@@ -6,7 +6,7 @@ import type { ExamId, TaskType } from "@/lib/content/types";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /** How many unseen, ready-made tasks of a type we keep waiting for each user. */
-const BUFFER = 2;
+const BUFFER = 3;
 const MAX_ATTEMPTS = 4;
 const inflight = new Set<string>();
 
@@ -28,7 +28,7 @@ async function waitingCount(userId: string, exam: ExamId, type: TaskType) {
 }
 
 /**
- * After the response is sent, make sure the user has a pre-generated task of this type waiting in
+ * After the response is sent, make sure the user has BUFFER pre-generated tasks of this type waiting in
  * the shared pool. Tasks stay in the database until served, so an unused one is used next time.
  * Retries when the quality validator rejects a candidate.
  */

@@ -100,7 +100,7 @@ export async function POST(req: Request) {
   await admin.from("task_seen").upsert({ user_id: user.id, task_ref: genRef(task.id) });
   await admin.from("generated_tasks").update({ served_count: task.served_count + 1 }).eq("id", task.id);
 
-  // always keep one pre-generated task of this type waiting for the next request
+  // keep a few pre-generated tasks of this type waiting, so fast answers never hit a generation wait
   ensureTaskBuffer(user.id, meta.exam, meta.id);
 
   const group = task.payload;
