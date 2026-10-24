@@ -20,6 +20,15 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: { default: "Nanečisto", template: "%s · Nanečisto" },
   description: "Soukromá tréninková aplikace.",
+  // the image itself comes from app/opengraph-image.tsx
+  openGraph: {
+    type: "website",
+    locale: "cs_CZ",
+    siteName: "Nanečisto",
+    title: "Nanečisto teď. Načisto u zkoušky.",
+    description: "Testy na čas, rozbor každé chyby s AI lektorem a nekonečný trénink úloh, které ti nejdou.",
+  },
+  twitter: { card: "summary_large_image" },
   // private app – keep it out of search engines
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };
