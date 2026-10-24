@@ -11,6 +11,7 @@ import { anthropic } from "./client";
 import { taskToPrompt } from "./format";
 import { getLessons, lessonsBlock, refreshLessons, type Lessons } from "./lessons";
 import { logAiCall } from "./usage";
+import { type Focus, focusOf, poolFocuses, repetitionIssue, steering, varietyBlock } from "./variety";
 import { after } from "next/server";
 
 // ------------------------------------------------------------------ schemas
@@ -34,6 +35,13 @@ const ChartSchema = z.object({
 
 const GeneratedSchema = z.object({
   topic: z.string().describe("Krátké téma úlohy (3–6 slov), slouží k hlídání opakování."),
+  focus: z
+    .array(z.string())
+    .describe(
+      "1–3 klíčové pojmy, na kterých úloha stojí (slouží k hlídání opakování): u synonym podtržené slovo v základním tvaru, " +
+        "u analogií vztah (např. „nástroj – činnost“), u textů hlavní pojem tématu, u matematiky použitý princip nebo chyták " +
+        "(např. „řetězení procentních změn“, „záporná báze mocniny“).",
+    ),
   instruction: z.string(),
   passageTitle: z.string().nullable(),
   passage: z.string().nullable(),
@@ -161,17 +169,6 @@ async function preferChart(exam: ExamId) {
 }
 
 const CHART_KINDS = ["bar", "line", "stacked", "pie"] as const;
-
-async function recentTopics(exam: ExamId, type: TaskType) {
-  const { data } = await createAdminClient()
-    .from("generated_tasks")
-    .select("payload")
-    .eq("exam", exam)
-    .eq("task_type", type)
-    .order("created_at", { ascending: false })
-    .limit(40);
-  return (data ?? []).map((r) => (r.payload as { topic?: string }).topic).filter(Boolean) as string[];
-}
 
 // ------------------------------------------------------------------ checks
 
@@ -392,7 +389,9 @@ export async function generateTasks(opts: {
   const timeForRevision = () => !deadline || Date.now() + 150_000 < deadline;
   const meta = taskTypeMeta(type);
   if (!meta) throw new Error(`Neznámý typ úlohy ${type}`);
-  const topics = dryRun ? [] : await recentTopics(exam, type);
+  const pool: Focus[] = dryRun ? [] : (await poolFocuses(exam, type)).map((p) => p.focus);
+  const steer = steering(type, count);
+  const siblings: Focus[] = []; // accepted-so-far candidates of this batch (they run in parallel)
   const chartFirst = type === "data" ? (dryRun ? Math.random() < 0.5 : await preferChart(exam)) : false;
 
   const lessons: Lessons | null = dryRun ? null : await getLessons(type).catch(() => null);
@@ -414,8 +413,8 @@ ${lessonsBlock(lessons)}
 Skutečné úlohy Scio jako vzor (styl, délka, obtížnost – NEKOPÍROVAT):
 ${examplesText}
 
-${topics.length ? `Témata, která už v databázi jsou (vyhni se jim):\n- ${topics.slice(0, 30).join("\n- ")}\n` : ""}
-Variace č. ${i + 1}: zvol téma z jiné oblasti než vzory${i % 2 ? " a mírně vyšší obtížnost" : ""}.
+${varietyBlock(type, pool)}
+Variace č. ${i + 1}: zasaď úlohu do oblasti „${steer[i].domain}“ (jiné než vzory)${steer[i].wordClass ? `; podtržený výraz ať je ${steer[i].wordClass}` : ""}${i % 2 ? " a zvol mírně vyšší obtížnost" : ""}.
 ${type === "data" ? dataFormatInstruction(i % 2 === 0 ? chartFirst : !chartFirst, CHART_KINDS[Math.floor(Math.random() * CHART_KINDS.length)]) : "Pole chart nastav na null."}
 
 ${ACCEPTANCE_CRITERIA}`;
@@ -447,20 +446,28 @@ ${ACCEPTANCE_CRITERIA}`;
         }
         const group = toGroup(gen, type);
         const issues = structuralIssues(group, type);
+        const focus = focusOf(type, { topic: gen.topic, focus: gen.focus, stem: group.questions[0]?.stem });
+        // fresh pool: other workers may have stored a task with the same word since this batch started
+        const repetition = dryRun ? "" : repetitionIssue(type, focus, (await poolFocuses(exam, type)).map((p) => p.focus), siblings);
         let problem = "";
         let validation: Validation | null = null;
         if (issues.length) {
           problem = `struktura: ${issues.join("; ")}`;
+        } else if (repetition) {
+          problem = repetition;
         } else {
           validation = await validate(group, type, dryRun ? undefined : userId);
           const verdict = accepts(group, validation);
           if (!verdict.ok) problem = `validátor: ${rejectionText(group, verdict, validation)}`;
         }
 
+        // a parallel candidate of this batch may have taken the same word while this one was being validated
+        if (!problem && validation) problem = repetitionIssue(type, focus, [], siblings);
         if (!problem && validation) {
+          siblings.push(focus);
           const s = validation.scores;
           const quality = (s.unambiguous + s.czech + s.real_words + s.scio_style + s.difficulty + s.distractors) / 6;
-          if (dryRun) return { accepted: { id: "dry-run", group: { ...group, topic: gen.topic } as Group, validation } };
+          if (dryRun) return { accepted: { id: "dry-run", group: { ...group, topic: gen.topic, focus: gen.focus } as Group, validation } };
           const { data, error } = await createAdminClient()
             .from("generated_tasks")
             .insert({
@@ -469,6 +476,7 @@ ${ACCEPTANCE_CRITERIA}`;
               payload: {
                 ...group,
                 topic: gen.topic,
+                focus: gen.focus,
                 v: GENERATOR_VERSION,
                 trapDesign: gen.questions.map((q) => q.trapDesign),
               },
@@ -497,7 +505,7 @@ ${ACCEPTANCE_CRITERIA}`;
             { role: "assistant", content: JSON.stringify(gen) },
             {
               role: "user",
-              content: `Úlohu nezávislý validátor ZAMÍTL. Důvod: ${problem}
+              content: `Úlohu kontrola ZAMÍTLA. Důvod: ${problem}
 ${validation ? `Validátorovo řešení: ${validation.reasoning.slice(0, 1500)}` : ""}
 
 Oprav úlohu tak, aby všechny výtky zmizely a prošla kritérii. Pokud měl validátor u klíče pravdu, oprav klíč;

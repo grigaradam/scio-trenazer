@@ -11,6 +11,7 @@
     "validate:content": "node scripts/validate-content.mjs",
     "check:math": "tsx --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/check-math.ts",
     "pool": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/generate-pool.ts",
+    "pool:repeats": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/pool-repeats.ts",
     "dev:demo": "DEMO_MODE=1 next dev --port 3001"
   },
   "dependencies": {
