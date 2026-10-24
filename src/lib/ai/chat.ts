@@ -25,6 +25,8 @@ export function streamChat(task: ResolvedTask, userAnswer: string | null, messag
     model: AI.chatModel,
     max_tokens: 4000,
     output_config: { effort: "low" },
+    // automatic breakpoint on the last message: each follow-up reads the earlier turns from cache
+    cache_control: { type: "ephemeral" },
     system: [{ type: "text", text: chatSystemPrompt(task, userAnswer), cache_control: { type: "ephemeral" } }],
     messages,
   });

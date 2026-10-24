@@ -1,4 +1,5 @@
 import "server-only";
+import type Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { taskTypeMeta } from "@/lib/content/exams";
@@ -283,11 +284,19 @@ async function validate(group: Group, type: TaskType, userId?: string): Promise<
     model: AI.validatorModel,
     max_tokens: 16000,
     output_config: { effort: AI.validatorEffort, format: zodOutputFormat(ValidationSchema) },
-    system: VALIDATOR_SYSTEM,
+    system: [{ type: "text", text: VALIDATOR_SYSTEM, cache_control: { type: "ephemeral" } }],
     messages: [
       {
         role: "user",
-        content: `Typ úlohy: ${meta?.name}\nPravidla typu: ${meta?.rules}\nTypické chytáky Scio u tohoto typu: ${meta?.traps}\n\n${reference}\n\n### POSUZOVANÁ ÚLOHA (bez klíče)\n${taskToPrompt(group, group.questions, false)}`,
+        content: [
+          // per-type prefix, shared by every validation of this type in a generation batch
+          {
+            type: "text",
+            text: `Typ úlohy: ${meta?.name}\nPravidla typu: ${meta?.rules}\nTypické chytáky Scio u tohoto typu: ${meta?.traps}`,
+            cache_control: { type: "ephemeral" },
+          },
+          { type: "text", text: `${reference}\n\n### POSUZOVANÁ ÚLOHA (bez klíče)\n${taskToPrompt(group, group.questions, false)}` },
+        ],
       },
     ],
   });
@@ -416,14 +425,17 @@ ${ACCEPTANCE_CRITERIA}`;
 
     try {
       // attempt 0 = fresh task, attempt 1 = the same task revised with the validator's feedback
-      const conversation: { role: "user" | "assistant"; content: string }[] = [{ role: "user", content: prompt }];
+      // breakpoint on the original prompt: the revision resends it and reads it from cache instead of paying full price
+      const conversation: Anthropic.MessageParam[] = [
+        { role: "user", content: [{ type: "text", text: prompt, cache_control: { type: "ephemeral" } }] },
+      ];
       let lastReason = "";
       for (let attempt = 0; attempt < 2; attempt++) {
         const response = await anthropic().messages.parse({
           model: AI.model,
           max_tokens: 20000, // non-streaming requests must stay under the SDK's 10-minute ceiling (~21k)
           output_config: { effort: AI.generatorEffort, format: zodOutputFormat(GeneratedSchema) },
-          system: GENERATOR_SYSTEM,
+          system: [{ type: "text", text: GENERATOR_SYSTEM, cache_control: { type: "ephemeral" } }],
           messages: conversation,
         });
         const gen = response.parsed_output;
