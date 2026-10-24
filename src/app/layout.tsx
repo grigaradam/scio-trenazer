@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { MathLeakWatcher } from "@/components/dev/MathLeakWatcher";
 import { NavProgress } from "@/components/NavProgress";
 import { ThemeSync } from "@/components/ThemeSync";
+import { SITE_URL } from "@/lib/env";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
@@ -18,6 +19,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: { default: "Nanečisto", template: "%s · Nanečisto" },
   description: "Soukromá tréninková aplikace.",
   // the image itself comes from app/opengraph-image.tsx

@@ -1,6 +1,9 @@
 // Central access to environment variables. Server-only values throw lazily when missing,
 // so the build itself never needs secrets.
 
+// Public address of the app – invite links, link previews and the cron job point here.
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://nanecisto.fun").replace(/\/$/, "");
+
 export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 export const SUPABASE_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";

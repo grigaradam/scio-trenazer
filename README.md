@@ -20,8 +20,8 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres + 
    pak totéž s [`supabase/migrations/0002_admin.sql`](supabase/migrations/0002_admin.sql) (kódy, blokace, náklady AI, návštěvnost).
 3. **Authentication → Sign In / Providers**: vypni **Allow new users to sign up**. Registrace jde jen přes aplikaci
    s jednorázovým kódem z `/dashboard`, účty zakládá server – nikdo cizí se nezaregistruje přímo přes Supabase.
-4. **Authentication → URL Configuration**: *Site URL* = adresa z Vercelu (např. `https://scio-trenazer.vercel.app`),
-   do *Redirect URLs* přidej `https://scio-trenazer.vercel.app/**` a `http://localhost:3000/**`.
+4. **Authentication → URL Configuration**: *Site URL* = `https://nanecisto.fun`,
+   do *Redirect URLs* přidej `https://nanecisto.fun/**` a `http://localhost:3000/**`.
 5. **Project Settings → API Keys**: zkopíruj *Project URL*, *Publishable key* a *Secret key*.
 
 > Free projekt se po 7 dnech bez aktivity uspí – v dashboardu ho jedním klikem probudíš.

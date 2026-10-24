@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
 import { count, plural } from "@/lib/czech";
+import { SITE_URL } from "@/lib/env";
 import type { AdminStats } from "@/lib/server/admin-stats";
 import { Logo } from "../Logo";
 import { Badge, Button, Card } from "../ui";
@@ -167,7 +168,6 @@ function AutoGenerate({ auto }: { auto: AdminStats["autogen"] }) {
   const [busy, setBusy] = useState(false);
   const [workers, setWorkers] = useState(auto.workers);
   const [error, setError] = useState<string | null>(null);
-  const origin = typeof window === "undefined" ? "" : window.location.origin;
 
   async function patch(body: Record<string, unknown>) {
     setBusy(true);
@@ -185,7 +185,7 @@ function AutoGenerate({ auto }: { auto: AdminStats["autogen"] }) {
 select cron.unschedule(jobid) from cron.job where jobname = 'autogen-tick';
 select cron.schedule('autogen-tick', '* * * * *', $$
   select net.http_post(
-    url := '${origin}/api/autogen/tick',
+    url := '${SITE_URL}/api/autogen/tick',
     headers := '{"Authorization": "Bearer ${auto.secret ?? "DOPLN_AUTOGEN_SECRET"}", "Content-Type": "application/json"}'::jsonb,
     body := '{}'::jsonb,
     timeout_milliseconds := 5000
@@ -612,7 +612,7 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
   const [error, setError] = useState<string | null>(null);
   const [fresh, setFresh] = useState<string[]>([]);
   const [filter, setFilter] = useState<"free" | "used" | "all">("free");
-  const link = (code: string) => `${typeof window === "undefined" ? "" : window.location.origin}/signup?code=${encodeURIComponent(code)}`;
+  const link = (code: string) => `${SITE_URL}/signup?code=${encodeURIComponent(code)}`;
 
   async function create(body: Record<string, unknown>, key: string) {
     setBusy(key);

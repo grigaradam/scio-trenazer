@@ -1,9 +1,15 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/env";
+import { SITE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/env";
 
 // Refreshes the Supabase session cookie on every navigation and guards /app.
 export async function proxy(request: NextRequest) {
+  // the old production address forwards to the real domain (API stays put so the cron keeps working)
+  const host = request.headers.get("host") ?? "";
+  if (process.env.VERCEL_ENV === "production" && host.endsWith(".vercel.app") && !request.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.redirect(new URL(request.nextUrl.pathname + request.nextUrl.search, SITE_URL), 308);
+  }
+
   let response = NextResponse.next({ request });
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY || process.env.DEMO_MODE === "1") return response;
 
