@@ -1,9 +1,9 @@
 "use client";
 
 import clsx from "clsx";
-import { ArrowLeft, Sparkles, Timer } from "lucide-react";
+import { ArrowLeft, Sparkles, Timer, Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { celebrate } from "@/lib/celebrate";
 import { taskTypeMeta } from "@/lib/content/exams";
 import type { PublicGroup } from "@/lib/content/public";
@@ -12,6 +12,7 @@ import { count } from "@/lib/czech";
 import { achievementDef } from "@/lib/gamification";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { emitLiveStats } from "@/lib/liveStats";
+import { playSound, primeSounds, setSoundEnabled, soundEnabled, subscribeSound } from "@/lib/sounds";
 import { Explanation } from "./Explanation";
 import { GroupContext, QuestionBody, type Tone } from "./QuestionView";
 import { RichText } from "./RichText";
@@ -89,6 +90,7 @@ export function PracticeSession({
   const [toast, setToast] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const sound = useSyncExternalStore(subscribeSound, soundEnabled, () => true);
   const seen = useRef<string[]>([]);
 
   useStudyHeartbeat(!loading && !empty);
@@ -152,6 +154,7 @@ export function PracticeSession({
   const submit = useCallback(
     async (timeout = false) => {
       if (!ref || !question || feedback) return;
+      primeSounds();
       const answer = timeout ? question.parts.map(() => null) : selected;
       setSubmitting(true);
       const r = await fetch("/api/practice/answer", {
@@ -174,6 +177,7 @@ export function PracticeSession({
         xp: s.xp + (j.xp ?? 0),
         row: j.correct ? s.row + 1 : 0,
       }));
+      playSound(j.correct ? "correct" : "wrong");
       if (j.correct) {
         celebrate("small");
       } else {
@@ -309,6 +313,20 @@ export function PracticeSession({
             ))}
           </select>
         </label>
+        <button
+          onClick={() => {
+            setSoundEnabled(!sound);
+            if (!sound) {
+              primeSounds();
+              playSound("correct");
+            }
+          }}
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-surface-2 text-muted"
+          aria-label={sound ? "Vypnout zvuky" : "Zapnout zvuky"}
+          title={sound ? "Vypnout zvuky" : "Zapnout zvuky"}
+        >
+          {sound ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+        </button>
       </div>
 
       {/* body */}
