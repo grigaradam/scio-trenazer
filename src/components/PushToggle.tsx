@@ -115,8 +115,8 @@ export function PushToggle() {
         <>
           <p className="mt-2 text-sm text-muted">
             {state === "on"
-              ? "Zapnuto na tomhle zařízení. Když v den ještě nebudeš mít odcvičeno, v 18:00 ti připomenu trénink."
-              : "Když v den ještě nebudeš mít odcvičeno, v 18:00 ti pošlu připomínku, ať nepřijdeš o sérii."}
+              ? "Zapnuto na tomhle zařízení. V 11:00 ti popřeju dobré ráno, v 15:00 a 18:00 připomenu trénink, pokud ještě nemáš odmakáno."
+              : "V 11:00 ti popřeju dobré ráno, v 15:00 a 18:00 připomenu trénink, pokud ještě nemáš odmakáno – ať nepřijdeš o sérii."}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {state === "on" ? (

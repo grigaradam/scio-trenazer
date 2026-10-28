@@ -20,9 +20,6 @@ interface SubscriptionRow {
   auth: string;
 }
 
-// Prague hour at which the daily reminder goes out to anyone who hasn't studied yet.
-export const REMINDER_HOUR = 18;
-
 const czHour = () =>
   Number(new Intl.DateTimeFormat("cs-CZ", { hour: "numeric", hour12: false, timeZone: "Europe/Prague" }).format(new Date()));
 
@@ -58,22 +55,78 @@ export async function sendToUser(userId: string, message: PushMessage) {
   return deliver((data ?? []) as SubscriptionRow[], message);
 }
 
+interface ReminderProfile {
+  /** Already studied today (Prague date). */
+  done: boolean;
+  streak: number;
+  /** "Adame" or null when the vocative isn't known yet. */
+  name: string | null;
+}
+
+const days = (n: number) => `${n} ${n === 1 ? "den" : n < 5 ? "dny" : "dní"}`;
+
 /**
- * Daily study reminder. Called every minute by the cron; does work only during REMINDER_HOUR.
- * Each device is claimed by setting reminded_on in a single update, so overlapping runs never double-send.
+ * The day's reminders by Prague hour. Each returns the message for one user, or null to skip them.
+ * 11:00 – good morning to everyone; 15:00 – nudge if not studied yet; 18:00 – nudge again, or "one more round" if done.
+ */
+const REMINDERS: Record<number, (p: ReminderProfile) => PushMessage | null> = {
+  11: ({ name }) => ({
+    title: `☀️ Dobré ráno${name ? `, ${name}` : ""}!`,
+    body: "Už se těším na dnešní trénink. Kdy se do toho pustíme?",
+    url: "/app",
+    tag: "reminder",
+  }),
+  15: ({ done, name }) =>
+    done
+      ? null
+      : {
+          title: "Dneska ještě nemáš odmakáno",
+          body: `${name ? `${name}, s` : "S"}tačí chvilka – pár úloh a máš hotovo.`,
+          url: "/app/practice",
+          tag: "reminder",
+        },
+  18: ({ done, name, streak }) =>
+    done
+      ? {
+          title: "💪 Trénink dělá mistra",
+          body: `${name ? `${name}, d` : "D"}neska máš odmakáno. Dáš ještě jedno kolo?`,
+          url: "/app/practice",
+          tag: "reminder",
+        }
+      : streak > 0
+        ? {
+            title: `🔥 Série ${days(streak)} je v ohrožení`,
+            body: `${name ? `${name}, p` : "P"}ořád nemáš odmakáno. Stačí pár úloh a sérii udržíš.`,
+            url: "/app/practice",
+            tag: "reminder",
+          }
+        : {
+            title: "Pořád nemáš odmakáno",
+            body: `${name ? `${name}, s` : "S"}tačí pár rychlých úloh. Zabere to jen chvilku.`,
+            url: "/app/practice",
+            tag: "reminder",
+          },
+};
+
+/**
+ * Scheduled reminders (see REMINDERS). Called every minute by the cron; does work only in a reminder hour.
+ * Each device is claimed for the slot ("2026-10-28 15") in a single update, so overlapping runs never double-send.
  */
 export async function sendDailyReminders() {
-  if (czHour() !== REMINDER_HOUR || !vapidEnv()) return 0;
+  const hour = czHour();
+  const reminder = REMINDERS[hour];
+  if (!reminder || !vapidEnv()) return 0;
   const admin = createAdminClient();
   const today = czToday();
+  const slot = `${today} ${hour}`;
   const { data: claimed, error } = await admin
     .from("push_subscriptions")
-    .update({ reminded_on: today })
-    .or(`reminded_on.is.null,reminded_on.lt.${today}`)
+    .update({ reminded_slot: slot })
+    .or(`reminded_slot.is.null,reminded_slot.neq.${slot}`)
     .select("endpoint,user_id,p256dh,auth");
   if (error) {
-    // migration 0010 not run yet – stay quiet
-    if (error.code !== "42P01" && error.code !== "PGRST205") console.error("push reminders", error.message);
+    // migrations 0010/0011 not run yet – stay quiet
+    if (!["42P01", "42703", "PGRST204", "PGRST205"].includes(error.code)) console.error("push reminders", error.message);
     return 0;
   }
   const rows = (claimed ?? []) as SubscriptionRow[];
@@ -83,28 +136,12 @@ export async function sendDailyReminders() {
     .from("profiles")
     .select("id,last_active_date,streak_current,display_name_vocative,blocked")
     .in("id", [...new Set(rows.map((r) => r.user_id))]);
-  const byId = new Map((profiles ?? []).map((p) => [p.id as string, p]));
-  const due = rows.filter((r) => {
-    const p = byId.get(r.user_id);
-    return p && !p.blocked && p.last_active_date !== today;
-  });
-
-  return deliver(due, (row) => {
-    const p = byId.get(row.user_id)!;
-    const hi = p.display_name_vocative ? `${p.display_name_vocative}, ` : "";
-    const streak = p.streak_current as number;
-    return streak > 0
-      ? {
-          title: `🔥 Série ${streak} ${streak === 1 ? "den" : streak < 5 ? "dny" : "dní"} je v ohrožení`,
-          body: `${hi}stačí pár úloh a sérii udržíš.`,
-          url: "/app/practice",
-          tag: "daily-reminder",
-        }
-      : {
-          title: "Dneska ještě nemáš odcvičeno",
-          body: `${hi}dáš pár rychlých úloh? Zabere to jen chvilku.`,
-          url: "/app/practice",
-          tag: "daily-reminder",
-        };
-  });
+  const messages = new Map<string, PushMessage>();
+  for (const p of profiles ?? []) {
+    if (p.blocked) continue;
+    const msg = reminder({ done: p.last_active_date === today, streak: p.streak_current ?? 0, name: p.display_name_vocative ?? null });
+    if (msg) messages.set(p.id, msg);
+  }
+  const due = rows.filter((r) => messages.has(r.user_id));
+  return deliver(due, (row) => messages.get(row.user_id)!);
 }
