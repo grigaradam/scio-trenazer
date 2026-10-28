@@ -156,7 +156,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         </Card>
       )}
 
-      <PushSender push={stats.push} users={stats.users} />
+      <PushSender push={stats.push} users={stats.users} cronAlive={stats.autogen.cronAlive} />
       <InviteCodes invites={stats.invites} />
       <Users users={stats.users} />
     </div>
@@ -611,7 +611,7 @@ const PUSH_LINKS = [
   { url: "/app/progress", label: "Pokrok" },
 ];
 
-function PushSender({ push, users }: { push: AdminStats["push"]; users: AdminStats["users"] }) {
+function PushSender({ push, users, cronAlive }: { push: AdminStats["push"]; users: AdminStats["users"]; cronAlive: boolean }) {
   const reachable = users.filter((u) => u.pushDevices > 0);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -659,6 +659,22 @@ function PushSender({ push, users }: { push: AdminStats["push"]; users: AdminSta
         Oznámení zapnuté má {count(reachable.length, "uživatel", "uživatelé", "uživatelů")} na {count(push.devices, "zařízení", "zařízení", "zařízení")}.
         Automaticky chodí v 11:00, 15:00 a 18:00.
       </p>
+      {push.available && push.configured && (
+        <ul className="mb-3 space-y-1 text-sm">
+          <li className={cronAlive ? "text-emerald-600" : "font-semibold text-rose-600"}>
+            {cronAlive
+              ? "✓ Plánovač běží"
+              : "✗ Plánovač neběží – automatické připomínky se bez něj neposílají. Nastav ho v kartě Nekonečné generování (SQL pro Supabase)."}
+          </li>
+          <li className={push.slotsReady ? "text-emerald-600" : "font-semibold text-rose-600"}>
+            {push.slotsReady ? "✓ Migrace 0011 je spuštěná" : "✗ Chybí migrace 0011_push_slots.sql – bez ní se automatické připomínky neposílají."}
+          </li>
+          <li className="text-muted">
+            Poslední automatická připomínka:{" "}
+            {push.lastSlot ? `${new Date(push.lastSlot.slice(0, 10)).toLocaleDateString("cs-CZ")} v ${push.lastSlot.slice(11)}:00` : "zatím žádná"}
+          </li>
+        </ul>
+      )}
 
       {!push.available ? (
         <p className="text-sm font-semibold text-amber-600">Chybí tabulka push_subscriptions – spusť migraci 0010 a 0011 v Supabase.</p>

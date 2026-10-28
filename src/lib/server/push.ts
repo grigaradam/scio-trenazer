@@ -130,8 +130,8 @@ export async function sendDailyReminders() {
     .or(`reminded_slot.is.null,reminded_slot.neq.${slot}`)
     .select("endpoint,user_id,p256dh,auth");
   if (error) {
-    // migrations 0010/0011 not run yet – stay quiet
-    if (!["42P01", "42703", "PGRST204", "PGRST205"].includes(error.code)) console.error("push reminders", error.message);
+    // no table at all = push never set up, stay quiet; anything else (e.g. migration 0011 missing) must show in the logs
+    if (!["42P01", "PGRST205"].includes(error.code)) console.error("push reminders", error.code, error.message);
     return 0;
   }
   const rows = (claimed ?? []) as SubscriptionRow[];

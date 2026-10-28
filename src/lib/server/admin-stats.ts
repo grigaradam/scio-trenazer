@@ -87,7 +87,15 @@ export interface AdminStats {
   users: AdminUserRow[];
   invites: InviteRow[];
   /** configured: VAPID keys are set; available: migration 0010 has run. */
-  push: { configured: boolean; available: boolean; devices: number };
+  push: {
+    configured: boolean;
+    available: boolean;
+    /** Migration 0011 (reminded_slot) has run – without it the scheduled reminders can't go out. */
+    slotsReady: boolean;
+    devices: number;
+    /** Latest scheduled reminder any device got, e.g. "2026-10-28 15". */
+    lastSlot: string | null;
+  };
 }
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
@@ -132,8 +140,10 @@ export async function loadAdminStats(): Promise<AdminStats> {
     .eq("kind", "reject")
     .order("created_at", { ascending: false })
     .limit(40);
-  const pushRes = await admin.from("push_subscriptions").select("user_id");
-  const pushRows = (pushRes.error ? [] : (pushRes.data ?? [])) as { user_id: string }[];
+  let pushRes = await admin.from("push_subscriptions").select("user_id,reminded_slot");
+  const slotsReady = !pushRes.error;
+  if (pushRes.error) pushRes = await admin.from("push_subscriptions").select("user_id");
+  const pushRows = (pushRes.error ? [] : (pushRes.data ?? [])) as { user_id: string; reminded_slot?: string | null }[];
 
   const authUsers = usersRes.data?.users ?? [];
   const profiles = (profilesRes.data ?? []) as Profile[];
@@ -199,7 +209,13 @@ export async function loadAdminStats(): Promise<AdminStats> {
 
   return {
     migrationMissing,
-    push: { configured: Boolean(vapidEnv()), available: !pushRes.error, devices: pushRows.length },
+    push: {
+      configured: Boolean(vapidEnv()),
+      available: !pushRes.error,
+      slotsReady,
+      devices: pushRows.length,
+      lastSlot: pushRows.reduce<string | null>((m, r) => (r.reminded_slot && (!m || r.reminded_slot > m) ? r.reminded_slot : m), null),
+    },
     totals: {
       users: authUsers.length,
       blocked: profiles.filter((p) => p.blocked).length,
