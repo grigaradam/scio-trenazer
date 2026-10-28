@@ -178,6 +178,10 @@ html {
     inset 0 1px 0 rgb(255 255 255 / 0.14),
     inset 0 0 0 1px rgb(196 181 253 / 0.12);
 }
+/* while a finger drags it the lens tracks 1:1, a little magnified */
+.liquid-lens.is-dragging {
+  transition: opacity 0.2s;
+}
 @media (prefers-reduced-motion: reduce) {
   .liquid-lens {
     transition: opacity 0.2s;
