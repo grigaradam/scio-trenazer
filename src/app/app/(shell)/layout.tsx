@@ -44,7 +44,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
           <Logo small />
           {pills}
         </header>
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-6 lg:px-8 lg:pb-12 lg:pt-8">
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-[calc(var(--dock-top)+2.5rem)] pt-6 lg:px-8 lg:pb-12 lg:pt-8">
           <InstallBanner />
           {children}
         </main>

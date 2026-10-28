@@ -38,9 +38,6 @@ function SafariBar() {
     <div className="flex items-center gap-2 rounded-2xl bg-surface-2 p-2">
       <div className="flex-1 truncate rounded-xl bg-surface px-3 py-1.5 text-xs text-muted">nanecisto.fun</div>
       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-500 text-white ring-4 ring-brand-500/25">
-        <Share className="h-4 w-4" />
-      </span>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full text-muted">
         <Ellipsis className="h-4 w-4" />
       </span>
     </div>
@@ -50,7 +47,7 @@ function SafariBar() {
 function HomeIcon() {
   return (
     <div className="flex items-center gap-3 rounded-2xl bg-surface-2 p-3">
-      <div className="h-12 w-12 overflow-hidden rounded-[22%] shadow-md">
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[22%] shadow-md">
         <AppIcon size={48} />
       </div>
       <div className="text-sm text-muted">
@@ -138,13 +135,17 @@ export function InstallGuide({ onInstalled }: { onInstalled?: () => void }) {
             </>
           ) : (
             <>
-              Dole v Safari klepni na <Share className="inline h-4 w-4 align-[-3px]" /> <b>Sdílet</b>. Nevidíš ho? Je schovaný pod{" "}
-              <Ellipsis className="inline h-4 w-4 align-[-3px]" /> vedle adresy.
+              Dole v Safari klepni na <Ellipsis className="inline h-4 w-4 align-[-3px]" /> <b>tři tečky</b> vedle adresy.
             </>
           )}
         </Step>
+        {!chrome && (
+          <Step n={2} art={<MenuRow label="Sdílet" icon={<Share className="h-4 w-4" />} highlight />}>
+            V nabídce klepni na <b>Sdílet</b>. (Na starším iOS je <Share className="inline h-4 w-4 align-[-3px]" /> rovnou dole v liště.)
+          </Step>
+        )}
         <Step
-          n={2}
+          n={chrome ? 2 : 3}
           art={
             <div className="space-y-1.5">
               <MenuRow label="Přidat do oblíbených" icon={<span className="text-xs">☆</span>} />
@@ -152,12 +153,12 @@ export function InstallGuide({ onInstalled }: { onInstalled?: () => void }) {
             </div>
           }
         >
-          Sjeď v nabídce níž a vyber <b>Přidat na plochu</b>. Když tam není, klepni nejdřív na <b>Zobrazit víc</b>.
+          Sjeď níž a vyber <b>Přidat na plochu</b>. Když tam není, klepni nejdřív na <b>Zobrazit víc</b>.
         </Step>
-        <Step n={3}>
+        <Step n={chrome ? 3 : 4}>
           Klepni vpravo nahoře na <b>Přidat</b>. (Pokud tam je přepínač <b>Otevřít jako webovou aplikaci</b>, nech ho zapnutý.)
         </Step>
-        <Step n={4} art={<HomeIcon />}>
+        <Step n={chrome ? 4 : 5} art={<HomeIcon />}>
           Najdi ikonku na ploše a otevři ji. Pak se jen znovu přihlas a můžeš zapnout připomínky.
         </Step>
       </ol>

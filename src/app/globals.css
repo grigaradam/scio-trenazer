@@ -106,6 +106,84 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* mobile tab dock: floating pill that sits over the home indicator like the iOS tab bar */
+:root {
+  --dock-h: 64px;
+  --dock-gap: max(calc(env(safe-area-inset-bottom) - 12px), 12px);
+  --dock-top: calc(var(--dock-h) + var(--dock-gap));
+}
+
+/* liquid glass: translucent blur, specular top edge, soft lift shadow */
+.liquid-glass {
+  position: relative;
+  isolation: isolate;
+  background: color-mix(in srgb, var(--surface) 58%, transparent);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  backdrop-filter: blur(22px) saturate(190%);
+  border: 1px solid rgb(255 255 255 / 0.65);
+  box-shadow:
+    0 12px 32px -10px rgb(28 24 48 / 0.28),
+    0 2px 8px rgb(28 24 48 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    inset 0 -1px 1px rgb(255 255 255 / 0.25);
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.45), rgb(255 255 255 / 0) 55%),
+    radial-gradient(120% 80% at 50% 120%, rgb(255 255 255 / 0.25), transparent 60%);
+}
+[data-theme="dark"] .liquid-glass {
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  border-color: rgb(255 255 255 / 0.12);
+  box-shadow:
+    0 14px 36px -10px rgb(0 0 0 / 0.65),
+    0 2px 8px rgb(0 0 0 / 0.3),
+    inset 0 1px 0 rgb(255 255 255 / 0.16),
+    inset 0 -1px 1px rgb(255 255 255 / 0.05);
+}
+[data-theme="dark"] .liquid-glass::before {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0) 55%);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .liquid-glass {
+    background: color-mix(in srgb, var(--surface) 96%, transparent);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass {
+    background: var(--surface);
+  }
+}
+
+/* the bubble that slides under the active tab */
+.liquid-lens {
+  background: rgb(255 255 255 / 0.75);
+  box-shadow:
+    0 2px 10px -2px rgb(124 58 237 / 0.25),
+    inset 0 1px 0 rgb(255 255 255 / 1),
+    inset 0 0 0 1px rgb(124 58 237 / 0.1);
+  transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.2s;
+  will-change: transform;
+}
+[data-theme="dark"] .liquid-lens {
+  background: rgb(255 255 255 / 0.1);
+  box-shadow:
+    0 2px 10px -2px rgb(0 0 0 / 0.4),
+    inset 0 1px 0 rgb(255 255 255 / 0.14),
+    inset 0 0 0 1px rgb(196 181 253 / 0.12);
+}
+@media (prefers-reduced-motion: reduce) {
+  .liquid-lens {
+    transition: opacity 0.2s;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--text);

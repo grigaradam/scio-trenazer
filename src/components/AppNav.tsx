@@ -82,25 +82,35 @@ export function SideNav({ badge, avatar }: { badge?: number; avatar?: string | n
 
 export function BottomNav({ badge, avatar }: { badge?: number; avatar?: string | null }) {
   const { path, pending, setPending } = usePendingNav();
+  const activeIdx = NAV.findIndex(({ href }) => isActive(path, href));
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
-      {/* 62px + 2px border = 64px, the offset the practice action bar sits on */}
-      <div className="mx-auto grid h-[62px] max-w-lg grid-cols-6">
+    // floating liquid-glass pill; height and gap come from --dock-h / --dock-gap so other bars can sit above it
+    <nav className="pointer-events-none fixed inset-x-0 bottom-[var(--dock-gap)] z-30 px-3 lg:hidden">
+      <div className="liquid-glass pointer-events-auto relative mx-auto grid h-[var(--dock-h)] max-w-md grid-cols-6 rounded-full p-1.5">
+        <span
+          aria-hidden
+          className="liquid-lens absolute inset-y-1.5 left-1.5 rounded-full"
+          style={{
+            width: `calc((100% - 0.75rem) / ${NAV.length})`,
+            transform: `translateX(${Math.max(activeIdx, 0) * 100}%)`,
+            opacity: activeIdx < 0 ? 0 : 1,
+          }}
+        />
         {NAV.map(({ href, label, icon }) => (
           <Link
             key={href}
             href={href}
             onClick={() => !isActive(currentPath(), href) && setPending(href)}
             className={clsx(
-              "relative flex flex-col items-center justify-center gap-0.5 text-[10px] font-bold active:scale-90 transition-transform",
+              "relative flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-full text-[10px] font-bold leading-none transition-[transform,color] duration-200 active:scale-90",
               pending === href && "animate-pulse",
-              isActive(path, href) ? "text-brand-600 dark:text-brand-300" : "text-muted",
+              isActive(path, href) ? "text-brand-600 dark:text-brand-200" : "text-muted",
             )}
           >
-            <NavIcon href={href} icon={icon} avatar={avatar} active={isActive(path, href)} className="h-6 w-6" strokeWidth={isActive(path, href) ? 2.6 : 2} />
-            {label}
+            <NavIcon href={href} icon={icon} avatar={avatar} active={isActive(path, href)} className="h-[22px] w-[22px]" strokeWidth={isActive(path, href) ? 2.6 : 2} />
+            <span className="max-w-full truncate px-0.5">{label}</span>
             {href === "/app/mistakes" && badge ? (
-              <span className="absolute right-2 top-1 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-surface" />
+              <span className="absolute right-[18%] top-1.5 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-surface" />
             ) : null}
           </Link>
         ))}

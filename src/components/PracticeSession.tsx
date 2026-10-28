@@ -426,7 +426,8 @@ export function PracticeSession({
       {task && question && !loading && (
         <div
           className={clsx(
-            "fixed inset-x-0 bottom-[calc(64px+env(safe-area-inset-bottom))] z-30 border-t-2 px-4 py-3 transition-colors lg:bottom-0 lg:left-64",
+            "fixed inset-x-3 bottom-[calc(var(--dock-top)+8px)] z-30 rounded-3xl border-2 px-4 py-3 shadow-lg transition-colors",
+            "lg:inset-x-0 lg:bottom-0 lg:left-64 lg:rounded-none lg:border-x-0 lg:border-b-0 lg:shadow-none",
             !feedback && "border-border bg-surface/95 backdrop-blur",
             feedback?.correct && "border-emerald-200 bg-emerald-50 dark:border-emerald-900 dark:bg-[#0f2a1f]",
             feedback && !feedback.correct && "border-rose-200 bg-rose-50 dark:border-rose-900 dark:bg-[#2a1215]",
