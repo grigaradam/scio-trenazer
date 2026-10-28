@@ -50,6 +50,11 @@ async function deliver(rows: SubscriptionRow[], message: PushMessage | ((row: Su
   return results.filter(Boolean).length;
 }
 
+export async function sendToAll(message: PushMessage) {
+  const { data } = await createAdminClient().from("push_subscriptions").select("endpoint,user_id,p256dh,auth");
+  return deliver((data ?? []) as SubscriptionRow[], message);
+}
+
 export async function sendToUser(userId: string, message: PushMessage) {
   const { data } = await createAdminClient().from("push_subscriptions").select("endpoint,user_id,p256dh,auth").eq("user_id", userId);
   return deliver((data ?? []) as SubscriptionRow[], message);

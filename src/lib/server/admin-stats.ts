@@ -1,7 +1,7 @@
 import "server-only";
 import { GENERATOR_VERSION } from "@/lib/ai/generate";
 import { TASK_TYPES } from "@/lib/content/exams";
-import { AI } from "@/lib/env";
+import { AI, vapidEnv } from "@/lib/env";
 import { levelInfo } from "@/lib/gamification";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { czToday } from "./queries";
@@ -26,6 +26,8 @@ export interface AdminUserRow {
   costUsd: number;
   blocked: boolean;
   inviteCode: string | null;
+  /** Devices with push notifications turned on. */
+  pushDevices: number;
 }
 
 export interface InviteRow {
@@ -84,6 +86,8 @@ export interface AdminStats {
   learning: { type: string; first: number; revised: number; failed: number; lessons: string | null; lessonsAt: string | null }[];
   users: AdminUserRow[];
   invites: InviteRow[];
+  /** configured: VAPID keys are set; available: migration 0010 has run. */
+  push: { configured: boolean; available: boolean; devices: number };
 }
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
@@ -128,6 +132,8 @@ export async function loadAdminStats(): Promise<AdminStats> {
     .eq("kind", "reject")
     .order("created_at", { ascending: false })
     .limit(40);
+  const pushRes = await admin.from("push_subscriptions").select("user_id");
+  const pushRows = (pushRes.error ? [] : (pushRes.data ?? [])) as { user_id: string }[];
 
   const authUsers = usersRes.data?.users ?? [];
   const profiles = (profilesRes.data ?? []) as Profile[];
@@ -172,6 +178,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
       costUsd: sum(myAi.map((a) => Number(a.cost_usd))),
       blocked: Boolean(p?.blocked),
       inviteCode: p?.invite_code ?? null,
+      pushDevices: pushRows.filter((r) => r.user_id === u.id).length,
     };
   });
   users.sort((a, b) => (b.lastSeenAt ?? "").localeCompare(a.lastSeenAt ?? ""));
@@ -192,6 +199,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
 
   return {
     migrationMissing,
+    push: { configured: Boolean(vapidEnv()), available: !pushRes.error, devices: pushRows.length },
     totals: {
       users: authUsers.length,
       blocked: profiles.filter((p) => p.blocked).length,

@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { Ban, Check, Copy, Link2, LogOut, RefreshCw, Unlock } from "lucide-react";
+import { Ban, Bell, Check, Copy, Link2, LogOut, RefreshCw, Send, Unlock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
@@ -156,6 +156,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         </Card>
       )}
 
+      <PushSender push={stats.push} users={stats.users} />
       <InviteCodes invites={stats.invites} />
       <Users users={stats.users} />
     </div>
@@ -600,6 +601,108 @@ function useCopy() {
       setTimeout(() => setCopied((c) => (c === key ? null : c)), 1500);
     },
   };
+}
+
+const PUSH_LINKS = [
+  { url: "/app", label: "Přehled" },
+  { url: "/app/practice", label: "Trénink" },
+  { url: "/app/tests", label: "Testy" },
+  { url: "/app/mistakes", label: "Slabiny" },
+  { url: "/app/progress", label: "Pokrok" },
+];
+
+function PushSender({ push, users }: { push: AdminStats["push"]; users: AdminStats["users"] }) {
+  const reachable = users.filter((u) => u.pushDevices > 0);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [url, setUrl] = useState("/app");
+  const [userId, setUserId] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
+
+  const target = userId ? reachable.find((u) => u.id === userId) : null;
+  const devices = target ? target.pushDevices : push.devices;
+
+  async function send() {
+    const who = target ? (target.name ?? target.email ?? "uživateli") : `všem (${count(reachable.length, "uživatel", "uživatelé", "uživatelů")})`;
+    if (!confirm(`Poslat oznámení ${target ? "uživateli " : ""}${who}?`)) return;
+    setBusy(true);
+    setResult(null);
+    const r = await fetch("/api/admin/push", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, body, url, userId: userId || undefined }),
+    });
+    const j = await r.json().catch(() => ({}));
+    setBusy(false);
+    if (!r.ok) return setResult({ ok: false, text: j.error ?? "Odeslání selhalo" });
+    setResult(
+      j.sent > 0
+        ? { ok: true, text: `Doručeno na ${count(j.sent, "zařízení", "zařízení", "zařízení")} z ${devices}.` }
+        : { ok: false, text: "Nedoručeno na žádné zařízení." },
+    );
+    if (j.sent > 0) {
+      setTitle("");
+      setBody("");
+    }
+  }
+
+  const input = "h-10 w-full rounded-xl border-2 border-border bg-surface px-3 text-base outline-none focus:border-brand-500 sm:text-sm";
+
+  return (
+    <Card>
+      <h2 className="flex items-center gap-2 font-display text-lg font-extrabold">
+        <Bell className="h-5 w-5" />
+        Poslat oznámení
+      </h2>
+      <p className="mb-3 text-sm text-muted">
+        Oznámení zapnuté má {count(reachable.length, "uživatel", "uživatelé", "uživatelů")} na {count(push.devices, "zařízení", "zařízení", "zařízení")}.
+        Automaticky chodí v 11:00, 15:00 a 18:00.
+      </p>
+
+      {!push.available ? (
+        <p className="text-sm font-semibold text-amber-600">Chybí tabulka push_subscriptions – spusť migraci 0010 a 0011 v Supabase.</p>
+      ) : !push.configured ? (
+        <p className="text-sm font-semibold text-amber-600">Chybí VAPID klíče ve Vercelu (NEXT_PUBLIC_VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY).</p>
+      ) : (
+        <div className="space-y-2">
+          <div className="grid gap-2 sm:grid-cols-2">
+            <select value={userId} onChange={(e) => setUserId(e.target.value)} className={clsx(input, "font-bold")}>
+              <option value="">Všem s oznámeními ({reachable.length})</option>
+              {reachable.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name ?? u.email ?? u.id.slice(0, 8)} ({u.pushDevices}×)
+                </option>
+              ))}
+            </select>
+            <select value={url} onChange={(e) => setUrl(e.target.value)} className={input}>
+              {PUSH_LINKS.map((l) => (
+                <option key={l.url} value={l.url}>
+                  Po klepnutí otevřít: {l.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Nadpis, např. 🎉 Nové úlohy jsou tady" maxLength={80} className={input} />
+          <textarea
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="Text oznámení (nepovinné)"
+            maxLength={240}
+            rows={2}
+            className={clsx(input, "h-auto py-2")}
+          />
+          <div className="flex flex-wrap items-center gap-3">
+            <Button size="sm" loading={busy} disabled={!title.trim() || devices === 0} onClick={send}>
+              <Send className="h-4 w-4" />
+              Odeslat
+            </Button>
+            {result && <span className={clsx("text-sm font-semibold", result.ok ? "text-emerald-600" : "text-rose-600")}>{result.text}</span>}
+          </div>
+        </div>
+      )}
+    </Card>
+  );
 }
 
 function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
