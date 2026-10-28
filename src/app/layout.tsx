@@ -31,6 +31,8 @@ export const metadata: Metadata = {
     description: "Testy na čas, rozbor každé chyby s AI lektorem a nekonečný trénink úloh, které ti nejdou.",
   },
   twitter: { card: "summary_large_image" },
+  // launched from the home screen it opens full-screen, without Safari's address bar
+  appleWebApp: { capable: true, title: "Nanečisto", statusBarStyle: "default" },
   // private app – keep it out of search engines
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };

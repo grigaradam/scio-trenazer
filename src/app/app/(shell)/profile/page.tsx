@@ -1,5 +1,6 @@
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { ProfileForm } from "@/components/ProfileForm";
+import { PushToggle } from "@/components/PushToggle";
 import { ThemePicker } from "@/components/ThemePicker";
 import { Card, ProgressBar } from "@/components/ui";
 import { AI } from "@/lib/env";
@@ -33,6 +34,8 @@ export default async function ProfilePage() {
       </Card>
 
       <ProfileForm name={profile.display_name ?? ""} goal={profile.daily_goal_min} />
+
+      <PushToggle />
 
       <ThemePicker />
 

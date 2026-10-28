@@ -18,6 +18,15 @@ export function serverEnv() {
   return { secret };
 }
 
+// Web Push (VAPID). Generate once with `npx web-push generate-vapid-keys`.
+export const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "";
+
+export function vapidEnv() {
+  const privateKey = process.env.VAPID_PRIVATE_KEY;
+  if (!VAPID_PUBLIC_KEY || !privateKey) return null;
+  return { publicKey: VAPID_PUBLIC_KEY, privateKey, subject: process.env.VAPID_SUBJECT || SITE_URL };
+}
+
 type Effort = "low" | "medium" | "high" | "xhigh" | "max";
 const effort = (v: string | undefined, fallback: Effort): Effort =>
   (["low", "medium", "high", "xhigh", "max"] as const).includes(v as Effort) ? (v as Effort) : fallback;
