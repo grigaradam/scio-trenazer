@@ -1,8 +1,10 @@
 "use client";
 
-import { Bell, BellOff, Share, SquarePlus } from "lucide-react";
+import { Bell, BellOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { VAPID_PUBLIC_KEY } from "@/lib/env";
+import { isIOS, isStandalone } from "@/lib/install";
+import { InstallGuide } from "./InstallGuide";
 import { Button, Card } from "./ui";
 
 type State = "loading" | "unsupported" | "install" | "denied" | "off" | "on";
@@ -11,10 +13,6 @@ function urlBase64ToUint8Array(base64: string) {
   const raw = atob((base64 + "=".repeat((4 - (base64.length % 4)) % 4)).replace(/-/g, "+").replace(/_/g, "/"));
   return Uint8Array.from(raw, (c) => c.charCodeAt(0));
 }
-
-const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-const isStandalone = () =>
-  window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
 
 async function registration() {
   return navigator.serviceWorker.register("/sw.js", { scope: "/", updateViaCache: "none" });
@@ -93,17 +91,9 @@ export function PushToggle() {
       {!VAPID_PUBLIC_KEY ? (
         <p className="mt-2 text-sm text-muted">Oznámení zatím nejsou na serveru nastavená.</p>
       ) : state === "install" ? (
-        <div className="mt-2 text-sm text-muted">
-          <p>Na iPhonu chodí oznámení jen z appky na ploše:</p>
-          <ol className="mt-2 list-decimal space-y-1 pl-5">
-            <li>
-              V Safari klepni na <Share className="inline h-4 w-4 align-[-2px]" /> <b>Sdílet</b>.
-            </li>
-            <li>
-              Vyber <SquarePlus className="inline h-4 w-4 align-[-2px]" /> <b>Přidat na plochu</b>.
-            </li>
-            <li>Otevři Nanečisto z plochy a tady zapni připomínky.</li>
-          </ol>
+        <div className="mt-2">
+          <p className="mb-4 text-sm text-muted">Na iPhonu chodí oznámení jen z appky na ploše. Přidáš ji takhle:</p>
+          <InstallGuide />
         </div>
       ) : state === "unsupported" ? (
         <p className="mt-2 text-sm text-muted">Tenhle prohlížeč oznámení nepodporuje. Na iPhonu je potřeba iOS 16.4 nebo novější.</p>

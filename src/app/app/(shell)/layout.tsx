@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { BottomNav, SideNav } from "@/components/AppNav";
+import { InstallBanner } from "@/components/InstallBanner";
 import { Logo } from "@/components/Logo";
 import { PageTracker } from "@/components/PageTracker";
 import { StatPills } from "@/components/StatPills";
@@ -43,7 +44,10 @@ export default async function ShellLayout({ children }: { children: React.ReactN
           <Logo small />
           {pills}
         </header>
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-6 lg:px-8 lg:pb-12 lg:pt-8">{children}</main>
+        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-28 pt-6 lg:px-8 lg:pb-12 lg:pt-8">
+          <InstallBanner />
+          {children}
+        </main>
       </div>
       <BottomNav badge={openMistakes ?? 0} avatar={profile.avatar_url} />
       <PageTracker />
