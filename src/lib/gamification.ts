@@ -1,10 +1,10 @@
 // XP, levels and achievements. Pure definitions; the server awards them.
 
 export const XP = {
-  practiceCorrect: 10,
+  practiceCorrect: 15, // first correct answer: worth the most
   practiceWrong: 2,
   fastBonus: 3, // answered correctly within half the time limit
-  mistakeFixed: 15,
+  mistakeFixed: 10, // correct answer to an open mistake: replaces practiceCorrect
   testCompleted: 100,
   testPerPoint: 2,
 };

@@ -59,7 +59,7 @@ export function MistakesView({ items, fixedCount, totalOpen }: { items: Item[]; 
       <div>
         <h1 className="font-display text-3xl font-extrabold">Moje slabiny</h1>
         <p className="mt-1 text-muted">
-          Tyhle úlohy ti nešly. Zkus je přepočítat – každá opravená chyba = +15 XP. Ke každému typu máš navíc nekonečno
+          Tyhle úlohy ti nešly. Zkus je přepočítat – každá opravená chyba = +10 XP. Ke každému typu máš navíc nekonečno
           nových úloh.
         </p>
       </div>

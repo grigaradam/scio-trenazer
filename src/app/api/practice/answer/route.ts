@@ -49,7 +49,7 @@ export async function POST(req: Request) {
   if (mistake) {
     if (correct && mistake.status === "open") {
       fixed = true;
-      xp += XP.mistakeFixed;
+      xp += XP.mistakeFixed - XP.practiceCorrect;
     }
     await admin
       .from("mistakes")

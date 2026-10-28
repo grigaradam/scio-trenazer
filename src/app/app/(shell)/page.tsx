@@ -242,7 +242,7 @@ export default async function Dashboard() {
           <Target className="h-8 w-8 text-rose-500" />
           <div className="flex-1">
             <div className="font-display text-lg font-extrabold">{count(openMistakes.length, "úloha čeká", "úlohy čekají", "úloh čeká")} na opravu</div>
-            <div className="text-sm text-muted">Každá opravená chyba = +15 XP a o kus jistější výsledek.</div>
+            <div className="text-sm text-muted">Každá opravená chyba = +10 XP a o kus jistější výsledek.</div>
           </div>
           <ArrowRight className="h-6 w-6 text-rose-500" />
         </Link>

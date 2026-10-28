@@ -194,7 +194,7 @@ export default async function OpengraphImage() {
               boxShadow: "0 10px 15px -3px rgba(0,0,0,.15)",
             }}
           >
-            +10 XP
+            +15 XP
           </div>
         </div>
       </div>

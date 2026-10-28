@@ -77,7 +77,7 @@ export default function Home() {
               🔥 12 dní
             </div>
             <div className="absolute -bottom-4 -left-3 -rotate-6 rounded-2xl bg-brand-600 px-3 py-2 font-display font-bold text-white shadow-lg">
-              +10 XP
+              +15 XP
             </div>
           </div>
         </div>
