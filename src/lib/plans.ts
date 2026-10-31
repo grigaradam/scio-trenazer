@@ -31,6 +31,9 @@ export const activeUntil = (p: PlanFields) => (p.plan_expires_at && !expired(p) 
 /** The plan has an end date that has passed. */
 export const planExpired = expired;
 
+/** A time-limited Basic ends the access itself (same as a blocked account: a new code unlocks it). */
+export const basicExpired = (p: PlanFields) => p.plan === "basic" && expired(p);
+
 /** What Basic misses – shown next to locks, never as a popup. */
 export const PRO_PERKS = [
   "Všechny ostré testy z minulých let",

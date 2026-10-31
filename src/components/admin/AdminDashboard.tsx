@@ -21,6 +21,9 @@ const DURATIONS: { label: string; days: number | null }[] = [
   { label: "1 rok", days: 365 },
 ];
 const durationLabel = (days: number | null) => DURATIONS.find((d) => d.days === days)?.label ?? `${days} dní`;
+/** Pro has a duration (then it drops to Basic); for Basic the same date is when the account gets blocked. */
+const durationText = (plan: Plan, days: number | null) =>
+  plan === "pro" ? durationLabel(days) : days ? `zablokovat za ${durationLabel(days).toLowerCase()}` : "Neblokovat";
 const czDate = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 
 const usd = (v: number) => `$${v < 1 ? v.toFixed(3) : v.toFixed(2)}`;
@@ -763,7 +766,7 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
     const r = await fetch("/api/admin/codes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...body, plan, durationDays: plan === "pro" ? days : null }),
+      body: JSON.stringify({ ...body, plan, durationDays: days }),
     });
     const j = await r.json().catch(() => ({}));
     setBusy(null);
@@ -801,23 +804,22 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
             </button>
           ))}
         </div>
-        {plan === "pro" && (
-          <>
-            <select
-              value={days ?? ""}
-              onChange={(e) => setDays(e.target.value ? Number(e.target.value) : null)}
-              className="h-9 rounded-xl border-2 border-border bg-surface px-2 text-base font-bold sm:text-sm"
-              title="Jak dlouho Pro platí od použití kódu"
-            >
-              {DURATIONS.map((d) => (
-                <option key={d.label} value={d.days ?? ""}>
-                  {d.label}
-                </option>
-              ))}
-            </select>
-            <span className="text-xs text-muted">Po vypršení Pro spadne účet na Basic.</span>
-          </>
-        )}
+        <span className="text-sm font-bold">{plan === "pro" ? "platí" : "čas do zablokování"}</span>
+        <select
+          value={days ?? ""}
+          onChange={(e) => setDays(e.target.value ? Number(e.target.value) : null)}
+          className="h-9 rounded-xl border-2 border-border bg-surface px-2 text-base font-bold sm:text-sm"
+          title={plan === "pro" ? "Jak dlouho Pro platí od použití kódu" : "Za jak dlouho od použití kódu se účet zablokuje"}
+        >
+          {DURATIONS.map((d) => (
+            <option key={d.label} value={d.days ?? ""}>
+              {plan === "pro" ? d.label : d.days ? d.label : "Neblokovat"}
+            </option>
+          ))}
+        </select>
+        <span className="text-xs text-muted">
+          {plan === "pro" ? "Po vypršení Pro spadne účet na Basic." : days ? "Pak bude potřeba nový přístupový kód." : ""}
+        </span>
       </div>
       <div className="grid gap-3 md:grid-cols-2">
         <div className="space-y-2 rounded-2xl bg-surface-2 p-3">
@@ -865,7 +867,7 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
       {fresh.length > 0 && (
         <div className="mt-3 animate-pop rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-3 dark:border-emerald-800 dark:bg-emerald-900/20">
           <div className="mb-2 text-sm font-bold text-emerald-800 dark:text-emerald-200">
-            Nové kódy · {plan === "pro" ? `Pro · ${durationLabel(days).toLowerCase()}` : "Basic"}
+            Nové kódy · {plan === "pro" ? "Pro" : "Basic"} · {durationText(plan, days).toLowerCase()}
           </div>
           <div className="flex flex-wrap gap-2">
             {fresh.map((c) => (
@@ -912,7 +914,7 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
                   {i.plan && (
                     <span className="inline-flex items-center gap-1.5">
                       <PlanChip plan={i.plan} />
-                      {i.plan === "pro" && <span className="text-xs text-muted">{durationLabel(i.durationDays).toLowerCase()}</span>}
+                      <span className="text-xs text-muted">{durationText(i.plan, i.durationDays).toLowerCase()}</span>
                     </span>
                   )}
                 </td>
@@ -1012,7 +1014,7 @@ function PlanChip({ plan }: { plan: Plan }) {
   );
 }
 
-/** Plan and, for Pro, how long it lasts (then the account drops to Basic). */
+/** Plan and how long it lasts; switching the plan resets it to forever, so a Pro's end date never blocks a new Basic. */
 function PlanCell({ user, ready }: { user: AdminStats["users"][number]; ready: boolean }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -1048,30 +1050,40 @@ function PlanCell({ user, ready }: { user: AdminStats["users"][number]; ready: b
           <option value="basic">Basic</option>
           <option value="pro">Pro</option>
         </select>
-        {plan === "pro" && (
-          <select
-            value=""
-            disabled={!ready || busy}
-            onChange={(e) => {
-              const v = e.target.value;
-              if (v === "custom") return setCustom(true);
-              if (v === "forever") return save({ planExpiresAt: null });
-              if (v) save({ planExpiresAt: new Date(Date.now() + Number(v) * 86400000).toISOString() });
-            }}
-            className={select}
-            title="Trvání od teď"
-          >
-            <option value="">{!expires ? "navždy" : expired ? `vypršelo ${czDate(expires)}` : `do ${czDate(expires)}`}</option>
-            {DURATIONS.map((d) => (
-              <option key={d.label} value={d.days ?? "forever"}>
-                {d.days ? `${d.label} od teď` : d.label}
-              </option>
-            ))}
-            <option value="custom">Vlastní datum…</option>
-          </select>
-        )}
+        <select
+          value=""
+          disabled={!ready || busy}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === "custom") return setCustom(true);
+            if (v === "forever") return save({ planExpiresAt: null });
+            if (v) save({ planExpiresAt: new Date(Date.now() + Number(v) * 86400000).toISOString() });
+          }}
+          className={select}
+          title={plan === "pro" ? "Trvání Pro od teď" : "Čas do zablokování od teď"}
+        >
+          <option value="">
+            {plan === "pro"
+              ? !expires
+                ? "navždy"
+                : expired
+                  ? `vypršelo ${czDate(expires)}`
+                  : `do ${czDate(expires)}`
+              : !expires
+                ? "neblokovat"
+                : expired
+                  ? `zablokováno ${czDate(expires)}`
+                  : `zablokuje se ${czDate(expires)}`}
+          </option>
+          {DURATIONS.map((d) => (
+            <option key={d.label} value={d.days ?? "forever"}>
+              {plan === "pro" ? (d.days ? `${d.label} od teď` : d.label) : d.days ? `zablokovat za ${d.label.toLowerCase()}` : "Neblokovat"}
+            </option>
+          ))}
+          <option value="custom">Vlastní datum…</option>
+        </select>
       </div>
-      {custom && plan === "pro" && (
+      {custom && (
         <input
           type="date"
           autoFocus
@@ -1093,7 +1105,7 @@ function Users({ users, plansReady }: { users: AdminStats["users"]; plansReady: 
       <h2 className="font-display text-lg font-extrabold">Uživatelé ({users.length})</h2>
       <p className="mb-3 text-sm text-muted">
         Zablokovaný uživatel si nechá účet i data, ale po přihlášení musí zadat nový přístupový kód. Předplatné a jeho trvání
-        přepínáš u každého zvlášť – po vypršení Pro spadne účet na Basic.
+        přepínáš u každého zvlášť – po vypršení Pro spadne účet na Basic, u Basic nastavíš čas do zablokování.
       </p>
       <div className="scroll-thin overflow-x-auto">
         <table className="w-full min-w-[1060px] text-sm">

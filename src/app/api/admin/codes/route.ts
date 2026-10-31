@@ -9,7 +9,7 @@ const Create = z.object({
   code: z.string().trim().min(4).max(40).regex(/^[A-Za-z0-9-]+$/, "Jen písmena, čísla a pomlčky").optional(),
   note: z.string().trim().max(80).optional(),
   plan: z.enum(["basic", "pro"]).default("pro"),
-  /** Pro only; null/missing = forever, counted from the moment the code is used */
+  /** null/missing = forever, counted from the moment the code is used */
   durationDays: z.number().int().min(1).max(3650).nullable().optional(),
 });
 
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   const codes = code ? [normalizeCode(code)] : Array.from({ length: count ?? 1 }, randomCode);
   const { error } = await createAdminClient()
     .from("invite_codes")
-    .insert(codes.map((c) => ({ code: c, note: note || null, plan, duration_days: plan === "pro" ? (durationDays ?? null) : null })));
+    .insert(codes.map((c) => ({ code: c, note: note || null, plan, duration_days: durationDays ?? null })));
   if (error) {
     if (/plan|duration_days/.test(error.message)) {
       return NextResponse.json({ error: "Spusť v Supabase migraci 0012_plans.sql." }, { status: 409 });
