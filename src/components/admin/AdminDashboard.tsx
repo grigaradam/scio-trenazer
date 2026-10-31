@@ -7,9 +7,21 @@ import { useMemo, useState } from "react";
 import { TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
 import { count, plural } from "@/lib/czech";
 import { SITE_URL } from "@/lib/env";
+import type { Plan } from "@/lib/plans";
 import type { AdminStats } from "@/lib/server/admin-stats";
 import { Logo } from "../Logo";
 import { Badge, Button, Card } from "../ui";
+
+const DURATIONS: { label: string; days: number | null }[] = [
+  { label: "Navždy", days: null },
+  { label: "1 týden", days: 7 },
+  { label: "1 měsíc", days: 30 },
+  { label: "3 měsíce", days: 90 },
+  { label: "6 měsíců", days: 180 },
+  { label: "1 rok", days: 365 },
+];
+const durationLabel = (days: number | null) => DURATIONS.find((d) => d.days === days)?.label ?? `${days} dní`;
+const czDate = (iso: string) => new Date(iso).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
 
 const usd = (v: number) => `$${v < 1 ? v.toFixed(3) : v.toFixed(2)}`;
 const num = (v: number, d = 0) => v.toLocaleString("cs-CZ", { maximumFractionDigits: d });
@@ -61,6 +73,12 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         </div>
       </header>
 
+      {!stats.migrationMissing && !stats.plansReady && (
+        <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 text-sm font-semibold text-amber-900 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-200">
+          ⚠️ Pro předplatné Basic / Pro spusť v SQL Editoru <code>supabase/migrations/0012_plans.sql</code>. Do té doby mají všichni Pro.
+        </div>
+      )}
+
       {stats.migrationMissing && (
         <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 text-sm font-semibold text-amber-900 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-200">
           ⚠️ V Supabase chybí tabulky pro dashboard. Spusť v SQL Editoru soubor <code>supabase/migrations/0002_admin.sql</code>.
@@ -71,7 +89,11 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Kpi label="Online teď" value={num(t.onlineNow)} hint="aktivní v posledních 5 min" accent />
         <Kpi label="Aktivní dnes" value={num(t.activeToday)} hint={`za 7 dní ${t.activeWeek}`} />
-        <Kpi label="Uživatelé" value={num(t.users)} hint={t.blocked ? `${t.blocked} zablokováno` : "nikdo zablokovaný"} />
+        <Kpi
+          label="Uživatelé"
+          value={num(t.users)}
+          hint={`${t.pro} Pro · ${t.users - t.pro} Basic${t.blocked ? ` · ${t.blocked} zablokováno` : ""}`}
+        />
         <Kpi label="Odučeno celkem" value={`${num(t.hours, 1)} h`} hint={`${num(t.tasksSolved)} ${plural(t.tasksSolved, "úloha", "úlohy", "úloh")} · ${count(t.testsCompleted, "test", "testy", "testů")}`} />
       </section>
 
@@ -158,7 +180,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
 
       <PushSender push={stats.push} users={stats.users} cronAlive={stats.autogen.cronAlive} />
       <InviteCodes invites={stats.invites} />
-      <Users users={stats.users} />
+      <Users users={stats.users} plansReady={stats.plansReady} />
     </div>
   );
 }
@@ -727,6 +749,8 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
   const [count, setCount] = useState(1);
   const [manual, setManual] = useState("");
   const [note, setNote] = useState("");
+  const [plan, setPlan] = useState<Plan>("pro");
+  const [days, setDays] = useState<number | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fresh, setFresh] = useState<string[]>([]);
@@ -736,7 +760,11 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
   async function create(body: Record<string, unknown>, key: string) {
     setBusy(key);
     setError(null);
-    const r = await fetch("/api/admin/codes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const r = await fetch("/api/admin/codes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...body, plan, durationDays: days }),
+    });
     const j = await r.json().catch(() => ({}));
     setBusy(null);
     if (!r.ok) return setError(j.error ?? "Chyba");
@@ -756,7 +784,39 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
   return (
     <Card>
       <h2 className="font-display text-lg font-extrabold">Přístupové kódy</h2>
-      <p className="mb-3 text-sm text-muted">Každý kód jde použít jen jednou – na registraci nebo na obnovení zablokovaného účtu.</p>
+      <p className="mb-3 text-sm text-muted">
+        Každý kód jde použít jen jednou – na registraci nebo na obnovení zablokovaného účtu. Kód nese předplatné; jeho trvání
+        běží od chvíle, kdy ho někdo použije.
+      </p>
+      <div className="mb-3 flex flex-wrap items-center gap-2 rounded-2xl bg-surface-2 p-3">
+        <span className="text-sm font-bold">Odkazy na</span>
+        <div className="flex rounded-xl bg-surface p-1 text-sm font-bold">
+          {(["basic", "pro"] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPlan(p)}
+              className={clsx("rounded-lg px-3 py-1", plan === p ? (p === "pro" ? "bg-brand-600 text-white" : "bg-surface-2 text-text shadow-sm") : "text-muted")}
+            >
+              {p === "pro" ? "Pro" : "Basic"}
+            </button>
+          ))}
+        </div>
+        <select
+          value={days ?? ""}
+          onChange={(e) => setDays(e.target.value ? Number(e.target.value) : null)}
+          className="h-9 rounded-xl border-2 border-border bg-surface px-2 text-base font-bold sm:text-sm"
+          title="Jak dlouho předplatné platí od použití kódu"
+        >
+          {DURATIONS.map((d) => (
+            <option key={d.label} value={d.days ?? ""}>
+              {d.label}
+            </option>
+          ))}
+        </select>
+        <span className="text-xs text-muted">
+          {plan === "pro" ? "Po vypršení Pro spadne účet na Basic." : days ? "Po vypršení Basic se účet zablokuje." : ""}
+        </span>
+      </div>
       <div className="grid gap-3 md:grid-cols-2">
         <div className="space-y-2 rounded-2xl bg-surface-2 p-3">
           <div className="text-sm font-bold">Vygenerovat náhodné</div>
@@ -802,7 +862,9 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
 
       {fresh.length > 0 && (
         <div className="mt-3 animate-pop rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-3 dark:border-emerald-800 dark:bg-emerald-900/20">
-          <div className="mb-2 text-sm font-bold text-emerald-800 dark:text-emerald-200">Nové kódy</div>
+          <div className="mb-2 text-sm font-bold text-emerald-800 dark:text-emerald-200">
+            Nové kódy · {plan === "pro" ? "Pro" : "Basic"} · {durationLabel(days).toLowerCase()}
+          </div>
           <div className="flex flex-wrap gap-2">
             {fresh.map((c) => (
               <CodeActions key={c} code={c} link={link(c)} copied={copied} copy={copy} />
@@ -830,10 +892,11 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
         ))}
       </div>
       <div className="scroll-thin overflow-x-auto">
-        <table className="w-full min-w-[560px] text-sm">
+        <table className="w-full min-w-[640px] text-sm">
           <thead className="text-left text-xs uppercase text-muted">
             <tr>
               <th className="py-1">Kód</th>
+              <th className="py-1">Předplatné</th>
               <th className="py-1">Poznámka</th>
               <th className="py-1">Stav</th>
               <th className="py-1 text-right">Akce</th>
@@ -843,6 +906,14 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
             {list.map((i) => (
               <tr key={i.code} className="border-t border-border">
                 <td className="py-2 font-mono font-bold">{i.code}</td>
+                <td className="py-2">
+                  {i.plan && (
+                    <span className="inline-flex items-center gap-1.5">
+                      <PlanChip plan={i.plan} />
+                      <span className="text-xs text-muted">{durationLabel(i.durationDays).toLowerCase()}</span>
+                    </span>
+                  )}
+                </td>
                 <td className="py-2 text-muted">{i.note ?? ""}</td>
                 <td className="py-2">
                   {i.revoked ? (
@@ -880,7 +951,7 @@ function InviteCodes({ invites }: { invites: AdminStats["invites"] }) {
             ))}
             {!list.length && (
               <tr>
-                <td colSpan={4} className="py-4 text-center text-muted">
+                <td colSpan={5} className="py-4 text-center text-muted">
                   Žádné kódy.
                 </td>
               </tr>
@@ -926,20 +997,106 @@ function CodeActions({
   );
 }
 
-function Users({ users }: { users: AdminStats["users"] }) {
+function PlanChip({ plan }: { plan: Plan }) {
+  return (
+    <span
+      className={clsx(
+        "rounded-md px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider",
+        plan === "pro" ? "bg-brand-600 text-white" : "bg-surface-2 text-muted",
+      )}
+    >
+      {plan}
+    </span>
+  );
+}
+
+/** Plan and how long it lasts; switching the plan resets it to forever, so a Pro's end date never blocks a new Basic. */
+function PlanCell({ user, ready }: { user: AdminStats["users"][number]; ready: boolean }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [custom, setCustom] = useState(false);
+  const plan = user.plan ?? "pro";
+  const expires = user.planExpiresAt;
+  const expired = user.planExpired;
+
+  async function save(body: Record<string, unknown>) {
+    setBusy(true);
+    const r = await fetch("/api/admin/users", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user.id, ...body }),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) window.alert(j.error ?? "Uložení selhalo");
+    setCustom(false);
+    router.refresh();
+    setTimeout(() => setBusy(false), 600);
+  }
+
+  const select = "h-8 rounded-lg border-2 border-border bg-surface px-1.5 text-base font-bold disabled:opacity-50 sm:text-xs";
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-1">
+        <select
+          value={plan}
+          disabled={!ready || busy}
+          onChange={(e) => save({ plan: e.target.value, planExpiresAt: null })}
+          className={clsx(select, plan === "pro" && "text-brand-600")}
+        >
+          <option value="basic">Basic</option>
+          <option value="pro">Pro</option>
+        </select>
+        <select
+          value=""
+          disabled={!ready || busy}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === "custom") return setCustom(true);
+            if (v === "forever") return save({ planExpiresAt: null });
+            if (v) save({ planExpiresAt: new Date(Date.now() + Number(v) * 86400000).toISOString() });
+          }}
+          className={select}
+          title="Trvání od teď"
+        >
+          <option value="">{!expires ? "navždy" : expired ? `vypršelo ${czDate(expires)}` : `do ${czDate(expires)}`}</option>
+          {DURATIONS.map((d) => (
+            <option key={d.label} value={d.days ?? "forever"}>
+              {d.days ? `${d.label} od teď` : d.label}
+            </option>
+          ))}
+          <option value="custom">Vlastní datum…</option>
+        </select>
+      </div>
+      {custom && (
+        <input
+          type="date"
+          autoFocus
+          min={new Date().toISOString().slice(0, 10)}
+          onChange={(e) => e.target.value && save({ planExpiresAt: new Date(`${e.target.value}T23:59:59`).toISOString() })}
+          className={clsx(select, "w-fit font-normal")}
+        />
+      )}
+      {expired && <span className="text-[11px] text-muted">{plan === "pro" ? "teď má Basic" : "přístup skončil"}</span>}
+    </div>
+  );
+}
+
+function Users({ users, plansReady }: { users: AdminStats["users"]; plansReady: boolean }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
   return (
     <Card>
       <h2 className="font-display text-lg font-extrabold">Uživatelé ({users.length})</h2>
       <p className="mb-3 text-sm text-muted">
-        Zablokovaný uživatel si nechá účet i data, ale po přihlášení musí zadat nový přístupový kód.
+        Zablokovaný uživatel si nechá účet i data, ale po přihlášení musí zadat nový přístupový kód. Předplatné a jeho trvání
+        přepínáš u každého zvlášť – po vypršení Pro spadne účet na Basic.
       </p>
       <div className="scroll-thin overflow-x-auto">
-        <table className="w-full min-w-[900px] text-sm">
+        <table className="w-full min-w-[1060px] text-sm">
           <thead className="text-left text-xs uppercase text-muted">
             <tr>
               <th className="py-1">Uživatel</th>
+              <th className="py-1">Předplatné</th>
               <th className="py-1 text-right">Level</th>
               <th className="py-1 text-right">Streak</th>
               <th className="py-1 text-right">Hodiny</th>
@@ -955,11 +1112,16 @@ function Users({ users }: { users: AdminStats["users"] }) {
             {users.map((u) => (
               <tr key={u.id} className={clsx("border-t border-border", u.blocked && "opacity-60")}>
                 <td className="py-2">
-                  <div className="font-bold">{u.name ?? "–"}</div>
+                  <div className="flex items-center gap-1.5 font-bold">
+                    {u.name ?? "–"} <PlanChip plan={u.activePlan} />
+                  </div>
                   <div className="text-xs text-muted">
                     {u.email}
                     {u.inviteCode ? ` · ${u.inviteCode}` : ""}
                   </div>
+                </td>
+                <td className="py-2">
+                  <PlanCell user={u} ready={plansReady} />
                 </td>
                 <td className="py-2 text-right tabular-nums">
                   {u.level} <span className="text-xs text-muted">({num(u.xp)} XP)</span>

@@ -4,6 +4,7 @@ import { InstallBanner } from "@/components/InstallBanner";
 import { Logo } from "@/components/Logo";
 import { PageTracker } from "@/components/PageTracker";
 import { StatPills } from "@/components/StatPills";
+import { effectivePlan } from "@/lib/plans";
 import { getProfile, requireUser } from "@/lib/server/auth";
 import { czToday } from "@/lib/server/queries";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -36,7 +37,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
         <div className="px-2">
           <Logo small />
         </div>
-        <SideNav badge={openMistakes ?? 0} avatar={profile.avatar_url} />
+        <SideNav badge={openMistakes ?? 0} avatar={profile.avatar_url} plan={effectivePlan(profile)} />
         <div className="mt-auto px-2">{pills}</div>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">

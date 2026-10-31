@@ -5,6 +5,7 @@ import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { DEMO_USER, isDemo } from "@/lib/supabase/demo";
+import { basicExpired, effectivePlan } from "@/lib/plans";
 import type { Profile } from "./types";
 
 export interface SessionUser {
@@ -35,7 +36,7 @@ export async function requireUser(opts: { allowBlocked?: boolean } = {}) {
   if (!user) redirect("/login");
   const profile = await findProfile(user.id);
   if (!profile) redirect("/auth/signout?gone=1");
-  if (!opts.allowBlocked && profile.blocked) redirect("/reactivate");
+  if (!opts.allowBlocked && isBlocked(profile)) redirect("/reactivate");
   return { user };
 }
 
@@ -44,13 +45,20 @@ export async function apiUser(opts: { allowBlocked?: boolean } = {}) {
   const user = await currentUser();
   const profile = user && (await findProfile(user.id));
   if (!user || !profile) return { user: null, error: NextResponse.json({ error: "Nepřihlášen" }, { status: 401 }) } as const;
-  if (!opts.allowBlocked && profile.blocked) {
+  if (!opts.allowBlocked && isBlocked(profile)) {
     return {
       user: null,
       error: NextResponse.json({ error: "Platnost přístupu vypršela – zadej nový přístupový kód.", blocked: true }, { status: 403 }),
     } as const;
   }
   return { user, error: null } as const;
+}
+
+const isBlocked = (p: Profile) => Boolean(p.blocked) || basicExpired(p);
+
+/** The plan in force for a user that requireUser/apiUser already let through. */
+export async function getPlan(userId: string) {
+  return effectivePlan(await getProfile(userId));
 }
 
 /** The user's profile, or null when the auth user is gone (the lazy insert then fails on the foreign key). */

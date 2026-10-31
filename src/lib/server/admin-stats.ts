@@ -3,6 +3,7 @@ import { GENERATOR_VERSION } from "@/lib/ai/generate";
 import { TASK_TYPES } from "@/lib/content/exams";
 import { AI, vapidEnv } from "@/lib/env";
 import { levelInfo } from "@/lib/gamification";
+import { effectivePlan, planExpired, type Plan } from "@/lib/plans";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { czToday } from "./queries";
 import type { Profile } from "./types";
@@ -26,6 +27,12 @@ export interface AdminUserRow {
   costUsd: number;
   blocked: boolean;
   inviteCode: string | null;
+  /** null = migration 0012 hasn't run */
+  plan: Plan | null;
+  /** The plan in force (an expired Pro is Basic). */
+  activePlan: Plan;
+  planExpiresAt: string | null;
+  planExpired: boolean;
   /** Devices with push notifications turned on. */
   pushDevices: number;
 }
@@ -38,13 +45,18 @@ export interface InviteRow {
   usedBy: string | null;
   usedByEmail: string | null;
   revoked: boolean;
+  plan: Plan | null;
+  durationDays: number | null;
 }
 
 export interface AdminStats {
   migrationMissing: boolean;
+  /** Migration 0012 (plans) has run. */
+  plansReady: boolean;
   totals: {
     users: number;
     blocked: number;
+    pro: number;
     onlineNow: number;
     activeToday: number;
     activeWeek: number;
@@ -158,6 +170,8 @@ export async function loadAdminStats(): Promise<AdminStats> {
     used_at: string | null;
     used_by: string | null;
     revoked: boolean;
+    plan?: string;
+    duration_days?: number | null;
   }[];
   const traffic = (trafficRes.data ?? []) as { day: string; user_id: string; views: number }[];
 
@@ -188,6 +202,10 @@ export async function loadAdminStats(): Promise<AdminStats> {
       costUsd: sum(myAi.map((a) => Number(a.cost_usd))),
       blocked: Boolean(p?.blocked),
       inviteCode: p?.invite_code ?? null,
+      plan: p?.plan === "basic" || p?.plan === "pro" ? p.plan : null,
+      activePlan: effectivePlan(p ?? {}),
+      planExpiresAt: p?.plan_expires_at ?? null,
+      planExpired: planExpired(p ?? {}),
       pushDevices: pushRows.filter((r) => r.user_id === u.id).length,
     };
   });
@@ -209,6 +227,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
 
   return {
     migrationMissing,
+    plansReady: profiles.some((p) => "plan" in p) || (!profiles.length && invites.some((i) => "plan" in i)),
     push: {
       configured: Boolean(vapidEnv()),
       available: !pushRes.error,
@@ -219,6 +238,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
     totals: {
       users: authUsers.length,
       blocked: profiles.filter((p) => p.blocked).length,
+      pro: profiles.filter((p) => effectivePlan(p) === "pro").length,
       onlineNow: profiles.filter((p) => p.last_seen_at && now - new Date(p.last_seen_at).getTime() < 5 * 60000).length,
       activeToday: new Set([...days.filter((d) => d.day === today).map((d) => d.user_id), ...traffic.filter((t) => t.day === today).map((t) => t.user_id)]).size,
       activeWeek: new Set([...days.filter((d) => d.day >= week[0]).map((d) => d.user_id), ...traffic.map((t) => t.user_id)]).size,
@@ -306,6 +326,8 @@ export async function loadAdminStats(): Promise<AdminStats> {
       usedBy: i.used_by,
       usedByEmail: i.used_by ? emailOf.get(i.used_by) ?? null : null,
       revoked: i.revoked,
+      plan: i.plan === "basic" || i.plan === "pro" ? i.plan : null,
+      durationDays: i.duration_days ?? null,
     })),
   };
 }

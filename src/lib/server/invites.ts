@@ -25,8 +25,21 @@ export async function releaseInvite(code: string) {
   await createAdminClient().from("invite_codes").update({ used_at: null, used_by: null }).eq("code", normalizeCode(code));
 }
 
+/** Ties the code to the account and starts the plan it carries (its duration counts from now). */
 export async function bindInvite(code: string, userId: string) {
   const admin = createAdminClient();
-  await admin.from("invite_codes").update({ used_by: userId }).eq("code", normalizeCode(code));
-  await admin.from("profiles").update({ invite_code: normalizeCode(code), blocked: false }).eq("id", userId);
+  const { data: invite } = await admin
+    .from("invite_codes")
+    .update({ used_by: userId })
+    .eq("code", normalizeCode(code))
+    .select("*")
+    .maybeSingle();
+  const plan = (invite as { plan?: string; duration_days?: number | null } | null) ?? {};
+  const update: Record<string, unknown> = { invite_code: normalizeCode(code), blocked: false };
+  // without migration 0012 the code has no plan and the profile no plan columns
+  if (plan.plan) {
+    update.plan = plan.plan;
+    update.plan_expires_at = plan.duration_days ? new Date(Date.now() + plan.duration_days * 86400000).toISOString() : null;
+  }
+  await admin.from("profiles").update(update).eq("id", userId);
 }

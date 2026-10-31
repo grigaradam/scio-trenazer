@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { generateTasks } from "@/lib/ai/generate";
 import { spendBudget } from "@/lib/ai/client";
-import { type TaskTypeMeta, taskTypeMeta } from "@/lib/content/exams";
+import { type TaskTypeMeta, taskTypeMeta, taskTypesFor } from "@/lib/content/exams";
 import { genRef, stripGroup } from "@/lib/content/public";
 import type { Group, TaskType } from "@/lib/content/types";
-import { apiUser } from "@/lib/server/auth";
+import { BASIC } from "@/lib/plans";
+import { apiUser, getPlan } from "@/lib/server/auth";
 import { ensureTaskBuffer, pickUnseen } from "@/lib/server/pool";
+import { practiceToday } from "@/lib/server/queries";
 import { resolveTask } from "@/lib/server/tasks";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -23,7 +25,17 @@ const Body = z.object({
 export async function POST(req: Request) {
   const { user, error } = await apiUser();
   if (error) return error;
-  const { type, types, mode, exclude } = Body.parse(await req.json());
+  const body = Body.parse(await req.json());
+  const { exclude } = body;
+  let { type, types, mode } = body;
+  // Basic: only the all-types mix, BASIC.dailyTasks a day, and only tasks already in the pool (no AI generation)
+  const basic = (await getPlan(user.id)) === "basic";
+  if (basic) {
+    if ((await practiceToday(user.id)) >= BASIC.dailyTasks) return NextResponse.json({ kind: "limit", limit: BASIC.dailyTasks });
+    type = undefined;
+    types = taskTypesFor("osp").map((t) => t.id);
+    mode = "mix";
+  }
   const metas = [...new Set(types ?? (type ? [type] : []))].map(taskTypeMeta);
   if (!metas.length || metas.some((m) => !m)) return NextResponse.json({ error: "Neznámý typ úlohy" }, { status: 400 });
   const pool = metas as TaskTypeMeta[];
@@ -48,7 +60,7 @@ export async function POST(req: Request) {
       if (task) {
         // prepare a fresh task in the background, so it's ready when the mistakes run out
         const meta = taskTypeMeta(task.taskType);
-        if (mode === "mix" && meta) ensureTaskBuffer(user.id, meta.exam, meta.id);
+        if (mode === "mix" && meta && !basic) ensureTaskBuffer(user.id, meta.exam, meta.id);
         return NextResponse.json({
           kind: "mistake",
           type: task.taskType,
@@ -76,6 +88,9 @@ export async function POST(req: Request) {
   }
 
   // 3) nothing left → generate fresh ones (counts against the daily AI budget)
+  if (!available.length && basic) {
+    return NextResponse.json({ kind: "exhausted" });
+  }
   if (!available.length) {
     const over = await spendBudget(user.id, "generate");
     if (over) return over;
@@ -101,7 +116,7 @@ export async function POST(req: Request) {
   await admin.from("generated_tasks").update({ served_count: task.served_count + 1 }).eq("id", task.id);
 
   // keep a few pre-generated tasks of this type waiting, so fast answers never hit a generation wait
-  ensureTaskBuffer(user.id, meta.exam, meta.id);
+  if (!basic) ensureTaskBuffer(user.id, meta.exam, meta.id);
 
   const group = task.payload;
   return NextResponse.json({

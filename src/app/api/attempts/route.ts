@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getTest, getTests } from "@/lib/content/load";
-import { apiUser } from "@/lib/server/auth";
+import { apiUser, getPlan } from "@/lib/server/auth";
+import { basicTestId } from "@/lib/server/queries";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const Body = z.object({ testId: z.string().optional(), diagnostic: z.boolean().optional() });
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
 
   const { data: existing } = await admin
     .from("attempts")
-    .select("id,test_id,status")
+    .select("id,test_id,status,started_at")
     .eq("user_id", user.id)
     .order("started_at", { ascending: false });
 
@@ -23,6 +24,12 @@ export async function POST(req: Request) {
   if (open) return NextResponse.json({ id: open.id, resumed: true });
 
   let testId = body.testId;
+  // Basic: one test – the first one started stays its test, retakes included
+  const own = (await getPlan(user.id)) === "basic" ? basicTestId(existing ?? []) : null;
+  if (own) {
+    if (testId && testId !== own) return NextResponse.json({ error: "V Basic máš jeden test. Další testy jsou v Pro." }, { status: 403 });
+    testId = own;
+  }
   if (!testId) {
     const done = new Set((existing ?? []).map((a) => a.test_id));
     const tests = getTests("osp");

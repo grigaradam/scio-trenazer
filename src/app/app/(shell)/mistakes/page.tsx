@@ -1,6 +1,6 @@
 import { MistakesView } from "@/components/MistakesView";
 import { stripGroup } from "@/lib/content/public";
-import { requireUser } from "@/lib/server/auth";
+import { getPlan, requireUser } from "@/lib/server/auth";
 import { getMistakes } from "@/lib/server/queries";
 import { resolveTask } from "@/lib/server/tasks";
 
@@ -8,7 +8,7 @@ export const metadata = { title: "Slabiny" };
 
 export default async function MistakesPage() {
   const { user } = await requireUser();
-  const mistakes = await getMistakes(user.id);
+  const [mistakes, plan] = await Promise.all([getMistakes(user.id), getPlan(user.id)]);
   const open = mistakes.filter((m) => m.status === "open").slice(0, 80);
   const resolved = await Promise.all(
     open.map(async (m) => {
@@ -30,6 +30,7 @@ export default async function MistakesPage() {
       items={resolved.filter((x) => x !== null)}
       fixedCount={mistakes.filter((m) => m.status === "fixed").length}
       totalOpen={mistakes.filter((m) => m.status === "open").length}
+      locked={plan === "basic"}
     />
   );
 }

@@ -1,17 +1,23 @@
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { ProLock } from "@/components/Pro";
 import { StartTestButton } from "@/components/StartTestButton";
 import { Badge, ButtonLink, Card } from "@/components/ui";
 import { getTests } from "@/lib/content/load";
-import { requireUser } from "@/lib/server/auth";
-import { getAttempts } from "@/lib/server/queries";
+import { getPlan, requireUser } from "@/lib/server/auth";
+import { basicTestId, getAttempts } from "@/lib/server/queries";
 
 export const metadata = { title: "Testy" };
 
 export default async function TestsPage() {
   const { user } = await requireUser();
-  const attempts = await getAttempts(user.id);
-  const tests = getTests("osp");
+  const [attempts, plan] = await Promise.all([getAttempts(user.id), getPlan(user.id)]);
+  const all = getTests("osp");
+  // Basic keeps the first test it started; before that, any one can become it
+  const own = plan === "basic" ? basicTestId(attempts) : null;
+  const locked = (id: string) => plan === "basic" && own !== null && id !== own;
+  // its own test goes first, the locked ones after it
+  const tests = own ? [...all.filter((t) => t.id === own), ...all.filter((t) => t.id !== own)] : all;
 
   return (
     <div className="space-y-6">
@@ -20,6 +26,11 @@ export default async function TestsPage() {
         <p className="mt-1 text-muted">
           Ostré testy z minulých let · 66 úloh · 35 + 50 minut. Doporučujeme ten, který jsi ještě nedělal(a).
         </p>
+        {plan === "basic" && (
+          <p className="mt-2 text-sm text-muted">
+            {own ? "V Basic máš jeden test – ten svůj si můžeš zkoušet znovu. Ostatní jsou v Pro." : "V Basic máš jeden test – vyber si, který to bude."}
+          </p>
+        )}
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         {tests.map((t, i) => {
@@ -28,8 +39,9 @@ export default async function TestsPage() {
           const done = mine.filter((a) => a.status === "completed" && a.result);
           const best = done.reduce((m, a) => Math.max(m, a.result!.percent), -1);
           const lastDone = done[0];
+          const lock = locked(t.id);
           return (
-            <Card key={t.id} className="flex animate-fade-up flex-col gap-3" style={{ animationDelay: `${i * 40}ms` }}>
+            <Card key={t.id} className={`flex animate-fade-up flex-col gap-3 ${lock ? "border-dashed" : ""}`} style={{ animationDelay: `${i * 40}ms` }}>
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <div className="font-display text-lg font-extrabold">{t.title.replace("OSP – ", "")}</div>
@@ -37,7 +49,9 @@ export default async function TestsPage() {
                     průměr účastníků {t.stats.mean.toLocaleString("cs-CZ")} b. · {t.stats.participants.toLocaleString("cs-CZ")} účastníků
                   </div>
                 </div>
-                {done.length > 0 ? (
+                {lock ? (
+                  <ProLock />
+                ) : done.length > 0 ? (
                   <Badge tone="good">
                     <CheckCircle2 className="h-3.5 w-3.5" /> {best} %
                   </Badge>
@@ -48,7 +62,9 @@ export default async function TestsPage() {
                 )}
               </div>
               <div className="mt-auto flex flex-wrap gap-2">
-                {open ? (
+                {lock ? (
+                  <span className="text-xs text-muted">Odemkne se s Pro</span>
+                ) : open ? (
                   <ButtonLink href={`/app/test/${open.id}`} size="sm">
                     Pokračovat
                   </ButtonLink>

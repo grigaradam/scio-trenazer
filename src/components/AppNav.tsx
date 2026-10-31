@@ -5,6 +5,8 @@ import { Dumbbell, FileText, Home, Target, TrendingUp, User, type LucideIcon } f
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent, type PointerEvent } from "react";
+import type { Plan } from "@/lib/plans";
+import { PlanBadge } from "./Pro";
 
 export const NAV = [
   { href: "/app", label: "Domů", icon: Home },
@@ -52,7 +54,7 @@ function usePendingNav() {
   return { path: pending ?? path, pending, setPending };
 }
 
-export function SideNav({ badge, avatar }: { badge?: number; avatar?: string | null }) {
+export function SideNav({ badge, avatar, plan }: { badge?: number; avatar?: string | null; plan?: Plan }) {
   const { path, pending, setPending } = usePendingNav();
   return (
     <nav className="flex flex-col gap-1">
@@ -71,6 +73,7 @@ export function SideNav({ badge, avatar }: { badge?: number; avatar?: string | n
         >
           <NavIcon href={href} icon={icon} avatar={avatar} active={isActive(path, href)} className="h-5 w-5" strokeWidth={2.4} />
           {label}
+          {href === "/app/profile" && plan && <PlanBadge plan={plan} className="ml-auto" />}
           {href === "/app/mistakes" && badge ? (
             <span className="ml-auto rounded-full bg-rose-500 px-2 py-0.5 text-[11px] text-white">{badge}</span>
           ) : null}

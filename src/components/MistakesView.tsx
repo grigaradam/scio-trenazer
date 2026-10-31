@@ -9,6 +9,7 @@ import { count } from "@/lib/czech";
 import type { PublicGroup } from "@/lib/content/public";
 import type { TaskType } from "@/lib/content/types";
 import { toPlainText } from "@/lib/plainMath";
+import { ProLock, ProTeaser } from "./Pro";
 import { ReviewTask } from "./ReviewTask";
 import { Badge, ButtonLink, Card, EmptyState } from "./ui";
 
@@ -22,7 +23,18 @@ interface Item {
   updatedAt: string;
 }
 
-export function MistakesView({ items, fixedCount, totalOpen }: { items: Item[]; fixedCount: number; totalOpen: number }) {
+export function MistakesView({
+  items,
+  fixedCount,
+  totalOpen,
+  locked = false,
+}: {
+  items: Item[];
+  fixedCount: number;
+  totalOpen: number;
+  /** Basic: the list is visible, fixing happens in the Mix */
+  locked?: boolean;
+}) {
   const [filter, setFilter] = useState<TaskType | "all">("all");
   const [open, setOpen] = useState<string | null>(null);
   const [fixed, setFixed] = useState<string[]>([]);
@@ -59,8 +71,9 @@ export function MistakesView({ items, fixedCount, totalOpen }: { items: Item[]; 
       <div>
         <h1 className="font-display text-3xl font-extrabold">Moje slabiny</h1>
         <p className="mt-1 text-muted">
-          Tyhle úlohy ti nešly. Zkus je přepočítat – každá opravená chyba = +10 XP. Ke každému typu máš navíc nekonečno
-          nových úloh.
+          {locked
+            ? "Tyhle úlohy ti nešly. V Basic se ti vrací v Mixu – každá opravená chyba = +10 XP."
+            : "Tyhle úlohy ti nešly. Zkus je přepočítat – každá opravená chyba = +10 XP. Ke každému typu máš navíc nekonečno nových úloh."}
         </p>
       </div>
 
@@ -89,9 +102,13 @@ export function MistakesView({ items, fixedCount, totalOpen }: { items: Item[]; 
                 <div className="truncate font-bold">{meta.name}</div>
                 <div className="text-xs text-muted">{count} k opravě</div>
               </div>
-              <ButtonLink href={`/app/practice/${type}?mode=mistakes`} size="sm" variant={meta.section === "verbal" ? "verbal" : "analytic"}>
-                Trénovat
-              </ButtonLink>
+              {locked ? (
+                <ProLock />
+              ) : (
+                <ButtonLink href={`/app/practice/${type}?mode=mistakes`} size="sm" variant={meta.section === "verbal" ? "verbal" : "analytic"}>
+                  Trénovat
+                </ButtonLink>
+              )}
             </div>
           );
         })}
@@ -164,13 +181,22 @@ export function MistakesView({ items, fixedCount, totalOpen }: { items: Item[]; 
               </button>
             </div>
             <div className="p-4 pb-16">
-              <ReviewTask
-                key={current.ref}
-                taskRef={current.ref}
-                group={current.group}
-                tone={taskTypeMeta(current.type)?.section === "verbal" ? "verbal" : "analytic"}
-                onResolved={(ok) => ok && setFixed((f) => [...f, current.ref])}
-              />
+              {locked ? (
+                <div className="space-y-4">
+                  <ProTeaser title="Opravovat chyby tady můžeš v Pro" perks={false}>
+                    V Basic se ti tahle úloha znovu objeví v Mixu, tam ji opravíš.
+                  </ProTeaser>
+                  <ButtonLink href="/app/practice/mix">🎲 Trénovat Mix</ButtonLink>
+                </div>
+              ) : (
+                <ReviewTask
+                  key={current.ref}
+                  taskRef={current.ref}
+                  group={current.group}
+                  tone={taskTypeMeta(current.type)?.section === "verbal" ? "verbal" : "analytic"}
+                  onResolved={(ok) => ok && setFixed((f) => [...f, current.ref])}
+                />
+              )}
             </div>
           </div>
         </div>

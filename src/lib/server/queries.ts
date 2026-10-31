@@ -109,3 +109,31 @@ export function compareLastTests(attempts: AttemptRow[]) {
 export function testTitle(id: string) {
   return getTests("osp").find((t) => t.id === id)?.title ?? id;
 }
+
+/** Midnight of today in Prague as an ISO instant (for created_at filters). */
+function czDayStart() {
+  const day = czToday();
+  const offset =
+    new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Prague", timeZoneName: "shortOffset" })
+      .formatToParts(new Date(`${day}T12:00:00Z`))
+      .find((p) => p.type === "timeZoneName")
+      ?.value.match(/[+-]\d+/)?.[0] ?? "+1";
+  const h = Number(offset);
+  return new Date(`${day}T00:00:00${h < 0 ? "-" : "+"}${String(Math.abs(h)).padStart(2, "0")}:00`).toISOString();
+}
+
+/** Practice answers given today – Basic gets BASIC.dailyTasks of them. */
+export async function practiceToday(userId: string) {
+  const { count } = await createAdminClient()
+    .from("practice_answers")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .gte("created_at", czDayStart());
+  return count ?? 0;
+}
+
+/** The one test Basic may do: the first it ever started, or null = it may still pick one. */
+export function basicTestId(attempts: Pick<AttemptRow, "test_id" | "started_at">[]) {
+  const first = [...attempts].sort((a, b) => a.started_at.localeCompare(b.started_at))[0];
+  return first?.test_id ?? null;
+}

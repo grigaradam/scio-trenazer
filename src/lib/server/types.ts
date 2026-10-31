@@ -22,6 +22,10 @@ export interface Profile {
   blocked?: boolean;
   last_seen_at?: string | null;
   invite_code?: string | null;
+  /** "basic" | "pro" (needs migration 0012); read it through effectivePlan(). */
+  plan?: string | null;
+  /** When the plan ends, null = forever. */
+  plan_expires_at?: string | null;
 }
 
 export interface AttemptRow {

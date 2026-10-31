@@ -6,13 +6,16 @@ import { useEffect, useState } from "react";
 import { SECTION_META, taskTypesFor } from "@/lib/content/exams";
 import type { SectionId } from "@/lib/content/types";
 import { count } from "@/lib/czech";
+import { BASIC } from "@/lib/plans";
+import { ProLock } from "./Pro";
 import { ButtonLink } from "./ui";
 
 const SECTIONS: SectionId[] = ["verbal", "analytic"];
 const STORE = "scio:mix-types";
 
 /** Hub card for a mixed practice session: everything at once, or a hand-picked set of sections and task types. */
-export function MixPicker({ mistakes }: { mistakes: Record<string, number> }) {
+export function MixPicker({ mistakes, basicLeft = null }: { mistakes: Record<string, number>; basicLeft?: number | null }) {
+  const basic = basicLeft !== null;
   const all = taskTypesFor("osp");
   const [open, setOpen] = useState(false);
   const [picked, setPicked] = useState<string[]>(all.map((t) => t.id));
@@ -56,23 +59,33 @@ export function MixPicker({ mistakes }: { mistakes: Record<string, number> }) {
         <span className="text-3xl">🎲</span>
         <div className="min-w-0 flex-1">
           <h2 className="font-display text-xl font-extrabold">Mix</h2>
-          <p className="text-sm text-muted">Úlohy na přeskáčku, jako v testu. Trénuj všechno, nebo si vyklikej oddíly a typy.</p>
+          <p className="text-sm text-muted">
+            {basic
+              ? `Úlohy na přeskáčku, jako v testu · dnes zbývá ${basicLeft} z ${BASIC.dailyTasks}`
+              : "Úlohy na přeskáčku, jako v testu. Trénuj všechno, nebo si vyklikej oddíly a typy."}
+          </p>
         </div>
         <ButtonLink href="/app/practice/mix" className="max-sm:w-full">
           <Shuffle className="h-4 w-4" /> Trénovat vše
         </ButtonLink>
       </div>
 
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="mt-3 flex items-center gap-1 text-sm font-bold text-muted hover:text-text"
-        aria-expanded={open}
-      >
-        <ChevronDown className={clsx("h-4 w-4 transition", open && "rotate-180")} />
-        Vybrat oddíly a typy úloh
-      </button>
+      {basic ? (
+        <div className="mt-3 flex items-center gap-2 text-sm font-bold text-muted">
+          Vybrat oddíly a typy úloh <ProLock />
+        </div>
+      ) : (
+        <button
+          onClick={() => setOpen((o) => !o)}
+          className="mt-3 flex items-center gap-1 text-sm font-bold text-muted hover:text-text"
+          aria-expanded={open}
+        >
+          <ChevronDown className={clsx("h-4 w-4 transition", open && "rotate-180")} />
+          Vybrat oddíly a typy úloh
+        </button>
+      )}
 
-      {open && (
+      {open && !basic && (
         <div className="mt-3 animate-fade-up space-y-4">
           {SECTIONS.map((s) => {
             const types = taskTypesFor("osp", s);

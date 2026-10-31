@@ -1,10 +1,12 @@
 import { ArrowRight, Flame, Play, Target } from "lucide-react";
 import Link from "next/link";
+import { ProLock } from "@/components/Pro";
 import { StartTestButton } from "@/components/StartTestButton";
 import { Badge, ButtonLink, Card, ProgressBar, Ring, SectionTitle } from "@/components/ui";
 import { taskTypeMeta } from "@/lib/content/exams";
 import { levelInfo, levelTitle } from "@/lib/gamification";
 import { count, plural } from "@/lib/czech";
+import { effectivePlan } from "@/lib/plans";
 import { getProfile, requireUser } from "@/lib/server/auth";
 import { greetingName } from "@/lib/server/names";
 import { czToday, getAttempts, getMistakes, getStudyDays, getTypeStats, testTitle } from "@/lib/server/queries";
@@ -31,6 +33,7 @@ export default async function Dashboard() {
   const last = completed[0];
   const openMistakes = mistakes.filter((m) => m.status === "open");
   const activeToday = profile.last_active_date === today;
+  const basic = effectivePlan(profile) === "basic";
 
   // weakest types: lowest accuracy, ties broken by open mistakes
   const weak = typeStats
@@ -141,7 +144,13 @@ export default async function Dashboard() {
       </section>
 
       <section>
-        <SectionTitle action={<Link href="/app/practice" className="text-sm font-bold text-brand-600">Všechny typy →</Link>}>
+        <SectionTitle
+          action={
+            <Link href={basic ? "/app/practice/mix" : "/app/practice"} className="text-sm font-bold text-brand-600">
+              {basic ? "Trénovat Mix →" : "Všechny typy →"}
+            </Link>
+          }
+        >
           Dnešní trénink
         </SectionTitle>
         {weak.length ? (
@@ -157,7 +166,9 @@ export default async function Dashboard() {
                 >
                   <div className="flex items-start justify-between">
                     <span className="text-3xl">{meta.emoji}</span>
-                    {t.openMistakes > 0 && (
+                    {basic ? (
+                      <ProLock className="max-sm:hidden" />
+                    ) : t.openMistakes > 0 && (
                       <Badge tone="bad" className="max-sm:hidden">
                         {count(t.openMistakes, "chyba", "chyby", "chyb")}
                       </Badge>
@@ -170,9 +181,13 @@ export default async function Dashboard() {
                       {t.openMistakes > 0 && <span className="text-rose-500 sm:hidden"> · {count(t.openMistakes, "chyba", "chyby", "chyb")}</span>}
                     </div>
                   </div>
-                  <ArrowRight className="h-5 w-5 shrink-0 text-brand-600 sm:hidden" />
-                  <div className="mt-3 hidden items-center gap-1 text-sm font-bold text-brand-600 sm:flex">
-                    Trénovat <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  {basic ? (
+                    <ProLock className="sm:hidden" />
+                  ) : (
+                    <ArrowRight className="h-5 w-5 shrink-0 text-brand-600 sm:hidden" />
+                  )}
+                  <div className={`mt-3 hidden items-center gap-1 text-sm font-bold sm:flex ${basic ? "text-muted" : "text-brand-600"}`}>
+                    {basic ? "Trénink typu v Pro" : "Trénovat"} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                   </div>
                 </Link>
               );

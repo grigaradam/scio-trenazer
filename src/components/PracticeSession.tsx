@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { ArrowLeft, Sparkles, Timer, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, Lock, Sparkles, Timer, Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { celebrate } from "@/lib/celebrate";
@@ -10,10 +10,12 @@ import type { PublicGroup } from "@/lib/content/public";
 import type { OptionKey, TaskType } from "@/lib/content/types";
 import { count } from "@/lib/czech";
 import { achievementDef } from "@/lib/gamification";
+import { BASIC } from "@/lib/plans";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { emitLiveStats } from "@/lib/liveStats";
 import { playSound, primeSounds, setSoundEnabled, soundEnabled, subscribeSound } from "@/lib/sounds";
 import { Explanation } from "./Explanation";
+import { ProTeaser } from "./Pro";
 import { GroupContext, QuestionBody, type Tone } from "./QuestionView";
 import { RichText } from "./RichText";
 import { TaskChat } from "./TaskChat";
@@ -63,6 +65,7 @@ export function PracticeSession({
   openMistakes,
   initialLimit,
   initialMode,
+  basicLeft = null,
 }: {
   /** one type, or several for a mixed session */
   types: TaskType[];
@@ -72,6 +75,8 @@ export function PracticeSession({
   openMistakes: number;
   initialLimit: number | null;
   initialMode: Mode;
+  /** Basic plan: practice tasks left today; null = Pro, no limit. */
+  basicLeft?: number | null;
 }) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const [limit, setLimit] = useState<number | null>(initialLimit);
@@ -79,10 +84,13 @@ export function PracticeSession({
   const [qi, setQi] = useState(0);
   const [selected, setSelected] = useState<(OptionKey | null)[]>([]);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(basicLeft !== 0);
   const [tip, setTip] = useState(-1);
   const [error, setError] = useState<string | null>(null);
   const [empty, setEmpty] = useState(false);
+  /** Basic hit its daily cap ("limit") or there's no pooled task left for it ("exhausted"). */
+  const [stop, setStop] = useState<"limit" | "exhausted" | null>(basicLeft === 0 ? "limit" : null);
+  const basic = basicLeft !== null;
   const [stats, setStats] = useState({ done: 0, correct: 0, xp: 0, row: 0 });
   const [now, setNow] = useState(0);
   const [startedAt, setStartedAt] = useState(0);
@@ -90,10 +98,11 @@ export function PracticeSession({
   const [toast, setToast] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const tasksLeft = basic ? Math.max(0, basicLeft - stats.done) : null;
   const sound = useSyncExternalStore(subscribeSound, soundEnabled, () => true);
   const seen = useRef<string[]>([]);
 
-  useStudyHeartbeat(!loading && !empty);
+  useStudyHeartbeat(!loading && !empty && !stop);
 
   const mixed = types.length > 1;
   const taskMeta = task ? taskTypeMeta(task.type) : undefined;
@@ -103,6 +112,11 @@ export function PracticeSession({
 
   const load = useCallback(
     async (m: Mode = mode) => {
+      if (tasksLeft === 0) {
+        setTask(null);
+        setStop("limit");
+        return;
+      }
       setLoading(true);
       setError(null);
       setEmpty(false);
@@ -119,6 +133,9 @@ export function PracticeSession({
         if (j.kind === "empty") {
           setEmpty(true);
           setTask(null);
+        } else if (j.kind === "limit" || j.kind === "exhausted") {
+          setStop(j.kind);
+          setTask(null);
         } else {
           setTask(j);
           setQi(0);
@@ -131,13 +148,13 @@ export function PracticeSession({
         setLoading(false);
       }
     },
-    [mode, types],
+    [mode, types, tasksLeft],
   );
 
   useEffect(() => {
     // initial fetch on mount
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    load(initialMode);
+    if (!stop) load(initialMode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -274,6 +291,7 @@ export function PracticeSession({
             {stats.xp > 0 && <span className="text-brand-600">· +{stats.xp} XP</span>}
             {stats.row >= 3 && <span className="text-orange-500">· 🔥 {stats.row} v řadě</span>}
             {mixed && stats.done === 0 && <span>· {count(types.length, "typ", "typy", "typů")} úloh</span>}
+            {tasksLeft !== null && <span>· dnes zbývá {tasksLeft}/{BASIC.dailyTasks}</span>}
           </div>
         </div>
       </div>
@@ -286,18 +304,28 @@ export function PracticeSession({
               ["mistakes", `Moje chyby${openMistakes ? ` (${openMistakes})` : ""}`],
               ["new", "Jen nové"],
             ] as [Mode, string][]
-          ).map(([m, label]) => (
-            <button
-              key={m}
-              onClick={() => {
-                setMode(m);
-                load(m);
-              }}
-              className={clsx("whitespace-nowrap rounded-lg px-2.5 py-1.5 sm:px-3", mode === m ? "bg-surface shadow-sm" : "text-muted")}
-            >
-              {label}
-            </button>
-          ))}
+          ).map(([m, label]) => {
+            const lock = basic && m !== "mix";
+            return (
+              <button
+                key={m}
+                disabled={lock}
+                title={lock ? "V Pro" : undefined}
+                onClick={() => {
+                  setMode(m);
+                  load(m);
+                }}
+                className={clsx(
+                  "flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-1.5 sm:px-3",
+                  mode === m ? "bg-surface shadow-sm" : "text-muted",
+                  lock && "opacity-60",
+                )}
+              >
+                {lock && <Lock className="h-3 w-3" strokeWidth={2.6} />}
+                {label}
+              </button>
+            );
+          })}
         </div>
         <label className="flex shrink-0 items-center gap-1.5 rounded-xl bg-surface-2 px-3 py-2 text-[13px] font-bold sm:text-sm">
           <Timer className="h-4 w-4 text-muted" />
@@ -333,8 +361,8 @@ export function PracticeSession({
       {loading && (
         <div className="grid place-items-center rounded-3xl border-2 border-dashed border-border py-20 text-center">
           <Sparkles className="h-10 w-10 animate-pulse text-brand-500" />
-          <div className="mt-3 font-bold">{mode === "mistakes" || tip < 0 ? "Načítám úlohu…" : LOADING_TIPS[tip]}</div>
-          {tip >= 0 && mode !== "mistakes" && (
+          <div className="mt-3 font-bold">{mode === "mistakes" || basic || tip < 0 ? "Načítám úlohu…" : LOADING_TIPS[tip]}</div>
+          {tip >= 0 && mode !== "mistakes" && !basic && (
             <div className="mt-1 animate-fade-up text-sm text-muted">Nová AI úloha může trvat až minutu, další už budou připravené.</div>
           )}
         </div>
@@ -362,6 +390,23 @@ export function PracticeSession({
           >
             Pokračovat novými úlohami
           </Button>
+        </div>
+      )}
+
+      {stop && !loading && (
+        <div className="space-y-3">
+          <div className="rounded-3xl border-2 border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-900 dark:bg-emerald-900/20">
+            <div className="text-4xl">{stop === "limit" ? "✅" : "📭"}</div>
+            <p className="mt-2 font-display text-xl font-extrabold">
+              {stop === "limit" ? `Dnešních ${BASIC.dailyTasks} úloh máš hotových` : "Připravené úlohy ti pro dnešek došly"}
+            </p>
+            <p className="mt-1 text-sm text-muted">
+              {stop === "limit" ? "Zítra na tebe čekají další. Mezitím si můžeš projít rozbor testu nebo slabiny." : "Brzy přibudou další – zkus to později."}
+            </p>
+          </div>
+          <ProTeaser title="V Pro trénuješ bez omezení" perks={false}>
+            Neomezeně úloh denně, nové úlohy od AI na míru a trénink jednotlivých typů i oddílů zvlášť.
+          </ProTeaser>
         </div>
       )}
 

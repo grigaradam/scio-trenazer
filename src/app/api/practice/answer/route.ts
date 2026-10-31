@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { XP } from "@/lib/gamification";
 import { checkAchievements, recordActivity } from "@/lib/server/activity";
-import { apiUser } from "@/lib/server/auth";
+import { BASIC } from "@/lib/plans";
+import { apiUser, getPlan } from "@/lib/server/auth";
+import { practiceToday } from "@/lib/server/queries";
 import { resolveTask } from "@/lib/server/tasks";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -20,6 +22,10 @@ export async function POST(req: Request) {
   const { user, error } = await apiUser();
   if (error) return error;
   const body = Body.parse(await req.json());
+  // Basic: the daily cap (next stops serving at the limit; the slack lets a multi-question task finish)
+  if ((await getPlan(user.id)) === "basic" && (await practiceToday(user.id)) >= BASIC.dailyTasks + 4) {
+    return NextResponse.json({ error: "Dnešní úlohy v Basic máš vyčerpané." }, { status: 403 });
+  }
   const task = await resolveTask(body.ref);
   if (!task) return NextResponse.json({ error: "Úloha nenalezena" }, { status: 404 });
   const admin = createAdminClient();

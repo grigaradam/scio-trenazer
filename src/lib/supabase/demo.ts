@@ -24,6 +24,8 @@ function store(): Store {
           last_active_date: null,
           daily_goal_min: 20,
           practice_time_limit_sec: null,
+          plan: "pro",
+          plan_expires_at: null,
           created_at: new Date().toISOString(),
         },
       ],
