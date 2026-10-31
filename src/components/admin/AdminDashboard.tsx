@@ -1,15 +1,16 @@
 "use client";
 
 import clsx from "clsx";
-import { Ban, Bell, Check, Copy, Link2, LogOut, RefreshCw, Send, Unlock } from "lucide-react";
+import { Ban, Bell, Check, Copy, FlaskConical, Link2, LogOut, RefreshCw, Send, Unlock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
 import { count, plural } from "@/lib/czech";
 import { SITE_URL } from "@/lib/env";
 import type { Plan } from "@/lib/plans";
 import type { AdminStats } from "@/lib/server/admin-stats";
 import { Logo } from "../Logo";
+import { TesterPanel } from "./TesterPanel";
 import { Badge, Button, Card } from "../ui";
 
 const DURATIONS: { label: string; days: number | null }[] = [
@@ -1100,6 +1101,7 @@ function PlanCell({ user, ready }: { user: AdminStats["users"][number]; ready: b
 function Users({ users, plansReady }: { users: AdminStats["users"]; plansReady: boolean }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
+  const [testing, setTesting] = useState<string | null>(null);
   return (
     <Card>
       <h2 className="font-display text-lg font-extrabold">Uživatelé ({users.length})</h2>
@@ -1126,59 +1128,79 @@ function Users({ users, plansReady }: { users: AdminStats["users"]; plansReady: 
           </thead>
           <tbody>
             {users.map((u) => (
-              <tr key={u.id} className={clsx("border-t border-border", u.blocked && "opacity-60")}>
-                <td className="py-2">
-                  <div className="flex items-center gap-1.5 font-bold">
-                    {u.name ?? "–"} <PlanChip plan={u.activePlan} />
-                  </div>
-                  <div className="text-xs text-muted">
-                    {u.email}
-                    {u.inviteCode ? ` · ${u.inviteCode}` : ""}
-                  </div>
-                </td>
-                <td className="py-2">
-                  <PlanCell user={u} ready={plansReady} />
-                </td>
-                <td className="py-2 text-right tabular-nums">
-                  {u.level} <span className="text-xs text-muted">({num(u.xp)} XP)</span>
-                </td>
-                <td className="py-2 text-right tabular-nums">
-                  {u.streak} <span className="text-xs text-muted">/ {u.streakBest}</span>
-                </td>
-                <td className="py-2 text-right tabular-nums">{num(u.hours, 1)}</td>
-                <td className="py-2 text-right tabular-nums">{num(u.tasks)}</td>
-                <td className="py-2 text-right tabular-nums">{u.tests}</td>
-                <td className="py-2 text-right tabular-nums">{u.generated}</td>
-                <td className="py-2 text-right tabular-nums">
-                  {usd(u.costUsd)} <span className="text-xs text-muted">({u.aiCalls})</span>
-                </td>
-                <td className="py-2 text-xs text-muted">{ago(u.lastSeenAt ?? u.lastSignInAt)}</td>
-                <td className="py-2 text-right">
-                  <Button
-                    size="sm"
-                    variant={u.blocked ? "success" : "secondary"}
-                    loading={busy === u.id}
-                    onClick={async () => {
-                      if (!u.blocked && !window.confirm(`Zablokovat ${u.email}? Bude muset zadat nový kód.`)) return;
-                      setBusy(u.id);
-                      await fetch("/api/admin/users", {
-                        method: "PATCH",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ userId: u.id, blocked: !u.blocked }),
-                      });
-                      router.refresh();
-                      setTimeout(() => setBusy(null), 600);
-                    }}
-                  >
-                    {busy !== u.id && (u.blocked ? <Unlock className="h-4 w-4" /> : <Ban className="h-4 w-4" />)}
-                    {u.blocked ? "Odblokovat" : "Zablokovat"}
-                  </Button>
-                </td>
-              </tr>
+              <Fragment key={u.id}>
+                <tr className={clsx("border-t border-border", u.blocked && "opacity-60")}>
+                  <td className="py-2">
+                    <div className="flex items-center gap-1.5 font-bold">
+                      {u.name ?? "–"} <PlanChip plan={u.activePlan} />
+                    </div>
+                    <div className="text-xs text-muted">
+                      {u.email}
+                      {u.inviteCode ? ` · ${u.inviteCode}` : ""}
+                    </div>
+                  </td>
+                  <td className="py-2">
+                    <PlanCell user={u} ready={plansReady} />
+                  </td>
+                  <td className="py-2 text-right tabular-nums">
+                    {u.level} <span className="text-xs text-muted">({num(u.xp)} XP)</span>
+                  </td>
+                  <td className="py-2 text-right tabular-nums">
+                    {u.streak} <span className="text-xs text-muted">/ {u.streakBest}</span>
+                  </td>
+                  <td className="py-2 text-right tabular-nums">{num(u.hours, 1)}</td>
+                  <td className="py-2 text-right tabular-nums">{num(u.tasks)}</td>
+                  <td className="py-2 text-right tabular-nums">{u.tests}</td>
+                  <td className="py-2 text-right tabular-nums">{u.generated}</td>
+                  <td className="py-2 text-right tabular-nums">
+                    {usd(u.costUsd)} <span className="text-xs text-muted">({u.aiCalls})</span>
+                  </td>
+                  <td className="py-2 text-xs text-muted">{ago(u.lastSeenAt ?? u.lastSignInAt)}</td>
+                  <td className="py-2 text-right">
+                    <div className="flex justify-end gap-1.5">
+                    <Button
+                      size="sm"
+                      variant={testing === u.id ? "primary" : "ghost"}
+                      onClick={() => setTesting(testing === u.id ? null : u.id)}
+                      title="Testovací režim: level, achievementy, mazlíček"
+                    >
+                      <FlaskConical className="h-4 w-4" /> Testovat
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={u.blocked ? "success" : "secondary"}
+                      loading={busy === u.id}
+                      onClick={async () => {
+                        if (!u.blocked && !window.confirm(`Zablokovat ${u.email}? Bude muset zadat nový kód.`)) return;
+                        setBusy(u.id);
+                        await fetch("/api/admin/users", {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ userId: u.id, blocked: !u.blocked }),
+                        });
+                        router.refresh();
+                        setTimeout(() => setBusy(null), 600);
+                      }}
+                    >
+                      {busy !== u.id && (u.blocked ? <Unlock className="h-4 w-4" /> : <Ban className="h-4 w-4" />)}
+                      {u.blocked ? "Odblokovat" : "Zablokovat"}
+                    </Button>
+                    </div>
+                  </td>
+                </tr>
+              </Fragment>
             ))}
           </tbody>
         </table>
       </div>
+      {testing && (
+        <div className="mt-4">
+          <div className="mb-2 text-sm font-bold">
+            Testování účtu {users.find((u) => u.id === testing)?.email}
+          </div>
+          <TesterPanel key={testing} userId={testing} />
+        </div>
+      )}
     </Card>
   );
 }

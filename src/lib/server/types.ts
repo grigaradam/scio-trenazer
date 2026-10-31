@@ -1,6 +1,7 @@
 import type { AnswerMap } from "@/lib/content/public";
 import type { TestResult } from "@/lib/scoring";
 import type { SectionId } from "@/lib/content/types";
+import type { PetOverride } from "@/lib/pet";
 
 export interface Profile {
   id: string;
@@ -26,6 +27,19 @@ export interface Profile {
   plan?: string | null;
   /** When the plan ends, null = forever. */
   plan_expires_at?: string | null;
+  /** Admin test-mode changes, undone by "Vrátit zpět" (needs migration 0013). */
+  test_override?: TestOverride | null;
+}
+
+export interface TestOverride {
+  /** XP the admin added (negative = took away); undo subtracts it */
+  xpOffset: number;
+  /** achievements the admin granted; undo deletes them */
+  added: string[];
+  /** achievements the admin took away, with their original date; undo puts them back */
+  removed: { code: string; unlocked_at: string }[];
+  /** pet needs shown instead of the real ones (0..1), and days since studying */
+  pet: PetOverride | null;
 }
 
 export interface AttemptRow {

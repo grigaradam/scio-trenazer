@@ -29,6 +29,7 @@ export default async function PetPage() {
         recentAchievements: achievements.filter((a) => Date.parse(a.unlocked_at) >= weekAgo).length,
       }}
       unlocked={achievements.map((a) => a.code)}
+      override={profile.test_override?.pet ?? null}
     />
   );
 }

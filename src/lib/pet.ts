@@ -73,11 +73,17 @@ export interface PetState extends PetNeeds {
 
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 
-export function petState(p: PetInput): PetState {
-  const hunger = clamp(p.todayTasks / PET_FOOD_PER_DAY);
-  const energy = clamp(p.todayMinutes / Math.max(1, p.goalMinutes));
+/** Admin test mode: needs and idle days shown instead of the real ones (unset = real). */
+export type PetOverride = Partial<PetNeeds> & { idleDays?: number };
+
+export function petState(input: PetInput, override?: PetOverride | null): PetState {
+  const p = override?.idleDays !== undefined ? { ...input, idleDays: override.idleDays } : input;
+  const hunger = clamp(override?.hunger ?? p.todayTasks / PET_FOOD_PER_DAY);
+  const energy = clamp(override?.energy ?? p.todayMinutes / Math.max(1, p.goalMinutes));
   // a living streak and fresh achievements make it happy; it never drops to zero while you show up
-  const joy = clamp((p.idleDays === 0 || p.idleDays === 1 ? 0.25 : 0) + Math.min(p.streak, 7) * 0.07 + Math.min(p.recentAchievements, 3) * 0.1);
+  const joy = clamp(
+    override?.joy ?? (p.idleDays === 0 || p.idleDays === 1 ? 0.25 : 0) + Math.min(p.streak, 7) * 0.07 + Math.min(p.recentAchievements, 3) * 0.1,
+  );
   const avg = (hunger + energy + joy) / 3;
 
   let mood: PetMood;
@@ -93,7 +99,7 @@ export function petState(p: PetInput): PetState {
 }
 
 function petMessage(mood: PetMood, p: PetInput, hunger: number, energy: number): string {
-  const snacks = Math.max(0, PET_FOOD_PER_DAY - p.todayTasks);
+  const snacks = Math.max(1, Math.round((1 - hunger) * PET_FOOD_PER_DAY));
   switch (mood) {
     case "asleep":
       return p.idleDays === null ? "Zahřej mě první úlohou, ať se můžu vylíhnout…" : "Zzz… stýskalo se mi. Vzbudíš mě jednou úlohou?";

@@ -1,9 +1,11 @@
 "use client";
 
 import clsx from "clsx";
-import { Lock, Pencil } from "lucide-react";
+import { Download, Lock, Pencil, Share2, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { SITE_URL } from "@/lib/env";
+import { renderPetCard } from "@/lib/petCard";
 import { achievementDef, levelInfo } from "@/lib/gamification";
 import {
   defaultOutfit,
@@ -17,9 +19,10 @@ import {
   type PetInput,
   type PetItem,
   type PetOutfit,
+  type PetOverride,
 } from "@/lib/pet";
 import { PetAvatar } from "./PetAvatar";
-import { ButtonLink, Card, ProgressBar, SectionTitle } from "./ui";
+import { Button, ButtonLink, buttonClass, Card, ProgressBar, SectionTitle } from "./ui";
 
 const PETTED = ["Hihi! 💜", "To lechtá!", "Ještě!", "Mrrr…", "Jsi nejlepší!", "Pojď na úlohu!"];
 
@@ -48,18 +51,72 @@ function save(key: string, value: unknown) {
   } catch {}
 }
 
-export function PetView({ userId, xp, input, unlocked }: { userId: string; xp: number; input: PetInput; unlocked: string[] }) {
+export function PetView({
+  userId,
+  xp,
+  input,
+  unlocked,
+  override = null,
+}: {
+  userId: string;
+  xp: number;
+  input: PetInput;
+  unlocked: string[];
+  /** admin test mode */
+  override?: PetOverride | null;
+}) {
   const have = new Set(unlocked);
   const { level } = levelInfo(xp);
   const { stage, index } = petStage(level);
   const growth = petGrowth(xp);
-  const state = petState(input);
+  const state = petState(input, override);
 
   const [name, setName] = useState(PET_DEFAULT_NAME);
   const [outfit, setOutfit] = useState<PetOutfit>(() => defaultOutfit(have));
   const [editing, setEditing] = useState(false);
   const [hop, setHop] = useState(0);
   const [hearts, setHearts] = useState<{ id: number; x: number; text: string }[]>([]);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [card, setCard] = useState<{ file: File; url: string } | null>(null);
+  const [making, setMaking] = useState(false);
+
+  async function makeCard() {
+    const svg = heroRef.current?.querySelector("svg");
+    if (!svg) return;
+    setMaking(true);
+    try {
+      const blob = await renderPetCard(svg, {
+        name,
+        stage: stage.title,
+        level,
+        xp,
+        streak: input.streak,
+        achievements: `${unlocked.length} achievementů`,
+        site: SITE_URL.replace(/^https?:\/\//, ""),
+      });
+      const file = new File([blob], `${name.toLowerCase().replace(/[^a-z0-9]+/gi, "-")}.png`, { type: "image/png" });
+      setCard({ file, url: URL.createObjectURL(blob) });
+    } finally {
+      setMaking(false);
+    }
+  }
+
+  function closeCard() {
+    if (card) URL.revokeObjectURL(card.url);
+    setCard(null);
+  }
+
+  const shareText = `Tohle je ${name}, můj mazlíček z Nanečisto 🐾 Už je na levelu ${level}!`;
+  const canShareFile = typeof navigator !== "undefined" && card !== null && Boolean(navigator.canShare?.({ files: [card.file] }));
+
+  async function share() {
+    if (!card) return;
+    try {
+      await navigator.share({ files: [card.file], title: name, text: `${shareText} ${SITE_URL}` });
+    } catch {
+      // closed the share sheet – nothing to do
+    }
+  }
 
   // name and outfit are per-browser cosmetics
   useEffect(() => {
@@ -137,7 +194,7 @@ export function PetView({ userId, xp, input, unlocked }: { userId: string; xp: n
         )}
       >
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-end">
-          <div className="relative w-60 shrink-0 sm:w-72">
+          <div ref={heroRef} className="relative w-60 shrink-0 sm:w-72">
             <button
               onClick={pet}
               aria-label={`Pohladit ${name}`}
@@ -185,6 +242,11 @@ export function PetView({ userId, xp, input, unlocked }: { userId: string; xp: n
                 <span className="rounded-full bg-brand-600 px-2 py-0.5 text-white">{stage.title}</span>
                 <span className="rounded-full bg-surface-2 px-2 py-0.5">Level {level}</span>
                 <span className="rounded-full bg-surface-2 px-2 py-0.5">{MOOD_LABEL[state.mood]}</span>
+                {override && (
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300" title="Potřeby nastavil admin pro testování">
+                    🧪 test
+                  </span>
+                )}
               </div>
             </div>
             <div className="relative rounded-2xl border-2 border-border bg-surface px-4 py-3 text-sm font-semibold shadow-sm">
@@ -198,6 +260,9 @@ export function PetView({ userId, xp, input, unlocked }: { userId: string; xp: n
               <ButtonLink href="/app/mistakes" variant="secondary" size="lg">
                 🛠️ Zkusit znovu, co mi nešlo
               </ButtonLink>
+              <Button variant="ghost" size="lg" loading={making} onClick={makeCard}>
+                {!making && <Share2 className="h-4 w-4" />} Sdílet fotku
+              </Button>
             </div>
             <p className="text-xs text-muted">
               Každá vyřešená úloha ho nakrmí. Úlohy, ve kterých ses dřív spletl, najdeš ve Slabinách – když je napodruhé dáš správně, dostaneš +10 XP.
@@ -310,6 +375,35 @@ export function PetView({ userId, xp, input, unlocked }: { userId: string; xp: n
           })}
         </div>
       </section>
+      {card && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4 backdrop-blur-sm" onClick={closeCard}>
+          <div className="w-full max-w-sm animate-pop rounded-3xl bg-surface p-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="mb-3 flex items-center justify-between">
+              <div className="font-display text-lg font-extrabold">Fotka pro kamarády</div>
+              <button onClick={closeCard} className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface-2" aria-label="Zavřít">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={card.url} alt={`${name} – fotka mazlíčka`} className="w-full rounded-2xl border-2 border-border" />
+            <div className="mt-3 flex gap-2">
+              {canShareFile && (
+                <Button className="flex-1" onClick={share}>
+                  <Share2 className="h-4 w-4" /> Sdílet
+                </Button>
+              )}
+              <a
+                href={card.url}
+                download={card.file.name}
+                className={buttonClass(canShareFile ? "secondary" : "primary", "md", "flex-1")}
+              >
+                <Download className="h-4 w-4" /> Stáhnout
+              </a>
+            </div>
+            {!canShareFile && <p className="mt-2 text-center text-xs text-muted">Stáhni si ji a pošli, kam chceš – třeba na Instagram nebo WhatsApp.</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
