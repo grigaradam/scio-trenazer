@@ -412,3 +412,20 @@ label {
 .scroll-thin {
   scrollbar-width: thin;
 }
+
+/* phones: no scroll indicator on the right (page or inner scroll areas) */
+@media (pointer: coarse) {
+  html,
+  body,
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
