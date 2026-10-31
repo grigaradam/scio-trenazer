@@ -23,6 +23,14 @@ export function levelInfo(xp: number) {
   return { level, from, to, progress: (xp - from) / (to - from), toNext: to - xp };
 }
 
+/** XP for tight spots: "980", "9 870", then "33,6k", "336k", "1,2M" – never wider than about five characters. */
+export function compactXp(xp: number) {
+  const cut = (n: number) => (n >= 100 ? Math.floor(n) : Math.floor(n * 10) / 10).toLocaleString("cs-CZ", { maximumFractionDigits: 1 });
+  if (xp < 10_000) return xp.toLocaleString("cs-CZ");
+  if (xp < 1_000_000) return `${cut(xp / 1000)}k`;
+  return `${cut(xp / 1_000_000)}M`;
+}
+
 export const LEVEL_TITLES = [
   "Nováček",
   "Zvědavec",

@@ -4,9 +4,13 @@ import { InstallBanner } from "@/components/InstallBanner";
 import { Logo } from "@/components/Logo";
 import { Notifications } from "@/components/Notifications";
 import { PageTracker } from "@/components/PageTracker";
+import { PetNudge } from "@/components/PetNudge";
 import { StatPills } from "@/components/StatPills";
+import { levelInfo } from "@/lib/gamification";
+import { petStage, petState } from "@/lib/pet";
 import { effectivePlan } from "@/lib/plans";
 import { getProfile, requireUser } from "@/lib/server/auth";
+import { getPetInput } from "@/lib/server/pet";
 import { czToday } from "@/lib/server/queries";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -17,17 +21,18 @@ export default async function ShellLayout({ children }: { children: React.ReactN
 
   const admin = createAdminClient();
   const today = czToday();
-  const [{ data: day }, { count: openMistakes }] = await Promise.all([
-    admin.from("study_days").select("seconds").eq("user_id", user.id).eq("day", today).maybeSingle(),
+  const [pet, { count: openMistakes }] = await Promise.all([
+    getPetInput(user.id, profile),
     admin.from("mistakes").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "open"),
   ]);
+  const petNow = petState(pet.input, profile.test_override?.pet ?? null);
 
   const pills = (
     <StatPills
       xp={profile.xp}
       streak={profile.streak_current}
       activeToday={profile.last_active_date === today}
-      todaySeconds={day?.seconds ?? 0}
+      todaySeconds={pet.todaySeconds}
       goalMin={profile.daily_goal_min}
     />
   );
@@ -54,6 +59,13 @@ export default async function ShellLayout({ children }: { children: React.ReactN
       <BottomNav badge={openMistakes ?? 0} avatar={profile.avatar_url} petHungry={profile.last_active_date !== today} />
       <PageTracker />
       <Notifications />
+      <PetNudge
+        userId={user.id}
+        day={today}
+        stage={petStage(levelInfo(profile.xp).level).stage.code}
+        state={petNow}
+        fedToday={pet.input.todayTasks > 0}
+      />
     </div>
   );
 }

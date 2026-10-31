@@ -444,8 +444,77 @@ label {
   30% { opacity: 0.8; }
   100% { opacity: 0; transform: translate(6px, -10px) scale(1.1); }
 }
+
+/* mazlíček: the body bobs, the ground shadow shrinks as it rises and the legend's glow rises with it */
+.pet-float {
+  animation: pet-float var(--pet-bob, 3s) ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 100px 186px;
+}
+@keyframes pet-float {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  50% { transform: translateY(var(--pet-lift, -7px)) scale(0.985, 1.015); }
+}
+.pet-shadow-move {
+  animation: pet-shadow var(--pet-bob, 3s) ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes pet-shadow {
+  50% { transform: scale(0.84, 0.8); }
+}
+.pet-aura-move {
+  animation: pet-aura var(--pet-bob, 3s) ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 100px 110px;
+}
+@keyframes pet-aura {
+  0%, 100% { transform: translateY(0) scale(0.97); opacity: 0.85; }
+  50% { transform: translateY(calc(var(--pet-lift, -7px) * 0.8)) scale(1.03); opacity: 1; }
+}
+.pet-twinkle {
+  animation: pet-twinkle 2.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes pet-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.45) rotate(45deg); opacity: 0.5; }
+}
+.pet-heart {
+  animation: pet-heart 2.6s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  translate: 0 0;
+}
+@keyframes pet-heart {
+  0% { opacity: 0; translate: 0 8px; scale: 0.5; }
+  20% { opacity: 1; }
+  100% { opacity: 0; translate: 4px -24px; scale: 1.1; }
+}
+.pet-tear {
+  animation: pet-tear 2.2s ease-in infinite;
+}
+@keyframes pet-tear {
+  0%, 15% { opacity: 0; translate: 0 -3px; }
+  30% { opacity: 1; }
+  85% { opacity: 0.9; translate: 0 7px; }
+  100% { opacity: 0; translate: 0 9px; }
+}
+
+/* dark theme: a shadow that reads on a dark floor, lighter "z"s, and a glow that fades gold → violet
+   instead of going muddy brown on the dark background */
+[data-theme="dark"] .pet-shadow { opacity: 0.4; }
+[data-theme="dark"] .pet-z { fill: #c4b5fd; }
+[data-theme="dark"] .pet-aura-0 { stop-color: #fff3c4; stop-opacity: 0.9; }
+[data-theme="dark"] .pet-aura-1 { stop-color: #fcd34d; stop-opacity: 0.62; }
+[data-theme="dark"] .pet-aura-2 { stop-color: #fbcfe8; stop-opacity: 0.26; }
+[data-theme="dark"] .pet-aura-3 { stop-color: #c4b5fd; stop-opacity: 0.08; }
+[data-theme="dark"] .pet-aura-4 { stop-color: #a78bfa; stop-opacity: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   .pet-z { animation: none; opacity: 0.7; }
+  .pet-float, .pet-shadow-move, .pet-aura-move, .pet-twinkle, .pet-heart, .pet-tear { animation: none; }
 }
 
 .scroll-thin {

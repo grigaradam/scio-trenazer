@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useId } from "react";
 import type { PetMood, PetNeeds, PetOutfit, PetStage } from "@/lib/pet";
 
@@ -16,36 +17,100 @@ const BODY: Record<PetStage["code"], { r: number; fill: string; dark: string }> 
   legend: { r: 61, fill: "#a78bfa", dark: "#8466ec" },
 };
 
+/** How fast and how high it bobs: bouncy when joyful, slow and low when tired or sad. */
+function bob(mood: PetMood, needs: PetNeeds) {
+  if (mood === "asleep") return { dur: "6s", lift: "-2px" };
+  if (mood === "ecstatic" || mood === "joyful") return { dur: "2.2s", lift: "-11px" };
+  if (mood === "sad" || mood === "down") return { dur: "4.6s", lift: "-3px" };
+  if (needs.energy < 0.35) return { dur: "5s", lift: "-3.5px" };
+  return { dur: "3s", lift: "-7px" };
+}
+
 export function PetAvatar({
   stage,
   mood,
   outfit = {},
   needs = FULL,
+  animate = false,
   className,
 }: {
   stage: PetStage["code"];
   mood: PetMood;
   outfit?: PetOutfit;
   needs?: PetNeeds;
+  /** idle bobbing; the shadow and the glow follow the pet up and down */
+  animate?: boolean;
   className?: string;
 }) {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const sleepy = mood === "asleep";
   const zs = sleepy ? 3 : needs.energy < 0.08 ? 3 : needs.energy < 0.2 ? 2 : needs.energy < 0.35 ? 1 : 0;
+  const glad = stage !== "egg" && (mood === "ecstatic" || mood === "joyful");
+  const motion = bob(mood, needs);
+  // the glow is centred on the grown-up pet's body; when animated (the big pet) it may reach past the
+  // 200×200 box – the svg doesn't clip then – otherwise it stays inside so nothing is cut off
+  const glowY = 110;
+  const glowR = animate ? 108 : 88;
   return (
-    <svg viewBox="0 0 200 200" className={className} role="img" aria-label="Tvůj mazlíček">
+    <svg
+      viewBox="0 0 200 200"
+      className={className}
+      role="img"
+      aria-label="Tvůj mazlíček"
+      overflow={animate ? "visible" : undefined}
+      style={animate ? ({ "--pet-bob": motion.dur, "--pet-lift": motion.lift } as React.CSSProperties) : undefined}
+    >
       <defs>
-        <radialGradient id="pet-aura" cx="50%" cy="55%" r="50%">
-          <stop offset="0%" stopColor="#fde68a" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#fde68a" stopOpacity="0" />
+        {/* soft, eased falloff (no visible edge); colours are overridden for the dark theme in globals.css */}
+        <radialGradient id={`pet-aura-${uid}`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" className="pet-aura-0" stopColor="#fef3c7" stopOpacity="1" />
+          <stop offset="50%" className="pet-aura-1" stopColor="#fde68a" stopOpacity="0.9" />
+          <stop offset="66%" className="pet-aura-2" stopColor="#fde68a" stopOpacity="0.45" />
+          <stop offset="83%" className="pet-aura-3" stopColor="#fef3c7" stopOpacity="0.12" />
+          <stop offset="100%" className="pet-aura-4" stopColor="#fef3c7" stopOpacity="0" />
         </radialGradient>
         <radialGradient id="pet-shine" cx="35%" cy="30%" r="60%">
           <stop offset="0%" stopColor="#fff" stopOpacity="0.55" />
           <stop offset="100%" stopColor="#fff" stopOpacity="0" />
         </radialGradient>
       </defs>
-      {stage === "legend" && <circle cx="100" cy="118" r="92" fill="url(#pet-aura)" />}
-      <ellipse cx="100" cy="186" rx={stage === "egg" ? 34 : 46} ry="7" fill="#000" opacity="0.09" />
-      {stage === "egg" ? <Egg sleepy={sleepy} /> : <Creature stage={stage} mood={mood} outfit={outfit} needs={needs} />}
+      {stage === "legend" && (
+        // a sad or sleeping legend still glows, just dimly
+        <g opacity={mood === "sad" || mood === "down" || mood === "asleep" ? 0.45 : undefined}>
+          <g className={animate ? "pet-aura-move" : undefined}>
+            <circle cx="100" cy={glowY} r={glowR} fill={`url(#pet-aura-${uid})`} />
+          </g>
+        </g>
+      )}
+      <ellipse
+        cx="100"
+        cy="186"
+        rx={stage === "egg" ? 34 : 46}
+        ry="7"
+        fill="#000"
+        opacity="0.09"
+        className={clsx("pet-shadow", animate && "pet-shadow-move")}
+      />
+      <g className={animate ? "pet-float" : undefined}>
+        {stage === "egg" ? <Egg sleepy={sleepy} /> : <Creature stage={stage} mood={mood} outfit={outfit} needs={needs} />}
+      </g>
+      {glad &&
+        [
+          [42, 74, 1, 0],
+          [158, 70, 0.8, 0.9],
+          [150, 120, 0.6, 1.7],
+        ]
+          .slice(0, mood === "ecstatic" ? 3 : 2)
+          .map(([x, y, s, delay], i) => (
+            <path
+              key={i}
+              className={animate ? "pet-heart" : undefined}
+              style={animate ? { animationDelay: `${delay}s` } : undefined}
+              transform={`translate(${x} ${y}) scale(${s})`}
+              d="M0 4C-6 -1 -9 -4 -9 -7.5C-9 -10.5 -6.5 -12 -4.5 -12C-2.5 -12 -1 -11 0 -9.5C1 -11 2.5 -12 4.5 -12C6.5 -12 9 -10.5 9 -7.5C9 -4 6 -1 0 4Z"
+              fill="#f472b6"
+            />
+          ))}
       {zs > 0 && (
         <g fill="#8b5cf6" fontFamily="inherit" fontWeight="800">
           {[
@@ -67,7 +132,11 @@ export function PetAvatar({
           [166, 92, 5],
           [154, 40, 6],
           [44, 140, 4],
-        ].map(([x, y, s], i) => <Sparkle key={i} x={x} y={y} s={s} />)}
+        ].map(([x, y, s], i) => (
+          <g key={i} className={animate ? "pet-twinkle" : undefined} style={animate ? { animationDelay: `${i * 0.7}s` } : undefined}>
+            <Sparkle x={x} y={y} s={s} />
+          </g>
+        ))}
     </svg>
   );
 }
@@ -106,9 +175,10 @@ function Creature({ stage, mood, outfit, needs }: { stage: PetStage["code"]; moo
   const big = stage !== "baby";
   const { hunger, energy, joy } = needs;
   const well = (hunger + energy + joy) / 3;
-  const saturation = mood === "asleep" ? 0.5 : 0.45 + 0.55 * well;
+  const saturation = mood === "asleep" ? 0.5 : mood === "sad" || mood === "down" ? 0.35 + 0.35 * well : 0.45 + 0.55 * well;
   const rx = r * (0.86 + 0.14 * hunger); // hungry = thinner
-  const droop = (1 - energy) * 38; // ear angle in degrees
+  // ear angle in degrees: tired or unhappy ears hang, joyful ones stand up
+  const droop = Math.max(-4, (1 - energy) * 30 + (0.5 - joy) * 24 + (mood === "sad" ? 14 : 0));
   const lid = mood === "asleep" || mood === "ecstatic" ? 0 : Math.max(0, Math.min(0.8, ((0.75 - energy) / 0.75) * 0.8));
 
   return (
@@ -173,10 +243,10 @@ function Creature({ stage, mood, outfit, needs }: { stage: PetStage["code"]; moo
       {/* sage+: a little star mark */}
       {(stage === "sage" || stage === "legend") && <Sparkle x={cx} y={cy - r * 0.55} s={6} />}
       {/* cheeks */}
-      <ellipse cx={cx - eyeDx - r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" ? 0.95 : 0.15 + 0.6 * joy} />
-      <ellipse cx={cx + eyeDx + r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" ? 0.95 : 0.15 + 0.6 * joy} />
-      <Eyes mood={mood} cx={cx} y={eyeY} dx={eyeDx} r={r} lid={lid} lidColor={fill} worried={joy < 0.3 && mood !== "asleep"} />
-      <Mouth mood={mood} cx={cx} y={eyeY + r * 0.32} r={r} />
+      <ellipse cx={cx - eyeDx - r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" || mood === "joyful" ? 0.95 : 0.05 + 0.75 * joy} />
+      <ellipse cx={cx + eyeDx + r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" || mood === "joyful" ? 0.95 : 0.05 + 0.75 * joy} />
+      <Eyes mood={mood} cx={cx} y={eyeY} dx={eyeDx} r={r} lid={lid} lidColor={fill} worried={joy < 0.35 && mood !== "asleep"} />
+      <Mouth mood={mood} cx={cx} y={eyeY + r * 0.32} r={r} joy={joy} />
       {/* drool */}
       {hunger < 0.5 && mood !== "asleep" && mood !== "ecstatic" && (
         <path d={`M${cx + r * 0.12} ${eyeY + r * 0.42}q-3 ${4 + (0.5 - hunger) * 14} 0 ${6 + (0.5 - hunger) * 16}q3 -2 0 ${-6 - (0.5 - hunger) * 16}`} fill="#7dd3fc" opacity="0.9" />
@@ -250,8 +320,9 @@ function Eyes({
               <ellipse cx={ex} cy={y} rx={er} ry={eh} />
             </clipPath>
             <ellipse cx={ex} cy={y} rx={er} ry={eh} fill={ink} />
-            <circle cx={ex + er * 0.35} cy={y - er * 0.4} r={er * 0.38} fill="#fff" />
-            <circle cx={ex - er * 0.3} cy={y + er * 0.4} r={er * 0.16} fill="#fff" />
+            <circle cx={ex + er * 0.35} cy={y - er * 0.4} r={er * (mood === "joyful" ? 0.46 : 0.38)} fill="#fff" />
+            <circle cx={ex - er * 0.3} cy={y + er * 0.4} r={er * (mood === "joyful" ? 0.24 : 0.16)} fill="#fff" />
+            {mood === "joyful" && <Sparkle x={ex - er * 0.2} y={y - er * 0.15} s={er * 0.32} />}
             {lid > 0 && (
               <g clipPath={`url(#${clip}${s})`}>
                 <rect x={ex - er - 1} y={y - eh - 1} width={er * 2 + 2} height={eh * 2 * lid + 1} fill={lidColor} />
@@ -261,22 +332,45 @@ function Eyes({
           </g>
         );
       })}
-      {(mood === "sad" || worried) && (
+      {(mood === "sad" || mood === "down" || worried) && (
         <g stroke={ink} strokeWidth="2.5" strokeLinecap="round">
           <path d={`M${cx - dx - 8} ${y - er * 1.6}L${cx - dx + 6} ${y - er * 2.3}`} />
           <path d={`M${cx + dx + 8} ${y - er * 1.6}L${cx + dx - 6} ${y - er * 2.3}`} />
         </g>
       )}
-      {mood === "sad" && <path d={`M${cx + dx + er * 0.9} ${y + er}q-3 7 0 9q3 -2 0 -9`} fill="#7dd3fc" />}
+      {/* tears: one when down, both streaming when sad */}
+      {(mood === "sad" ? [-1, 1] : mood === "down" ? [1] : []).map((s) => (
+        <path
+          key={s}
+          className="pet-tear"
+          style={{ animationDelay: `${s > 0 ? 0 : 1.1}s` }}
+          d={`M${cx + s * (dx + er * 0.9)} ${y + er * 0.9}q-3.5 7 0 9.5q3.5 -2.5 0 -9.5`}
+          fill="#7dd3fc"
+        />
+      ))}
     </g>
   );
 }
 
-function Mouth({ mood, cx, y, r }: { mood: PetMood; cx: number; y: number; r: number }) {
+function Mouth({ mood, cx, y, r, joy }: { mood: PetMood; cx: number; y: number; r: number; joy: number }) {
   const w = r * 0.16;
   const ink = "#2e1f5e";
+  // a plain mouth bends with joy: a wide smile when it's glad, a frown when it's not
+  const curve = (bend: number, width = 1) => {
+    const lift = bend < 0 ? w * 0.7 : 0;
+    return (
+      <path
+        d={`M${cx - w * width} ${y + lift}Q${cx} ${y + lift + w * bend * 1.3} ${cx + w * width} ${y + lift}`}
+        stroke={ink}
+        strokeWidth="3"
+        fill="none"
+        strokeLinecap="round"
+      />
+    );
+  };
   switch (mood) {
     case "ecstatic":
+    case "joyful":
       return (
         <g>
           <path d={`M${cx - w * 1.3} ${y - 2}Q${cx} ${y + w * 2.2} ${cx + w * 1.3} ${y - 2}Z`} fill={ink} />
@@ -284,15 +378,26 @@ function Mouth({ mood, cx, y, r }: { mood: PetMood; cx: number; y: number; r: nu
         </g>
       );
     case "happy":
-      return <path d={`M${cx - w} ${y}Q${cx} ${y + w * 1.2} ${cx + w} ${y}`} stroke={ink} strokeWidth="3" fill="none" strokeLinecap="round" />;
+      return curve(0.7 + 0.5 * joy, 1.05);
     case "ok":
-      return <path d={`M${cx - w * 0.7} ${y + 1}Q${cx} ${y + w * 0.6} ${cx + w * 0.7} ${y + 1}`} stroke={ink} strokeWidth="3" fill="none" strokeLinecap="round" />;
+      return curve(Math.max(0.15, joy * 0.9), 0.75);
+    case "down":
+      return curve(-0.55, 0.75);
     case "hungry":
       return <ellipse cx={cx} cy={y + 3} rx={w * 0.55} ry={w * 0.7} fill={ink} />;
     case "tired":
       return <ellipse cx={cx} cy={y + 4} rx={w * 0.7} ry={w * 0.9} fill={ink} opacity="0.85" />;
     case "sad":
-      return <path d={`M${cx - w * 0.8} ${y + w * 0.8}Q${cx} ${y - w * 0.2} ${cx + w * 0.8} ${y + w * 0.8}`} stroke={ink} strokeWidth="3" fill="none" strokeLinecap="round" />;
+      return (
+        <path
+          d={`M${cx - w * 0.9} ${y + w}Q${cx - w * 0.45} ${y + w * 0.1} ${cx} ${y + w * 0.45}Q${cx + w * 0.45} ${y + w * 0.1} ${cx + w * 0.9} ${y + w}`}
+          stroke={ink}
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      );
     case "asleep":
       return <ellipse cx={cx} cy={y + 3} rx={w * 0.35} ry={w * 0.25} fill={ink} />;
   }

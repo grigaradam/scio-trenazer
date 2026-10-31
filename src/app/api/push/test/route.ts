@@ -7,8 +7,8 @@ export async function POST() {
   const { user, error } = await apiUser();
   if (error) return error;
   const sent = await sendToUser(user.id, {
-    title: "Oznámení fungují 🎉",
-    body: "Takhle ti připomenu, když se ten den ještě nedostaneš k tréninku.",
+    title: "🐾 Ahoj, tady tvůj mazlíček!",
+    body: "Oznámení fungují. Napíšu ti, až budu mít hlad nebo mi bude smutno.",
     url: "/app",
     tag: "test",
   });

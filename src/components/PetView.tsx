@@ -28,11 +28,13 @@ const PETTED = ["Hihi! 💜", "To lechtá!", "Ještě!", "Mrrr…", "Jsi nejlep�
 
 const MOOD_LABEL = {
   ecstatic: "V sedmém nebi",
+  joyful: "Radostný",
   happy: "Spokojený",
   ok: "V pohodě",
-  tired: "Ospalý",
+  down: "Smutný",
+  tired: "Bez energie",
   hungry: "Hladový",
-  sad: "Smutný",
+  sad: "Stýská se mu",
   asleep: "Spí",
 } as const;
 
@@ -91,7 +93,7 @@ export function PetView({
         level,
         xp,
         streak: input.streak,
-        achievements: `${unlocked.length} achievementů`,
+        achievements: unlocked.length,
         site: SITE_URL.replace(/^https?:\/\//, ""),
       });
       const file = new File([blob], `${name.toLowerCase().replace(/[^a-z0-9]+/gi, "-")}.png`, { type: "image/png" });
@@ -188,9 +190,11 @@ export function PetView({
       <section
         className={clsx(
           "relative overflow-hidden rounded-3xl border-2 border-border p-5 sm:p-8",
-          state.mood === "asleep" || state.mood === "sad"
-            ? "bg-gradient-to-b from-slate-100 to-surface dark:from-slate-800/60"
-            : "bg-gradient-to-b from-brand-50 to-surface dark:from-brand-900/30",
+          state.mood === "asleep" || state.mood === "sad" || state.mood === "down"
+            ? "bg-gradient-to-b from-slate-100 to-surface dark:from-slate-800/50"
+            : stage.code === "legend"
+              ? "bg-gradient-to-b from-amber-50 via-brand-50 to-surface dark:from-brand-900/50 dark:via-brand-900/20"
+              : "bg-gradient-to-b from-brand-50 to-surface dark:from-brand-900/30",
         )}
       >
         <button
@@ -215,7 +219,8 @@ export function PetView({
                   mood={state.mood}
                   needs={state}
                   outfit={worn}
-                  className={clsx("w-full motion-safe:animate-pet-bob", state.energy < 0.35 && "[animation-duration:5s]")}
+                  animate
+                  className="w-full"
                 />
               </div>
             </button>
@@ -384,14 +389,17 @@ export function PetView({
       {card && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4 backdrop-blur-sm" onClick={closeCard}>
           <div className="w-full max-w-sm animate-pop rounded-3xl bg-surface p-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="mb-3 flex items-center justify-between">
-              <div className="font-display text-lg font-extrabold">Fotka pro kamarády</div>
-              <button onClick={closeCard} className="grid h-8 w-8 place-items-center rounded-lg hover:bg-surface-2" aria-label="Zavřít">
-                <X className="h-5 w-5" />
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={card.url} alt={`${name} – fotka mazlíčka`} className="w-full rounded-2xl border-2 border-border" />
+              <button
+                onClick={closeCard}
+                className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-black/35 text-white backdrop-blur transition hover:bg-black/55"
+                aria-label="Zavřít"
+              >
+                <X className="h-4 w-4" />
               </button>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={card.url} alt={`${name} – fotka mazlíčka`} className="w-full rounded-2xl border-2 border-border" />
             <div className="mt-3 flex gap-2">
               {canShareFile && (
                 <Button className="flex-1" onClick={share}>

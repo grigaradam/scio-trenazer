@@ -2,6 +2,7 @@ import "server-only";
 import webpush from "web-push";
 import { vapidEnv } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { daysBetween } from "./pet";
 import { czToday } from "./queries";
 
 export interface PushMessage {
@@ -61,56 +62,60 @@ export async function sendToUser(userId: string, message: PushMessage) {
 }
 
 interface ReminderProfile {
-  /** Already studied today (Prague date). */
-  done: boolean;
+  /** whole days since the last solved task (0 = today, null = never) */
+  idle: number | null;
   streak: number;
+  /** minutes studied today and the daily goal */
+  minutes: number;
+  goal: number;
   /** "Adame" or null when the vocative isn't known yet. */
   name: string | null;
 }
 
 const days = (n: number) => `${n} ${n === 1 ? "den" : n < 5 ? "dny" : "dní"}`;
+const hi = (name: string | null, rest: string) => (name ? `${name}, ${rest.charAt(0).toLowerCase()}${rest.slice(1)}` : rest);
 
 /**
- * The day's reminders by Prague hour. Each returns the message for one user, or null to skip them.
- * 11:00 – good morning to everyone; 15:00 – nudge if not studied yet; 18:00 – nudge again, or "one more round" if done.
+ * The day's reminders by Prague hour, in the pet's voice and only when it really needs something.
+ * Each returns the message for one user, or null to stay quiet:
+ * - studied yesterday, not yet today: hungry at 11 (only with a streak to keep), 15 and 18 (streak in danger);
+ * - studied today but short of the daily goal: low on energy at 18;
+ * - two days off: sad, once at 18; longer: asleep, only on the 3rd, 7th, 14th and 30th day, then it lets you be.
  */
 const REMINDERS: Record<number, (p: ReminderProfile) => PushMessage | null> = {
-  11: ({ name }) => ({
-    title: `☀️ Dobré ráno${name ? `, ${name}` : ""}!`,
-    body: "Už se těším na dnešní trénink. Kdy se do toho pustíme?",
-    url: "/app",
-    tag: "reminder",
-  }),
-  15: ({ done, name }) =>
-    done
-      ? null
-      : {
-          title: "Dneska ještě nemáš odmakáno",
-          body: `${name ? `${name}, s` : "S"}tačí chvilka – pár úloh a máš hotovo.`,
-          url: "/app/practice",
-          tag: "reminder",
-        },
-  18: ({ done, name, streak }) =>
-    done
-      ? {
-          title: "💪 Trénink dělá mistra",
-          body: `${name ? `${name}, d` : "D"}neska máš odmakáno. Dáš ještě jedno kolo?`,
-          url: "/app/practice",
-          tag: "reminder",
-        }
-      : streak > 0
+  11: ({ idle, streak, name }) =>
+    idle === 1 && streak >= 2
+      ? { title: `☀️ Dobré ráno${name ? `, ${name}` : ""}!`, body: "Kručí mi v bříšku. Nasnídáme se spolu jednou úlohou? 🍎", url: "/app/pet", tag: "pet" }
+      : null,
+  15: ({ idle, name }) =>
+    idle === 1
+      ? { title: "🍎 Mám hlad!", body: hi(name, "Dneska jsem ještě nedostal ani jednu úlohu. Stačí pár minut a jsem sytý."), url: "/app/practice/mix", tag: "pet" }
+      : null,
+  18: ({ idle, streak, minutes, goal, name }) => {
+    if (idle === 0)
+      return minutes < goal
         ? {
-            title: `🔥 Série ${days(streak)} je v ohrožení`,
-            body: `${name ? `${name}, p` : "P"}ořád nemáš odmakáno. Stačí pár úloh a sérii udržíš.`,
-            url: "/app/practice",
-            tag: "reminder",
+            title: "⚡ Dochází mi energie",
+            body: hi(name, `Dnes jsme se učili ${minutes} min z ${goal}. Ještě ${goal - minutes} min a budu zase nabitý!`),
+            url: "/app/practice/mix",
+            tag: "pet",
           }
-        : {
-            title: "Pořád nemáš odmakáno",
-            body: `${name ? `${name}, s` : "S"}tačí pár rychlých úloh. Zabere to jen chvilku.`,
-            url: "/app/practice",
-            tag: "reminder",
-          },
+        : null;
+    if (idle === 1)
+      return streak > 0
+        ? {
+            title: `🔥 Náš streak ${days(streak)} je v ohrožení`,
+            body: hi(name, "Mám hlad a bojím se, že o streak přijdeme. Jedna úloha a je zachráněný."),
+            url: "/app/practice/mix",
+            tag: "pet",
+          }
+        : { title: "🍎 Pořád mám hlad", body: hi(name, "Dáš mi dneska aspoň jednu úlohu? Zabere to chvilku."), url: "/app/practice/mix", tag: "pet" };
+    if (idle === 2)
+      return { title: "😢 Je mi smutno", body: hi(name, "Už dva dny jsme se neučili a stýská se mi. Přijdeš za mnou aspoň na jednu úlohu?"), url: "/app/pet", tag: "pet" };
+    if (idle === 3 || idle === 7 || idle === 14 || idle === 30)
+      return { title: "💤 Usínám…", body: `Zzz… ${days(idle)} bez tebe. Vzbudíš mě jednou úlohou?`, url: "/app/pet", tag: "pet" };
+    return null;
+  },
 };
 
 /**
@@ -137,14 +142,24 @@ export async function sendDailyReminders() {
   const rows = (claimed ?? []) as SubscriptionRow[];
   if (!rows.length) return 0;
 
-  const { data: profiles } = await admin
-    .from("profiles")
-    .select("id,last_active_date,streak_current,display_name_vocative,blocked")
-    .in("id", [...new Set(rows.map((r) => r.user_id))]);
+  const ids = [...new Set(rows.map((r) => r.user_id))];
+  const [{ data: profiles }, { data: studied }] = await Promise.all([
+    admin.from("profiles").select("id,last_active_date,streak_current,daily_goal_min,display_name_vocative,blocked").in("id", ids),
+    admin.from("study_days").select("user_id,seconds").eq("day", today).in("user_id", ids),
+  ]);
+  const seconds = new Map((studied ?? []).map((d) => [d.user_id as string, (d.seconds as number) ?? 0]));
   const messages = new Map<string, PushMessage>();
   for (const p of profiles ?? []) {
     if (p.blocked) continue;
-    const msg = reminder({ done: p.last_active_date === today, streak: p.streak_current ?? 0, name: p.display_name_vocative ?? null });
+    const idle = p.last_active_date ? daysBetween(p.last_active_date, today) : null;
+    const msg = reminder({
+      idle,
+      // a gap of 2+ days already broke the stored streak
+      streak: idle !== null && idle <= 1 ? (p.streak_current ?? 0) : 0,
+      minutes: Math.floor((seconds.get(p.id) ?? 0) / 60),
+      goal: p.daily_goal_min ?? 15,
+      name: p.display_name_vocative ?? null,
+    });
     if (msg) messages.set(p.id, msg);
   }
   const due = rows.filter((r) => messages.has(r.user_id));

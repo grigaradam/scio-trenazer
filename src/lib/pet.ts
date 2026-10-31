@@ -58,7 +58,11 @@ export interface PetInput {
   recentAchievements: number;
 }
 
-export type PetMood = "ecstatic" | "happy" | "ok" | "tired" | "hungry" | "sad" | "asleep";
+/**
+ * asleep – hasn't studied for 3+ days (or never); sad – missed two days in a row; down – fed but low on joy;
+ * joyful – high on joy (long streak, new achievements); ecstatic – everything near full.
+ */
+export type PetMood = "ecstatic" | "joyful" | "happy" | "ok" | "down" | "tired" | "hungry" | "sad" | "asleep";
 
 export interface PetNeeds {
   hunger: number; // 0 = starving, 1 = full
@@ -82,21 +86,26 @@ export function petState(input: PetInput, override?: PetOverride | null): PetSta
   const energy = clamp(override?.energy ?? p.todayMinutes / Math.max(1, p.goalMinutes));
   // a living streak and fresh achievements make it happy; it never drops to zero while you show up
   const joy = clamp(
-    override?.joy ?? (p.idleDays === 0 || p.idleDays === 1 ? 0.25 : 0) + Math.min(p.streak, 7) * 0.07 + Math.min(p.recentAchievements, 3) * 0.1,
+    override?.joy ?? (p.idleDays === 0 ? 0.3 : p.idleDays === 1 ? 0.2 : 0) + Math.min(p.streak, 7) * 0.06 + Math.min(p.recentAchievements, 3) * 0.1,
   );
   const avg = (hunger + energy + joy) / 3;
 
   let mood: PetMood;
   if (p.idleDays === null || p.idleDays >= 3) mood = "asleep";
-  else if (p.idleDays >= 1) mood = p.idleDays >= 2 ? "sad" : "hungry";
-  else if (avg >= 0.8) mood = "ecstatic";
-  else if (hunger < 0.3) mood = "hungry";
+  else if (p.idleDays >= 2) mood = "sad";
+  else if (p.idleDays >= 1) mood = joy < 0.25 ? "down" : "hungry";
+  else if (avg >= 0.8 && joy >= 0.6) mood = "ecstatic";
+  else if (hunger < 0.3) mood = joy < 0.25 ? "down" : "hungry";
   else if (energy < 0.25) mood = "tired";
+  else if (joy < 0.3) mood = "down";
+  else if (joy >= 0.7) mood = "joyful";
   else if (avg >= 0.5) mood = "happy";
   else mood = "ok";
 
   return { hunger, energy, joy, mood, message: petMessage(mood, p, hunger, energy) };
 }
+
+const tasks = (n: number) => `${n} ${n === 1 ? "úloha" : n < 5 ? "úlohy" : "úloh"}`;
 
 function petMessage(mood: PetMood, p: PetInput, hunger: number, energy: number): string {
   const snacks = Math.max(1, Math.round((1 - hunger) * PET_FOOD_PER_DAY));
@@ -104,19 +113,27 @@ function petMessage(mood: PetMood, p: PetInput, hunger: number, energy: number):
     case "asleep":
       return p.idleDays === null ? "Zahřej mě první úlohou, ať se můžu vylíhnout…" : "Zzz… stýskalo se mi. Vzbudíš mě jednou úlohou?";
     case "sad":
-      return "Dva dny bez učení… je mi smutno. Pojďme spolu aspoň na pár úloh.";
+      return "Dva dny bez učení… je mi smutno a stýská se mi. Pojďme spolu aspoň na pár úloh.";
+    case "down":
+      return hunger < 0.3
+        ? "Mám hlad a je mi nějak smutno… Jedna úloha by mi hned spravila náladu."
+        : "Najedený jsem, ale je mi trochu smutno. Rozveselí mě, když budeme pokračovat i zítra – nebo nový achievement!";
     case "hungry":
       return p.idleDays === 0
-        ? `Mňam, to bylo dobré! Ještě ${snacks} ${snacks === 1 ? "úloha" : snacks < 5 ? "úlohy" : "úloh"} a budu úplně sytý.`
+        ? `Mňam, to bylo dobré! Ještě ${tasks(snacks)} a budu úplně sytý.`
         : p.streak > 0
           ? `Kručí mi v bříšku! Vyřeš dnes úlohu, ať nepřijdeme o ${p.streak}denní streak.`
           : "Kručí mi v bříšku! Dáš mi dnes nějakou úlohu?";
     case "tired":
-      return "Úáách… zívám. Pár minut učení a zase budu čilý!";
+      return "Úáách… nemám skoro žádnou energii. Pár minut učení a zase budu čilý!";
     case "ok":
       return energy < 1 ? "Je mi fajn. Ještě chvilku učení a budu nabitý energií!" : "Díky za jídlo! Dáme ještě pár úloh?";
     case "happy":
       return hunger >= 1 ? "Jsem sytý jak koblížek! Ještě splnit denní cíl a jsem v sedmém nebi." : "Tohle je super den! Ještě pár úloh a budu přecpaný.";
+    case "joyful":
+      return p.streak >= 3
+        ? `Mám z tebe obrovskou radost! ${p.streak} dní v kuse – jsme nejlepší tým. 🎉`
+        : "Mám z tebe obrovskou radost! Pokračujeme? 🎉";
     case "ecstatic":
       return "Jsem nejšťastnější mazlíček na světě! 💖 Zítra zase?";
   }

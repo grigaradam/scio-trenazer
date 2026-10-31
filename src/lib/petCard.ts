@@ -1,5 +1,8 @@
 "use client";
 
+import { plural } from "./czech";
+import { compactXp } from "./gamification";
+
 // Shareable picture of the pet (1080×1350, the portrait size Instagram, WhatsApp and stories crop well),
 // drawn in the browser from the pet SVG already on the page.
 
@@ -9,18 +12,22 @@ export interface PetCardInfo {
   level: number;
   xp: number;
   streak: number;
-  achievements: string;
+  achievements: number;
   site: string;
 }
 
 const W = 1080;
+/** margin around the pet drawing, in its 200-unit coordinates */
+const PAD = 24;
 const H = 1350;
 
 function svgImage(svg: SVGSVGElement): Promise<HTMLImageElement> {
   const clone = svg.cloneNode(true) as SVGSVGElement;
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  clone.setAttribute("width", "800");
-  clone.setAttribute("height", "800");
+  // a little margin around the 200×200 drawing, so the legend's glow (which may reach past it) isn't cut off
+  clone.setAttribute("viewBox", `${-PAD} ${-PAD} ${200 + 2 * PAD} ${200 + 2 * PAD}`);
+  clone.setAttribute("width", "1000");
+  clone.setAttribute("height", "1000");
   clone.removeAttribute("class");
   const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: "image/svg+xml" }));
   return new Promise((resolve, reject) => {
@@ -96,25 +103,44 @@ export async function renderPetCard(svg: SVGSVGElement, info: PetCardInfo): Prom
   glow.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = glow;
   ctx.fillRect(0, 360, W, 800);
-  ctx.drawImage(await svgImage(svg), W / 2 - 380, 380, 760, 760);
+  const size = 760 * ((200 + 2 * PAD) / 200);
+  const offset = 760 * (PAD / 200);
+  ctx.drawImage(await svgImage(svg), W / 2 - size / 2, 380 - offset, size, size);
 
-  // stats
+  // stats: three equal tiles, big number over a small label, each squeezed to fit its tile
+  const bar = { x: 90, y: 1110, w: W - 180, h: 140 };
   ctx.fillStyle = "#fff";
   ctx.beginPath();
-  ctx.roundRect(90, 1110, W - 180, 110, 36);
+  ctx.roundRect(bar.x, bar.y, bar.w, bar.h, 40);
   ctx.fill();
-  ctx.font = `800 38px ${font()}`;
-  ctx.fillStyle = "#1e1b4b";
-  const stats = [`🔥 ${info.streak} ${info.streak === 1 ? "den" : info.streak > 1 && info.streak < 5 ? "dny" : "dní"}`, `⭐ ${info.xp.toLocaleString("cs-CZ")} XP`, `🏆 ${info.achievements}`];
-  stats.forEach((s, i) => ctx.fillText(s, 90 + ((W - 180) / 3) * (i + 0.5), 1178));
+  const tile = bar.w / 3;
+  const stats = [
+    { value: `🔥 ${info.streak}`, label: plural(info.streak, "den v řadě", "dny v řadě", "dní v řadě") },
+    { value: `⭐ ${compactXp(info.xp)}`, label: "XP" },
+    { value: `🏆 ${info.achievements}`, label: plural(info.achievements, "achievement", "achievementy", "achievementů") },
+  ];
+  ctx.textAlign = "center";
+  stats.forEach((s, i) => {
+    const cx = bar.x + tile * (i + 0.5);
+    ctx.font = `800 52px ${font()}`;
+    ctx.fillStyle = "#1e1b4b";
+    ctx.fillText(s.value, cx, bar.y + 68, tile - 36);
+    ctx.font = `700 26px ${font()}`;
+    ctx.fillStyle = "#6b7280";
+    ctx.fillText(s.label, cx, bar.y + 110, tile - 36);
+    if (i) {
+      ctx.fillStyle = "#ede9fe";
+      ctx.fillRect(bar.x + tile * i - 1, bar.y + 30, 2, bar.h - 60);
+    }
+  });
 
   // footer
   ctx.font = `800 40px ${font()}`;
   ctx.fillStyle = "#7c3aed";
-  ctx.fillText("nanečisto", W / 2, 1288);
+  ctx.fillText("nanečisto", W / 2, 1296);
   ctx.font = `600 28px ${font()}`;
   ctx.fillStyle = "#6b7280";
-  ctx.fillText(`učím se na Scio s mazlíčkem · ${info.site}`, W / 2, 1326);
+  ctx.fillText(`učím se na Scio s mazlíčkem · ${info.site}`, W / 2, 1333);
 
   return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob"))), "image/png"));
 }
