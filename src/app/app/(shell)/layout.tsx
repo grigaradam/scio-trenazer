@@ -27,15 +27,13 @@ export default async function ShellLayout({ children }: { children: React.ReactN
   ]);
   const petNow = petState(pet.input, profile.test_override?.pet ?? null);
 
-  const pills = (
-    <StatPills
-      xp={profile.xp}
-      streak={profile.streak_current}
-      activeToday={profile.last_active_date === today}
-      todaySeconds={pet.todaySeconds}
-      goalMin={profile.daily_goal_min}
-    />
-  );
+  const stats = {
+    xp: profile.xp,
+    streak: profile.streak_current,
+    activeToday: profile.last_active_date === today,
+    todaySeconds: pet.todaySeconds,
+    goalMin: profile.daily_goal_min,
+  };
 
   return (
     <div className="flex min-h-dvh">
@@ -44,12 +42,14 @@ export default async function ShellLayout({ children }: { children: React.ReactN
           <Logo small />
         </div>
         <SideNav badge={openMistakes ?? 0} avatar={profile.avatar_url} plan={effectivePlan(profile)} petHungry={profile.last_active_date !== today} />
-        <div className="mt-auto px-2">{pills}</div>
+        <div className="mt-auto">
+          <StatPills {...stats} layout="card" />
+        </div>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex items-center justify-between border-b-2 border-border bg-bg/90 px-4 py-2.5 backdrop-blur lg:hidden">
           <Logo small />
-          {pills}
+          <StatPills {...stats} />
         </header>
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-[calc(var(--dock-top)+2.5rem)] pt-6 lg:px-8 lg:pb-12 lg:pt-8">
           <InstallBanner />
