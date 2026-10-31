@@ -193,6 +193,15 @@ export function PetView({
             : "bg-gradient-to-b from-brand-50 to-surface dark:from-brand-900/30",
         )}
       >
+        <button
+          onClick={makeCard}
+          disabled={making}
+          aria-label="Sdílet fotku mazlíčka"
+          title="Sdílet fotku"
+          className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full text-muted opacity-60 transition hover:bg-surface hover:opacity-100 disabled:animate-pulse"
+        >
+          <Share2 className="h-4 w-4" />
+        </button>
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-end">
           <div ref={heroRef} className="relative w-60 shrink-0 sm:w-72">
             <button
@@ -260,9 +269,6 @@ export function PetView({
               <ButtonLink href="/app/mistakes" variant="secondary" size="lg">
                 🛠️ Zkusit znovu, co mi nešlo
               </ButtonLink>
-              <Button variant="ghost" size="lg" loading={making} onClick={makeCard}>
-                {!making && <Share2 className="h-4 w-4" />} Sdílet fotku
-              </Button>
             </div>
             <p className="text-xs text-muted">
               Každá vyřešená úloha ho nakrmí. Úlohy, ve kterých ses dřív spletl, najdeš ve Slabinách – když je napodruhé dáš správně, dostaneš +10 XP.
