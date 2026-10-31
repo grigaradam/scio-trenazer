@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { Dumbbell, FileText, Home, Target, TrendingUp, User, type LucideIcon } from "lucide-react";
+import { Dumbbell, FileText, Home, PawPrint, Target, TrendingUp, User, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent, type PointerEvent } from "react";
@@ -14,6 +14,7 @@ export const NAV = [
   { href: "/app/practice", label: "Trénink", icon: Dumbbell },
   { href: "/app/mistakes", label: "Slabiny", icon: Target },
   { href: "/app/progress", label: "Pokrok", icon: TrendingUp },
+  { href: "/app/pet", label: "Mazlíček", icon: PawPrint },
   { href: "/app/profile", label: "Profil", icon: User },
 ];
 
@@ -54,7 +55,7 @@ function usePendingNav() {
   return { path: pending ?? path, pending, setPending };
 }
 
-export function SideNav({ badge, avatar, plan }: { badge?: number; avatar?: string | null; plan?: Plan }) {
+export function SideNav({ badge, avatar, plan, petHungry }: { badge?: number; avatar?: string | null; plan?: Plan; petHungry?: boolean }) {
   const { path, pending, setPending } = usePendingNav();
   return (
     <nav className="flex flex-col gap-1">
@@ -76,6 +77,11 @@ export function SideNav({ badge, avatar, plan }: { badge?: number; avatar?: stri
           {href === "/app/profile" && plan && <PlanBadge plan={plan} className="ml-auto" />}
           {href === "/app/mistakes" && badge ? (
             <span className="ml-auto rounded-full bg-rose-500 px-2 py-0.5 text-[11px] text-white">{badge}</span>
+          ) : null}
+          {href === "/app/pet" && petHungry ? (
+            <span className="ml-auto text-base normal-case" title="Mazlíček má hlad – vyřeš dnes úlohu">
+              🍎
+            </span>
           ) : null}
         </Link>
       ))}
@@ -158,7 +164,7 @@ function useDockDrag(onPick: (idx: number) => void) {
   };
 }
 
-export function BottomNav({ badge, avatar }: { badge?: number; avatar?: string | null }) {
+export function BottomNav({ badge, avatar, petHungry }: { badge?: number; avatar?: string | null; petHungry?: boolean }) {
   const router = useRouter();
   const { path, pending, setPending } = usePendingNav();
   const [picked, setPicked] = useState<number | null>(null);
@@ -183,7 +189,7 @@ export function BottomNav({ badge, avatar }: { badge?: number; avatar?: string |
       <div
         ref={pillRef}
         {...handlers}
-        className="liquid-glass pointer-events-auto relative mx-auto grid h-[var(--dock-h)] max-w-md touch-none select-none grid-cols-6 rounded-full p-1.5 [-webkit-touch-callout:none]"
+        className="liquid-glass pointer-events-auto relative mx-auto grid h-[var(--dock-h)] max-w-md touch-none select-none grid-cols-7 rounded-full p-1.5 [-webkit-touch-callout:none]"
       >
         <span
           aria-hidden
@@ -214,8 +220,13 @@ export function BottomNav({ badge, avatar }: { badge?: number; avatar?: string |
             >
               <NavIcon href={href} icon={icon} avatar={avatar} active={on} className="h-[22px] w-[22px]" strokeWidth={on ? 2.6 : 2} />
               <span className="max-w-full truncate px-0.5">{label}</span>
-              {href === "/app/mistakes" && badge ? (
-                <span className="absolute right-[18%] top-1.5 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-surface" />
+              {(href === "/app/mistakes" && badge) || (href === "/app/pet" && petHungry) ? (
+                <span
+                  className={clsx(
+                    "absolute right-[18%] top-1.5 h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-surface",
+                    href === "/app/pet" ? "bg-amber-400" : "bg-rose-500",
+                  )}
+                />
               ) : null}
             </Link>
           );

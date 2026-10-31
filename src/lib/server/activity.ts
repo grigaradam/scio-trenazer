@@ -1,6 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { ACHIEVEMENTS, type AchievementStats } from "@/lib/gamification";
+import { ACHIEVEMENTS, achievementDone, type AchievementStats } from "@/lib/gamification";
 import type { Profile } from "./types";
 
 export async function recordActivity(
@@ -19,8 +19,8 @@ export async function recordActivity(
   return (data as Profile) ?? null;
 }
 
-/** Evaluates all achievements and stores newly unlocked ones. Returns the new codes. */
-export async function checkAchievements(userId: string, extra: Partial<AchievementStats> = {}): Promise<string[]> {
+/** Everything the achievements are measured on, plus the codes already unlocked. */
+export async function achievementStats(userId: string, extra: Partial<AchievementStats> = {}) {
   const admin = createAdminClient();
   const [unlockedQ, attemptsQ, profileQ, practiceQ, fixedQ, daysQ] = await Promise.all([
     admin.from("achievements").select("code").eq("user_id", userId),
@@ -59,9 +59,26 @@ export async function checkAchievements(userId: string, extra: Partial<Achieveme
     improvedTest: percents.length >= 2 && percents[percents.length - 1] > percents[percents.length - 2],
     ...extra,
   };
-  const fresh = ACHIEVEMENTS.filter((a) => !have.has(a.code) && a.check(stats)).map((a) => a.code);
-  if (fresh.length) {
-    await admin.from("achievements").insert(fresh.map((code) => ({ user_id: userId, code })));
-  }
-  return fresh;
+  return { stats, have };
+}
+
+/**
+ * Stores newly unlocked achievements and awards their XP.
+ * Returns the new codes, the XP they gave and the profile after it (null when nothing unlocked).
+ */
+export async function checkAchievements(
+  userId: string,
+  extra: Partial<AchievementStats> = {},
+): Promise<{ codes: string[]; xp: number; profile: Profile | null }> {
+  const { stats, have } = await achievementStats(userId, extra);
+  const fresh = ACHIEVEMENTS.filter((a) => !have.has(a.code) && achievementDone(a, stats));
+  if (!fresh.length) return { codes: [], xp: 0, profile: null };
+  const { error } = await createAdminClient()
+    .from("achievements")
+    .insert(fresh.map((a) => ({ user_id: userId, code: a.code })));
+  // a parallel request already stored them (unique user_id+code) → don't pay the XP twice
+  if (error) return { codes: [], xp: 0, profile: null };
+  const xp = fresh.reduce((s, a) => s + a.xp, 0);
+  const profile = await recordActivity(userId, { xp });
+  return { codes: fresh.map((a) => a.code), xp, profile };
 }

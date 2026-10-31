@@ -59,7 +59,7 @@ function tone(c: AudioContext, freq: number, start: number, dur: number, type: O
   osc.stop(start + dur + 0.02);
 }
 
-export function playSound(kind: "correct" | "wrong") {
+export function playSound(kind: "correct" | "wrong" | "reward") {
   if (!soundEnabled()) return;
   const c = audio();
   if (!c) return;
@@ -71,6 +71,12 @@ export function playSound(kind: "correct" | "wrong") {
     tone(c, 1760, t, 0.14, "triangle", 0.06);
     tone(c, 1318.5, t + 0.1, 0.32, "sine", 0.28);
     tone(c, 2637, t + 0.1, 0.32, "triangle", 0.06);
+  } else if (kind === "reward") {
+    // soft three-note sparkle, quieter than "correct" so it doesn't compete
+    tone(c, 1046.5, t + 0.25, 0.18, "sine", 0.12);
+    tone(c, 1318.5, t + 0.35, 0.18, "sine", 0.12);
+    tone(c, 1568, t + 0.45, 0.4, "sine", 0.14);
+    tone(c, 3136, t + 0.45, 0.4, "triangle", 0.03);
   } else {
     // low, soft descending "bwomp"
     tone(c, 311, t, 0.16, "square", 0.07, 280);

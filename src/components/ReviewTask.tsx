@@ -7,6 +7,7 @@ import type { OptionKey } from "@/lib/content/types";
 import { celebrate } from "@/lib/celebrate";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { emitLiveStats } from "@/lib/liveStats";
+import { announceRewards } from "@/lib/notify";
 import { playSound, primeSounds } from "@/lib/sounds";
 import { Explanation } from "./Explanation";
 import { GroupContext, QuestionBody, type Tone } from "./QuestionView";
@@ -56,6 +57,7 @@ export function ReviewTask({
     const j = await r.json();
     setTries((t) => t + 1);
     emitLiveStats({ type: "answer", xp: j.xp ?? 0, streak: j.streak });
+    announceRewards(j);
     playSound(j.correct ? "correct" : "wrong");
     if (j.correct) {
       setStatus("right");

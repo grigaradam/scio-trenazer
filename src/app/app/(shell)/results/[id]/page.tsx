@@ -32,6 +32,7 @@ export default async function ResultsPage({ params, searchParams }: PageProps<"/
       isNew={sp.new === "1"}
       xp={Number(sp.xp ?? 0)}
       achievements={typeof sp.ach === "string" && sp.ach ? sp.ach.split(",") : []}
+      levelUp={sp.lvl ? Number(sp.lvl) : null}
       comparison={
         comparison && comparison.current.id === attempt.id
           ? { previousTitle: testTitle(comparison.previous.test_id), previousPercent: Math.round((Number(comparison.previous.score) / Number(comparison.previous.max_score)) * 100), rows: comparison.rows }

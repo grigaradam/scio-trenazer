@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getTest } from "@/lib/content/load";
 import { testRef } from "@/lib/content/public";
-import { XP } from "@/lib/gamification";
+import { levelUp, XP } from "@/lib/gamification";
 import { scoreTest } from "@/lib/scoring";
 import { checkAchievements, recordActivity } from "@/lib/server/activity";
 import { apiUser } from "@/lib/server/auth";
@@ -88,7 +88,14 @@ export async function POST(req: Request, ctx: RouteContext<"/api/attempts/[id]/s
     ? Math.max(0, Math.round((result.score - Number(attempt.score ?? 0)) * XP.testPerPoint))
     : XP.testCompleted + Math.max(0, Math.round(result.score * XP.testPerPoint));
   // active test time is already counted by heartbeats; here we count the tasks
-  await recordActivity(user.id, { tasks: counted.length, correct: correctCount, xp });
-  const achievements = await checkAchievements(user.id);
-  return NextResponse.json({ ok: true, xp, achievements });
+  const profile = await recordActivity(user.id, { tasks: counted.length, correct: correctCount, xp });
+  const ach = await checkAchievements(user.id);
+  const after = ach.profile ?? profile;
+  return NextResponse.json({
+    ok: true,
+    xp,
+    achievements: ach.codes,
+    achievementXp: ach.xp,
+    levelUp: profile && after ? levelUp(profile.xp - xp, after.xp) : null,
+  });
 }

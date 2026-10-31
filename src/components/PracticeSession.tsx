@@ -9,10 +9,10 @@ import { taskTypeMeta } from "@/lib/content/exams";
 import type { PublicGroup } from "@/lib/content/public";
 import type { OptionKey, TaskType } from "@/lib/content/types";
 import { count } from "@/lib/czech";
-import { achievementDef } from "@/lib/gamification";
 import { BASIC } from "@/lib/plans";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { emitLiveStats } from "@/lib/liveStats";
+import { announceRewards } from "@/lib/notify";
 import { playSound, primeSounds, setSoundEnabled, soundEnabled, subscribeSound } from "@/lib/sounds";
 import { Explanation } from "./Explanation";
 import { ProTeaser } from "./Pro";
@@ -95,7 +95,6 @@ export function PracticeSession({
   const [now, setNow] = useState(0);
   const [startedAt, setStartedAt] = useState(0);
   const [explain, setExplain] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const tasksLeft = basic ? Math.max(0, basicLeft - stats.done) : null;
@@ -201,8 +200,7 @@ export function PracticeSession({
         setShake(true);
         setTimeout(() => setShake(false), 450);
       }
-      const ach = (j.achievements ?? []).map((c: string) => achievementDef(c)).filter(Boolean);
-      if (ach.length) setToast(`${ach[0].emoji} Achievement: ${ach[0].title}`);
+      announceRewards(j);
     },
     [feedback, limit, question, ref, selected, startedAt],
   );
@@ -222,12 +220,6 @@ export function PracticeSession({
     }, 250);
     return () => clearInterval(i);
   }, [active, limit, startedAt, submit]);
-
-  useEffect(() => {
-    if (!toast) return;
-    const t = setTimeout(() => setToast(null), 3500);
-    return () => clearTimeout(t);
-  }, [toast]);
 
   function next() {
     if (task && qi < task.group.questions.length - 1) {
@@ -514,11 +506,6 @@ export function PracticeSession({
         </div>
       )}
 
-      {toast && (
-        <div className="fixed left-1/2 top-20 z-50 -translate-x-1/2 animate-pop rounded-2xl bg-text px-4 py-2.5 font-bold text-bg shadow-xl">
-          {toast}
-        </div>
-      )}
     </div>
   );
 }

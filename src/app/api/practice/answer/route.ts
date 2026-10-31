@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { XP } from "@/lib/gamification";
+import { levelUp, XP } from "@/lib/gamification";
 import { checkAchievements, recordActivity } from "@/lib/server/activity";
 import { BASIC } from "@/lib/plans";
 import { apiUser, getPlan } from "@/lib/server/auth";
@@ -72,13 +72,16 @@ export async function POST(req: Request) {
   }
 
   const profile = await recordActivity(user.id, { tasks: 1, correct: correct ? 1 : 0, xp });
-  const achievements = await checkAchievements(user.id);
+  const ach = await checkAchievements(user.id);
+  const after = ach.profile ?? profile;
   const show = correct || body.reveal;
   return NextResponse.json({
     correct,
     fixed,
     xp,
-    achievements,
+    achievements: ach.codes,
+    achievementXp: ach.xp,
+    levelUp: profile && after ? levelUp(profile.xp - xp, after.xp) : null,
     streak: profile?.streak_current ?? null,
     ...(show ? { answer: parts.map((p) => p.answer), solution: task.question.solution } : {}),
   });

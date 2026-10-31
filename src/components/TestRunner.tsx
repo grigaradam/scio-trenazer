@@ -273,6 +273,7 @@ function Runner({
     }
     clearBackup(backupId);
     const q = new URLSearchParams({ new: "1", xp: String(data.xp ?? 0), ach: (data.achievements ?? []).join(",") });
+    if (data.levelUp) q.set("lvl", String(data.levelUp));
     startNavProgress();
     router.replace(`/app/results/${attemptId}?${q}`);
   }, [attemptId, backupId, router]);

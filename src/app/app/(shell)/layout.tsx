@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { BottomNav, SideNav } from "@/components/AppNav";
 import { InstallBanner } from "@/components/InstallBanner";
 import { Logo } from "@/components/Logo";
+import { Notifications } from "@/components/Notifications";
 import { PageTracker } from "@/components/PageTracker";
 import { StatPills } from "@/components/StatPills";
 import { effectivePlan } from "@/lib/plans";
@@ -37,7 +38,7 @@ export default async function ShellLayout({ children }: { children: React.ReactN
         <div className="px-2">
           <Logo small />
         </div>
-        <SideNav badge={openMistakes ?? 0} avatar={profile.avatar_url} plan={effectivePlan(profile)} />
+        <SideNav badge={openMistakes ?? 0} avatar={profile.avatar_url} plan={effectivePlan(profile)} petHungry={profile.last_active_date !== today} />
         <div className="mt-auto px-2">{pills}</div>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
@@ -50,8 +51,9 @@ export default async function ShellLayout({ children }: { children: React.ReactN
           {children}
         </main>
       </div>
-      <BottomNav badge={openMistakes ?? 0} avatar={profile.avatar_url} />
+      <BottomNav badge={openMistakes ?? 0} avatar={profile.avatar_url} petHungry={profile.last_active_date !== today} />
       <PageTracker />
+      <Notifications />
     </div>
   );
 }

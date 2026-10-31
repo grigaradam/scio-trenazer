@@ -5,7 +5,7 @@ import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Clock, Dumbbell, RotateC
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { achievementDef } from "@/lib/gamification";
+import { achievementDef, levelEmoji, levelTitle } from "@/lib/gamification";
 import { SECTION_META, taskTypeMeta } from "@/lib/content/exams";
 import type { PublicGroup, PublicTest } from "@/lib/content/public";
 import { testRef } from "@/lib/content/public";
@@ -25,6 +25,7 @@ interface Props {
   isNew: boolean;
   xp: number;
   achievements: string[];
+  levelUp?: number | null;
   comparison: { previousTitle: string; previousPercent: number; rows: { type: TaskType; now: number | null; before: number | null; delta: number | null }[] } | null;
   isDiagnostic: boolean;
   // section left completely empty that may be filled in once afterwards
@@ -39,7 +40,7 @@ const statusColor: Record<QuestionResult["status"], string> = {
   blank: "bg-surface border-border text-muted",
 };
 
-export function ResultsView({ attemptId, test, result, activeSeconds, pauses, isNew, xp, achievements, comparison, isDiagnostic, retakeSection }: Props) {
+export function ResultsView({ attemptId, test, result, activeSeconds, pauses, isNew, xp, achievements, levelUp = null, comparison, isDiagnostic, retakeSection }: Props) {
   const [open, setOpen] = useState<number | null>(null);
   const [filter, setFilter] = useState<"missed" | "all">("missed");
 
@@ -129,11 +130,22 @@ export function ResultsView({ attemptId, test, result, activeSeconds, pauses, is
 
       {retakeSection && <RetakeBanner attemptId={attemptId} section={retakeSection} />}
 
-      {isNew && (xp > 0 || achievements.length > 0) && (
+      {isNew && (xp > 0 || achievements.length > 0 || levelUp) && (
         <section className="flex flex-wrap gap-3">
           {xp > 0 && (
             <div className="animate-pop rounded-2xl bg-brand-600 px-4 py-3 font-display text-lg font-extrabold text-white shadow-[0_4px_0_0_var(--color-brand-800)]">
               +{xp} XP
+            </div>
+          )}
+          {levelUp && (
+            <div className="flex animate-pop items-center gap-3 rounded-2xl border-2 border-brand-300 bg-brand-50 px-4 py-2 dark:border-brand-700 dark:bg-brand-900/20">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-600 font-display font-extrabold text-white">{levelUp}</span>
+              <div>
+                <div className="text-xs font-bold uppercase text-brand-600 dark:text-brand-300">Level up</div>
+                <div className="font-bold">
+                  {levelEmoji(levelUp)} {levelTitle(levelUp)}
+                </div>
+              </div>
             </div>
           )}
           {achievements.map((code, i) => {
@@ -147,7 +159,9 @@ export function ResultsView({ attemptId, test, result, activeSeconds, pauses, is
                 <span className="text-2xl">{a.emoji}</span>
                 <div>
                   <div className="text-xs font-bold uppercase text-amber-700 dark:text-amber-300">Nový achievement</div>
-                  <div className="font-bold">{a.title}</div>
+                  <div className="font-bold">
+                    {a.title} <span className="text-sm text-amber-700 dark:text-amber-300">+{a.xp} XP</span>
+                  </div>
                 </div>
               </div>
             ) : null;

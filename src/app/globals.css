@@ -37,6 +37,11 @@
   --animate-shake: shake 0.4s ease-in-out;
   --animate-fade-up: fade-up 0.45s ease-out both;
   --animate-flame: flame 1.6s ease-in-out infinite;
+  --animate-notice-in: notice-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-notice-out: notice-out 0.25s ease-in both;
+  --animate-notice-timer: notice-timer linear both;
+  --animate-pet-bob: pet-bob 3s ease-in-out infinite;
+  --animate-pet-hop: pet-hop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   @keyframes pop {
     0% { transform: scale(0.8); opacity: 0; }
@@ -52,6 +57,26 @@
   @keyframes fade-up {
     0% { transform: translateY(10px); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes notice-in {
+    0% { transform: translateY(-12px) scale(0.96); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  @keyframes notice-out {
+    100% { transform: translateY(-8px); opacity: 0; }
+  }
+  @keyframes notice-timer {
+    0% { transform: scaleX(1); }
+    100% { transform: scaleX(0); }
+  }
+  @keyframes pet-bob {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    50% { transform: translateY(-4%) scale(0.98, 1.02); }
+  }
+  @keyframes pet-hop {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    30% { transform: translateY(0) scale(1.08, 0.9); }
+    60% { transform: translateY(-14%) scale(0.95, 1.06); }
   }
   @keyframes flame {
     0%, 100% { transform: scale(1) rotate(-2deg); }
