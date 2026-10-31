@@ -7,6 +7,7 @@ import { effectivePlan, planExpired, type Plan } from "@/lib/plans";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { czToday } from "./queries";
 import type { Profile } from "./types";
+import { lastDays } from "@/lib/days";
 
 export interface AdminUserRow {
   id: string;
@@ -112,15 +113,10 @@ export interface AdminStats {
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
-function daysBack(n: number) {
-  const fmt = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Prague" });
-  const now = Date.now();
-  return Array.from({ length: n }, (_, i) => fmt.format(new Date(now - (n - 1 - i) * 86400000)));
-}
 
 export async function loadAdminStats(): Promise<AdminStats> {
   const admin = createAdminClient();
-  const week = daysBack(7);
+  const week = lastDays(7);
   const [usersRes, profilesRes, daysRes, genRes, seenRes, aiRes, attemptsRes, invitesRes, trafficRes] = await Promise.all([
     admin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
     admin.from("profiles").select("*"),

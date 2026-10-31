@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { count } from "@/lib/czech";
+import { addDays, pragueDay, weekday } from "@/lib/days";
 
 export interface ScorePoint {
   date: string;
@@ -65,16 +66,14 @@ export function Heatmap({ days, goalMin }: { days: Record<string, { min: number;
     if (scroller.current) scroller.current.scrollLeft = scroller.current.scrollWidth;
   }, []);
   const weeks = useMemo(() => {
-    const fmt = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Prague" });
-    const today = new Date();
-    const dow = (today.getDay() + 6) % 7; // Monday = 0
-    const start = new Date(today.getTime() - (dow + 7 * 25) * 86400000);
+    const today = pragueDay();
+    const start = addDays(today, -(weekday(today) + 7 * 25));
     const cols: { key: string; future: boolean }[][] = [];
     for (let w = 0; w < 26; w++) {
       const col = [];
       for (let d = 0; d < 7; d++) {
-        const date = new Date(start.getTime() + (w * 7 + d) * 86400000);
-        col.push({ key: fmt.format(date), future: date > today });
+        const key = addDays(start, w * 7 + d);
+        col.push({ key, future: key > today });
       }
       cols.push(col);
     }

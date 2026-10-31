@@ -10,6 +10,7 @@ import { effectivePlan } from "@/lib/plans";
 import { getProfile, requireUser } from "@/lib/server/auth";
 import { greetingName } from "@/lib/server/names";
 import { czToday, getAttempts, getMistakes, getStudyDays, getTypeStats, testTitle } from "@/lib/server/queries";
+import { lastDays, weekdayShort } from "@/lib/days";
 
 export const metadata = { title: "Přehled" };
 
@@ -41,12 +42,11 @@ export default async function Dashboard() {
     .sort((a, b) => (a.mastery ?? 0) - (b.mastery ?? 0) || b.openMistakes - a.openMistakes)
     .slice(0, 3);
 
-  const last7 = lastDays(7).map((d) => {
-    const key = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Prague" }).format(d);
+  const last7 = lastDays(7).map((key) => {
     const row = days.find((x) => x.day === key);
     return {
       key,
-      label: new Intl.DateTimeFormat("cs-CZ", { weekday: "short", timeZone: "Europe/Prague" }).format(d),
+      label: weekdayShort(key),
       min: Math.round((row?.seconds ?? 0) / 60),
       tasks: row?.tasks ?? 0,
     };
@@ -264,11 +264,6 @@ export default async function Dashboard() {
       )}
     </div>
   );
-}
-
-function lastDays(n: number) {
-  const now = Date.now();
-  return Array.from({ length: n }, (_, i) => new Date(now - (n - 1 - i) * 86400000));
 }
 
 function pragueHour() {
