@@ -113,6 +113,19 @@ function Creature({ stage, mood, outfit, needs }: { stage: PetStage["code"]; moo
 
   return (
     <g style={saturation < 0.97 ? { filter: `saturate(${saturation.toFixed(2)})` } : undefined}>
+      {/* cape goes behind everything */}
+      {outfit.back === "cape" && (
+        <g>
+          <path
+            d={`M${cx - r * 0.62} ${cy - r * 0.3}Q${cx - r * 1.2} ${cy + r * 0.5} ${cx - r * 1.12} ${cy + r * 1.0}Q${cx} ${cy + r * 1.12} ${cx + r * 1.12} ${cy + r * 1.0}Q${cx + r * 1.2} ${cy + r * 0.5} ${cx + r * 0.62} ${cy - r * 0.3}Z`}
+            fill="#dc2626"
+            stroke="#991b1b"
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+          />
+          <path d={`M${cx - r * 0.75} ${cy + r * 0.2}Q${cx - r * 0.95} ${cy + r * 0.6} ${cx - r * 0.9} ${cy + r * 0.98}`} stroke="#fff" strokeWidth="2" fill="none" opacity="0.25" />
+        </g>
+      )}
       {/* tail */}
       {big && <path d={`M${cx + r * 0.8} ${cy + r * 0.5}Q${cx + r * 1.45} ${cy + r * 0.45} ${cx + r * 1.25} ${cy - r * 0.1}Q${cx + r * 1.2} ${cy + r * 0.25} ${cx + r * 0.7} ${cy + r * 0.25}Z`} fill={dark} />}
       {/* wings */}
@@ -339,6 +352,62 @@ function Outfit({ outfit, cx, cy, r, eyeY, eyeDx }: { outfit: PetOutfit; cx: num
           <path d={`M0 -26L${r * 0.75} -14L0 -2L${-r * 0.75} -14Z`} fill="#111827" />
           <path d={`M${r * 0.55} -16V2`} stroke="#facc15" strokeWidth="2.5" />
           <circle cx={r * 0.55} cy="4" r="3.5" fill="#facc15" />
+        </g>
+      )}
+      {outfit.neck === "bowtie" && (
+        <g transform={`translate(${cx} ${cy + r * 0.5})`} fill="#1e3a8a" stroke="#172554" strokeWidth="1.5" strokeLinejoin="round">
+          <path d="M0 0L-15 -9Q-18 0 -15 9Z" />
+          <path d="M0 0L15 -9Q18 0 15 9Z" />
+          <rect x="-4" y="-5" width="8" height="10" rx="2.5" fill="#3b82f6" />
+          <circle cx="-9" cy="-2" r="1.3" fill="#fff" stroke="none" />
+          <circle cx="9" cy="2" r="1.3" fill="#fff" stroke="none" />
+        </g>
+      )}
+      {outfit.face === "monocle" && (
+        <g fill="none" stroke="#ca8a04" strokeWidth="2.5">
+          <circle cx={cx + eyeDx} cy={eyeY} r={r * 0.22} fill="#fff" fillOpacity="0.25" />
+          <path d={`M${cx + eyeDx + r * 0.16} ${eyeY + r * 0.16}Q${cx + eyeDx + r * 0.35} ${cy + r * 0.25} ${cx + eyeDx + r * 0.1} ${cy + r * 0.45}`} strokeWidth="1.5" strokeDasharray="2 2" />
+        </g>
+      )}
+      {outfit.hand === "book" && (
+        <g transform={`translate(${cx - r * 0.82} ${cy + r * 0.42}) rotate(-12)`}>
+          <rect x="-14" y="-11" width="28" height="22" rx="3" fill="#2563eb" stroke="#1e3a8a" strokeWidth="2" />
+          <rect x="-11" y="-8" width="22" height="16" rx="1.5" fill="#fef3c7" />
+          <path d="M0 -8V8" stroke="#1e3a8a" strokeWidth="1.5" />
+          <path d="M-8 -3h5M-8 1h5M3 -3h5M3 1h5" stroke="#94a3b8" strokeWidth="1.2" />
+          <ellipse cx="13" cy="6" rx="6" ry="5" fill="#d8ccff" stroke="#8466ec" strokeWidth="2" />
+        </g>
+      )}
+      {outfit.hand === "trophy" && (
+        <g transform={`translate(${cx - r * 0.85} ${cy + r * 0.38})`}>
+          <path d="M-10 -14H10V-6Q10 6 0 7Q-10 6 -10 -6Z" fill="#facc15" stroke="#ca8a04" strokeWidth="2" />
+          <path d="M-10 -11Q-17 -11 -16 -5Q-15 0 -9 0M10 -11Q17 -11 16 -5Q15 0 9 0" fill="none" stroke="#ca8a04" strokeWidth="2" />
+          <path d="M-2 7V12H2V7" fill="#facc15" stroke="#ca8a04" strokeWidth="1.5" />
+          <rect x="-8" y="12" width="16" height="5" rx="1.5" fill="#92400e" />
+          <Sparkle x={-3} y={-7} s={3} />
+          <ellipse cx="11" cy="9" rx="6" ry="5" fill="#d8ccff" stroke="#8466ec" strokeWidth="2" />
+        </g>
+      )}
+      {outfit.head === "headphones" && (
+        <g>
+          <path d={`M${cx - r * 0.9} ${eyeY - r * 0.05}Q${cx - r * 0.95} ${top - r * 0.25} ${cx} ${top - r * 0.22}Q${cx + r * 0.95} ${top - r * 0.25} ${cx + r * 0.9} ${eyeY - r * 0.05}`} fill="none" stroke="#334155" strokeWidth="5" strokeLinecap="round" />
+          <rect x={cx - r * 1.07} y={eyeY - r * 0.22} width={r * 0.3} height={r * 0.42} rx={r * 0.1} fill="#f43f5e" stroke="#334155" strokeWidth="2.5" />
+          <rect x={cx + r * 0.77} y={eyeY - r * 0.22} width={r * 0.3} height={r * 0.42} rx={r * 0.1} fill="#f43f5e" stroke="#334155" strokeWidth="2.5" />
+        </g>
+      )}
+      {outfit.head === "wizard" && (
+        <g transform={`translate(${cx} ${top + 8})`}>
+          <path d={`M${-r * 0.5} 0Q-4 -30 6 -58Q10 -40 ${r * 0.5} 0Z`} fill="#6d28d9" stroke="#4c1d95" strokeWidth="2.5" strokeLinejoin="round" />
+          <ellipse cx="0" cy="0" rx={r * 0.78} ry="7" fill="#7c3aed" stroke="#4c1d95" strokeWidth="2.5" />
+          <Sparkle x={-6} y={-22} s={5} />
+          <Sparkle x={6} y={-40} s={3.5} />
+          <circle cx={r * 0.18} cy="-10" r="2" fill="#fde047" />
+        </g>
+      )}
+      {outfit.head === "halo" && (
+        <g>
+          <ellipse cx={cx} cy={top - 12} rx={r * 0.5} ry="7" fill="none" stroke="#fde047" strokeWidth="6" opacity="0.5" />
+          <ellipse cx={cx} cy={top - 12} rx={r * 0.5} ry="7" fill="none" stroke="#facc15" strokeWidth="3" />
         </g>
       )}
       {outfit.head === "crown" && (

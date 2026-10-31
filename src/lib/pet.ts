@@ -118,7 +118,7 @@ function petMessage(mood: PetMood, p: PetInput, hunger: number, energy: number):
 
 // ---------------------------------------------------------------- outfit (by achievements)
 
-export type PetSlot = "head" | "face" | "neck";
+export type PetSlot = "head" | "face" | "neck" | "back" | "hand";
 
 export interface PetItem {
   code: string;
@@ -138,6 +138,15 @@ export const PET_ITEMS: PetItem[] = [
   { code: "shades", name: "Sluneční brýle", emoji: "🕶️", slot: "face", achievement: "row_10" },
   { code: "scarf", name: "Šála", emoji: "🧣", slot: "neck", achievement: "streak_7" },
   { code: "medal", name: "Medaile", emoji: "🏅", slot: "neck", achievement: "seventy" },
+  // the harder ones
+  { code: "headphones", name: "Sluchátka", emoji: "🎧", slot: "head", achievement: "hours_10" },
+  { code: "wizard", name: "Kouzelnický klobouk", emoji: "🧙", slot: "head", achievement: "hours_50" },
+  { code: "halo", name: "Svatozář", emoji: "😇", slot: "head", achievement: "streak_30" },
+  { code: "monocle", name: "Monokl", emoji: "🧐", slot: "face", achievement: "fix_100" },
+  { code: "bowtie", name: "Motýlek", emoji: "🤵", slot: "neck", achievement: "fix_50" },
+  { code: "cape", name: "Hrdinský plášť", emoji: "🦸", slot: "back", achievement: "row_25" },
+  { code: "book", name: "Kniha moudrosti", emoji: "📖", slot: "hand", achievement: "practice_1000" },
+  { code: "trophy", name: "Pohár", emoji: "🏆", slot: "hand", achievement: "tests_10" },
 ];
 
 export type PetOutfit = Partial<Record<PetSlot, string | null>>;
