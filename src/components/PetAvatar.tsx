@@ -1,6 +1,11 @@
-import type { PetMood, PetOutfit, PetStage } from "@/lib/pet";
+import { useId } from "react";
+import type { PetMood, PetNeeds, PetOutfit, PetStage } from "@/lib/pet";
 
-// Hand-drawn SVG pet. Pure: stage + mood + outfit in, picture out (animations are CSS on the wrapper).
+// Hand-drawn SVG pet. Pure: stage + mood + needs + outfit in, picture out (animations are CSS on the wrapper).
+// The needs show gradually: low energy droops the ears and eyelids and brings the "z"s, hunger
+// makes it thinner and drooling and dreaming of an apple, low joy fades the blush and the colours.
+
+const FULL: PetNeeds = { hunger: 1, energy: 1, joy: 1 };
 
 const BODY: Record<PetStage["code"], { r: number; fill: string; dark: string }> = {
   egg: { r: 0, fill: "#fdf4e3", dark: "#e9d5b5" },
@@ -15,14 +20,17 @@ export function PetAvatar({
   stage,
   mood,
   outfit = {},
+  needs = FULL,
   className,
 }: {
   stage: PetStage["code"];
   mood: PetMood;
   outfit?: PetOutfit;
+  needs?: PetNeeds;
   className?: string;
 }) {
   const sleepy = mood === "asleep";
+  const zs = sleepy ? 3 : needs.energy < 0.08 ? 3 : needs.energy < 0.2 ? 2 : needs.energy < 0.35 ? 1 : 0;
   return (
     <svg viewBox="0 0 200 200" className={className} role="img" aria-label="Tvůj mazlíček">
       <defs>
@@ -37,12 +45,20 @@ export function PetAvatar({
       </defs>
       {stage === "legend" && <circle cx="100" cy="118" r="92" fill="url(#pet-aura)" />}
       <ellipse cx="100" cy="186" rx={stage === "egg" ? 34 : 46} ry="7" fill="#000" opacity="0.09" />
-      {stage === "egg" ? <Egg sleepy={sleepy} /> : <Creature stage={stage} mood={mood} outfit={outfit} />}
-      {sleepy && (
-        <g fill="#8b5cf6" fontFamily="inherit" fontWeight="800" opacity="0.7">
-          <text x="140" y="62" fontSize="18">z</text>
-          <text x="152" y="44" fontSize="14">z</text>
-          <text x="161" y="30" fontSize="11">z</text>
+      {stage === "egg" ? <Egg sleepy={sleepy} /> : <Creature stage={stage} mood={mood} outfit={outfit} needs={needs} />}
+      {zs > 0 && (
+        <g fill="#8b5cf6" fontFamily="inherit" fontWeight="800">
+          {[
+            [140, 62, 18],
+            [152, 44, 14],
+            [161, 30, 11],
+          ]
+            .slice(0, zs)
+            .map(([x, y, size], i) => (
+              <text key={i} x={x} y={y} fontSize={size} className="pet-z" style={{ animationDelay: `${i * 0.6}s` }}>
+                z
+              </text>
+            ))}
         </g>
       )}
       {stage === "legend" &&
@@ -81,17 +97,22 @@ function Egg({ sleepy }: { sleepy: boolean }) {
   );
 }
 
-function Creature({ stage, mood, outfit }: { stage: PetStage["code"]; mood: PetMood; outfit: PetOutfit }) {
+function Creature({ stage, mood, outfit, needs }: { stage: PetStage["code"]; mood: PetMood; outfit: PetOutfit; needs: PetNeeds }) {
   const { r, fill, dark } = BODY[stage];
   const cx = 100;
   const cy = 182 - r - 4; // sits on the ground
   const eyeY = cy - r * 0.12;
   const eyeDx = r * 0.36;
   const big = stage !== "baby";
-  const muted = mood === "sad" || mood === "asleep";
+  const { hunger, energy, joy } = needs;
+  const well = (hunger + energy + joy) / 3;
+  const saturation = mood === "asleep" ? 0.5 : 0.45 + 0.55 * well;
+  const rx = r * (0.86 + 0.14 * hunger); // hungry = thinner
+  const droop = (1 - energy) * 38; // ear angle in degrees
+  const lid = mood === "asleep" || mood === "ecstatic" ? 0 : Math.max(0, Math.min(0.8, ((0.75 - energy) / 0.75) * 0.8));
 
   return (
-    <g style={muted ? { filter: "saturate(0.6)" } : undefined}>
+    <g style={saturation < 0.97 ? { filter: `saturate(${saturation.toFixed(2)})` } : undefined}>
       {/* tail */}
       {big && <path d={`M${cx + r * 0.8} ${cy + r * 0.5}Q${cx + r * 1.45} ${cy + r * 0.45} ${cx + r * 1.25} ${cy - r * 0.1}Q${cx + r * 1.2} ${cy + r * 0.25} ${cx + r * 0.7} ${cy + r * 0.25}Z`} fill={dark} />}
       {/* wings */}
@@ -104,19 +125,30 @@ function Creature({ stage, mood, outfit }: { stage: PetStage["code"]; mood: PetM
       {/* ears */}
       {big && (
         <g fill={fill} stroke={dark} strokeWidth="3" strokeLinejoin="round">
-          <path d={`M${cx - r * 0.75} ${cy - r * 0.45}L${cx - r * 0.72} ${cy - r * 1.2}L${cx - r * 0.25} ${cy - r * 0.85}Z`} />
-          <path d={`M${cx + r * 0.75} ${cy - r * 0.45}L${cx + r * 0.72} ${cy - r * 1.2}L${cx + r * 0.25} ${cy - r * 0.85}Z`} />
-          <path d={`M${cx - r * 0.66} ${cy - r * 0.62}L${cx - r * 0.65} ${cy - r * 1.0}L${cx - r * 0.42} ${cy - r * 0.82}Z`} fill="#fbcfe8" stroke="none" />
-          <path d={`M${cx + r * 0.66} ${cy - r * 0.62}L${cx + r * 0.65} ${cy - r * 1.0}L${cx + r * 0.42} ${cy - r * 0.82}Z`} fill="#fbcfe8" stroke="none" />
+          <g transform={`rotate(${-droop} ${cx - r * 0.5} ${cy - r * 0.65})`}>
+            <path d={`M${cx - r * 0.75} ${cy - r * 0.45}L${cx - r * 0.72} ${cy - r * 1.2}L${cx - r * 0.25} ${cy - r * 0.85}Z`} />
+            <path d={`M${cx - r * 0.66} ${cy - r * 0.62}L${cx - r * 0.65} ${cy - r * 1.0}L${cx - r * 0.42} ${cy - r * 0.82}Z`} fill="#fbcfe8" stroke="none" />
+          </g>
+          <g transform={`rotate(${droop} ${cx + r * 0.5} ${cy - r * 0.65})`}>
+            <path d={`M${cx + r * 0.75} ${cy - r * 0.45}L${cx + r * 0.72} ${cy - r * 1.2}L${cx + r * 0.25} ${cy - r * 0.85}Z`} />
+            <path d={`M${cx + r * 0.66} ${cy - r * 0.62}L${cx + r * 0.65} ${cy - r * 1.0}L${cx + r * 0.42} ${cy - r * 0.82}Z`} fill="#fbcfe8" stroke="none" />
+          </g>
         </g>
       )}
       {/* feet */}
       <ellipse cx={cx - r * 0.42} cy={cy + r * 0.95} rx={r * 0.26} ry={r * 0.14} fill={dark} />
       <ellipse cx={cx + r * 0.42} cy={cy + r * 0.95} rx={r * 0.26} ry={r * 0.14} fill={dark} />
       {/* body */}
-      <ellipse cx={cx} cy={cy} rx={r} ry={r * 0.97} fill={fill} stroke={dark} strokeWidth="3" />
-      <ellipse cx={cx} cy={cy + r * 0.38} rx={r * 0.58} ry={r * 0.45} fill="#fff" opacity="0.45" />
-      <ellipse cx={cx} cy={cy} rx={r} ry={r * 0.97} fill="url(#pet-shine)" />
+      <ellipse cx={cx} cy={cy} rx={rx} ry={r * 0.97} fill={fill} stroke={dark} strokeWidth="3" />
+      <ellipse cx={cx} cy={cy + r * 0.38} rx={rx * 0.58} ry={r * 0.45} fill="#fff" opacity="0.45" />
+      <ellipse cx={cx} cy={cy} rx={rx} ry={r * 0.97} fill="url(#pet-shine)" />
+      {/* rumbling tummy */}
+      {hunger < 0.3 && mood !== "asleep" && (
+        <g stroke={dark} strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.8">
+          <path d={`M${cx - r * 0.2} ${cy + r * 0.5}q4 -4 8 0t8 0`} />
+          <path d={`M${cx - r * 0.05} ${cy + r * 0.66}q4 -4 8 0t8 0`} />
+        </g>
+      )}
       {/* baby: sprout on top and a bit of shell */}
       {stage === "baby" && (
         <>
@@ -128,17 +160,57 @@ function Creature({ stage, mood, outfit }: { stage: PetStage["code"]; mood: PetM
       {/* sage+: a little star mark */}
       {(stage === "sage" || stage === "legend") && <Sparkle x={cx} y={cy - r * 0.55} s={6} />}
       {/* cheeks */}
-      <ellipse cx={cx - eyeDx - r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" ? 0.95 : 0.7} />
-      <ellipse cx={cx + eyeDx + r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" ? 0.95 : 0.7} />
-      <Eyes mood={mood} cx={cx} y={eyeY} dx={eyeDx} r={r} />
+      <ellipse cx={cx - eyeDx - r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" ? 0.95 : 0.15 + 0.6 * joy} />
+      <ellipse cx={cx + eyeDx + r * 0.12} cy={eyeY + r * 0.28} rx={r * 0.13} ry={r * 0.08} fill="#f9a8d4" opacity={mood === "ecstatic" ? 0.95 : 0.15 + 0.6 * joy} />
+      <Eyes mood={mood} cx={cx} y={eyeY} dx={eyeDx} r={r} lid={lid} lidColor={fill} worried={joy < 0.3 && mood !== "asleep"} />
       <Mouth mood={mood} cx={cx} y={eyeY + r * 0.32} r={r} />
+      {/* drool */}
+      {hunger < 0.5 && mood !== "asleep" && mood !== "ecstatic" && (
+        <path d={`M${cx + r * 0.12} ${eyeY + r * 0.42}q-3 ${4 + (0.5 - hunger) * 14} 0 ${6 + (0.5 - hunger) * 16}q3 -2 0 ${-6 - (0.5 - hunger) * 16}`} fill="#7dd3fc" opacity="0.9" />
+      )}
+      {/* dreaming of food */}
+      {hunger < 0.3 && mood !== "asleep" && <FoodThought x={cx - r * 1.05} y={cy - r * 1.05} />}
       <Outfit outfit={outfit} cx={cx} cy={cy} r={r} eyeY={eyeY} eyeDx={eyeDx} />
     </g>
   );
 }
 
-function Eyes({ mood, cx, y, dx, r }: { mood: PetMood; cx: number; y: number; dx: number; r: number }) {
+function FoodThought({ x, y }: { x: number; y: number }) {
+  return (
+    <g>
+      <circle cx={x + 26} cy={y + 30} r="3" fill="#fff" stroke="#e5e7eb" strokeWidth="1.5" />
+      <circle cx={x + 18} cy={y + 20} r="5" fill="#fff" stroke="#e5e7eb" strokeWidth="1.5" />
+      <ellipse cx={x} cy={y} rx="17" ry="14" fill="#fff" stroke="#e5e7eb" strokeWidth="1.5" />
+      {/* apple */}
+      <path d={`M${x} ${y - 3}c-4 -4 -11 -2 -11 5c0 6 5 10 8 10c1.5 0 2 -1 3 -1s1.5 1 3 1c3 0 8 -4 8 -10c0 -7 -7 -9 -11 -5z`} fill="#ef4444" />
+      <path d={`M${x} ${y - 3}q0 -4 2 -6`} stroke="#78350f" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <ellipse cx={x + 4} cy={y - 8} rx="3.5" ry="1.8" fill="#22c55e" transform={`rotate(-30 ${x + 4} ${y - 8})`} />
+    </g>
+  );
+}
+
+function Eyes({
+  mood,
+  cx,
+  y,
+  dx,
+  r,
+  lid,
+  lidColor,
+  worried,
+}: {
+  mood: PetMood;
+  cx: number;
+  y: number;
+  dx: number;
+  r: number;
+  /** 0 = wide awake, 0.8 = barely open */
+  lid: number;
+  lidColor: string;
+  worried: boolean;
+}) {
   const ink = "#2e1f5e";
+  const clip = `pet-eye-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   if (mood === "asleep")
     return (
       <g stroke={ink} strokeWidth="3" fill="none" strokeLinecap="round">
@@ -154,16 +226,29 @@ function Eyes({ mood, cx, y, dx, r }: { mood: PetMood; cx: number; y: number; dx
       </g>
     );
   const er = r * 0.13;
+  const eh = er * 1.15;
   return (
     <g>
-      {[-1, 1].map((s) => (
-        <g key={s}>
-          <ellipse cx={cx + s * dx} cy={y} rx={er} ry={er * 1.15} fill={ink} />
-          <circle cx={cx + s * dx + er * 0.35} cy={y - er * 0.4} r={er * 0.38} fill="#fff" />
-          <circle cx={cx + s * dx - er * 0.3} cy={y + er * 0.4} r={er * 0.16} fill="#fff" />
-        </g>
-      ))}
-      {mood === "sad" && (
+      {[-1, 1].map((s) => {
+        const ex = cx + s * dx;
+        return (
+          <g key={s}>
+            <clipPath id={`${clip}${s}`}>
+              <ellipse cx={ex} cy={y} rx={er} ry={eh} />
+            </clipPath>
+            <ellipse cx={ex} cy={y} rx={er} ry={eh} fill={ink} />
+            <circle cx={ex + er * 0.35} cy={y - er * 0.4} r={er * 0.38} fill="#fff" />
+            <circle cx={ex - er * 0.3} cy={y + er * 0.4} r={er * 0.16} fill="#fff" />
+            {lid > 0 && (
+              <g clipPath={`url(#${clip}${s})`}>
+                <rect x={ex - er - 1} y={y - eh - 1} width={er * 2 + 2} height={eh * 2 * lid + 1} fill={lidColor} />
+                <path d={`M${ex - er} ${y - eh + eh * 2 * lid}h${er * 2}`} stroke={ink} strokeWidth="2" />
+              </g>
+            )}
+          </g>
+        );
+      })}
+      {(mood === "sad" || worried) && (
         <g stroke={ink} strokeWidth="2.5" strokeLinecap="round">
           <path d={`M${cx - dx - 8} ${y - er * 1.6}L${cx - dx + 6} ${y - er * 2.3}`} />
           <path d={`M${cx + dx + 8} ${y - er * 1.6}L${cx + dx - 6} ${y - er * 2.3}`} />
@@ -191,6 +276,8 @@ function Mouth({ mood, cx, y, r }: { mood: PetMood; cx: number; y: number; r: nu
       return <path d={`M${cx - w * 0.7} ${y + 1}Q${cx} ${y + w * 0.6} ${cx + w * 0.7} ${y + 1}`} stroke={ink} strokeWidth="3" fill="none" strokeLinecap="round" />;
     case "hungry":
       return <ellipse cx={cx} cy={y + 3} rx={w * 0.55} ry={w * 0.7} fill={ink} />;
+    case "tired":
+      return <ellipse cx={cx} cy={y + 4} rx={w * 0.7} ry={w * 0.9} fill={ink} opacity="0.85" />;
     case "sad":
       return <path d={`M${cx - w * 0.8} ${y + w * 0.8}Q${cx} ${y - w * 0.2} ${cx + w * 0.8} ${y + w * 0.8}`} stroke={ink} strokeWidth="3" fill="none" strokeLinecap="round" />;
     case "asleep":

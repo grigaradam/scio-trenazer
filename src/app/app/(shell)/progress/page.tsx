@@ -14,6 +14,7 @@ import {
   levelUp,
   XP,
 } from "@/lib/gamification";
+import { masteryLevel } from "@/lib/mastery";
 import { PET_STAGES } from "@/lib/pet";
 import { achievementStats, checkAchievements } from "@/lib/server/activity";
 import { getProfile, requireUser } from "@/lib/server/auth";
@@ -171,6 +172,9 @@ export default async function ProgressPage() {
 
       <section>
         <SectionTitle>Zvládnutí typů úloh</SectionTitle>
+        <p className="-mt-2 mb-3 text-sm text-muted">
+          Počítá hlavně s tvými posledními odpověďmi – staré chyby postupně blednou a chyba, kterou později opravíš, se počítá napůl jako správně.
+        </p>
         <div className="grid gap-6 md:grid-cols-2">
           {(["verbal", "analytic"] as const).map((sec) => (
             <Card key={sec}>
@@ -182,20 +186,28 @@ export default async function ProgressPage() {
                   .filter((t) => taskTypeMeta(t.type)?.section === sec)
                   .map((t) => {
                     const meta = taskTypeMeta(t.type)!;
-                    const pct = t.accuracy ?? 0;
+                    const pct = t.mastery ?? 0;
+                    const tier = masteryLevel(pct);
                     return (
                       <div key={t.type}>
-                        <div className="mb-1 flex justify-between text-sm">
-                          <span className="font-semibold">
+                        <div className="mb-1 flex items-baseline justify-between gap-2 text-sm">
+                          <span className="min-w-0 truncate font-semibold">
                             {meta.emoji} {meta.name}
                           </span>
-                          <span className="font-bold text-muted">{t.accuracy !== null ? `${Math.round(pct * 100)} %` : "–"}</span>
+                          <span className="shrink-0 font-bold text-muted">
+                            {t.mastery === null ? (
+                              "zatím netrénováno"
+                            ) : (
+                              <>
+                                {t.trend !== null && t.trend >= 0.01 && (
+                                  <span className="mr-1.5 text-emerald-600 dark:text-emerald-400">↑ {Math.round(t.trend * 100)}</span>
+                                )}
+                                <span className="text-xs">{tier.label}</span> · {Math.round(pct * 100)} %
+                              </>
+                            )}
+                          </span>
                         </div>
-                        <ProgressBar
-                          value={pct}
-                          className="h-2.5"
-                          barClassName={pct >= 0.7 ? "bg-emerald-500" : pct >= 0.4 ? "bg-amber-400" : "bg-rose-500"}
-                        />
+                        <ProgressBar value={pct} className="h-2.5" barClassName={tier.bar} />
                       </div>
                     );
                   })}

@@ -27,6 +27,7 @@ const MOOD_LABEL = {
   ecstatic: "V sedmém nebi",
   happy: "Spokojený",
   ok: "V pohodě",
+  tired: "Ospalý",
   hungry: "Hladový",
   sad: "Smutný",
   asleep: "Spí",
@@ -143,7 +144,13 @@ export function PetView({ userId, xp, input, unlocked }: { userId: string; xp: n
               className="block w-full cursor-pointer select-none [-webkit-tap-highlight-color:transparent]"
             >
               <div key={hop} className={hop ? "animate-pet-hop" : ""}>
-                <PetAvatar stage={stage.code} mood={state.mood} outfit={worn} className="w-full motion-safe:animate-pet-bob" />
+                <PetAvatar
+                  stage={stage.code}
+                  mood={state.mood}
+                  needs={state}
+                  outfit={worn}
+                  className={clsx("w-full motion-safe:animate-pet-bob", state.energy < 0.35 && "[animation-duration:5s]")}
+                />
               </div>
             </button>
             {hearts.map((h) => (
@@ -189,9 +196,12 @@ export function PetView({ userId, xp, input, unlocked }: { userId: string; xp: n
                 🍎 Nakrmit úlohou
               </ButtonLink>
               <ButtonLink href="/app/mistakes" variant="secondary" size="lg">
-                Opravit chybu
+                🛠️ Zkusit znovu, co mi nešlo
               </ButtonLink>
             </div>
+            <p className="text-xs text-muted">
+              Každá vyřešená úloha ho nakrmí. Úlohy, ve kterých ses dřív spletl, najdeš ve Slabinách – když je napodruhé dáš správně, dostaneš +10 XP.
+            </p>
           </div>
         </div>
       </section>

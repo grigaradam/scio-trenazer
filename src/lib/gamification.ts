@@ -9,8 +9,11 @@ export const XP = {
   testPerPoint: 2,
 };
 
-/** Cumulative XP needed to reach a level: L2 = 100, L3 = 300, L4 = 600, L5 = 1000 … */
-export const levelThreshold = (level: number) => 50 * (level - 1) * level;
+/**
+ * Cumulative XP needed to reach a level; the gaps grow with every level.
+ * L2 = 210, L3 = 720, L4 = 1 620, L5 = 3 000, L6 = 4 950, L8 = 10 920, L10 = 20 250 …
+ */
+export const levelThreshold = (level: number) => 15 * (level - 1) * level * (level + 5);
 
 export function levelInfo(xp: number) {
   let level = 1;

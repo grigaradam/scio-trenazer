@@ -58,12 +58,15 @@ export interface PetInput {
   recentAchievements: number;
 }
 
-export type PetMood = "ecstatic" | "happy" | "ok" | "hungry" | "sad" | "asleep";
+export type PetMood = "ecstatic" | "happy" | "ok" | "tired" | "hungry" | "sad" | "asleep";
 
-export interface PetState {
+export interface PetNeeds {
   hunger: number; // 0 = starving, 1 = full
   energy: number;
   joy: number;
+}
+
+export interface PetState extends PetNeeds {
   mood: PetMood;
   message: string;
 }
@@ -81,8 +84,10 @@ export function petState(p: PetInput): PetState {
   if (p.idleDays === null || p.idleDays >= 3) mood = "asleep";
   else if (p.idleDays >= 1) mood = p.idleDays >= 2 ? "sad" : "hungry";
   else if (avg >= 0.8) mood = "ecstatic";
+  else if (hunger < 0.3) mood = "hungry";
+  else if (energy < 0.25) mood = "tired";
   else if (avg >= 0.5) mood = "happy";
-  else mood = hunger < 0.3 ? "hungry" : "ok";
+  else mood = "ok";
 
   return { hunger, energy, joy, mood, message: petMessage(mood, p, hunger, energy) };
 }
@@ -100,6 +105,8 @@ function petMessage(mood: PetMood, p: PetInput, hunger: number, energy: number):
         : p.streak > 0
           ? `Kručí mi v bříšku! Vyřeš dnes úlohu, ať nepřijdeme o ${p.streak}denní streak.`
           : "Kručí mi v bříšku! Dáš mi dnes nějakou úlohu?";
+    case "tired":
+      return "Úáách… zívám. Pár minut učení a zase budu čilý!";
     case "ok":
       return energy < 1 ? "Je mi fajn. Ještě chvilku učení a budu nabitý energií!" : "Díky za jídlo! Dáme ještě pár úloh?";
     case "happy":

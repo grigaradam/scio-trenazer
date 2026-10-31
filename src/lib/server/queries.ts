@@ -2,6 +2,7 @@ import "server-only";
 import { TASK_TYPES } from "@/lib/content/exams";
 import { getTests } from "@/lib/content/load";
 import type { TaskType } from "@/lib/content/types";
+import { mastery, masteryTrend, type MasteryItem } from "@/lib/mastery";
 import type { Bucket } from "@/lib/scoring";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { AttemptRow, MistakeRow, StudyDay } from "./types";
@@ -51,6 +52,10 @@ export interface TypeStat {
   type: TaskType;
   /** accuracy across tests + practice, 0..1, null = no data */
   accuracy: number | null;
+  /** "zvládnutí" 0..1: recency-weighted, fixed mistakes count half (see lib/mastery), null = no data */
+  mastery: number | null;
+  /** change of mastery over the last 7 days, null = nothing new */
+  trend: number | null;
   attempts: number;
   openMistakes: number;
   practiceCount: number;
@@ -62,29 +67,44 @@ export async function getTypeStats(userId: string, attempts?: AttemptRow[], mist
   mistakes ??= await getMistakes(userId);
   const { data: practice } = await createAdminClient()
     .from("practice_answers")
-    .select("task_type,correct")
+    .select("task_type,task_ref,correct,created_at")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(3000);
 
   const acc: Record<string, { right: number; total: number; practice: number }> = {};
+  const items: Record<string, MasteryItem[]> = {};
+  const fixedInTest = (attemptId: string, type: string) =>
+    mistakes!.filter((m) => m.attempt_id === attemptId && m.task_type === type && m.status === "fixed").length;
   for (const a of attempts) {
     if (a.status !== "completed" || !a.result) continue;
     for (const [type, b] of Object.entries(a.result.types) as [string, Bucket][]) {
       const s = (acc[type] ??= { right: 0, total: 0, practice: 0 });
       s.right += b.correct + b.partial * 0.5;
       s.total += b.max;
+      (items[type] ??= []).push({
+        at: Date.parse(a.completed_at!),
+        n: b.max,
+        right: b.correct + b.partial * 0.5 + fixedInTest(a.id, type) * 0.5,
+      });
     }
   }
+  // newest first: a wrong answer whose task was solved later counts as half right
+  const solved = new Set<string>();
   for (const p of practice ?? []) {
     const s = (acc[p.task_type] ??= { right: 0, total: 0, practice: 0 });
     s.right += p.correct ? 1 : 0;
     s.total += 1;
     s.practice += 1;
+    (items[p.task_type] ??= []).push({ at: Date.parse(p.created_at), n: 1, right: p.correct ? 1 : solved.has(p.task_ref) ? 0.5 : 0 });
+    if (p.correct) solved.add(p.task_ref);
   }
+  const now = Date.now();
   return TASK_TYPES.filter((t) => t.exam === "osp").map((t) => ({
     type: t.id,
     accuracy: acc[t.id]?.total ? acc[t.id].right / acc[t.id].total : null,
+    mastery: mastery(items[t.id] ?? []),
+    trend: masteryTrend(items[t.id] ?? [], now),
     attempts: acc[t.id]?.total ?? 0,
     practiceCount: acc[t.id]?.practice ?? 0,
     openMistakes: mistakes!.filter((m) => m.task_type === t.id && m.status === "open").length,

@@ -35,10 +35,10 @@ export default async function Dashboard() {
   const activeToday = profile.last_active_date === today;
   const basic = effectivePlan(profile) === "basic";
 
-  // weakest types: lowest accuracy, ties broken by open mistakes
+  // weakest types: lowest mastery, ties broken by open mistakes
   const weak = typeStats
-    .filter((t) => t.accuracy !== null || t.openMistakes > 0)
-    .sort((a, b) => (a.accuracy ?? 0) - (b.accuracy ?? 0) || b.openMistakes - a.openMistakes)
+    .filter((t) => t.mastery !== null || t.openMistakes > 0)
+    .sort((a, b) => (a.mastery ?? 0) - (b.mastery ?? 0) || b.openMistakes - a.openMistakes)
     .slice(0, 3);
 
   const last7 = lastDays(7).map((d) => {
@@ -177,7 +177,7 @@ export default async function Dashboard() {
                   <div className="min-w-0 flex-1">
                     <div className="truncate font-display font-extrabold sm:mt-2 sm:whitespace-normal">{meta.name}</div>
                     <div className="text-sm text-muted sm:mt-1">
-                      {t.accuracy !== null ? `úspěšnost ${Math.round(t.accuracy * 100)} %` : "zatím bez dat"}
+                      {t.mastery !== null ? `zvládnutí ${Math.round(t.mastery * 100)} %` : "zatím bez dat"}
                       {t.openMistakes > 0 && <span className="text-rose-500 sm:hidden"> · {count(t.openMistakes, "chyba", "chyby", "chyb")}</span>}
                     </div>
                   </div>
