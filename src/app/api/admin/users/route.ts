@@ -8,7 +8,7 @@ const Body = z.object({
   /** Blocked users keep their data but must enter a new invite code. */
   blocked: z.boolean().optional(),
   plan: z.enum(["basic", "pro"]).optional(),
-  /** ISO date the plan ends, null = forever */
+  /** ISO date Pro ends (then the account is Basic), null = forever */
   planExpiresAt: z.string().datetime().nullable().optional(),
 });
 
@@ -21,6 +21,7 @@ export async function PATCH(req: Request) {
   if (blocked !== undefined) update.blocked = blocked;
   if (plan) update.plan = plan;
   if (planExpiresAt !== undefined) update.plan_expires_at = planExpiresAt;
+  if (plan === "basic") update.plan_expires_at = null; // Basic has no end
   const { error } = await createAdminClient().from("profiles").update(update).eq("id", userId);
   if (error) {
     const missing = /plan/.test(error.message);

@@ -39,7 +39,8 @@ export async function bindInvite(code: string, userId: string) {
   // without migration 0012 the code has no plan and the profile no plan columns
   if (plan.plan) {
     update.plan = plan.plan;
-    update.plan_expires_at = plan.duration_days ? new Date(Date.now() + plan.duration_days * 86400000).toISOString() : null;
+    // only Pro runs out (into Basic); Basic is forever
+    update.plan_expires_at = plan.plan === "pro" && plan.duration_days ? new Date(Date.now() + plan.duration_days * 86400000).toISOString() : null;
   }
   await admin.from("profiles").update(update).eq("id", userId);
 }

@@ -51,7 +51,7 @@ const GeneratedSchema = z.object({
       stem: z.string(),
       compare: z.object({ left: z.string(), right: z.string() }).nullable(),
       parts: z.array(PartSchema),
-      solution: z.string(),
+      solution: z.string().describe("Povinné, nikdy prázdné: 1–4 věty, proč je odpověď správná."),
       trapDesign: z
         .string()
         .describe("Interní: ke každé špatné možnosti napiš, jakou konkrétní chybu nebo past představuje a proč je lákavá."),
@@ -246,7 +246,8 @@ export function structuralIssues(group: Group, type: TaskType): string[] {
   const issues: string[] = [];
   const meta = taskTypeMeta(type);
   if (!group.questions.length) issues.push("žádné úlohy");
-  if (meta && meta.groupSize > 1 && group.questions.length < 2) issues.push("málo úloh ve skupině");
+  if (meta && meta.groupSize > 1 && group.questions.length < 2)
+    issues.push(`málo úloh ve skupině (${group.questions.length}, má být ${meta.groupSize})`);
   if (meta && meta.groupSize > 1 && !group.passage && !group.chart) issues.push("chybí společný text");
   if (group.chart) issues.push(...chartIssues(group.chart));
   if (type === "data" && !group.chart && !/\|.*\|/.test(group.passage ?? "")) issues.push("chybí tabulka nebo graf");
@@ -257,8 +258,10 @@ export function structuralIssues(group: Group, type: TaskType): string[] {
     if (q.parts.length !== expectedParts) issues.push(`úloha ${q.n}: počet částí ${q.parts.length}`);
     q.parts.forEach((p, pi) => {
       const keys = type === "synonyma" && pi === 1 ? ["E", "F", "G", "H"] : ["A", "B", "C", "D"];
-      if (p.options.map((o) => o.key).join("") !== keys.join("")) issues.push(`úloha ${q.n}: klíče možností`);
-      if (!keys.includes(p.answer)) issues.push(`úloha ${q.n}: odpověď mimo možnosti`);
+      // spelled out: the lesson distiller once read a bare "klíče možností" as "use A–E"
+      const got = p.options.map((o) => o.key).join(", ");
+      if (got !== keys.join(", ")) issues.push(`úloha ${q.n}: klíče možností musí být přesně ${keys.join(", ")} (jsou ${got || "žádné"})`);
+      if (!keys.includes(p.answer)) issues.push(`úloha ${q.n}: odpověď „${p.answer}“ není mezi ${keys.join(", ")}`);
       const texts = p.options.map((o) => o.text.toLowerCase());
       if (new Set(texts).size !== texts.length) issues.push(`úloha ${q.n}: duplicitní možnosti`);
       if (p.options.some((o) => !o.text)) issues.push(`úloha ${q.n}: prázdná možnost`);
@@ -292,7 +295,11 @@ async function validate(group: Group, type: TaskType, userId?: string): Promise<
             text: `Typ úlohy: ${meta?.name}\nPravidla typu: ${meta?.rules}\nTypické chytáky Scio u tohoto typu: ${meta?.traps}`,
             cache_control: { type: "ephemeral" },
           },
-          { type: "text", text: `${reference}\n\n### POSUZOVANÁ ÚLOHA (bez klíče)\n${taskToPrompt(group, group.questions, false)}` },
+          {
+            type: "text",
+            // a missing entry counts as a wrong answer, so say how many are expected
+            text: `${reference}\n\n### POSUZOVANÁ ÚLOHA (bez klíče; počet otázek: ${group.questions.length} – do answers uveď řešení každé z nich)\n${taskToPrompt(group, group.questions, false)}`,
+          },
         ],
       },
     ],

@@ -26,7 +26,16 @@ const stripType = (note: string, type: string) => note.replace(new RegExp(`^${ty
  */
 const CRITERIA_EPOCH = "2026-10-22T21:34:00Z"; // deploy of the fixed validator
 /** Lessons distilled from bad data are discarded per type and re-learned from fresh rejections. */
-const LESSON_RESET: Partial<Record<TaskType, string>> = { synonyma: CRITERIA_EPOCH };
+const LESSONS_V2 = "2026-10-31T19:00:00Z"; // porozumeni had learned "keys A–E"; topic bans filled nesoulad/dostatecnost
+const LESSON_RESET: Partial<Record<TaskType, string>> = {
+  synonyma: CRITERIA_EPOCH,
+  porozumeni: LESSONS_V2,
+  nesoulad: LESSONS_V2,
+  dostatecnost: LESSONS_V2,
+};
+
+/** "Too similar to an existing task" – the variety block already lists what is taken, so it's no lesson. */
+const isRepetition = (note: string) => /^(\[po opravě\] )?opakování:/.test(note);
 
 export interface Lessons {
   lessons: string | null;
@@ -55,7 +64,7 @@ export async function getLessons(type: TaskType): Promise<Lessons> {
       ? []
       : ((recentRes.data ?? []) as { note: string | null }[])
           .map((r) => (r.note ? stripType(r.note, type) : ""))
-          .filter((n) => n && !n.startsWith("chyba:"))
+          .filter((n) => n && !n.startsWith("chyba:") && !isRepetition(n))
           .map((n) => n.slice(0, MAX_RECENT_CHARS)),
   };
 }
@@ -101,12 +110,13 @@ export async function refreshLessons(type: TaskType) {
       .like("note", `${type}:%`)
       .gte("created_at", CRITERIA_EPOCH)
       .order("created_at", { ascending: false })
-      .limit(MAX_DISTILL_INPUT),
+      .limit(MAX_DISTILL_INPUT * 2), // repetitions are dropped below
     admin.from("ai_calls").select("id", { count: "exact", head: true }).eq("kind", "accept").like("note", `${type}:%`),
   ]);
   const reasons = ((rejects ?? []) as { note: string | null }[])
     .map((r) => stripType(r.note ?? "", type))
-    .filter((n) => n && !n.startsWith("chyba:")) // API/credit errors are not the generator's fault
+    .filter((n) => n && !n.startsWith("chyba:") && !isRepetition(n)) // API/credit errors are not the generator's fault
+    .slice(0, MAX_DISTILL_INPUT)
     .map((n) => `- ${n.slice(0, 300)}`);
   if (!reasons.length) return;
 
@@ -119,11 +129,13 @@ export async function refreshLessons(type: TaskType) {
       "sestav krátký seznam konkrétních, akčních pravidel pro generátor, aby se stejné chyby už neopakovaly. " +
       "Pravidla piš česky jako odrážky „- …“, každé 1 krátká věta, MAX. 8 odrážek a celkem max. 1000 znaků. " +
       "Výsledek NAHRAZUJE dosavadní pravidla: zachovej jen ta, která stále platí, slouč duplicity, " +
-      "nejčastější problémy dej nahoru, méně důležité vyřaď. Žádný úvod ani závěr.",
+      "nejčastější problémy dej nahoru, méně důležité vyřaď. Formát úlohy je pevný a nesmíš ho měnit. " +
+      "Nepiš seznamy zakázaných témat, opakování hlídá jiný mechanismus. Žádný úvod ani závěr.",
     messages: [
       {
         role: "user",
         content: `Typ úlohy: ${meta?.name ?? type}
+Pevný formát: ${meta && meta.groupSize > 1 ? `skupina ${meta.groupSize} otázek ke společnému textu` : "1 otázka"}, klíče možností ${type === "synonyma" ? "A–D (synonymum) a E–H (antonymum)" : "přesně A, B, C, D"}.
 Přijatých úloh zatím: ${accepted ?? 0}
 
 Dosavadní pravidla:
