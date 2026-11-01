@@ -41,9 +41,24 @@ export const LEVEL_TITLES = [
   "Stratég",
   "Expert",
   "Mistr OSP",
-  "Legenda",
+  "Šampion",
+  "Génius",
+  "Profesor",
+  "Velmistr",
+  "Titán",
+  "Nesmrtelný",
 ];
-export const levelTitle = (level: number) => LEVEL_TITLES[Math.min(level - 1, LEVEL_TITLES.length - 1)];
+const roman = (n: number) =>
+  ([[1000, "M"], [900, "CM"], [500, "D"], [400, "CD"], [100, "C"], [90, "XC"], [50, "L"], [40, "XL"], [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]] as const).reduce(
+    (out, [v, r]) => {
+      while (n >= v) (out += r), (n -= v);
+      return out;
+    },
+    "",
+  );
+/** Every level has its own name: past the last title they count up, "Nesmrtelný II", "Nesmrtelný III" … */
+export const levelTitle = (level: number) =>
+  level <= LEVEL_TITLES.length ? LEVEL_TITLES[level - 1] : `${LEVEL_TITLES[LEVEL_TITLES.length - 1]} ${roman(level - LEVEL_TITLES.length + 1)}`;
 
 export interface AchievementStats {
   testsCompleted: number;
@@ -138,5 +153,5 @@ export function levelUp(before: number, after: number): number | null {
   return b > a ? b : null;
 }
 
-export const LEVEL_EMOJIS = ["🐣", "🔎", "🧩", "🧮", "🧠", "📊", "♟️", "🎓", "🏅", "🌟"];
+export const LEVEL_EMOJIS = ["🐣", "🔎", "🧩", "🧮", "🧠", "📊", "♟️", "🎓", "🏅", "🏆", "💡", "📚", "👑", "⚡", "🌟"];
 export const levelEmoji = (level: number) => LEVEL_EMOJIS[Math.min(level - 1, LEVEL_EMOJIS.length - 1)];
