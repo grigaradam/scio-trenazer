@@ -58,7 +58,12 @@ export interface ExactRaw {
   d7: SummaryRow[];
   today: SummaryRow[];
   sinceStart: SummaryRow[] | null;
+  /** all candidate outcomes of the window (older rows get their type from the note) */
   outcomes: OutcomeRow[];
+  /** outcomes since the first row with a task type – what per-type cost can be measured against */
+  outcomesTyped: OutcomeRow[];
+  /** start of the per-type cost window: the window start, or the first typed row when that is later (migration 0015) */
+  typedSince: string;
   pool: PoolRow[];
   serves: ServeRow[];
   hourly: HourRow[];
@@ -125,6 +130,9 @@ export interface StageInsight {
 
 export interface OptimizationData {
   windowDays: number;
+  /** per-type cost and acceptance are measured from here (later than the window start until 0015 has run 14 days) */
+  typedSince: string;
+  windowStart: string;
   types: TypeInsight[];
   stages: StageInsight[];
   rejectReasons: { outcome: string; first: number; revised: number }[];
@@ -164,13 +172,23 @@ export async function loadExact(o: { since14: string; since7: string; weekStart:
       return null;
     }
   };
-  const [all, d14, d7, today, sinceStart, outcomes, pool, serves, hourly, batch, users, notes] = await Promise.all([
+  // Rows logged before migration 0015 have no task type: their cost can't be split by type, so per-type cost and
+  // acceptance are both measured from the first typed row on – otherwise old accepts would meet only new costs.
+  const firstTyped = await Promise.resolve(
+    admin.from("ai_calls").select("created_at").not("task_type", "is", null).order("created_at", { ascending: true }).limit(1),
+  ).then(
+    (r) => (r.error ? null : ((r.data?.[0] as { created_at?: string } | undefined)?.created_at ?? null)),
+    () => null,
+  );
+  const typedSince = firstTyped ? (firstTyped > o.since14 ? firstTyped : o.since14) : new Date().toISOString();
+  const [all, d14, d7, today, sinceStart, outcomes, outcomesTyped, pool, serves, hourly, batch, users, notes] = await Promise.all([
     rpc<SummaryRow>("admin_ai_summary", { p_since: "1970-01-01T00:00:00Z" }),
     rpc<SummaryRow>("admin_ai_summary", { p_since: o.since14 }),
     rpc<SummaryRow>("admin_ai_summary", { p_since: o.weekStart }),
     rpc<SummaryRow>("admin_ai_summary", { p_since: o.today }),
     o.autoStart ? rpc<SummaryRow>("admin_ai_summary", { p_since: o.autoStart }) : Promise.resolve(null),
     rpc<OutcomeRow>("admin_outcomes", { p_since: o.since14 }),
+    rpc<OutcomeRow>("admin_outcomes", { p_since: typedSince }),
     rpc<PoolRow>("admin_pool_summary", { p_version: GENERATOR_VERSION, p_since: o.since14 }),
     rpc<ServeRow>("admin_serves", { p_since: o.since7 }),
     rpc<HourRow>("admin_ai_hourly", { p_since: o.since48h }),
@@ -188,12 +206,12 @@ export async function loadExact(o: { since14: string; since7: string; weekStart:
         () => [],
       ),
   ]);
-  if (!all || !d14 || !d7 || !today || !outcomes || !pool || !serves || !hourly || !users) return null;
-  return { all, d14, d7, today, sinceStart, outcomes, pool, serves, hourly, batch, users, rejectNotes: notes };
+  if (!all || !d14 || !d7 || !today || !outcomes || !outcomesTyped || !pool || !serves || !hourly || !users) return null;
+  return { all, d14, d7, today, sinceStart, outcomes, outcomesTyped, typedSince, pool, serves, hourly, batch, users, rejectNotes: notes };
 }
 
 /** Everything the dashboard and the report need, computed from the raw aggregates (pure – tested on real SQL output). */
-export function computeExact(raw: ExactRaw, types: string[], windowDays = 14): Exact {
+export function computeExact(raw: ExactRaw, types: string[], windowDays = 14, windowStart = new Date(Date.now() - windowDays * 86400000).toISOString()): Exact {
   const costOf = (rows: SummaryRow[]) => rows.reduce((a, r) => a + n(r.cost), 0);
 
   const byKind: Record<string, { calls: number; cost: number }> = {};
@@ -219,7 +237,7 @@ export function computeExact(raw: ExactRaw, types: string[], windowDays = 14): E
     const spend = sumOf(gen, (r) => n(r.cost));
     const io = [...generate, ...validate];
     const input = sumOf(io, (r) => n(r.input_tokens) + n(r.cache_read_tokens) + n(r.cache_write_tokens));
-    const out = raw.outcomes.filter((o) => o.task_type === type);
+    const out = raw.outcomesTyped.filter((o) => o.task_type === type);
     const accepts = out.filter((o) => o.kind === "accept");
     const rejects = out.filter((o) => o.kind === "reject");
     const acc = (f: (outcome: string) => boolean) => accepts.filter((a) => f(a.outcome)).reduce((s, a) => s + n(a.n), 0);
@@ -300,7 +318,7 @@ export function computeExact(raw: ExactRaw, types: string[], windowDays = 14): E
   // generation calls of the window by stage, model and batch
   const stageMap = new Map<string, StageInsight>();
   for (const r of raw.d14.filter((x) => GENERATION.includes(x.kind))) {
-    const stage = r.stage ?? r.kind;
+    const stage = r.stage ?? (r.task_type ? r.kind : `${r.kind} (před 0015)`);
     const key = `${stage}|${r.model}|${Boolean(r.batch)}`;
     const s = stageMap.get(key) ?? { stage, model: r.model ?? "?", batch: Boolean(r.batch), calls: 0, cost: 0, input: 0, cacheRead: 0, cacheWrite: 0, cacheWrite1h: 0, output: 0, thinking: 0 };
     s.calls += n(r.calls);
@@ -345,8 +363,16 @@ export function computeExact(raw: ExactRaw, types: string[], windowDays = 14): E
   const kindCost = (kinds: string[]) => raw.d14.filter((r) => kinds.includes(r.kind)).reduce((a, r) => a + n(r.cost), 0);
   const untyped = raw.d14.filter((r) => GENERATION.includes(r.kind) && !r.task_type);
 
+  // the learning panel counts every candidate of the window, typed or not
   const learning = new Map(
-    insights.map((t) => [t.type, { first: t.first, revised: t.revised, failed: t.finalFailures }]),
+    allTypes.map((type) => {
+      const out = raw.outcomes.filter((o) => o.task_type === type);
+      const acc = (f: (outcome: string) => boolean) => out.filter((o) => o.kind === "accept" && f(o.outcome)).reduce((s, o) => s + n(o.n), 0);
+      const failed = out
+        .filter((o) => o.kind === "reject" && (o.revised || o.outcome === "neplatný JSON" || o.outcome === "technická chyba"))
+        .reduce((s, o) => s + n(o.n), 0);
+      return [type, { first: acc((x) => x.startsWith("first") && !isEasy(x)), revised: acc((x) => x.startsWith("revised") && !isEasy(x)), failed }];
+    }),
   );
 
   const autogen = raw.sinceStart?.filter((r) => r.autogen) ?? null;
@@ -374,6 +400,8 @@ export function computeExact(raw: ExactRaw, types: string[], windowDays = 14): E
     learning,
     optimization: {
       windowDays,
+      typedSince: raw.typedSince,
+      windowStart,
       types: insights,
       stages,
       rejectReasons: [...reasons].map(([outcome, e]) => ({ outcome, ...e })).sort((a, b) => b.first + b.revised - (a.first + a.revised)),

@@ -187,6 +187,10 @@ class Query implements PromiseLike<{ data: unknown; error: null; count?: number 
     this.filters.push((r) => (r[col] ?? null) === val);
     return this;
   }
+  not(col: string, op: string, val: unknown) {
+    this.filters.push((r) => (op === "is" ? (r[col] ?? null) !== val : r[col] !== val));
+    return this;
+  }
   order(col: string, opts?: { ascending?: boolean }) {
     this.orderBy = { col, asc: opts?.ascending ?? true };
     return this;

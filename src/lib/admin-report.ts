@@ -81,7 +81,8 @@ export function buildReport(stats: AdminStats) {
 
   if (o) {
     const types = o.types.filter((t) => t.candidates || t.accepted || t.rejectedAttempts || t.total);
-    h(`Cena a úspěšnost po typech (${o.windowDays} dní)`);
+    const fromTyped = Date.parse(o.typedSince) > Date.parse(o.windowStart) + 60_000;
+    h(`Cena a úspěšnost po typech (${fromTyped ? `od ${new Date(o.typedSince).toLocaleString("cs-CZ")}, kdy se volání zapisují s typem úlohy` : `${o.windowDays} dní`})`);
     L.push("kandidát = první pokus generátoru; $/úloha = vše za generování ÷ přijaté úlohy (vč. zahozených pokusů)");
     L.push(
       ...table(
