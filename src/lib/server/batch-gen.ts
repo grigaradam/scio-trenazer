@@ -288,7 +288,7 @@ async function reject(j: JobRow, ctx: TickContext, problem: string, o: { gen: Ge
   ctx.rejectedTypes.add(j.task_type);
   if (j.attempt === 0 && o.gen) {
     // the revision is a new generation: drop the rejected candidate, keep only the conversation and any easy version
-    const state: JobState = { ...j.state, previous: JSON.stringify(o.gen), feedback: revisionFeedback(problem, o.validation), retries: 0 };
+    const state: JobState = { ...j.state, previous: JSON.stringify(o.gen), feedback: revisionFeedback(problem, o.validation, j.task_type), retries: 0 };
     delete state.gen;
     delete state.group;
     delete state.focus;

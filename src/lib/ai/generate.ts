@@ -520,7 +520,8 @@ const ACCEPTANCE_CRITERIA = `KRITÉRIA, PODLE KTERÝCH ÚLOHU NEZÁVISLE OHODNOT
 - čeština bez chyb, všechna slova existují, významové vztahy platí (≥ 8/10);
 - styl Scio ≥ 7/10, obtížnost a síla chytáků ≥ 6/10 – srovnatelné se skutečnými úlohami Scio daného typu;
 - odhad úspěšnosti uchazečů 20–75 % (ne lehčí, ne nesmyslně těžká), žádná povrchní zkratka k odpovědi;
-- u synonym/antonym přesně 2 části (synonymum A–D, antonymum E–H); u word formation psaná odpověď (kind "text").
+- u synonym/antonym přesně 2 části (synonymum A–D, antonymum E–H); u word formation psaná odpověď (kind "text");
+- u skupinových úloh přesný počet otázek ke společnému textu a u KAŽDÉ otázky vyplněné zdůvodnění (solution).
 Než odpovíš, úlohu si sám vyřeš od nuly, jako bys klíč neznal, a zkontroluj každé kritérium. Najdeš-li problém, oprav ho.`;
 
 export function rejectionText(group: Group, verdict: Verdict, v: Validation) {
@@ -671,13 +672,19 @@ const HOUR_CACHE = { type: "ephemeral", ttl: "1h" } as const;
 type Params = Anthropic.MessageCreateParamsNonStreaming;
 
 /** Feedback for the one revision a rejected candidate gets. */
-export function revisionFeedback(problem: string, validation: Validation | null) {
+export function revisionFeedback(problem: string, validation: Validation | null, type: TaskType) {
+  const size = taskTypeMeta(type)?.groupSize ?? 1;
+  // revisions of group tasks used to come back with only the criticised question ("málo úloh ve skupině")
+  const whole =
+    size > 1
+      ? `Vrať CELOU skupinu: přesně ${size} otázek ke společnému textu – i ty, které jsou v pořádku (ponech je beze změny) – a u každé vyplň zdůvodnění (solution).`
+      : "Vrať celou opravenou úlohu ve stejném formátu, se zdůvodněním (solution).";
   return `Úlohu kontrola ZAMÍTLA. Důvod: ${problem}
 ${validation ? `Validátorovo řešení: ${validation.reasoning.slice(0, 1500)}` : ""}
 
 Oprav úlohu tak, aby všechny výtky zmizely a prošla kritérii. Pokud měl validátor u klíče pravdu, oprav klíč;
 pokud ne, uprav zadání nebo možnosti tak, aby byla odpověď jednoznačná. Je-li úloha příliš lehká, přidej
-skutečný chyták a zvyš obtížnost. Vrať celou opravenou úlohu ve stejném formátu.`;
+skutečný chyták a zvyš obtížnost. ${whole}`;
 }
 
 /**
@@ -951,7 +958,7 @@ export async function generateTasks(opts: {
           if (verdict.status !== "accept") problem = `validátor: ${rejectionText(reviewed.group, verdict, validation)}`;
         }
         // a parallel candidate of this batch may have taken the same word while this one was being validated
-        if (!problem && validation) problem = repetitionFor(c, reviewed.focus, [], siblings);
+        if (!problem && validation) problem = repetitionFor(c, reviewed.focus, await freshPool(), siblings);
         if (!problem && validation)
           return await keep({ gen, group: reviewed.group, validation, focus: reviewed.focus, attempt, model: req.model }, false);
 
@@ -963,17 +970,17 @@ export async function generateTasks(opts: {
           break;
         }
         previous = JSON.stringify(gen);
-        feedback = revisionFeedback(problem, validation);
+        feedback = revisionFeedback(problem, validation, type);
       }
       // nothing passed: a correct, only easier version may still join the pool – as long as easy tasks stay rare
-      if (easy && !repetitionFor(c, easy.focus, [], siblings) && (dryRun || (await easyAllowed(exam, type)))) return await keep(easy, true);
+      if (easy && !repetitionFor(c, easy.focus, await freshPool(), siblings) && (dryRun || (await easyAllowed(exam, type)))) return await keep(easy, true);
       return { rejected: lastReason || "neznámý důvod" };
     } catch (err) {
       console.error("generateTasks", err);
       const reason = err instanceof Error ? err.message : "chyba";
       await logReject(`chyba: ${reason}`);
       // the revision failed for a technical reason – an easy version from the first attempt is still worth keeping
-      if (easy && !dryRun && !repetitionFor(c, easy.focus, [], siblings))
+      if (easy && !dryRun && !repetitionFor(c, easy.focus, await freshPool().catch(() => []), siblings))
         try {
           if (await easyAllowed(exam, type)) return await keep(easy, true);
         } catch (e) {
