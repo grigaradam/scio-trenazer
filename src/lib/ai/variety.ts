@@ -61,13 +61,36 @@ export function focusOf(type: TaskType, p: { topic?: string | null; focus?: stri
 const overlap = (a: string[], b: string[]) => a.filter((x) => b.includes(x)).length;
 const jaccard = (a: string[], b: string[]) => (a.length && b.length ? overlap(a, b) / new Set([...a, ...b]).size : 0);
 
-/** Same tested word, essentially the same topic, or the same principle on a similar topic – teaches nothing new. */
-export function nearDuplicate(a: Focus, b: Focus) {
+/**
+ * Same tested word, essentially the same topic, or the same principle on a similar topic – teaches nothing new.
+ * `generic` stems (what most tasks of the type share anyway) don't count as a match.
+ */
+export function nearDuplicate(a: Focus, b: Focus, generic: Set<string> = new Set()) {
+  const keep = (xs: string[]) => xs.filter((x) => !generic.has(x));
+  const [at, bt, aTopic, bTopic] = [keep(a.terms), keep(b.terms), keep(a.topic), keep(b.topic)];
   return (
     overlap(a.head, b.head) > 0 ||
-    jaccard(a.topic, b.topic) >= 0.5 ||
-    (overlap(a.terms, b.terms) >= 2 && overlap(a.topic, b.topic) >= 1)
+    jaccard(aTopic, bTopic) >= 0.5 ||
+    (overlap(at, bt) >= 2 && overlap(aTopic, bTopic) >= 1)
   );
+}
+
+/** A stem in at least this share of a type's recent tasks says nothing about a task in particular. */
+const GENERIC_SHARE = 0.25;
+const GENERIC_MIN_POOL = 8;
+
+/**
+ * Stems that a large share of the pool shares – the principles every task of the type is built on ("pokud…, pak…",
+ * "skrytý důsledek" in conditions, "procentní změna" in data) and stock topic words ("pořadí", "podle"). Two tasks
+ * sharing only those are not repetitions; counting them rejected many good tasks of the maths and logic types.
+ */
+export function genericStems(pool: Focus[]) {
+  const generic = new Set<string>();
+  if (pool.length < GENERIC_MIN_POOL) return generic;
+  const df = new Map<string, number>();
+  for (const f of pool) for (const x of new Set([...f.terms, ...f.topic])) df.set(x, (df.get(x) ?? 0) + 1);
+  for (const [x, k] of df) if (k / pool.length >= GENERIC_SHARE) generic.add(x);
+  return generic;
 }
 
 /** Looser: shares a word or concept. Fine somewhere in the pool, but not right after each other. */
@@ -234,7 +257,8 @@ export function familyIssue(f: Focus, members: Focus[]) {
 /** Why a new task is too similar to the pool or its batch siblings (empty = fine). */
 export function repetitionIssue(type: TaskType, f: Focus, pool: Focus[], siblings: Focus[]) {
   const others = [...siblings, ...(wholePool(type) ? pool : pool.slice(0, 30))];
-  const hit = others.find((o) => nearDuplicate(f, o));
+  const generic = genericStems(pool.slice(0, 60));
+  const hit = others.find((o) => nearDuplicate(f, o, generic));
   if (!hit) return "";
   if (overlap(f.head, hit.head))
     return `opakování: slovo „${f.headWords.join(", ")}“ už je v jiné úloze (${hit.headWords.join(", ")}) – zvol úplně jiné slovo z jiné oblasti`;

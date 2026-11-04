@@ -5,15 +5,17 @@
 // Needs Supabase env in .env.local. Read-only.
 import { TASK_TYPES } from "@/lib/content/exams";
 import type { TaskType } from "@/lib/content/types";
-import { nearDuplicate, poolFocuses } from "@/lib/ai/variety";
+import { genericStems, nearDuplicate, poolFocuses } from "@/lib/ai/variety";
 
 async function main() {
   for (const t of TASK_TYPES.filter((x) => x.exam === "osp")) {
     const type = t.id as TaskType;
     const pool = await poolFocuses("osp", type);
+    // the same rule as the generator: principles most tasks of the type share don't make two tasks the same
+    const generic = genericStems(pool.slice(0, 60).map((p) => p.focus));
     const groups: (typeof pool)[] = [];
     for (const p of pool) {
-      const g = groups.find((g) => nearDuplicate(g[0].focus, p.focus));
+      const g = groups.find((g) => nearDuplicate(g[0].focus, p.focus, generic));
       if (g) g.push(p);
       else groups.push([p]);
     }

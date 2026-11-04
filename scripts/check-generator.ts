@@ -7,7 +7,7 @@ import { DECKS } from "@/lib/ai/decks";
 import { familyAllowed, easyRecently, FAMILY_GAP_DAYS, FAMILY_GAP_TASKS } from "@/lib/ai/families";
 import type { Served } from "@/lib/ai/variety";
 import { optionShapeIssues } from "@/lib/ai/option-shape";
-import { focusOf, steering, type Focus } from "@/lib/ai/variety";
+import { focusOf, repetitionIssue, steering, type Focus } from "@/lib/ai/variety";
 import { TASK_TYPES } from "@/lib/content/exams";
 import { groupsOfType } from "@/lib/content/load";
 import type { Group, TaskType } from "@/lib/content/types";
@@ -186,6 +186,26 @@ for (const [label, type, mutate] of drifted) {
   for (const [label, got, want] of checks) {
     if (got !== want) failures++;
     console.log(`  ${got === want ? "✓" : "✗"} rozestup: ${label} → ${got ? "smí" : "počká"}`);
+  }
+}
+
+// 6) Repetition: principles that most tasks of a type share ("pokud…, pak…", "pořadí") are not a repetition,
+//    the same specific topic is.
+{
+  const word = (i: number, salt: string) => `${salt}${"abcdefghij"[i % 10]}${"klmnoprstu"[Math.floor(i / 10) % 10]}ová`;
+  const pool = Array.from({ length: 20 }, (_, i) =>
+    focusOf("podminky", { topic: `Pořadí ${word(i, "vystup")} ${word(i, "hosté")}`, focus: ["podmíněná podmínka „pokud…, pak…“", "skrytý důsledek podmínek"] }),
+  );
+  const fresh = focusOf("podminky", { topic: "Pořadí přednášek na konferenci", focus: ["podmíněná podmínka „pokud…, pak…“", "skrytý důsledek"] });
+  const same = focusOf("podminky", { topic: `Pořadí ${word(3, "vystup")} ${word(3, "hosté")}`, focus: ["podmíněná podmínka „pokud…, pak…“", "skrytý důsledek"] });
+  const cases: [string, string, boolean][] = [
+    ["stejné principy, jiné téma", repetitionIssue("podminky", fresh, pool, []), false],
+    ["stejné téma jako úloha v zásobě", repetitionIssue("podminky", same, pool, []), true],
+  ];
+  for (const [label, issue, want] of cases) {
+    const got = Boolean(issue);
+    if (got !== want) failures++;
+    console.log(`  ${got === want ? "✓" : "✗"} opakování: ${label} → ${got ? "zamítnuto" : "projde"}`);
   }
 }
 
