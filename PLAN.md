@@ -220,6 +220,8 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
 - [x] Generátor úloh + programová kontrola + AI validátor
 - [x] Pool úloh s recyklací mezi uživateli
 - [x] Rate limit
+- [x] Levnější úloha při stejné kvalitě: Batch API (−50 %), stálý prompt v cache, méně zahozených pokusů,
+      lehké úlohy (max. 10 %), rodiny variant s rozestupem, cena úlohy po typech v dashboardu
 
 ### Fáze 4 – dokončení
 - [x] Responzivita (mobil / desktop), dark mode
@@ -231,6 +233,8 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
 - [ ] Ověřit AI naživo: `npm run pool -- --dry --type analogie --count 2` (kvalita generátoru + validátoru)
 - [ ] Předgenerovat pool úloh (`npm run pool -- --type all --count 3`)
 - [ ] Projít celý tok na produkci (registrace → úvodní test → výsledky → rozbor → trénink)
+- [ ] Spustit migraci `0015_cheaper_tasks.sql` a v dashboardu přepnout generování na „Batch API (−50 %)“
+- [ ] Po týdnu porovnat cenu úlohy po typech; levnější generátor pro konkrétní typ jen po `npm run ab` + slepém hodnocení
 
 ## Changelog
 - 2026-10-22 – první verze plánu.
@@ -246,3 +250,12 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
   navíc prochází „pojistkou driftu“ (délky a jazyk proti skutečným úlohám Scio) – `npm run check:generator`,
   živý test po kolech `npm run drift`. OSP Únor 2026 A čeká v `content/osp/drafts/` na dofocení strany 15.
   Supabase: spustit migraci `0014_aj.sql`.
+- 2026-11-04 – **levnější AI úlohy**. Generování na pozadí přes Message Batches API (stejné modely a kontroly za
+  poloviční cenu; tabulka `gen_jobs`, cron tick sbírá hotové dávky a posílá nové). Stálá část promptu (pravidla typu +
+  pevná sada skutečných úloh, 3 sady na typ střídané po hodině) v hodinové cache, totéž u validátoru. Méně zahozených
+  pokusů: délky originálů v promptu, oprava klíčů kódem, u synonym / word formation nabídka nepoužitých slov (Haiku).
+  Správné, jen lehčí úlohy se nezahazují – max. 10 % zásoby typu a nejvýš 1 na 10 úloh uživatele. Rodiny variant
+  u matematiky a logiky (Haiku přebarví kvalitní úlohu, validátor kontroluje): max. 3 v rodině, 25 % zásoby, další člen
+  rodiny až po 15 úlohách typu a 7 dnech. Vysvětlení AI úloh dostanou rozbor chytáků od generátoru a jdou přes Sonnet.
+  Dashboard: cena úlohy po typech (vč. thinking a podílu batch), přepínač Batch API. `npm run sim:batch` (simulace bez
+  API), `npm run ab` (A/B test nastavení se slepým hodnocením). Supabase: spustit migraci `0015_cheaper_tasks.sql`.

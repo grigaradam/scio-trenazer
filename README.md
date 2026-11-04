@@ -55,15 +55,36 @@ npm run dev                  # http://localhost:3000
 - `npm run validate:content` – kontrola všech testů v `content/osp/tests/` a `content/aj/tests/`
 - `npm run check:generator` – samokontrola generátoru: skutečné úlohy projdou kontrolami, prompt neroste s poolem, pojistka driftu
 - `npm run drift -- --type aj_grammar --rounds 5 --batch 5` – živý test kvality AI úloh po kolech (dry run, potřebuje platný `ANTHROPIC_API_KEY`)
+- `npm run sim:batch` – simulace celého generování (Batch API i synchronní cesta, lehké úlohy, rodiny variant, rozestupy)
+  proti falešnému API a databázi v paměti – nic nestojí
+- `npm run ab -- --types slovni --n 6 --b model=claude-sonnet-5-5` – A/B test nastavení generátoru se slepým hodnocením (stojí peníze, nejdřív vypíše odhad)
 - `npm run typecheck`, `npm run lint`, `npm run build`
 - `http://localhost:3000/dev/<testId>` (jen v dev režimu) – náhled testu se všemi klíči a řešeními
 - `npm run dev:demo` – celá aplikace bez Supabase (databáze v paměti, fiktivní uživatel) na http://localhost:3001 – na UI testování
 
 ## AI a náklady
-- Výchozí model `claude-opus-5-5` (nejvyšší kvalita). Pro úsporu nastav `AI_MODEL=claude-haiku-5-5` (~40× levnější).
-- Vysvětlení se cachují v DB (každá úloha se vysvětluje jen jednou pro všechny), AI úlohy se recyklují mezi uživateli.
-- Každá AI úloha prochází 2 kontrolami: programovou (formát, možnosti, klíč) a nezávislým AI validátorem, který ji vyřeší
-  bez znalosti klíče a hodnotí češtinu, existenci slov, jednoznačnost, styl a obtížnost Scio. Neprošlé se zahodí.
+- Generátor `claude-opus-5-5` (nejvyšší kvalita), validátor `claude-sonnet-5-5` (nezávislý druhý model).
+- Každá AI úloha prochází 2 kontrolami: programovou (formát, možnosti, klíč, délky jako u originálů) a nezávislým AI
+  validátorem, který ji vyřeší bez znalosti klíče a hodnotí češtinu, existenci slov, jednoznačnost, styl a obtížnost Scio.
+- **Batch API** (migrace [`0015_cheaper_tasks.sql`](supabase/migrations/0015_cheaper_tasks.sql), v `/dashboard` přepínač
+  „Batch API (−50 %)“): generování na pozadí jde přes Message Batches API – stejné modely, prompty i kontroly za poloviční
+  cenu, úlohy přibývají se zpožděním (obvykle do hodiny). Přes dávky se doplňuje i zásoba uživatele, dokud má aspoň jednu
+  úlohu připravenou; když nemá žádnou, generuje se hned za plnou cenu.
+- **Cache promptů**: pravidla typu a pevná sada skutečných úloh Scio (3 sady na typ, střídají se po hodině) jsou stálý
+  začátek promptu v hodinové cache – čte se za 5 % ceny. Totéž u validátoru.
+- **Méně zahozených pokusů**: generátor dostane délky originálů v číslech, špatně označené možnosti opraví kód,
+  u synonym a word formation vybírá z nabídky dosud nepoužitých slov (navrhne je levný model, kód vyřadí použitá).
+- **Lehké úlohy**: správná a jednoznačná úloha, jen lehčí než Scio, se nezahodí – ale lehkých je max. 10 % zásoby typu
+  a uživatel dostane nejvýš jednu na 10 úloh daného typu (všichni, bez ohledu na předplatné).
+- **Rodiny variant** (porovnávání, dostatečnost, slovní úlohy, výrazy, grafy, podmínky): z kvalitní ověřené úlohy udělá
+  levný model variantu se stejným principem a jinými čísly a kontextem; validátor ji kontroluje jako každou jinou.
+  Max. 3 úlohy v rodině, varianty max. 25 % zásoby, a uživatel dostane dalšího člena rodiny až po 15 jiných úlohách
+  typu a 7 dnech.
+- Vysvětlení se cachují v DB (každá úloha se vysvětluje jen jednou pro všechny). AI úlohy si nesou rozbor chytáků od
+  generátoru, proto je vysvětluje levnější `AI_EXPLAIN_GEN_MODEL` (výchozí Sonnet); originální úlohy Scio dál Opus.
+- Cena jedné úlohy po typech (vč. zahozených pokusů, podílu thinking a Batch API) je v `/dashboard`.
+- Levnější model nebo nižší effort pro konkrétní typ (`AI_MODEL_BY_TYPE`, `AI_FIRST_EFFORT`) nejdřív ověř:
+  `npm run ab -- --types slovni --n 6 --b model=claude-sonnet-5-5` – porovná přijetí, skóre a cenu a připraví slepé hodnocení.
 - Denní limity AI na uživatele: `AI_DAILY_*` proměnné.
 
 ## Obsah
