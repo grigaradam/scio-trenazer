@@ -29,7 +29,7 @@ function store(): Store {
           created_at: new Date().toISOString(),
         },
       ],
-      autogen_state: [{ id: 1, enabled: false, workers: 2, credits_exhausted_at: null, last_tick_at: null, last_error: null, started_at: null }],
+      autogen_state: [{ id: 1, enabled: false, workers: 2, mode: "sync", credits_exhausted_at: null, last_tick_at: null, last_error: null, started_at: null }],
       autogen_leases: Array.from({ length: 6 }, (_, slot) => ({ slot, lease_until: new Date(0).toISOString(), runs: 0 })),
     };
   }
@@ -73,6 +73,19 @@ const DEFAULTS: Record<string, () => Row> = {
   achievements: () => ({ unlocked_at: new Date().toISOString() }),
   explanations: () => ({ created_at: new Date().toISOString() }),
   ai_calls: () => ({ id: Date.now() + Math.random(), created_at: new Date().toISOString(), note: null }),
+  gen_jobs: () => ({
+    id: crypto.randomUUID(),
+    kind: "fresh",
+    parent_id: null,
+    user_id: null,
+    stage: "generate",
+    attempt: 0,
+    batch_id: null,
+    state: {},
+    note: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }),
   invite_codes: () => ({ created_at: new Date().toISOString(), used_at: null, used_by: null, revoked: false, note: null }),
 };
 
@@ -89,6 +102,27 @@ const KEYS: Record<string, string[]> = {
 
 type Filter = (r: Row) => boolean;
 
+/**
+ * PostgREST-style JSON columns of a select list ("v:payload->v", "family:payload->>family", "payload->questions->0->>stem")
+ * are added to the row under their alias. The full row stays as it is.
+ */
+function withJsonColumns(row: Row, cols: string | undefined): Row {
+  if (!cols || !cols.includes("->")) return row;
+  const out: Row = { ...row };
+  for (const raw of cols.split(",")) {
+    const spec = raw.trim();
+    if (!spec.includes("->")) continue;
+    const colon = spec.indexOf(":");
+    const path = colon >= 0 ? spec.slice(colon + 1) : spec;
+    const keys = path.split(/->>?/);
+    let v: unknown = row[keys[0]];
+    for (const k of keys.slice(1)) v = v == null ? undefined : (v as Record<string, unknown>)[k];
+    const asText = /->>[^>]*$/.test(path);
+    out[colon >= 0 ? spec.slice(0, colon) : keys[keys.length - 1]] = v == null ? null : asText ? (typeof v === "object" ? JSON.stringify(v) : String(v)) : v;
+  }
+  return out;
+}
+
 class Query implements PromiseLike<{ data: unknown; error: null; count?: number }> {
   private filters: Filter[] = [];
   private orderBy: { col: string; asc: boolean } | null = null;
@@ -99,10 +133,12 @@ class Query implements PromiseLike<{ data: unknown; error: null; count?: number 
   private singleMode: "one" | "maybe" | null = null;
   private countOnly = false;
   private returning = false;
+  private cols: string | undefined;
 
   constructor(private name: string) {}
 
-  select(_cols?: string, opts?: { count?: string; head?: boolean }) {
+  select(cols?: string, opts?: { count?: string; head?: boolean }) {
+    this.cols = cols;
     if (opts?.head) this.countOnly = true;
     if (this.mode !== "select") this.returning = true;
     return this;
@@ -141,6 +177,14 @@ class Query implements PromiseLike<{ data: unknown; error: null; count?: number 
   }
   gte(col: string, val: unknown) {
     this.filters.push((r) => String(r[col]) >= String(val));
+    return this;
+  }
+  lt(col: string, val: unknown) {
+    this.filters.push((r) => String(r[col]) < String(val));
+    return this;
+  }
+  is(col: string, val: null | boolean) {
+    this.filters.push((r) => (r[col] ?? null) === val);
     return this;
   }
   order(col: string, opts?: { ascending?: boolean }) {
@@ -186,7 +230,7 @@ class Query implements PromiseLike<{ data: unknown; error: null; count?: number 
       out = [...out].sort((a, b) => (String(a[col] ?? "") < String(b[col] ?? "") ? -1 : 1) * (asc ? 1 : -1));
     }
     if (this.max !== null) out = out.slice(0, this.max);
-    const copy = JSON.parse(JSON.stringify(out)) as Row[];
+    const copy = (JSON.parse(JSON.stringify(out)) as Row[]).map((r) => withJsonColumns(r, this.cols));
     if (this.countOnly) return { data: null, error: null, count: copy.length };
     if (this.singleMode) return { data: copy[0] ?? null, error: null };
     if (this.mode !== "select" && !this.returning) return { data: null, error: null };
@@ -256,6 +300,16 @@ function rpc(name: string, a: Record<string, unknown>) {
     if (name === "autogen_release") {
       const l = table("autogen_leases").find((x) => x.slot === a.p_slot);
       if (l) l.lease_until = new Date(0).toISOString();
+      return null;
+    }
+    if (name === "batch_claim") {
+      const st = table("autogen_state")[0];
+      if (st.batch_lock_until && new Date(st.batch_lock_until as string).getTime() > Date.now()) return false;
+      st.batch_lock_until = new Date(Date.now() + (a.p_seconds as number) * 1000).toISOString();
+      return true;
+    }
+    if (name === "batch_release") {
+      table("autogen_state")[0].batch_lock_until = null;
       return null;
     }
     if (name === "bump_ai_usage") {
