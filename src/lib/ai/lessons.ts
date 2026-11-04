@@ -146,7 +146,7 @@ ${reasons.join("\n")}`,
       },
     ],
   });
-  await logAiCall({ kind: "learn", model: AI.validatorModel, usage: response.usage });
+  await logAiCall({ kind: "learn", model: AI.validatorModel, usage: response.usage, type });
   const text = response.content
     .filter((b) => b.type === "text")
     .map((b) => (b as { text: string }).text)
