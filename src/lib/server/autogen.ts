@@ -1,4 +1,5 @@
 import "server-only";
+import { variantParents } from "@/lib/ai/families";
 import { GENERATOR_VERSION, generateTasks } from "@/lib/ai/generate";
 import { retireMisshapen } from "./pool";
 import { EXAMS, TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
@@ -20,6 +21,8 @@ export const CREDIT_RETRY_MS = 30 * 60_000;
 export interface AutogenState {
   enabled: boolean;
   workers: number;
+  /** sync = generation runs inside the cron worker; batch = through the Message Batches API at half price (migration 0015) */
+  mode?: "sync" | "batch";
   credits_exhausted_at: string | null;
   last_tick_at: string | null;
   last_error: string | null;
@@ -46,7 +49,7 @@ export function isFatalApiError(reason: string) {
 const isRateLimit = (reason: string) => /\b429\b|rate.?limit|overloaded|\b529\b/i.test(reason);
 
 /** The task type with the fewest current-version tasks in the pool (ties broken randomly). */
-async function pickType(inFlight: Map<string, number>): Promise<TaskType> {
+export async function pickType(inFlight: Map<string, number>): Promise<TaskType> {
   // every enabled exam is filled evenly (a new exam's empty types are picked first)
   const types = TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled));
   const { data } = await createAdminClient()
@@ -62,6 +65,9 @@ async function pickType(inFlight: Map<string, number>): Promise<TaskType> {
   const lowest = [...counts].filter(([, n]) => n === min).map(([t]) => t);
   return lowest[Math.floor(Math.random() * lowest.length)] as TaskType;
 }
+
+/** How often a worker tries a variant instead of a fresh task (only variant types with a free family slot). */
+export const VARIANT_CHANCE = 1 / 3;
 
 const SWEEP_MS = 6 * 3600_000;
 let lastSweep = 0;
@@ -91,7 +97,10 @@ export async function runAutogen(slots: number[]) {
         inFlight.set(type, (inFlight.get(type) ?? 0) + 1);
         let out;
         try {
-          out = await generateTasks({ exam: taskTypeMeta(type)?.exam ?? "osp", type, count: 1, deadline });
+          const exam = taskTypeMeta(type)?.exam ?? "osp";
+          // maths/logic: now and then a variant of a strong pool task instead of a fresh one (families.ts caps their share)
+          const parents = Math.random() < VARIANT_CHANCE ? await variantParents(exam, type, 1) : [];
+          out = await generateTasks({ exam, type, count: 1, deadline, parents });
         } finally {
           inFlight.set(type, (inFlight.get(type) ?? 1) - 1);
         }

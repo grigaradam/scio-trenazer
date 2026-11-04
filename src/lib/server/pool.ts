@@ -3,7 +3,8 @@ import { after } from "next/server";
 import { tryBudget } from "@/lib/ai/client";
 import { GENERATOR_VERSION, generateTasks } from "@/lib/ai/generate";
 import { optionShapeIssues } from "@/lib/ai/option-shape";
-import { diversify, focusOf, recentlySeenFocuses, split } from "@/lib/ai/variety";
+import { easyRecently, familyAllowed } from "@/lib/ai/families";
+import { diversify, focusOf, servedHistory, split } from "@/lib/ai/variety";
 import { TASK_TYPES } from "@/lib/content/exams";
 import type { ExamId, Group, TaskType } from "@/lib/content/types";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -13,7 +14,16 @@ const BUFFER = 3;
 const MAX_ATTEMPTS = 4;
 const inflight = new Set<string>();
 
-type PoolPayload = { v?: number; topic?: string; focus?: string[]; questions?: { stem?: string }[] } & Record<string, unknown>;
+type PoolPayload = {
+  v?: number;
+  topic?: string;
+  focus?: string[];
+  questions?: { stem?: string }[];
+  /** correct but easier than Scio – kept rare (families.ts) */
+  easy?: boolean;
+  /** id of the task a variant was derived from */
+  family?: string;
+} & Record<string, unknown>;
 
 async function unseen(userId: string, exam: ExamId, type: TaskType) {
   const { data } = await createAdminClient().rpc("pick_generated_tasks", {
@@ -77,12 +87,25 @@ export async function retireMisshapen(opts: { dryRun?: boolean } = {}) {
 }
 
 /**
+ * Unseen tasks the user may get now: another member of a variant family only once they had time to forget the last
+ * one (FAMILY_GAP_TASKS other tasks of the type and FAMILY_GAP_DAYS). Plus what they were served lately.
+ */
+async function servable(userId: string, exam: ExamId, type: TaskType) {
+  const [candidates, history] = await Promise.all([unseen(userId, exam, type), servedHistory(userId, type)]);
+  const allowed = candidates.filter((t) => familyAllowed(t.payload.family ?? t.id, history));
+  return { allowed, history, recent: history.slice(0, 6).map((h) => h.focus) };
+}
+
+/**
  * Unseen pool tasks for a user, current generator version only (older, easier tasks are skipped).
- * Tasks about the same word or topic as the ones the user just did are moved to the back.
+ * Tasks about the same word or topic as the ones the user just did are moved to the back, and so are easy tasks
+ * right after an easy one (at most one in every EASY_WINDOW tasks of a type).
  */
 export async function pickUnseen(userId: string, exam: ExamId, type: TaskType, limit: number) {
-  const [candidates, recent] = await Promise.all([unseen(userId, exam, type), recentlySeenFocuses(userId, type)]);
-  return diversify(candidates, (t) => taskFocus(type, t.payload), recent).slice(0, limit);
+  const { allowed, history, recent } = await servable(userId, exam, type);
+  const ordered = diversify(allowed, (t) => taskFocus(type, t.payload), recent);
+  const spaced = easyRecently(history) ? [...ordered.filter((t) => !t.payload.easy), ...ordered.filter((t) => t.payload.easy)] : ordered;
+  return spaced.slice(0, limit);
 }
 
 const taskFocus = (type: TaskType, p: PoolPayload) =>
@@ -90,8 +113,8 @@ const taskFocus = (type: TaskType, p: PoolPayload) =>
 
 /** Waiting tasks that are about something else than what the user just did (similar ones don't count). */
 async function waitingCount(userId: string, exam: ExamId, type: TaskType) {
-  const [candidates, recent] = await Promise.all([unseen(userId, exam, type), recentlySeenFocuses(userId, type)]);
-  return split(candidates, (t) => taskFocus(type, t.payload), recent)[0].length;
+  const { allowed, recent } = await servable(userId, exam, type);
+  return split(allowed, (t) => taskFocus(type, t.payload), recent)[0].length;
 }
 
 /**

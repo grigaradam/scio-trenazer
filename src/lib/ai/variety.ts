@@ -75,11 +75,28 @@ export function related(a: Focus, b: Focus) {
   return overlap(a.head, b.head) > 0 || overlap(a.terms, b.terms) >= 1 || overlap(a.topic, b.topic) >= 2;
 }
 
-const FOCUS_COLUMNS = "id,created_at,topic:payload->>topic,focus:payload->focus,stem:payload->questions->0->>stem";
-type FocusRow = { id: string; created_at: string; topic: string | null; focus: string[] | null; stem: string | null };
+const FOCUS_COLUMNS =
+  "id,created_at,task_type,topic:payload->>topic,focus:payload->focus,stem:payload->questions->0->>stem,family:payload->>family,easy:payload->easy";
+type FocusRow = {
+  id: string;
+  created_at: string;
+  task_type: string;
+  topic: string | null;
+  focus: string[] | null;
+  stem: string | null;
+  family: string | null;
+  easy: boolean | null;
+};
+
+/** A pool task's fingerprint. `family` is the task a variant was derived from – an original task is its own family. */
+export interface PoolEntry {
+  id: string;
+  focus: Focus;
+  family: string;
+}
 
 /** Fingerprints of pool tasks of a type, newest first. Synonyma load the whole pool (their words never repeat). */
-export async function poolFocuses(exam: ExamId, type: TaskType) {
+export async function poolFocuses(exam: ExamId, type: TaskType): Promise<PoolEntry[]> {
   const { data } = await createAdminClient()
     .from("generated_tasks")
     .select(FOCUS_COLUMNS)
@@ -87,11 +104,24 @@ export async function poolFocuses(exam: ExamId, type: TaskType) {
     .eq("task_type", type)
     .order("created_at", { ascending: false })
     .limit(wholePool(type) ? 2000 : 60);
-  return ((data ?? []) as unknown as FocusRow[]).map((r) => ({ id: r.id, focus: focusOf(type, r) }));
+  return ((data ?? []) as unknown as FocusRow[]).map((r) => ({ id: r.id, focus: focusOf(type, r), family: r.family ?? r.id }));
 }
 
-/** Fingerprints of the generated tasks of a type this user was served most recently (newest first). */
-export async function recentlySeenFocuses(userId: string, type: TaskType, limit = 6) {
+/** One generated task a user was served. */
+export interface Served {
+  id: string;
+  /** When it was served. */
+  at: string;
+  family: string;
+  easy: boolean;
+  focus: Focus;
+}
+
+/** How many recently served tasks the history looks at (enough for the family and easy-task spacing rules). */
+const HISTORY = 150;
+
+/** The generated tasks of a type this user was served most recently, newest first. */
+export async function servedHistory(userId: string, type: TaskType): Promise<Served[]> {
   const admin = createAdminClient();
   const { data: seen } = await admin
     .from("task_seen")
@@ -99,16 +129,22 @@ export async function recentlySeenFocuses(userId: string, type: TaskType, limit 
     .eq("user_id", userId)
     .like("task_ref", "gen:%")
     .order("created_at", { ascending: false })
-    .limit(40);
-  const ids = ((seen ?? []) as { task_ref: string }[]).map((s) => s.task_ref.split(":")[1]).filter(Boolean);
-  if (!ids.length) return [];
-  const { data } = await admin.from("generated_tasks").select(FOCUS_COLUMNS).in("id", ids).eq("task_type", type);
-  const byId = new Map(((data ?? []) as unknown as FocusRow[]).map((r) => [r.id, r]));
-  return ids
-    .map((id) => byId.get(id))
-    .filter((r): r is FocusRow => Boolean(r))
-    .slice(0, limit)
-    .map((r) => focusOf(type, r));
+    .limit(HISTORY);
+  const refs = ((seen ?? []) as { task_ref: string; created_at: string }[])
+    .map((s) => ({ id: s.task_ref.split(":")[1], at: s.created_at }))
+    .filter((s) => s.id);
+  if (!refs.length) return [];
+  // id lists go into the URL – query in chunks
+  const ids = refs.map((r) => r.id);
+  const chunks = Array.from({ length: Math.ceil(ids.length / 75) }, (_, i) => ids.slice(i * 75, i * 75 + 75));
+  const rows = (
+    await Promise.all(chunks.map((c) => admin.from("generated_tasks").select(FOCUS_COLUMNS).in("id", c)))
+  ).flatMap((r) => (r.data ?? []) as unknown as FocusRow[]);
+  const byId = new Map(rows.filter((r) => r.task_type === type).map((r) => [r.id, r]));
+  return refs.flatMap((s) => {
+    const r = byId.get(s.id);
+    return r ? [{ id: r.id, at: s.at, family: r.family ?? r.id, easy: r.easy === true, focus: focusOf(type, r) }] : [];
+  });
 }
 
 /**
@@ -181,6 +217,18 @@ ${words.join(", ")}
   return `NEDÁVNÉ ÚLOHY TOHOTO TYPU – zvol jiné téma A jiný princip/chyták než všechny tyto (téměř stejná úloha bude zamítnuta):
 - ${recent.join("\n- ")}
 `;
+}
+
+/** Stems a word would have as the tested expression – to filter word proposals against the pool. */
+export const wordStems = (word: string) => stems(word, 3);
+
+/**
+ * Members of one family share the principle on purpose, so they are not checked against each other like unrelated
+ * tasks – but a variant must still be set in another context than every other member of its family.
+ */
+export function familyIssue(f: Focus, members: Focus[]) {
+  const hit = members.find((m) => jaccard(f.topic, m.topic) >= 0.4 || overlap(f.head, m.head) > 0);
+  return hit ? `opakování: varianta má skoro stejné téma jako úloha, ze které vychází („${hit.topicText}“) – zvol jiný kontext` : "";
 }
 
 /** Why a new task is too similar to the pool or its batch siblings (empty = fine). */
