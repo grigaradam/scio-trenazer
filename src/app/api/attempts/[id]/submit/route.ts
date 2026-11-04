@@ -4,11 +4,13 @@ import { getTest } from "@/lib/content/load";
 import { testRef } from "@/lib/content/public";
 import { levelUp, XP } from "@/lib/gamification";
 import { scoreTest } from "@/lib/scoring";
+import type { SectionId } from "@/lib/content/types";
 import { checkAchievements, recordActivity } from "@/lib/server/activity";
 import { apiUser } from "@/lib/server/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const Key = z.enum(["A", "B", "C", "D", "E", "F", "G", "H"]).nullable();
+// option letters, or a typed word (AJ word formation)
+const Key = z.string().max(40).nullable();
 const Body = z.object({
   answers: z.record(z.string(), z.array(Key)).optional(),
   activeSeconds: z.number().min(0).max(600).optional(),
@@ -31,7 +33,7 @@ export async function POST(req: Request, ctx: RouteContext<"/api/attempts/[id]/s
   const result = scoreTest(test, answers);
   const activeSeconds = (attempt.active_seconds ?? 0) + Math.round(body.activeSeconds ?? 0);
   // a retake of one section keeps the original finish date so the test history isn't reordered
-  const retake = attempt.retake_section as "verbal" | "analytic" | null | undefined;
+  const retake = attempt.retake_section as SectionId | null | undefined;
 
   const { error: upErr } = await admin
     .from("attempts")

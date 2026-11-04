@@ -42,6 +42,7 @@ next-env.d.ts
 
 # source PDFs (large, converted into content/)
 /testy/
+/nove-testy/
 # local tooling
 /.claude/
 !.env.example

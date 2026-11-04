@@ -1,0 +1,1287 @@
+{
+  "id": "aj-2026-03",
+  "exam": "aj",
+  "title": "AJ – Březen 2026",
+  "date": "2026-03",
+  "source": "Fotky sešitu „aj březen 2026“",
+  "sections": [
+    {
+      "id": "reading",
+      "title": "Reading",
+      "timeLimitSec": 900,
+      "groups": [
+        {
+          "id": "g01",
+          "taskType": "aj_reading",
+          "instruction": "Read the following text and solve the tasks based solely on the information in it.",
+          "passageTitle": "Money for nothing: is universal basic income about to transform society?",
+          "passage": "When Elinor O’Donovan found out she had been randomly selected to participate in a universal basic income pilot scheme, she couldn’t believe her luck. In return for a guaranteed salary of just over €1,400 a month from the Irish government, all the 27-year-old artist had to do was fill out a bi-annual questionnaire about her wellbeing and how she spends her time. The income, which she will receive until September, has enabled her to give up temping and focus instead on her art.\n\nThe concept of a guaranteed basic income might seem <u>neoteric</u>, but it dates back to 1795, when the American founding father Thomas Paine suggested that a “national fund” should pay every adult “rich or poor” a “ground rent” of £10 a year until the age of 50. **(A)**\n\nToday, as artificial intelligence (AI) learns from the collective intellectual output of humans and uses this to dispossess workers of their livelihoods, the idea of universal basic income (UBI) as a possible solution is gaining traction. The counter argument is that although AI could replace a range of jobs, it will also create new roles (including oversight of AI decision making – known as “human in the loop”). Yet for many workers, the advance of AI continues to be disquieting. Recently, after analysing 22,000 tasks, covering every type of job, the Institute for Public Policy Research has predicted that 59% of jobs currently done by humans – particularly women and young people – will be negatively affected by AI in the next five years. **(B)**\n\nUBI would provide a <u>vital</u> safety net. “Under capitalism, you need money to survive. It’s that simple,” says Dr Neil Howard, a researcher at the University of Bath, who believes that a redistribution of the privatised resources of all human beings is inherently just. Contrary to expectations, he says, “It wouldn’t necessarily lead to people doing less work – it would enable them to do better work or to invest their time in more socially useful activities.”\n\nThis argument is backed up by a 2020 study conducted by researchers at Utrecht University in the Netherlands. It found that unemployed individuals who were previously in receipt of benefits increased their participation in the labour market after they were given a basic income for three years. Rather than opting for insecure work – taking any job they could get – they were more likely to find and accept a long-term, more skilled job. They also took on more work. **(C)**\n\n“Humans need to do work that feels valuable, psychologically,” says Cleo Goodman, a UBI expert at the think tank Autonomy. “<u>It’s baked into us</u>. It is complete nonsense to suggest that there’s a faction of society that just wants to sit around on the sofa all day.” For example, she believes that if UBI was available, more people would focus on parenting or do creative and charitable work. “People shouldn’t be punished for making those choices,” says Goodman.\n\nSalaries for work that is essential, but unattractive, would need to rise if a UBI scheme was introduced. “We’d have to recognise the people that are doing the work in the sewers and cleaning the streets – they’re doing incredibly important jobs that we should be grateful for,” says Goodman. “So they deserve to be compensated fairly. **(D)**”\n\nWhile no universal basic income scheme is now available in England, Autonomy is looking to change that. The only universal basic income scheme currently running in the UK is a Welsh government scheme for 600 young care leavers.",
+          "questions": [
+            {
+              "n": 13,
+              "stem": "The word “neoteric” in the second paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "outdated"
+                    },
+                    {
+                      "key": "B",
+                      "text": "modern"
+                    },
+                    {
+                      "key": "C",
+                      "text": "absurd"
+                    },
+                    {
+                      "key": "D",
+                      "text": "re-discovered"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Neoteric“ znamená nový, moderní. Text to staví do kontrastu s tím, že myšlenka pochází už z roku 1795 („might seem neoteric, but it dates back…“)."
+            },
+            {
+              "n": 14,
+              "stem": "The word “vital” in the fourth paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "lifelong"
+                    },
+                    {
+                      "key": "B",
+                      "text": "temporary"
+                    },
+                    {
+                      "key": "C",
+                      "text": "minor"
+                    },
+                    {
+                      "key": "D",
+                      "text": "crucial"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„A vital safety net“ = zásadní, nezbytná záchranná síť; „vital“ zde znamená „crucial“, nikoli „celoživotní“."
+            },
+            {
+              "n": 15,
+              "stem": "The expression “it’s baked into us” in the sixth paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "it’s engrained in us"
+                    },
+                    {
+                      "key": "B",
+                      "text": "it bothers us"
+                    },
+                    {
+                      "key": "C",
+                      "text": "it makes us satisfied"
+                    },
+                    {
+                      "key": "D",
+                      "text": "it makes us feel neglected"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Goodman říká, že potřeba dělat smysluplnou práci je lidem vrozená, „zapečená“ v nich – tedy „engrained“ (hluboce zakořeněná)."
+            },
+            {
+              "n": 16,
+              "stem": "Look at the four letters (A) to (D) in the text. These indicate where the following sentence could be added to the text.\n\n*In fact, more people would be happy to get their hands dirty if such jobs were remunerated in a fair way.*\n\nWhere would the sentence best fit?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "(A)"
+                    },
+                    {
+                      "key": "B",
+                      "text": "(B)"
+                    },
+                    {
+                      "key": "C",
+                      "text": "(C)"
+                    },
+                    {
+                      "key": "D",
+                      "text": "(D)"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Věta o „špinavé“ práci a férovém ohodnocení navazuje na odstavec o kanálech a úklidu ulic, který končí slovy „they deserve to be compensated fairly“ – tedy pozice (D)."
+            },
+            {
+              "n": 17,
+              "stem": "The Institute for Public Policy Research predicts that in the next five years ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "59% of jobs currently done by people are going to be entirely replaced by AI"
+                    },
+                    {
+                      "key": "B",
+                      "text": "AI will have an adverse impact on more than a half of human-performed jobs"
+                    },
+                    {
+                      "key": "C",
+                      "text": "AI will make approximately 22,000 jobs obsolete"
+                    },
+                    {
+                      "key": "D",
+                      "text": "jobs typically done by women and young people will barely be affected by AI"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Podle textu bude 59 % prací dnes vykonávaných lidmi AI „negatively affected“ – tedy negativně ovlivněno, ne úplně nahrazeno (A). 22 000 je počet analyzovaných úkolů, ne zaniklých pracovních míst."
+            },
+            {
+              "n": 18,
+              "stem": "According to Dr Neil Howard, the redistribution of privatised resources ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "is intrinsically fair"
+                    },
+                    {
+                      "key": "B",
+                      "text": "is just an unattainable idea"
+                    },
+                    {
+                      "key": "C",
+                      "text": "would cause people to reduce their work efforts"
+                    },
+                    {
+                      "key": "D",
+                      "text": "is inherently unethical"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Howard věří, že přerozdělení „is inherently just“ = je ze své podstaty spravedlivé. Snížení pracovního úsilí výslovně popírá."
+            },
+            {
+              "n": 19,
+              "stem": "According to Cleo Goodman, the advent of UBI would ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "make more people focus on raising their offspring"
+                    },
+                    {
+                      "key": "B",
+                      "text": "lead to many people just sitting on their sofa all day"
+                    },
+                    {
+                      "key": "C",
+                      "text": "discourage many people from doing charitable work"
+                    },
+                    {
+                      "key": "D",
+                      "text": "suppress creative endeavours"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Goodman věří, že s UBI by se víc lidí věnovalo rodičovství („focus on parenting“), tedy výchově dětí. Představu lidí sedících na gauči označuje za nesmysl."
+            },
+            {
+              "n": 20,
+              "stem": "With the introduction of UBI, critical yet unappealing jobs would ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "require pay raises"
+                    },
+                    {
+                      "key": "B",
+                      "text": "see salaries drop"
+                    },
+                    {
+                      "key": "C",
+                      "text": "be taken over by AI"
+                    },
+                    {
+                      "key": "D",
+                      "text": "only be done by unskilled workers"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„Salaries for work that is essential, but unattractive, would need to rise“ – platy za nezbytnou, ale neatraktivní práci by musely vzrůst."
+            },
+            {
+              "n": 21,
+              "stem": "Which of the following statements about universal basic income schemes in the UK is true?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "There are two schemes currently running in the UK: one in England and one in Wales."
+                    },
+                    {
+                      "key": "B",
+                      "text": "There is a scheme for 600 young care leavers about to be launched in Wales."
+                    },
+                    {
+                      "key": "C",
+                      "text": "At this moment, there are no universal basic income schemes in the UK."
+                    },
+                    {
+                      "key": "D",
+                      "text": "There is currently only a single universal basic income scheme underway."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„The only universal basic income scheme currently running in the UK is a Welsh government scheme“ – v současnosti běží jediný program. V Anglii žádný není a velšský už běží, nechystá se."
+            },
+            {
+              "n": 22,
+              "stem": "Which two of the following conclusions can be drawn from the study conducted by researchers at Utrecht University?\n\n1) Basic income supports sustainable employment choices over unstable jobs.\n\n2) Basic income tends to hinder career development in its recipients.\n\n3) Receiving basic income makes people seek jobs that are only temporary.\n\n4) Basic income may boost labour market participation among previously unemployed benefit recipients.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "1 and 3"
+                    },
+                    {
+                      "key": "B",
+                      "text": "1 and 4"
+                    },
+                    {
+                      "key": "C",
+                      "text": "2 and 4"
+                    },
+                    {
+                      "key": "D",
+                      "text": "3 and 4"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Studie zjistila, že dříve nezaměstnaní příjemci dávek zvýšili účast na trhu práce (4) a místo nejisté práce volili dlouhodobou, kvalifikovanější (1). Výroky 2 a 3 jsou opakem zjištění."
+            },
+            {
+              "n": 23,
+              "stem": "Which of the following statements best sums up the text?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Universal basic income would encourage people to engage in useless activities rather than contribute to the society."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Contrary to popular belief, the concept of universal basic income is quite old, dating back to the 18th century."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Universal basic income could foster better work opportunities and support creative and charitable endeavours."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Universal basic income would undermine work ethic, fostering a culture of dependency rather than self-reliance."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Text celkově argumentuje, že UBI umožní lidem lepší práci a věnovat se tvůrčím a charitativním činnostem. B je jen detail z jednoho odstavce, A a D jsou v rozporu s vyzněním textu."
+            }
+          ]
+        },
+        {
+          "id": "g02",
+          "taskType": "aj_inference",
+          "instruction": "Answer the following questions using only the information given in or implied by the text.",
+          "questions": [
+            {
+              "n": 24,
+              "stem": "The proportionality of the defence in relation to the method of attack must be assessed in the light of all the circumstances affecting the intensity of the potential or existing attack. The tools of attack and defence do not need to be equivalent – the defender may use more effective means than the attacker to repel the attack.\n\nWhich of the following statements can be inferred from the text with certainty?\n\n1) If the defender uses more effective means than the attacker to repel the attack, it is considered an inadequate defence.\n\n2) It is not possible to reduce the intensity of an impending attack by using more effective means than the attacker.\n\n3) The means used to repel a possible attack must be weaker than those of the attacker, otherwise it is considered an excessive defence.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "none"
+                    },
+                    {
+                      "key": "B",
+                      "text": "only 2"
+                    },
+                    {
+                      "key": "C",
+                      "text": "only 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "1 and 2"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Text říká, že obránce smí použít účinnější prostředky než útočník – výroky 1 a 3 jsou s tím v rozporu. O tom, zda lze účinnějšími prostředky snížit intenzitu útoku (2), text nic netvrdí. Nevyplývá tedy žádný."
+            },
+            {
+              "n": 25,
+              "stem": "The core of the criticism of the EU’s institutional system concerns the so-called democratic deficit – an insufficient level of democracy in political institutions and procedures in comparison with a theoretical ideal of a democratic government. Increasing the transparency and clarity of the EU system and replacing the treaty system with a single constitution would significantly reduce this deficit. But there have also been some proposals for innovations in the functioning of the system itself that would increase the democratic legitimacy of EU decision-making. One such possible future innovation would be to separate the legislative and executive roles of the EU Council.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "EU decision-making is illegitimate without the adoption of a single constitution."
+                    },
+                    {
+                      "key": "B",
+                      "text": "The EU Council has both an executive and a legislative role at the same time."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The current EU system based on a system of multiple treaties is completely dysfunctional."
+                    },
+                    {
+                      "key": "D",
+                      "text": "The adoption of a single constitution would be perceived as a serious deficit in the functioning of the EU."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Má-li být budoucí inovací oddělení legislativní a výkonné role Rady EU, musí Rada dnes mít obě role současně. Text mluví jen o nedostatku demokracie, ne o nelegitimnosti ani nefunkčnosti systému; jednotná ústava by deficit naopak snížila."
+            },
+            {
+              "n": 26,
+              "stem": "On Mars, the surface temperature depends only on the angle of the surface towards the Sun. This is not the case on Earth, where the temperature depends primarily on oceanic and atmospheric currents.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "On Earth, the temperature depends only on the angle of the surface towards the Sun."
+                    },
+                    {
+                      "key": "B",
+                      "text": "The flow of water in the oceans affects the temperature on Earth."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The angle of the surface towards the Sun is critical for surface temperature on most planets."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Mars has a higher surface temperature than Earth."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Teplota na Zemi závisí především na oceánských (a atmosférických) proudech, tedy proudění vody v oceánech ji ovlivňuje. A je opak textu, o „většině planet“ ani o srovnání teplot text nic neříká."
+            },
+            {
+              "n": 27,
+              "stem": "The Central Civil Code of 1951 caused a gradual decline in the reliability of entries in land registers. The explicit denial of the principle of *superficies solo cedit* (i.e. that a building is part of the land) and the abandonment of the principle of *intabulation*, which made it obligatory to register all changes in ownership of land and property, created enormous problems for future decades both for the registration of property and for its management.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "The Central Civil Code of 1951 abolished land registers."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Due to changes in the Central Civil Code, it is impossible to trace any pre-1951 property ownership rights."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The main reason for the abandonment of the principle of *intabulation* was an effort to improve the reliability of land registers."
+                    },
+                    {
+                      "key": "D",
+                      "text": "None of the other statements can be inferred from the text."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Zákoník způsobil jen pokles spolehlivosti zápisů, registry nezrušil (A). Že nelze dohledat žádná starší práva (B), ani důvod opuštění intabulace (C) text neuvádí – spolehlivost se naopak snížila."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "title": "Use of English",
+      "timeLimitSec": 1500,
+      "groups": [
+        {
+          "id": "g03",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "The detection of pseudo-profound nonsense",
+          "passage": "Although nonsense is common in everyday life and has attracted attention from philosophers, its reception has not in fact been **(28)** ______ empirical investigation, up until now. In their recent study, researchers at Cambridge have **(29)** ______ participants’ reactions to pseudo-profound nonsense, defined as impressive-sounding claims that are presented as true and meaningful but are actually **(30)** ______.\n\nParticipants were presented **(31)** ______ statements consisting of buzzwords randomly organized into sentences with syntactic structure but no discernible meaning (e.g., “Wholeness quiets infinite phenomena”). **(32)** ______ multiple experiments which the Cambridge researchers executed, the inclination to judge these statements as profound was associated with a variety of relevant variables, such as intuitive cognitive style or supernatural belief.\n\nThe results of the study support the idea that some people are more **(33)** ______ to this type of nonsense, and that detecting it is not **(34)** ______ a matter of indiscriminate scepticism but rather a discernment of deceptive vagueness in otherwise impressive-sounding claims.\n\nUnderstanding the nuances of how individuals perceive and judge pseudo-profound nonsense can provide valuable insights into the cognitive and psychological mechanisms underlying belief formation, and the acceptance of misinformation. This finding highlights the importance of **(35)** ______ critical thinking and discernment skills to navigate a world increasingly saturated with deceptive and superficially profound statements. By identifying the factors that make individuals more prone to accepting such statements, we can develop strategies to enhance critical thinking and reduce the impact of misinformation.",
+          "questions": [
+            {
+              "n": 28,
+              "stem": "Gap (28)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "carried out for"
+                    },
+                    {
+                      "key": "B",
+                      "text": "set out for"
+                    },
+                    {
+                      "key": "C",
+                      "text": "subject to"
+                    },
+                    {
+                      "key": "D",
+                      "text": "claimed by"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "„To be subject to investigation“ = být předmětem zkoumání. „Carried out for“ ani „claimed by“ s „empirical investigation“ nedávají smysl."
+            },
+            {
+              "n": 29,
+              "stem": "Gap (29)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "recollected"
+                    },
+                    {
+                      "key": "B",
+                      "text": "acclaimed"
+                    },
+                    {
+                      "key": "C",
+                      "text": "examined"
+                    },
+                    {
+                      "key": "D",
+                      "text": "invented"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Vědci ve studii reakce účastníků zkoumali – „examined“. Ostatní slovesa (vzpomněli si, oslavovali, vymysleli) do kontextu nepasují."
+            },
+            {
+              "n": 30,
+              "stem": "Gap (30)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "plausible"
+                    },
+                    {
+                      "key": "B",
+                      "text": "deceived"
+                    },
+                    {
+                      "key": "C",
+                      "text": "valid"
+                    },
+                    {
+                      "key": "D",
+                      "text": "vacuous"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Pseudohluboké nesmysly vypadají smysluplně, „but are actually vacuous“ – ve skutečnosti prázdné, bez obsahu. Plausible a valid by byly opakem, deceived popisuje člověka, ne tvrzení."
+            },
+            {
+              "n": 31,
+              "stem": "Gap (31)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "to"
+                    },
+                    {
+                      "key": "B",
+                      "text": "as"
+                    },
+                    {
+                      "key": "C",
+                      "text": "of"
+                    },
+                    {
+                      "key": "D",
+                      "text": "with"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Pevná vazba „to be presented with something“ = být s něčím konfrontován, dostat něco předloženo."
+            },
+            {
+              "n": 32,
+              "stem": "Gap (32)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Across"
+                    },
+                    {
+                      "key": "B",
+                      "text": "To"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Like"
+                    },
+                    {
+                      "key": "D",
+                      "text": "By"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„Across multiple experiments“ = napříč několika experimenty, ve všech z nich. Ostatní předložky s tímto významem nekolokují."
+            },
+            {
+              "n": 33,
+              "stem": "Gap (33)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "educated"
+                    },
+                    {
+                      "key": "B",
+                      "text": "receptive"
+                    },
+                    {
+                      "key": "C",
+                      "text": "informed"
+                    },
+                    {
+                      "key": "D",
+                      "text": "trusted"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Receptive to something“ = vnímavý, náchylný k něčemu; zde náchylnost věřit nesmyslům. Ostatní slova s „to“ v tomto smyslu nefungují."
+            },
+            {
+              "n": 34,
+              "stem": "Gap (34)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "enough"
+                    },
+                    {
+                      "key": "B",
+                      "text": "seldom"
+                    },
+                    {
+                      "key": "C",
+                      "text": "merely"
+                    },
+                    {
+                      "key": "D",
+                      "text": "slightly"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Konstrukce „not merely X but rather Y“ = nejen / ne pouze X, ale spíše Y."
+            },
+            {
+              "n": 35,
+              "stem": "Gap (35)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "fostering"
+                    },
+                    {
+                      "key": "B",
+                      "text": "weakening"
+                    },
+                    {
+                      "key": "C",
+                      "text": "preventing"
+                    },
+                    {
+                      "key": "D",
+                      "text": "suppressing"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Zjištění zdůrazňuje důležitost rozvíjení („fostering“) kritického myšlení; ostatní možnosti by znamenaly jeho oslabování či potlačování, což odporuje smyslu textu."
+            }
+          ]
+        },
+        {
+          "id": "g04",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "Japanese humanoid robot",
+          "passage": "The 12-metre-tall machine has coke bottle eyes and a crude head, as well as large arms that can be fitted with blades or paint brushes. It **(36)** ______ an enormous, malevolent robot from 1980s sci-fi, but West Japan Railway’s new humanoid employee was designed with nothing more sinister than a spot of painting and gardening **(37)** ______.\n\n**(38)** ______ this month, the large machine mounted on a truck – which can drive on rails – will be put to use for maintenance work on the company’s network. Its operator sits in a cockpit on the truck, “seeing” through the robot’s eyes via cameras and operating its powerful **(39)** ______ and hands remotely. For now, the robot’s primary task will focus on trimming tree branches along rails and painting metal frames that hold cables above trains, the company said.\n\nThe technology will help to deal with the labour **(40)** ______ caused by an ageing and **(41)** ______ population in Japan, as well as reduce accidents such as workers falling from high places or **(42)** ______ electric shocks, the company said. “In the future, we hope to use machines for all kinds of maintenance operations of our infrastructure,” the company president Kazuaki Hasegawa **(43)** ______ the journalists at a recent press conference.",
+          "questions": [
+            {
+              "n": 36,
+              "stem": "Gap (36)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "is alike"
+                    },
+                    {
+                      "key": "B",
+                      "text": "resembles"
+                    },
+                    {
+                      "key": "C",
+                      "text": "seems"
+                    },
+                    {
+                      "key": "D",
+                      "text": "reminds"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Resemble something“ = podobat se něčemu, s přímým předmětem. „Is alike“ předmět nepřijímá, „seems“ by potřebovalo „like“ a „reminds“ by potřebovalo „one of“."
+            },
+            {
+              "n": 37,
+              "stem": "Gap (37)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "in mind"
+                    },
+                    {
+                      "key": "B",
+                      "text": "on mind"
+                    },
+                    {
+                      "key": "C",
+                      "text": "on minds"
+                    },
+                    {
+                      "key": "D",
+                      "text": "by mind"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Ustálené spojení „designed with something in mind“ = navržen s ohledem na něco."
+            },
+            {
+              "n": 38,
+              "stem": "Gap (38)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Started"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Starts"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Starting"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Has started"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "„Starting this month“ = počínaje tímto měsícem; příslovečné určení času s -ing tvarem. Ostatní tvary by tvořily gramaticky chybnou větu."
+            },
+            {
+              "n": 39,
+              "stem": "Gap (39)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "bites"
+                    },
+                    {
+                      "key": "B",
+                      "text": "lists"
+                    },
+                    {
+                      "key": "C",
+                      "text": "limbs"
+                    },
+                    {
+                      "key": "D",
+                      "text": "limps"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Operátor ovládá robotovy silné končetiny („limbs“) a ruce. Limps (kulhá) a bites (kousnutí) jsou jen podobně znějící slova."
+            },
+            {
+              "n": 40,
+              "stem": "Gap (40)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "shortage"
+                    },
+                    {
+                      "key": "B",
+                      "text": "shortness"
+                    },
+                    {
+                      "key": "C",
+                      "text": "shortly"
+                    },
+                    {
+                      "key": "D",
+                      "text": "force"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„Labour shortage“ = nedostatek pracovní síly. „Shortness“ znamená krátkost, „labour force“ by nedávalo smysl s „caused by“."
+            },
+            {
+              "n": 41,
+              "stem": "Gap (41)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "shrinking"
+                    },
+                    {
+                      "key": "B",
+                      "text": "sinking"
+                    },
+                    {
+                      "key": "C",
+                      "text": "fainting"
+                    },
+                    {
+                      "key": "D",
+                      "text": "shredded"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„An ageing and shrinking population“ = stárnoucí a zmenšující se populace, příčina nedostatku pracovníků."
+            },
+            {
+              "n": 42,
+              "stem": "Gap (42)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "inferring"
+                    },
+                    {
+                      "key": "B",
+                      "text": "suffering"
+                    },
+                    {
+                      "key": "C",
+                      "text": "making"
+                    },
+                    {
+                      "key": "D",
+                      "text": "maintaining"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Kolokace „suffer electric shocks“ = utrpět zásah elektrickým proudem."
+            },
+            {
+              "n": 43,
+              "stem": "Gap (43)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "said"
+                    },
+                    {
+                      "key": "B",
+                      "text": "explained"
+                    },
+                    {
+                      "key": "C",
+                      "text": "exclaimed"
+                    },
+                    {
+                      "key": "D",
+                      "text": "told"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Jen „tell“ má přímý předmět osoby bez předložky: „told the journalists“. Said/explained/exclaimed by vyžadovaly „to the journalists“."
+            }
+          ]
+        },
+        {
+          "id": "g05",
+          "taskType": "aj_grammar",
+          "instruction": "Fill in the gaps in the following sentences with the most suitable word or phrase from the options offered.",
+          "questions": [
+            {
+              "n": 44,
+              "stem": "The seasoned executive found herself inundated with <u>unsolicited</u> advice from her junior colleagues.\n\nIn the context of the sentence above, the word “unsolicited” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "not accepted"
+                    },
+                    {
+                      "key": "B",
+                      "text": "not asked for"
+                    },
+                    {
+                      "key": "C",
+                      "text": "offensive"
+                    },
+                    {
+                      "key": "D",
+                      "text": "not well-meant"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Unsolicited“ = nevyžádaný, o který nikdo nežádal („solicit“ = žádat)."
+            },
+            {
+              "n": 45,
+              "stem": "He had to <u>take</u> the engine <u>apart</u> to see where exactly the strange rattling sound was coming from.\n\nIn the context of the sentence above, the expression “take apart” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "repair"
+                    },
+                    {
+                      "key": "B",
+                      "text": "remove"
+                    },
+                    {
+                      "key": "C",
+                      "text": "dismantle"
+                    },
+                    {
+                      "key": "D",
+                      "text": "clean thoroughly"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "„Take apart“ = rozebrat na části, tedy „dismantle“. Motor rozebral, aby našel zdroj zvuku, ne opravil či vyndal."
+            },
+            {
+              "n": 46,
+              "stem": "In the following sentence, the word “bear” must be replaced with the word “bare” for the sentence to make sense: ______",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Alice didn’t want to *bear* the responsibility for such a hard task."
+                    },
+                    {
+                      "key": "B",
+                      "text": "A pear tree will *bear* fruit some 5 years after planting."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The investigation laid *bear* the flaws in the security system."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Please *bear* with me while I explain what really happened."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Ustálené spojení je „lay bare“ = odhalit, obnažit. Ostatní věty správně užívají „bear“ (nést odpovědnost, nést plody, „bear with me“ = vydržte)."
+            },
+            {
+              "n": 47,
+              "stem": "Currently, I don’t have my own place, but by the time I am 25, I expect I ______ home.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "will had left"
+                    },
+                    {
+                      "key": "B",
+                      "text": "will to leave"
+                    },
+                    {
+                      "key": "C",
+                      "text": "have left"
+                    },
+                    {
+                      "key": "D",
+                      "text": "will have left"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„By the time…“ v budoucnosti vyžaduje předbudoucí čas (future perfect): will have + příčestí minulé. „Will had“ a „will to“ jsou negramatické."
+            },
+            {
+              "n": 48,
+              "stem": "I cannot be with you on your birthday, but I will make ______ to you, I promise! I will take you some place nice when I am not so busy.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "it up"
+                    },
+                    {
+                      "key": "B",
+                      "text": "for it"
+                    },
+                    {
+                      "key": "C",
+                      "text": "around"
+                    },
+                    {
+                      "key": "D",
+                      "text": "it out"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Frázové sloveso „make it up to someone“ = vynahradit to někomu."
+            },
+            {
+              "n": 49,
+              "stem": "The doctor recommends that he ______ in the hospital for another month, so he won’t come home any time soon.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "stay"
+                    },
+                    {
+                      "key": "B",
+                      "text": "has stayed"
+                    },
+                    {
+                      "key": "C",
+                      "text": "had stayed"
+                    },
+                    {
+                      "key": "D",
+                      "text": "staying"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Po „recommend that“ se užívá konjunktiv – holý infinitiv bez -s pro všechny osoby („that he stay“)."
+            },
+            {
+              "n": 50,
+              "stem": "Many people are opposed ______ meat.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "to eat"
+                    },
+                    {
+                      "key": "B",
+                      "text": "to eating"
+                    },
+                    {
+                      "key": "C",
+                      "text": "from eating"
+                    },
+                    {
+                      "key": "D",
+                      "text": "against eating"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Be opposed to“ – „to“ je zde předložka, proto po ní následuje gerundium: „opposed to eating“."
+            },
+            {
+              "n": 51,
+              "stem": "______ he gives the impression of integrity and honesty, you need to remember that you can’t trust him.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "In spite"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Regardless"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Though"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Despite"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Následuje celá vedlejší věta (podmět + sloveso), proto je třeba spojka „Though“. „Despite“, „In spite (of)“ i „Regardless (of)“ se pojí s podstatným jménem či gerundiem."
+            },
+            {
+              "n": 52,
+              "stem": "Any problems ______ from moving our offices into the new building are not my concern – I’m only handling our current building issues.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "arriving"
+                    },
+                    {
+                      "key": "B",
+                      "text": "arising"
+                    },
+                    {
+                      "key": "C",
+                      "text": "regarding"
+                    },
+                    {
+                      "key": "D",
+                      "text": "raising"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Arise from“ = vyplývat, vznikat z něčeho; „problems arising from…“. „Raise“ je přechodné sloveso a „regarding“ se s „from“ nepojí."
+            }
+          ]
+        },
+        {
+          "id": "g06",
+          "taskType": "aj_wordform",
+          "instruction": "Use the word in brackets at the end of the sentence to form a new word (different from the word provided) that best fits the gap. Write only one word in each gap. **Please write neatly in capital letters. Illegible answers will be considered to be incorrect.**\n\nPlease note that only words listed in either Cambridge Dictionary (https://dictionary.cambridge.org/) or Oxford Dictionary (https://www.oxfordlearnersdictionaries.com/), which are not marked as archaic or obsolete, will be accepted as correct answers.\n\nExample: The Mona Lisa is one of the most ______ paintings in the world. (FAME) → FAMOUS",
+          "questions": [
+            {
+              "n": 53,
+              "stem": "After days of worrying about the exam results, she felt immense ______ when she saw she had passed with flying colours. (RELIEVE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "RELIEF"
+                }
+              ],
+              "solution": "Po přídavném jménu „immense“ je třeba podstatné jméno: relieve → relief (úleva)."
+            },
+            {
+              "n": 54,
+              "stem": "The scientist has explained that ______, the hypothesis suggests a correlation between the two variables, but further research is needed for confirmation. (THEORY)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "THEORETICALLY"
+                }
+              ],
+              "solution": "Větná vsuvka vyžaduje příslovce: theory → theoretical → theoretically (teoreticky)."
+            },
+            {
+              "n": 55,
+              "stem": "She asked her mother for ______ to invite a friend over. (PERMIT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "PERMISSION"
+                }
+              ],
+              "solution": "„Ask for permission“ – po předložce podstatné jméno; permit → permission (svolení)."
+            },
+            {
+              "n": 56,
+              "stem": "She felt very ______ about the dark alley, her instincts warning her of potential danger lurking in the shadows. (EASE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "UNEASY"
+                }
+              ],
+              "solution": "Po „felt very“ přídavné jméno se záporným významem (instinkty ji varují): ease → uneasy (neklidná, znepokojená)."
+            },
+            {
+              "n": 57,
+              "stem": "She forgot to set her alarm clock; as a ______, she overslept and missed her morning meeting. (CONSEQUENT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "CONSEQUENCE"
+                }
+              ],
+              "solution": "Ustálené spojení „as a consequence“ = v důsledku toho; je třeba podstatné jméno."
+            },
+            {
+              "n": 58,
+              "stem": "The streaming service aims to ______ its content to appeal to global audiences. (DIVERSE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "DIVERSIFY"
+                }
+              ],
+              "solution": "Po „aims to“ sloveso v infinitivu: diverse → diversify (rozrůznit, diverzifikovat)."
+            },
+            {
+              "n": 59,
+              "stem": "He has carefully ______ the blade of his kitchen knife. (SHARP)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "SHARPENED"
+                }
+              ],
+              "solution": "Předpřítomný čas „has + příčestí minulé“ slovesa sharpen (nabrousit): sharpened."
+            },
+            {
+              "n": 60,
+              "stem": "The painter has a ______ style which sets his work apart from others. (DISTINCT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "DISTINCTIVE"
+                }
+              ],
+              "solution": "Styl, který ho odlišuje od ostatních = osobitý, charakteristický: distinctive. Tvar „distinct“ je zadané slovo, a proto ho nelze použít."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -34,8 +34,8 @@ export async function POST(_req: Request, ctx: RouteContext<"/api/attempts/[id]/
     .update({
       status: "in_progress",
       retake_section: section,
-      section_index: section === "verbal" ? 0 : 1,
-      time_left: { verbal: section === "verbal" ? full : 0, analytic: section === "analytic" ? full : 0 },
+      section_index: Math.max(0, test.sections.findIndex((s) => s.id === section)),
+      time_left: Object.fromEntries(test.sections.map((s) => [s.id, s.id === section ? full : 0])),
       flags: [],
       updated_at: new Date().toISOString(),
     })

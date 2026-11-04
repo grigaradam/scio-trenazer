@@ -16,15 +16,17 @@ export default async function TestPage({ params }: PageProps<"/app/test/[id]">) 
   const test = getTest(attempt.test_id);
   if (!test) notFound();
 
-  const full = Object.fromEntries(test.sections.map((s) => [s.id, s.timeLimitSec]));
+  const full: Record<string, number> = Object.fromEntries(test.sections.map((s) => [s.id, s.timeLimitSec]));
+  const timeLeft: Record<string, number> = attempt.time_left ?? {};
+  const first = test.sections[0].id;
   const retake = attempt.retake_section ?? null;
   // a retake starts with the other section's answers already there, so only time tells
   const resumed = retake
-    ? attempt.time_left[retake] < full[retake]
-    : Object.keys(attempt.answers ?? {}).length > 0 || attempt.section_index > 0 || attempt.time_left.verbal < full.verbal;
+    ? (timeLeft[retake] ?? 0) < full[retake]
+    : Object.keys(attempt.answers ?? {}).length > 0 || attempt.section_index > 0 || (timeLeft[first] ?? 0) < full[first];
 
-  // a verbal section whose time ran out continues with the analytic one
-  const sectionIndex = attempt.section_index === 0 && attempt.time_left.verbal <= 0 ? 1 : attempt.section_index;
+  // a first section whose time ran out continues with the second one
+  const sectionIndex = attempt.section_index === 0 && (timeLeft[first] ?? 0) <= 0 ? 1 : attempt.section_index;
 
   return (
     <TestRunner
@@ -32,7 +34,7 @@ export default async function TestPage({ params }: PageProps<"/app/test/[id]">) 
       test={stripTest(test)}
       initial={{
         sectionIndex,
-        timeLeft: attempt.time_left,
+        timeLeft,
         answers: attempt.answers ?? {},
         flags: attempt.flags ?? [],
         resumed,

@@ -31,8 +31,8 @@ export const EXAMS: ExamMeta[] = [
     id: "aj",
     name: "Anglický jazyk",
     short: "AJ",
-    enabled: false,
-    description: "Připravujeme.",
+    enabled: true,
+    description: "Reading a Use of English, 48 úloh, 40 minut (poslech bez nahrávky vynechán).",
     emoji: "🇬🇧",
   },
   {
@@ -45,10 +45,31 @@ export const EXAMS: ExamMeta[] = [
   },
 ];
 
-export const SECTION_META: Record<SectionId, { title: string; short: string; minutes: number }> = {
-  verbal: { title: "Verbální oddíl", short: "Verbální", minutes: 35 },
-  analytic: { title: "Analytický oddíl", short: "Analytický", minutes: 50 },
+export interface SectionMeta {
+  exam: ExamId;
+  title: string;
+  short: string;
+  minutes: number;
+  /** Colour scheme of the section (the first section of a test is "verbal"-purple, the second "analytic"-teal). */
+  tone: "verbal" | "analytic";
+  /** Czech case forms for UI sentences: "verbální oddíl" / "verbálního oddílu" / "k verbálnímu oddílu". */
+  acc: string;
+  gen: string;
+  dat: string;
+}
+
+export const SECTION_META: Record<SectionId, SectionMeta> = {
+  verbal: { exam: "osp", title: "Verbální oddíl", short: "Verbální", minutes: 35, tone: "verbal", acc: "verbální oddíl", gen: "verbálního oddílu", dat: "verbálnímu oddílu" },
+  analytic: { exam: "osp", title: "Analytický oddíl", short: "Analytický", minutes: 50, tone: "analytic", acc: "analytický oddíl", gen: "analytického oddílu", dat: "analytickému oddílu" },
+  reading: { exam: "aj", title: "Reading", short: "Reading", minutes: 15, tone: "verbal", acc: "oddíl Reading", gen: "oddílu Reading", dat: "oddílu Reading" },
+  english: { exam: "aj", title: "Use of English", short: "Use of English", minutes: 25, tone: "analytic", acc: "oddíl Use of English", gen: "oddílu Use of English", dat: "oddílu Use of English" },
 };
+
+/** Sections of an exam in test order. */
+export const sectionsOf = (exam: ExamId) => (Object.keys(SECTION_META) as SectionId[]).filter((s) => SECTION_META[s].exam === exam);
+
+/** Exams that have content and are offered in the app. */
+export const enabledExams = () => EXAMS.filter((e) => e.enabled);
 
 export interface TaskTypeMeta {
   id: TaskType;
@@ -76,7 +97,8 @@ export const TASK_TYPES: TaskTypeMeta[] = [
     groupSize: 1,
     rules:
       "Krátký souvislý text (1–3 věty, publicistický/odborný styl) se 2–3 vynechanými místy ______. " +
-      "4 možnosti, každá je dvojice nebo trojice slov oddělených pomlčkou „ – “ ve správném tvaru. " +
+      "4 možnosti, každá je dvojice nebo trojice slov oddělených pomlčkou „ – “ ve správném tvaru; počet slov = počet mezer. " +
+      "Všech 8–12 slov je navzájem různých – žádné slovo se neopakuje ve dvou možnostech (možnosti se neskládají kombinací). " +
       "Právě jedna možnost dává smysl ve všech mezerách zároveň; distraktory sedí jen v části mezer, " +
       "porušují logiku věty (např. spojka vyjadřuje špatný vztah) nebo styl. Pozor na shodu a pády.",
     traps:
@@ -92,7 +114,7 @@ export const TASK_TYPES: TaskTypeMeta[] = [
     groupSize: 1,
     rules:
       "Zadání ve tvaru „SLOVO : ______ = ______ : SLOVO“ (velkými písmeny, mezery ______ mohou být na různých místech). " +
-      "4 možnosti ve tvaru „slovo – slovo“ (malými písmeny). Vztah musí být jednoznačný (část–celek, nástroj–činnost, " +
+      "4 možnosti ve tvaru „slovo – slovo“ (malými písmeny), všech 8 slov navzájem různých. Vztah musí být jednoznačný (část–celek, nástroj–činnost, " +
       "příčina–následek, protiklad, stupňování, osoba–místo…) a pořadí v obou dvojicích stejné. " +
       "Distraktory tvoří podobné, ale jiné vztahy nebo obrácené pořadí.",
     traps:
@@ -262,6 +284,96 @@ export const TASK_TYPES: TaskTypeMeta[] = [
       "Řešení musí být ověřeno úplným výčtem všech přípustných přiřazení.",
     traps:
       "5–6 objektů, 4–5 podmínek, z nichž některé jsou negativní nebo podmíněné („pokud…, pak…“). Otázky typu „co MUSÍ platit“, „co MŮŽE platit“, „co je v rozporu“, „pokud by platilo X…“, „u koho lze jednoznačně určit“. Distraktory platí v některých, ale ne ve všech přípustných rozmístěních. Ověř úplným výčtem.",
+  },
+  // ------------------------------------------------------------------ AJ (Scio Anglický jazyk)
+  {
+    id: "aj_reading",
+    exam: "aj",
+    section: "reading",
+    name: "Reading – delší text",
+    emoji: "📰",
+    description: "Delší anglický článek a otázky na porozumění, slovní zásobu a zařazení věty.",
+    groupSize: 4,
+    rules:
+      "Publicistický článek v angličtině (BBC/Guardian styl) o 4–5 odstavcích, cca 450–600 slov, s nadpisem (passageTitle) " +
+      "a perexem v kurzívě. Úroveň C1. V textu jsou na 4 místech tučně značky **(A)** **(B)** **(C)** **(D)** mezi větami a 1–2 slova " +
+      "podtržená <u>…</u>. 4 otázky v angličtině, pořadí podle textu: detail („Which of the following was true about…“), " +
+      "věta s mezerou („The oldest evidence ______.“), „Which … is not mentioned in the text?“, „The word “X” in the second paragraph " +
+      "is closest in meaning to“ (podtržené slovo), „Where in the text would the following sentence best fit?“ (možnosti (A)–(D) = značky). " +
+      "4 možnosti A–D v angličtině, krátké (1 řádek).",
+    traps:
+      "Distraktory používají slova a čísla z textu, ale ve špatné souvislosti (jiná osoba, jiné století, přehozená příčina); " +
+      "u „not mentioned“ jsou tři možnosti v textu parafrázované, ne doslovné; u slovní zásoby je lákavý distraktor jiný význam " +
+      "téhož slova nebo slovo podobné zvukem; u zařazení věty sedí téma na dvě místa, ale jen jedno navazuje zájmenem/spojkou.",
+  },
+  {
+    id: "aj_inference",
+    exam: "aj",
+    section: "reading",
+    name: "Reading – co vyplývá",
+    emoji: "🔎",
+    description: "Krátký anglický text a otázka, co z něj s jistotou vyplývá.",
+    groupSize: 1,
+    rules:
+      "Krátký naučný text v angličtině (3–5 vět, 60–110 slov: věda, historie, společnost, technika). Otázka přesně " +
+      "„Which of the following statements can be inferred from the text with certainty?“ Buď 4 tvrzení A–D, nebo tři výroky " +
+      "1) 2) 3) ve stemu (oddělené prázdným řádkem) a možnosti typu „only 1“, „only 2“, „1 and 2“, „none of them“. " +
+      "Stem = text + prázdný řádek + otázka.",
+    traps:
+      "Distraktory přehánějí (most, only, always, the longest), zaměňují příčinu a následek, tvrdí něco pravdivého ve skutečném " +
+      "světě, ale z textu neplynoucího, nebo posouvají časový údaj. Správná odpověď je parafráze, ne doslovná citace.",
+  },
+  {
+    id: "aj_cloze",
+    exam: "aj",
+    section: "english",
+    name: "Multiple choice cloze",
+    emoji: "🧱",
+    description: "Krátký anglický text s očíslovanými mezerami – vyber nejvhodnější slovo.",
+    groupSize: 5,
+    rules:
+      "Krátký publicistický text v angličtině (3 odstavce, 150–220 slov) s nadpisem (passageTitle). V passage je 5 mezer zapsaných " +
+      "jako **(1)** ______ … **(5)** ______ (čísla od 1). Ke každé mezeře jedna otázka se stemem přesně „Gap (1)“ atd. a 4 možnosti A–D " +
+      "(jednotlivá slova nebo krátké fráze). Mezery testují mix: kolokaci/slovní zásobu, předložku, spojku (although/despite/however), " +
+      "slovesný tvar (passive, perfect, gerund), slovotvorbu (prodigy vs. prodigal).",
+    traps:
+      "Všechny 4 možnosti jsou stejný slovní druh a znějí přirozeně; rozhoduje kolokace (make history, prone to), valence slovesa, " +
+      "gramatika okolní věty (Despite + noun vs. Although + clause) nebo jemný významový rozdíl (alleviate × exacerbate). " +
+      "Distraktory jsou slova podobná tvarem (legacy/legal/legibility) nebo významem.",
+  },
+  {
+    id: "aj_grammar",
+    exam: "aj",
+    section: "english",
+    name: "Grammar and Vocabulary",
+    emoji: "📝",
+    description: "Věta s mezerou – vyber správný gramatický tvar nebo slovo, případně synonymum podtrženého slova.",
+    groupSize: 1,
+    rules:
+      "Jedna anglická věta (příp. dvě) s jednou mezerou ______ a 4 možnosti A–D. Témata: časy (past perfect continuous, present perfect), " +
+      "podmínkové věty (mixed conditionals), trpný rod, modální slovesa, gerundium × infinitiv, frázová slovesa (pass out), předložky, " +
+      "kolokace (on display), členy. Alternativně: věta s podtrženým méně běžným slovem <u>…</u> a pod ní (po prázdném řádku) " +
+      "„In the context of the sentence above, the word “X” is closest in meaning to ______.“",
+    traps:
+      "Distraktory jsou gramaticky blízké tvary (hadn’t cleaned for × hadn’t been cleaned for × since), tvary, které by platily " +
+      "v jiném kontextu, nebo slova podobná zvukem či opačného významu. Správnost musí jít jednoznačně obhájit pravidlem.",
+  },
+  {
+    id: "aj_wordform",
+    exam: "aj",
+    section: "english",
+    name: "Word formation",
+    emoji: "🔤",
+    description: "Vytvoř ze slova v závorce správný tvar, který se hodí do mezery – odpověď se píše.",
+    groupSize: 1,
+    rules:
+      "Jedna anglická věta s jednou mezerou ______ a na konci slovo v závorce VELKÝMI PÍSMENY, např. „(VIOLENCE)“. Odpověď = jedno " +
+      "odvozené slovo (jiné než zadané) – přípona/předpona, změna slovního druhu, zápor (violate, unaware, readily, outcry, disprove, " +
+      "adversary). Část má kind \"text\", options = [] a answer = správné slovo VELKÝMI PÍSMENY; do alsoAccepted dej všechny další tvary, " +
+      "které by slovník Cambridge/Oxford uznal a které do věty sedí (britský/americký pravopis). Odpověď musí být jednoznačná.",
+    traps:
+      "Kontext vyžaduje jiný slovní druh, než svádí intuice (příslovce místo přídavného jména), zápornou předponu (un-/dis-/in-), " +
+      "neočekávanou odvozeninu (CRY → OUTCRY, PROVE → DISPROVE, ADVERSE → ADVERSARY) nebo pravopisnou změnu kmene.",
   },
 ];
 

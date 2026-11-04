@@ -5,9 +5,9 @@ import { ArrowLeft, Lock, Sparkles, Timer, Volume2, VolumeX } from "lucide-react
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { celebrate } from "@/lib/celebrate";
-import { taskTypeMeta } from "@/lib/content/exams";
+import { taskTypeMeta, SECTION_META } from "@/lib/content/exams";
 import type { PublicGroup } from "@/lib/content/public";
-import type { OptionKey, TaskType } from "@/lib/content/types";
+import type { TaskType } from "@/lib/content/types";
 import { count } from "@/lib/czech";
 import { BASIC } from "@/lib/plans";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
@@ -16,7 +16,7 @@ import { announceRewards } from "@/lib/notify";
 import { playSound, primeSounds, setSoundEnabled, soundEnabled, subscribeSound } from "@/lib/sounds";
 import { Explanation } from "./Explanation";
 import { ProTeaser } from "./Pro";
-import { GroupContext, QuestionBody, type Tone } from "./QuestionView";
+import { GroupContext, QuestionBody, type Tone, langOf } from "./QuestionView";
 import { RichText } from "./RichText";
 import { TaskChat } from "./TaskChat";
 import { Badge, Button } from "./ui";
@@ -33,7 +33,8 @@ interface Loaded {
 
 interface Feedback {
   correct: boolean;
-  answer: OptionKey[];
+  answer: string[];
+  accepted?: string[][];
   solution: string;
   xp: number;
   fixed: boolean;
@@ -82,7 +83,7 @@ export function PracticeSession({
   const [limit, setLimit] = useState<number | null>(initialLimit);
   const [task, setTask] = useState<Loaded | null>(null);
   const [qi, setQi] = useState(0);
-  const [selected, setSelected] = useState<(OptionKey | null)[]>([]);
+  const [selected, setSelected] = useState<(string | null)[]>([]);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [loading, setLoading] = useState(basicLeft !== 0);
   const [tip, setTip] = useState(-1);
@@ -105,7 +106,7 @@ export function PracticeSession({
 
   const mixed = types.length > 1;
   const taskMeta = task ? taskTypeMeta(task.type) : undefined;
-  const taskTone: Tone = mixed && taskMeta ? (taskMeta.section === "verbal" ? "verbal" : "analytic") : tone;
+  const taskTone: Tone = mixed && taskMeta ? (SECTION_META[taskMeta.section].tone) : tone;
   const question = task?.group.questions[qi];
   const ref = task?.refs[qi];
 
@@ -186,7 +187,7 @@ export function PracticeSession({
       }
       seen.current.push(ref);
       emitLiveStats({ type: "answer", xp: j.xp ?? 0, streak: j.streak });
-      setFeedback({ correct: j.correct, answer: j.answer, solution: j.solution, xp: j.xp, fixed: j.fixed, timeout });
+      setFeedback({ correct: j.correct, answer: j.answer, accepted: j.accepted, solution: j.solution, xp: j.xp, fixed: j.fixed, timeout });
       setStats((s) => ({
         done: s.done + 1,
         correct: s.correct + (j.correct ? 1 : 0),
@@ -249,11 +250,19 @@ export function PracticeSession({
   // keyboard: A–D select, Enter submit/next
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.tagName === "INPUT" || !question) return;
+      if (!question) return;
+      if ((e.target as HTMLElement)?.tagName === "INPUT") {
+        // typed answer (word formation): Enter checks it, other keys just type
+        if (e.key === "Enter" && !feedback && selected.every(Boolean)) {
+          e.preventDefault();
+          submit();
+        }
+        return;
+      }
       const k = e.key.toUpperCase();
-      if (!feedback && ["A", "B", "C", "D"].includes(k)) setSelected((s) => s.map((x, i) => (i === 0 ? (k as OptionKey) : x)));
+      if (!feedback && ["A", "B", "C", "D"].includes(k)) setSelected((s) => s.map((x, i) => (i === 0 ? k : x)));
       else if (!feedback && ["E", "F", "G", "H"].includes(k) && question.parts.length > 1)
-        setSelected((s) => s.map((x, i) => (i === 1 ? (k as OptionKey) : x)));
+        setSelected((s) => s.map((x, i) => (i === 1 ? k : x)));
       else if (e.key === "Enter") {
         if (feedback) next();
         else if (selected.every(Boolean)) submit();
@@ -432,10 +441,11 @@ export function PracticeSession({
             )}
             <QuestionBody
               question={question}
+              lang={langOf(task?.type)}
               tone={taskTone}
               selected={selected}
               onSelect={feedback ? undefined : (p, k) => setSelected((s) => s.map((x, i) => (i === p ? k : x)))}
-              reveal={feedback ? { answer: feedback.answer } : null}
+              reveal={feedback ? { answer: feedback.answer, accepted: feedback.accepted } : null}
               wrongShake={shake}
             />
           </div>

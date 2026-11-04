@@ -20,9 +20,9 @@ export default async function DevPreview({ params, searchParams }: PageProps<"/d
       <TestRunner
         attemptId="dev"
         test={stripTest(test)}
-        initial={{ sectionIndex: 0, timeLeft: { verbal: 2100, analytic: 3000 }, answers: {}, flags: [], resumed: false }}
+        initial={{ sectionIndex: 0, timeLeft: Object.fromEntries(test.sections.map((x) => [x.id, x.timeLimitSec])), answers: {}, flags: [], resumed: false }}
       />
     );
   }
-  return <ContentPreview test={test} all={getTests("osp").map((t) => t.id)} />;
+  return <ContentPreview test={test} all={[...getTests("osp"), ...getTests("aj")].map((t) => t.id)} />;
 }

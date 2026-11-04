@@ -20,7 +20,7 @@ export interface Focus {
 }
 
 /** The underlined synonym word must not repeat anywhere in the pool; other types compare with recent tasks only. */
-const wholePool = (type: TaskType) => type === "synonyma";
+const wholePool = (type: TaskType) => type === "synonyma" || type === "aj_wordform";
 
 const STOP = new Set(["který", "která", "které", "jejich", "mezi", "nebo", "proto", "jako", "také", "však", "jeho", "této", "tento", "podle", "úloha", "úlohy"]);
 
@@ -39,6 +39,9 @@ function stems(text: string, minLen = 4) {
 function headWordsOf(type: TaskType, stem0: string) {
   if (type === "synonyma") return [...stem0.matchAll(/<u>(.*?)<\/u>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").trim()).filter(Boolean);
   if (type === "analogie") return (stem0.match(/\p{Lu}{3,}/gu) ?? []).map((w) => w.toLowerCase());
+  // the base word in brackets at the end, e.g. "(VIOLENCE)"
+  if (type === "aj_wordform") return [...stem0.matchAll(/\(([A-Z][A-Z'-]+)\)/g)].slice(-1).map((m) => m[1].toLowerCase());
+  if (type === "aj_grammar") return [...stem0.matchAll(/<u>(.*?)<\/u>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").trim()).filter(Boolean);
   return [];
 }
 
@@ -161,6 +164,10 @@ export function varietyBlock(type: TaskType, pool: Focus[]) {
   if (wholePool(type)) {
     const words = [...new Set(pool.flatMap((f) => f.headWords.map((w) => w.toLowerCase())))].slice(0, 250);
     if (!words.length) return "";
+    if (type === "aj_wordform")
+      return `VÝCHOZÍ SLOVA (v závorce), KTERÁ UŽ V DATABÁZI JSOU – zvol jiné výchozí slovo (opakované bude automaticky zamítnuto):
+${words.join(", ")}
+`;
     return `SLOVA, KTERÁ UŽ V DATABÁZI JSOU – podtržený výraz NESMÍ být žádné z nich ani jeho tvar či odvozenina
 (úloha s opakovaným slovem bude automaticky zamítnuta; uživatel se má pokaždé naučit nové slovo):
 ${words.join(", ")}

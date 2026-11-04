@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Ban, Bell, Check, Copy, FlaskConical, Link2, LogOut, RefreshCw, Send, Unlock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Fragment, useMemo, useState } from "react";
-import { TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
+import { EXAMS, TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
 import { count, plural } from "@/lib/czech";
 import { SITE_URL } from "@/lib/env";
 import type { Plan } from "@/lib/plans";
@@ -308,7 +308,7 @@ function TestGenerate() {
   const router = useRouter();
   const [running, setRunning] = useState(false);
   const [status, setStatus] = useState<Record<string, string>>({});
-  const types = useMemo(() => TASK_TYPES.filter((t) => t.exam === "osp"), []);
+  const types = useMemo(() => TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled)), []);
 
   async function run() {
     setRunning(true);

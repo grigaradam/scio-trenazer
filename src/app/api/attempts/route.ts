@@ -5,7 +5,7 @@ import { apiUser, getPlan } from "@/lib/server/auth";
 import { basicTestId } from "@/lib/server/queries";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const Body = z.object({ testId: z.string().optional(), diagnostic: z.boolean().optional() });
+const Body = z.object({ testId: z.string().optional(), diagnostic: z.boolean().optional(), exam: z.enum(["osp", "aj"]).optional() });
 
 // Start a full test. Without testId picks the newest test the user hasn't completed yet.
 export async function POST(req: Request) {
@@ -32,7 +32,10 @@ export async function POST(req: Request) {
   }
   if (!testId) {
     const done = new Set((existing ?? []).map((a) => a.test_id));
-    const tests = getTests("osp");
+    // newest unfinished test of the requested exam, else of the exam picked in onboarding
+    const { data: prof } = await admin.from("profiles").select("exam").eq("id", user.id).maybeSingle();
+    const exam = body.exam ?? (prof?.exam === "aj" ? "aj" : "osp");
+    const tests = getTests(exam);
     testId = (tests.find((t) => !done.has(t.id)) ?? tests[0])?.id;
   }
   const test = testId ? getTest(testId) : undefined;

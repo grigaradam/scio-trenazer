@@ -50,7 +50,7 @@ export interface AttemptRow {
   is_diagnostic: boolean;
   status: "in_progress" | "completed";
   section_index: number;
-  time_left: { verbal: number; analytic: number };
+  time_left: Partial<Record<SectionId, number>>;
   answers: AnswerMap;
   flags: number[];
   pause_count: number;

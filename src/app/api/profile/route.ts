@@ -6,7 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 const Body = z.object({
   display_name: z.string().trim().min(1).max(40).optional(),
-  exam: z.enum(["osp"]).optional(),
+  exam: z.enum(["osp", "aj"]).optional(),
   onboarded: z.boolean().optional(),
   daily_goal_min: z.number().int().min(5).max(240).optional(),
   practice_time_limit_sec: z.number().int().min(15).max(900).nullable().optional(),

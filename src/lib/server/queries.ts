@@ -1,7 +1,9 @@
 import "server-only";
-import { TASK_TYPES } from "@/lib/content/exams";
-import { getTests } from "@/lib/content/load";
-import type { TaskType } from "@/lib/content/types";
+import { EXAMS, TASK_TYPES } from "@/lib/content/exams";
+import { getTest } from "@/lib/content/load";
+
+const enabledExam = (id: string) => EXAMS.some((e) => e.id === id && e.enabled);
+import type { ExamId, TaskType } from "@/lib/content/types";
 import { mastery, masteryTrend, type MasteryItem } from "@/lib/mastery";
 import type { Bucket } from "@/lib/scoring";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -50,6 +52,7 @@ export async function getAchievements(userId: string) {
 
 export interface TypeStat {
   type: TaskType;
+  exam: ExamId;
   /** accuracy across tests + practice, 0..1, null = no data */
   accuracy: number | null;
   /** "zvládnutí" 0..1: recency-weighted, fixed mistakes count half (see lib/mastery), null = no data */
@@ -100,8 +103,9 @@ export async function getTypeStats(userId: string, attempts?: AttemptRow[], mist
     if (p.correct) solved.add(p.task_ref);
   }
   const now = Date.now();
-  return TASK_TYPES.filter((t) => t.exam === "osp").map((t) => ({
+  return TASK_TYPES.filter((t) => enabledExam(t.exam)).map((t) => ({
     type: t.id,
+    exam: t.exam,
     accuracy: acc[t.id]?.total ? acc[t.id].right / acc[t.id].total : null,
     mastery: mastery(items[t.id] ?? []),
     trend: masteryTrend(items[t.id] ?? [], now),
@@ -115,19 +119,22 @@ export async function getTypeStats(userId: string, attempts?: AttemptRow[], mist
 export function compareLastTests(attempts: AttemptRow[]) {
   const done = attempts.filter((a) => a.status === "completed" && a.result).sort((a, b) => (a.completed_at! < b.completed_at! ? 1 : -1));
   if (done.length < 2) return null;
-  const [cur, prev] = done;
-  const rows = TASK_TYPES.filter((t) => t.exam === "osp").map((t) => {
+  const cur = done[0];
+  // compare like with like: the last two tests of the same exam
+  const prevSame = done.slice(1).find((a) => a.exam === cur.exam);
+  if (!prevSame) return null;
+  const rows = TASK_TYPES.filter((t) => t.exam === cur.exam).map((t) => {
     const c = cur.result!.types[t.id];
-    const p = prev.result!.types[t.id];
+    const p = prevSame.result!.types[t.id];
     const pc = c && c.max ? c.score / c.max : null;
     const pp = p && p.max ? p.score / p.max : null;
     return { type: t.id, now: pc, before: pp, delta: pc !== null && pp !== null ? pc - pp : null };
   });
-  return { current: cur, previous: prev, rows };
+  return { current: cur, previous: prevSame, rows };
 }
 
 export function testTitle(id: string) {
-  return getTests("osp").find((t) => t.id === id)?.title ?? id;
+  return getTest(id)?.title ?? id;
 }
 
 /** Midnight of today in Prague as an ISO instant (for created_at filters). */

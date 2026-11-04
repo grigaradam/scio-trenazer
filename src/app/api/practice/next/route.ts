@@ -32,8 +32,10 @@ export async function POST(req: Request) {
   const basic = (await getPlan(user.id)) === "basic";
   if (basic) {
     if ((await practiceToday(user.id)) >= BASIC.dailyTasks) return NextResponse.json({ kind: "limit", limit: BASIC.dailyTasks });
+    // the all-types mix of the exam the session is about
+    const exam = taskTypeMeta(types?.[0] ?? type ?? "")?.exam ?? "osp";
     type = undefined;
-    types = taskTypesFor("osp").map((t) => t.id);
+    types = taskTypesFor(exam).map((t) => t.id);
     mode = "mix";
   }
   const metas = [...new Set(types ?? (type ? [type] : []))].map(taskTypeMeta);

@@ -8,7 +8,8 @@ import { taskToPrompt } from "./format";
 
 export function chatSystemPrompt(task: ResolvedTask, userAnswer: string | null) {
   const meta = taskTypeMeta(task.taskType);
-  return `Jsi trpělivý lektor přípravy na test OSP (Scio). Student se tě ptá na konkrétní úlohu. Odpovídej česky,
+  const subject = meta?.exam === "aj" ? "test Anglický jazyk (Scio AJ) – vysvětluj gramatiku a slovní zásobu, anglické příklady piš anglicky" : "test OSP (Scio)";
+  return `Jsi trpělivý lektor přípravy na ${subject}. Student se tě ptá na konkrétní úlohu. Odpovídej česky,
 krátce (max. ~120 slov, pokud student nechce víc), konkrétně k této úloze. Používej sokratovský přístup: když student
 neví, naveď ho otázkou nebo nápovědou, ale když chce rovnou vysvětlení, dej ho.
 

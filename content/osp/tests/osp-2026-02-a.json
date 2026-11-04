@@ -1,0 +1,2127 @@
+{
+  "id": "osp-2026-02-a",
+  "exam": "osp",
+  "title": "OSP – Únor 2026, varianta A",
+  "date": "2026-02",
+  "variant": "A",
+  "source": "Fotky sešitu „osp a únor 2026“",
+  "sections": [
+    {
+      "id": "verbal",
+      "title": "Verbální oddíl",
+      "timeLimitSec": 2100,
+      "groups": [
+        {
+          "id": "g01",
+          "taskType": "doplnovani",
+          "instruction": "V každém z následujících krátkých textů jsou dvě nebo tři prázdná místa, která značí, že ve větě bylo něco vynecháno. Vyberte z nabízených možností dvojici nebo trojici slov, která se v daném pořadí významově a stylisticky **nejlépe** hodí do příslušného textu jako celku.",
+          "questions": [
+            {
+              "n": 1,
+              "stem": "Němci svůj krok předem ______, ne jako česká vláda vloni na jaře, kdy ______ zavřela hranice se svými sousedy, aniž by to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "zveřejnili – nečekaně – připustila"
+                    },
+                    {
+                      "key": "B",
+                      "text": "připravovali – záměrně – vysvětlila"
+                    },
+                    {
+                      "key": "C",
+                      "text": "zvažovali – ukvapeně – promyslela"
+                    },
+                    {
+                      "key": "D",
+                      "text": "zdokumentovali – nepromyšleně – projednala"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Text staví do protikladu rozvážný postup Němců a zbrklý postup české vlády: Němci krok předem „zvažovali“, česká vláda hranice zavřela „ukvapeně“, „aniž by to promyslela“. U ostatních trojic nedává smysl buď kontrast (záměrně – vysvětlila), nebo spojení „aniž by to připustila“ či „předem zdokumentovali“."
+            },
+            {
+              "n": 2,
+              "stem": "______ do mateřské školy je pro každé dítě významným životním ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Nástup – mezníkem"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Cesta – poznáním"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Umístění – vývojem"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Zápis – pokrokem"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Ustálené spojení je „nástup do mateřské školy“ a „významný životní mezník“. Cesta, umístění ani zápis nejsou životním poznáním, vývojem či pokrokem."
+            },
+            {
+              "n": 3,
+              "stem": "V průběhu 10. století přemyslovská knížata ______ vládu nad celou zemí a ______ své říši významné místo v politické struktuře střední Evropy.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "získala – zajistila"
+                    },
+                    {
+                      "key": "B",
+                      "text": "uchopila – poskytla"
+                    },
+                    {
+                      "key": "C",
+                      "text": "dosáhla – vydobyla"
+                    },
+                    {
+                      "key": "D",
+                      "text": "převzala – umožnila"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Knížata „získala vládu“ nad celou zemí a „zajistila své říši“ významné místo. „Dosáhla vládu“ je gramaticky chybně (dosáhnout čeho), „poskytla/umožnila říši místo“ nedává smysl."
+            }
+          ]
+        },
+        {
+          "id": "g02",
+          "taskType": "analogie",
+          "instruction": "Vyberte z dvojic výrazů nabízených v odpovědích tu, po jejímž doplnění na vynechaná místa v zadání (v uvedeném pořadí) bude významový vztah mezi výrazy vpravo od rovnítka **nejpodobnější** významovému vztahu mezi výrazy vlevo od rovnítka (**pořadí výrazů ve dvojicích je důležité**).",
+          "questions": [
+            {
+              "n": 4,
+              "stem": "______ : POČÍTAT = ______ : OPEROVAT",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "matematika – chirurgie"
+                    },
+                    {
+                      "key": "B",
+                      "text": "číslo – nemocnice"
+                    },
+                    {
+                      "key": "C",
+                      "text": "mocnina – zákrok"
+                    },
+                    {
+                      "key": "D",
+                      "text": "součin – zranění"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "V matematice se počítá, v chirurgii se operuje (obor : jeho typická činnost)."
+            },
+            {
+              "n": 5,
+              "stem": "______ : TKANIČKY = KALHOTY : ______",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "uzel – tepláky"
+                    },
+                    {
+                      "key": "B",
+                      "text": "zavazování – nošení"
+                    },
+                    {
+                      "key": "C",
+                      "text": "dřeváky – sukně"
+                    },
+                    {
+                      "key": "D",
+                      "text": "tenisky – opasek"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Tenisky se upevňují (utahují) tkaničkami, kalhoty opaskem (oděvní součást : to, čím se upevňuje). Ostatní dvojice tento vztah nezachovávají."
+            },
+            {
+              "n": 6,
+              "stem": "______ : PSANÍ = ______ : PEČENÍ",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "papír – koláč"
+                    },
+                    {
+                      "key": "B",
+                      "text": "učitel – pekař"
+                    },
+                    {
+                      "key": "C",
+                      "text": "tužka – trouba"
+                    },
+                    {
+                      "key": "D",
+                      "text": "písmo – pekáč"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Tužka je nástroj k psaní, trouba je nástroj (spotřebič) k pečení. U A je papír podklad, ale koláč výsledek; u D je písmo výsledek, ale pekáč nástroj."
+            }
+          ]
+        },
+        {
+          "id": "g03",
+          "taskType": "synonyma",
+          "instruction": "V každé z následujících úloh vyberte z nabízených možností **A až D** ten výraz, který se v kontextu uvedené věty nejvíce blíží významu podtrženého výrazu (**synonymum**). Z možností **E až H** pak vyberte ten výraz, který se v kontextu uvedené věty nejvíce blíží **opačnému** významu podtrženého výrazu (**antonymum**).",
+          "questions": [
+            {
+              "n": 7,
+              "stem": "Obě země upozorňují na <u>netečnost</u> lidstva ke klimatickým změnám a ničení životního prostředí.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "lhostejnost"
+                    },
+                    {
+                      "key": "B",
+                      "text": "nezávislost"
+                    },
+                    {
+                      "key": "C",
+                      "text": "bezradnost"
+                    },
+                    {
+                      "key": "D",
+                      "text": "bezohlednost"
+                    }
+                  ],
+                  "answer": "A"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "spolehlivost"
+                    },
+                    {
+                      "key": "F",
+                      "text": "všímavost"
+                    },
+                    {
+                      "key": "G",
+                      "text": "jednotnost"
+                    },
+                    {
+                      "key": "H",
+                      "text": "spojitost"
+                    }
+                  ],
+                  "answer": "F"
+                }
+              ],
+              "solution": "Netečnost = lhostejnost, nezájem. Opakem je všímavost (zájem, pozornost)."
+            },
+            {
+              "n": 8,
+              "stem": "Docházka je pro úspěšné absolvování tohoto předmětu zcela <u>klíčová</u>.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "potřebná"
+                    },
+                    {
+                      "key": "B",
+                      "text": "povinná"
+                    },
+                    {
+                      "key": "C",
+                      "text": "zásadní"
+                    },
+                    {
+                      "key": "D",
+                      "text": "vedená"
+                    }
+                  ],
+                  "answer": "C"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "dobrovolná"
+                    },
+                    {
+                      "key": "F",
+                      "text": "nepodstatná"
+                    },
+                    {
+                      "key": "G",
+                      "text": "zbytková"
+                    },
+                    {
+                      "key": "H",
+                      "text": "nedůkladná"
+                    }
+                  ],
+                  "answer": "F"
+                }
+              ],
+              "solution": "Klíčová = zásadní, rozhodující (potřebná je slabší). Opakem je nepodstatná; dobrovolná je opakem povinné."
+            },
+            {
+              "n": 9,
+              "stem": "Moc dobře věděl, jak <u>neblaze</u> může plané klábosení ovlivnit vyhlídky mladé dívky, že se dobře vdá.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "zhoubně"
+                    },
+                    {
+                      "key": "B",
+                      "text": "neskutečně"
+                    },
+                    {
+                      "key": "C",
+                      "text": "nezáživně"
+                    },
+                    {
+                      "key": "D",
+                      "text": "nevinně"
+                    }
+                  ],
+                  "answer": "A"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "tvořivě"
+                    },
+                    {
+                      "key": "F",
+                      "text": "slastně"
+                    },
+                    {
+                      "key": "G",
+                      "text": "úctyhodně"
+                    },
+                    {
+                      "key": "H",
+                      "text": "prospěšně"
+                    }
+                  ],
+                  "answer": "H"
+                }
+              ],
+              "solution": "Neblaze ovlivnit = zhoubně, škodlivě ovlivnit. Opakem je prospěšně."
+            }
+          ]
+        },
+        {
+          "id": "g04",
+          "taskType": "nesoulad",
+          "instruction": "V každém z následujících textů je právě jedna část, která do něj svým vyzněním **nezapadá**. U každé z úloh zvolte možnost, která obsahuje právě tu část textu, jež **není v souladu s jeho celkovým vyzněním**.",
+          "questions": [
+            {
+              "n": 10,
+              "stem": "Káva je v současnosti považována za nápoj povzbuzující, nicméně zdraví škodlivý. Dříve se sice uvádělo, že může působit rakovinotvorně, ale tehdejší výzkumy nebraly v potaz, že těžcí pijáci kávy byli také kuřáky a měli sedavý životní styl. Reputaci si ale vylepšila teprve nedávno. Současné výzkumy se už zaměřují na ověření jejích příznivých účinků na zdraví. A mnozí odborníci ji dnes řadí dokonce mezi superpotraviny, tedy potraviny s výrazným pozitivním vlivem na zdraví.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Káva je v současnosti považována za nápoj povzbuzující, nicméně zdraví škodlivý."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Dříve se sice uvádělo, že může působit rakovinotvorně, ale tehdejší výzkumy nebraly v potaz, že těžcí pijáci kávy byli také kuřáky a měli sedavý životní styl."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Reputaci si ale vylepšila teprve nedávno."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Současné výzkumy se už zaměřují na ověření jejích příznivých účinků na zdraví."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Celý text tvrdí, že káva má dnes dobrou pověst a je považována za prospěšnou (superpotravina). Tvrzení, že je „v současnosti“ považována za zdraví škodlivou, s tím je v rozporu."
+            },
+            {
+              "n": 11,
+              "stem": "Za péči o domácí mazlíčky jsou Češi ochotni ročně zaplatit čím dál vyšší částky. Tradičně nejvíce utrácejí za psy a kočky, následují hlodavci a rybičky. Dlouhodobě platí, že vyhledávají stále stejná, co nejlevnější krmiva. Na trhu se proto začínají uplatňovat i ta, která pocházejí z udržitelných zdrojů a kvalitních lokálních surovin. Trendem posledních měsíců jsou dále interaktivní hračky pro zvířata, jako jsou například hlavolamy nebo čmuchací koberečky. Za potřeby pro kočky zákazníci utratí asi 600 korun měsíčně, v případě psů je to 700 korun za měsíc. Zájem o chovatelské potřeby letos podle srovnávače cen proti minulému roku stoupl o více než desetinu.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Za péči o domácí mazlíčky jsou Češi ochotni ročně zaplatit čím dál vyšší částky."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Dlouhodobě platí, že vyhledávají stále stejná, co nejlevnější krmiva."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Na trhu se proto začínají uplatňovat i ta, která pocházejí z udržitelných zdrojů a kvalitních lokálních surovin."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Zájem o chovatelské potřeby letos podle srovnávače cen proti minulému roku stoupl o více než desetinu."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text popisuje rostoucí výdaje a zájem o kvalitnější krmiva a nové výrobky. Tvrzení o dlouhodobém vyhledávání stále stejných nejlevnějších krmiv tomu odporuje (a nenavazuje na ně ani následující „proto“)."
+            },
+            {
+              "n": 12,
+              "stem": "Investice do nemovitosti se dlouhodobě jeví jako jedna z nejlepších možností, jak ochránit své peníze před inflací. Hodnota domů, bytů a pozemků totiž obvykle v dobách nezvykle vysoké inflace klesá. Při zvyšování cen v ekonomice většinou roste jak cena nemovitostí, tak i cena nájemního bydlení. Pokud tedy někdo vlastní více nemovitostí, může si díky tomu vybudovat i slušný pasivní příjem, se kterým nemá mnoho starostí. Mít vlastní nemovitost je navíc v Česku stále velice populární, třeba v Německu to tak běžná situace není. A pokud už máte zaplacenou hypotéku, tak vaše náklady na bydlení budou jen pár korun!\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota domů, bytů a pozemků totiž obvykle v dobách nezvykle vysoké inflace klesá."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Při zvyšování cen v ekonomice většinou roste jak cena nemovitostí, tak i cena nájemního bydlení."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Mít vlastní nemovitost je navíc v Česku stále velice populární, třeba v Německu to tak běžná situace není."
+                    },
+                    {
+                      "key": "D",
+                      "text": "A pokud už máte zaplacenou hypotéku, tak vaše náklady na bydlení budou jen pár korun!"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Nemovitost má chránit peníze před inflací, protože její cena s inflací roste (jak říká hned následující věta). Tvrzení, že hodnota nemovitostí při vysoké inflaci klesá, je s tím v rozporu."
+            },
+            {
+              "n": 13,
+              "stem": "Seismografy na Písecku zaznamenaly zemětřesení o síle 3,9 stupně. Podle Geofyzikálního ústavu AV ČR šlo na české poměry o silné zemětřesení. Takové je v Česku vzácné, v celosvětovém měřítku však nepředstavuje nic výjimečného. V Miroticích na Písecku, u nichž bylo ohnisko, jsou obyvatelé na podobné otřesy zvyklí. „Uslyšeli jsme dunění a chvěla se okna. Nebylo to vůbec příjemné, nikdo nevěděl, co se děje,“ popsala starostka jihočeské obce. Žádný z domů v obci naštěstí nebyl poškozen. Zemětřesení bývá v ČR nejčastěji na Karlovarsku, v Jihočeském kraji jde o ojedinělý jev.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Podle Geofyzikálního ústavu AV ČR šlo na české poměry o silné zemětřesení."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Takové je v Česku vzácné, v celosvětovém měřítku však nepředstavuje nic výjimečného."
+                    },
+                    {
+                      "key": "C",
+                      "text": "V Miroticích na Písecku, u nichž bylo ohnisko, jsou obyvatelé na podobné otřesy zvyklí."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Žádný z domů v obci naštěstí nebyl poškozen."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Podle textu je zemětřesení v Jihočeském kraji ojedinělý jev a „nikdo nevěděl, co se děje“. Tvrzení, že jsou na podobné otřesy obyvatelé zvyklí, tomu odporuje."
+            },
+            {
+              "n": 14,
+              "stem": "Obliba carsharingu neboli krátkodobých pronájmů sdílených aut ve velkých městech roste. Průzkum ukázal, že ho v současnosti využívá kolem 11 procent obyvatel, což je zhruba o čtyři procentní body více než předloni. Sonda současně odhalila rostoucí popularitu sdílených kol a koloběžek, které využívá shodně asi 12 procent obyvatel. Naproti tomu vlastní automobil používá denně pouze 16 procent obyvatel, což je méně než před dvěma lety. Kvůli zácpám a přeplněným parkovištím totiž ve městech obliba všech prostředků individuální dopravy prudce klesá. Podle průzkumu se uživatelé sdílených aut chovají zodpovědně a ekologicky a svou dopravu realizují v kombinaci s využitím hromadné dopravy.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Průzkum ukázal, že ho v současnosti využívá kolem 11 procent obyvatel, což je zhruba o čtyři procentní body více než předloni."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Sonda současně odhalila rostoucí popularitu sdílených kol a koloběžek, které využívá shodně asi 12 procent obyvatel."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Kvůli zácpám a přeplněným parkovištím totiž ve městech obliba všech prostředků individuální dopravy prudce klesá."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Podle průzkumu se uživatelé sdílených aut chovají zodpovědně a ekologicky a svou dopravu realizují v kombinaci s využitím hromadné dopravy."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Sdílená auta, kola i koloběžky jsou také prostředky individuální dopravy a jejich obliba podle textu roste. Tvrzení, že obliba „všech“ prostředků individuální dopravy prudce klesá, je s tím v rozporu."
+            },
+            {
+              "n": 15,
+              "stem": "Česká pošta je podle ministra vnitra Víta Rakušana (STAN) dlouhodobě podfinancovaná. Kvůli nedostatečné úhradě státu za objednané služby vykáže od roku 2018 do konce letošního roku kumulovanou ztrátu okolo 5,7 miliardy korun. V tomto roce se očekávanou ztrátu podařilo snížit mimo jiné zrušením 300 z 3 200 poboček k letošnímu pololetí, úpravou způsobu doručování nebo redukcí počtu pracovníků. I díky těmto změnám se u České pošty očekává další ziskové období. Určitě se však nezmění, že státní podnik Česká pošta bude dále provozovat pobočkovou síť, zachová si doručování listovních zásilek a peněžních poukázek a rozšíří poskytování služeb pro stát.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Česká pošta je podle ministra vnitra Víta Rakušana (STAN) dlouhodobě podfinancovaná."
+                    },
+                    {
+                      "key": "B",
+                      "text": "V tomto roce se očekávanou ztrátu podařilo snížit mimo jiné zrušením 300 z 3 200 poboček k letošnímu pololetí, úpravou způsobu doručování nebo redukcí počtu pracovníků."
+                    },
+                    {
+                      "key": "C",
+                      "text": "I díky těmto změnám se u České pošty očekává další ziskové období."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Určitě se však nezmění, že státní podnik Česká pošta bude dále provozovat pobočkovou síť, zachová si doručování listovních zásilek a peněžních poukázek a rozšíří poskytování služeb pro stát."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Pošta je podle textu dlouhodobě ve ztrátě a změny ztrátu jen snížily. „Další ziskové období“ předpokládá, že pošta už zisková byla, což textu odporuje."
+            }
+          ]
+        },
+        {
+          "id": "g05",
+          "taskType": "vyplyvani",
+          "instruction": "Všechny následující úlohy řešte **pouze** na základě informací uvedených v textu či z něho vyplývajících.",
+          "questions": [
+            {
+              "n": 16,
+              "stem": "Jsou herci, kteří žijí ve vlastním světě, do kterého má přístup jen úzký okruh lidí. To pak ráno čekáte, v jakém rozpoložení přijdou. Většina herců se ale snaží zůstat normální, i když to není snadné. Popularita pro ně není vždy příjemná, nejsou anonymní, namáhavě si uchovávají soukromí. Zároveň ale vědí, že když se chovají mile ke štábu i k fanouškům, dostanou další pracovní nabídky. To je to, co je královsky živí.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Nálada herců, kteří se stýkají pouze s úzkým okruhem lidí, může být špatně předvídatelná."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Většina herců vede normální život a popularitu bere pouze jako nutné zlo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Pro popularitu herce je důležitější, jak se chová ke svým fanouškům než ke štábu."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Pouze herci, kteří se při natáčení chovají mile, mají šanci na úspěch."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "U herců žijících ve vlastním světě s úzkým okruhem lidí „ráno čekáte, v jakém rozpoložení přijdou“ – jejich nálada je tedy špatně předvídatelná. Text neříká, že většina vede normální život (jen se o to snaží), ani nesrovnává štáb a fanoušky, ani netvrdí „pouze“."
+            },
+            {
+              "n": 17,
+              "stem": "Norská technologická firma World Wide Wind získala povolení k umístění a testování svých speciálních větrných turbín. Na rozdíl od klasických stacionárních větrníků dokážou tyto turbíny plavat na hladině, a je proto možné umístit je nad větší mořské hlubiny. Firma uvádí, že osmdesát procent využitelného větru vane právě tam, dosavadní typy turbín ale vyžadují pevné připevnění k mořskému dnu.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Turbíny firmy World Wide Wind se budou snažit „vytěžit“ tu část využitelného větru, která byla stacionárními větrníky zatím nezachytitelná."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Největším z problémů, se kterými bojují firmy budující větrné turbíny, je to, jak zajistit, aby turbíny mohly plavat na mořské hladině."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Testování plovoucích větrných turbín umožní lidstvu získat dostatek větrné energie a přitom nezasahovat do mořského dna."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Firma World Wide Wind přišla s inovativním výzkumem využitelného větru, na jehož základě zkonstruovala nový typ turbín."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Plovoucí turbíny lze umístit nad velké hlubiny, kde vane většina využitelného větru a kam stacionární turbíny (připevněné ke dnu) umístit nelze – mají tedy využít vítr, který dosud zachytit nešel. Ostatní možnosti text přehánějí nebo si vymýšlejí (největší problém, dostatek energie, vlastní výzkum větru)."
+            },
+            {
+              "n": 18,
+              "stem": "Konec první světové války si Češi spojují zejména se založením samostatného státu, od nějž odvíjíme neproblematický příběh meziválečného Československa. Máme přitom tendenci zapomínat, že sociální rozvrat, který byl důsledkem válečných běsů první světové války, měl na velkou část Čechů a Slováků větší dopad než uspokojení z nově nabyté státnosti.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Češi a Slováci bojovali za vznik samostatného Československa, ale podcenili to, v jakých sociálních podmínkách se bude nový stát rodit a fungovat."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Ze současného pohledu Čechů na období po vzniku samostatného státu se vytrácí pozornost k negativním dopadům první světové války."
+                    },
+                    {
+                      "key": "C",
+                      "text": "První světová válka měla daleko dramatičtější následky, než si Češi představují, zejména v oblasti vztahů mezi Čechy a Slováky."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Založení samostatného státu Čechů a Slováků bylo vykoupeno sociálními a ekonomickými problémy spojenými se vznikem zcela nového státu."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text říká, že dnes máme tendenci zapomínat na sociální rozvrat způsobený válkou a vnímáme meziválečné období jako neproblematické – pozornost k negativním dopadům války se tedy vytrácí. Sociální problémy byly důsledkem války, ne vzniku státu (D), a o vztazích Čechů a Slováků (C) ani o podcenění při boji za stát (A) text nemluví."
+            },
+            {
+              "n": 19,
+              "stem": "Z otvorů ve dně moří v blízkosti sopečných jader proudí přehřátá voda s velkým množstvím rozpuštěných minerálních látek, které jí dávají vzhled černého dýmu. Z tohoto roztoku se srážejí minerály (převážně sulfidy), které kolem pramenů vytvářejí komínové valy. Sulfidy poskytují živiny sirným bakteriím, které jsou potravou pro další živočichy, ti jsou zase požíráni jinými. Celé rozsáhlé společenství tak přežívá bez jakékoli energie čerpané z rostlin či dodávané slunečním zářením.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Rostliny čerpají energii ze slunečního záření."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Všechny sulfidy jsou rozpustné ve vodě."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Sirné bakterie tvoří komínové valy."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Některé bakterie mohou být potravou pro další tvory."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text výslovně uvádí, že sirné bakterie jsou potravou pro další živočichy. Komínové valy tvoří vysrážené minerály, ne bakterie; o rozpustnosti všech sulfidů ani o tom, odkud čerpají energii rostliny, text nic neříká."
+            },
+            {
+              "n": 20,
+              "stem": "Tisíce Maďarů protestovaly před sídlem parlamentu proti uvolnění pravidel pro těžbu dřeva, které vychází vstříc zvýšené zahraniční poptávce po palivovém dříví v důsledku prudce rostoucích cen plynu a elektřiny.\n\nKteré/á z následujících tvrzení vyplývá/ají z uvedeného textu?\n\n1) V důsledku prudce rostoucích cen elektřiny a plynu tisíce Maďarů poptávaly palivové dříví.\n\n2) Tisíce Maďarů protestovaly proti prudce rostoucím cenám plynu a elektřiny.\n\n3) Opatření související s pohybem cen plynu a elektřiny nejsou v Maďarsku přijímána bezvýhradně pozitivně.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen 2"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen 3"
+                    },
+                    {
+                      "key": "C",
+                      "text": "1 a 2"
+                    },
+                    {
+                      "key": "D",
+                      "text": "1 a 3"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Palivové dříví poptávají zahraniční zájemci, ne Maďaři (1 neplatí), a protest směřoval proti uvolnění pravidel těžby, ne proti cenám (2 neplatí). Uvolnění pravidel reaguje na růst cen energií a tisíce lidí proti němu protestovaly, takže 3 platí."
+            },
+            {
+              "n": 21,
+              "stem": "Švédská automobilka Volvo Cars představila rozsáhlý harmonogram, jak do roku 2030 přejde na vozy poháněné výhradně elektřinou. Plán předpokládá dosažení prodeje 600 000 elektromobilů v polovině dekády a stavbu továrny na baterie. Bez splnění těchto milníků by úplný přechod na elektřinu již v roce 2030 zřejmě nebylo možné splnit.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Bez stavby potřebné továrny na baterie by automobilka Volvo Cars zřejmě do roku 2030 nezvládla přechod na vozy poháněné výhradně elektřinou."
+                    },
+                    {
+                      "key": "B",
+                      "text": "V roce 2030 nebude možné zakoupit automobil se spalovacím motorem."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Při sestavování harmonogramu přechodu na vozy poháněné elektřinou vycházela automobilka Volvo Cars z aktuálních prodejů elektromobilů."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Předpokladem naplnění cílů automobilky Volvo Cars je prodej 600 000 elektromobilů ročně až do roku 2030."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Stavba továrny na baterie je jedním z milníků, bez jejichž splnění by přechod do roku 2030 zřejmě nebyl možný. Text mluví jen o Volvu (ne o celém trhu), o 600 000 vozů v polovině dekády (ne ročně do 2030) a o aktuálních prodejích nic neříká."
+            },
+            {
+              "n": 22,
+              "stem": "Italská Apulie se stává cestovatelským hitem z několika důvodů. Má vše jako města na severu, co se týče historie a lokální gastronomie, ale najdete zde i 940 km pobřeží s bílými plážemi jako na Maledivách a v restauracích neomdléváte z „milánských“ cen. Navíc jednotlivá města jsou blízko sebe a relativně snadno se mezi nimi přesunete veřejnou dopravou. Ve velkých městech žije ovšem jen čtvrtina obyvatel, zbytek na venkově, což ocení každý, kdo hledá na cestách zákoutí bez turistické příchutě.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Převážná část obyvatel Apulie žije na venkově mimo velká města."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Apulie je vyhledávaným regionem zejména pro městskou turistiku."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Ceny v restauracích na Maledivách jsou oproti Apulii výrazně vyšší."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Oproti severu Itálie jsou v Apulii i velká města plná zákoutí bez turistů."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Ve velkých městech žije jen čtvrtina obyvatel a zbytek (tři čtvrtiny) na venkově. Text srovnává ceny s Milánem, ne s Maledivami, a zákoutí bez turistů spojuje s venkovem, ne s velkými městy."
+            },
+            {
+              "n": 23,
+              "stem": "Kdo vypije tři až čtyři šálky kávy denně, je zdravější než ten, kdo kávu nepije. Takové jsou výsledky analýzy několika stovek už provedených výzkumů o vlivu kávy na naše zdraví. Za hlavní výsledek analýzy výzkumníci považují to, že káva obecně není škodlivá. Podle vědců to ale nutně neprokazuje, že káva je příčinou zlepšení zdraví – je totiž možné, že lidé se zhoršujícím se zdravotním stavem raději přestanou kávu pít.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Vliv pití kávy na zdraví lidí analýza objasnila pouze částečně."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Výsledky analýzy ukázaly, že dříve provedené výzkumy si protiřečí."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Pití kávy je škodlivé pouze pro lidi se zhoršujícím se zdravotním stavem."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Vědci doporučují pít pro zlepšení zdravotního stavu maximálně čtyři šálky kávy denně."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Analýza ukázala, že káva obecně není škodlivá, ale neprokázala, zda je příčinou lepšího zdraví – vliv kávy tedy objasnila jen částečně. O rozporech výzkumů ani o doporučení vědců text nemluví a lidé se zhoršujícím se zdravím podle něj kávu spíš přestávají pít."
+            }
+          ]
+        },
+        {
+          "id": "g06",
+          "taskType": "porozumeni",
+          "instruction": "Přečtěte si uvedený text a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textu píše nebo co z textu vyplývá.",
+          "passageTitle": "TEXT K ÚLOHÁM 24 AŽ 26",
+          "passage": "Ozonová vrstva tvoří nad planetou neviditelný ochranný štít, který pohlcuje škodlivé UV záření ze Slunce. Život na Zemi by bez ní nebyl možný. Koncentrace ozonu nad Antarktidou se poprvé začala měřit v 50. letech 20. století. Koncem sedmdesátých let britský meteorolog Jonathan Shanklin zpracovával záznamy z takzvaných Dobsonových spektrofotometrů – přístrojů, které měří změny atmosférického ozonu. Časem pozoroval, že hladina ozonu klesá. Do roku 1984 ztratila ozonová vrstva nad antarktickou výzkumnou stanicí ve srovnání s předchozími desetiletími třetinu své tloušťky. Shanklin své zjištění o nedostatku ozonu publikoval v roce 1985 a naznačil, že souvisí s chemickými sloučeninami zvanými chlorofluorouhlovodíky (CFC) patřícími mezi freony. Jednalo se o lidmi vyrobené látky používající se v aerosolech a chladicích zařízeních. Shanklinův objev se proslavil pod názvem ozonová díra.\n\nVarovné signály však přišly mnohem dříve. Už v roce 1974 publikovali Mario Molina a F. Sherry Rowland článek o tom, že ozon v zemské stratosféře mohou ničit freony. Jejich zjištění ale okamžitě napadli průmyslníci, kteří trvali na tom, že jejich výrobky jsou bezpečné. Používání freonů tak pokračovalo a zanedlouho už byly doslova všudypřítomné. Právě až Shanklinův výzkum dal původní práci Moliny a Rowlanda za pravdu a ti nakonec v roce 1995 získali Nobelovu cenu. Od té doby se vědci snaží zjistit, jak a proč k problému dochází. „Byla to velká záhada,“ říká profesorka atmosférické chemie a klimatologie na MIT Susan Solomonová. „Všechny údaje ukazovaly na kombinaci nárůstu chlóru z lidského používání freonů a přítomnosti polárních stratosférických mraků jako na spouštěč toho, co se stalo,“ vysvětluje.\n\nProč už ale o ozonové díře neslyšíme tak často, vzhledem k tomu, o jak vážnou hrozbu šlo? „Už není takový důvod k obavám jako kdysi,“ podotýká docentka fyziky životního prostředí na Canterburské univerzitě na Novém Zélandu Laura Revellová. V roce 1987 byl přijat Montrealský protokol na ochranu ozonové vrstvy postupným omezováním používání chemických látek, které ji poškozují. Smlouvou byl mimo jiné zřízen fond, který měl poskytovat finanční a technickou pomoc rozvojovým zemím při plnění jejich závazků.\n\nV 90. letech a na počátku nového tisíciletí pak byla výroba a spotřeba freonů zastavena úplně a trvale. Do roku 2009 bylo upuštěno od používání 98 procent chemických látek, které Montrealský protokol specifikoval. Montrealský protokol podepsaly už všechny země na světě, a je proto považován za triumf mezinárodní spolupráce v oblasti životního prostředí.",
+          "questions": [
+            {
+              "n": 24,
+              "stem": "Které z následujících tvrzení je v rozporu s informacemi v uvedeném textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Freony ozonovou vrstvu ničí tak, že chlór v nich obsažený reaguje ve stratosféře s molekulami ozonu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Montrealský protokol s okamžitou platností zakázal používání látek poškozujících ozon."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Ztenčování ozonové vrstvy v 2. polovině 20. století souviselo s chlorofluorouhlovodíky."
+                    },
+                    {
+                      "key": "D",
+                      "text": "V dnešní době se stav ozonové vrstvy pomalu zlepšuje."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Podle textu Montrealský protokol chránil ozonovou vrstvu „postupným omezováním“ používání škodlivých látek a výroba freonů byla zastavena až v 90. letech a později – nešlo tedy o okamžitý zákaz. Ostatní tvrzení textu neodporují (C text přímo uvádí, A a D s ním jsou v souladu)."
+            },
+            {
+              "n": 25,
+              "stem": "Která z následujících možností nejlépe vystihuje, jaká byla podle uvedeného textu bezprostřední reakce na zjištění, že freony mohou ničit ozon v zemské stratosféře?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Výrobci produktů s freony toto zjištění odmítli."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Vznikl fond, ze kterého se začalo přispívat na výzkum freonů."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Mario Molina a F. Sherry Rowland za to získali Nobelovu cenu."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Výrobci produktů s freony nahradili freony jinými, méně škodlivými látkami."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Zjištění Moliny a Rowlanda „okamžitě napadli průmyslníci“, kteří trvali na bezpečnosti svých výrobků. Nobelova cena přišla až v roce 1995 a fond vznikl s Montrealským protokolem (a ne na výzkum freonů)."
+            },
+            {
+              "n": 26,
+              "stem": "Co o výrobě freonů podle uvedeného textu platí dnes?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Výroba freonů ve světě klesla o 98 %."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Freony se ve světě už vůbec nevyrábějí."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Dnešní freony už ozonovou vrstvu nepoškozují."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Freony se dnes vyrábějí už jen ve 2 % zemí."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text uvádí, že výroba a spotřeba freonů byla zastavena „úplně a trvale“. Údaj 98 % se týká látek, od jejichž používání se do roku 2009 upustilo, ne poklesu výroby freonů ani podílu zemí."
+            }
+          ]
+        },
+        {
+          "id": "g07",
+          "taskType": "porozumeni",
+          "instruction": "Přečtěte si uvedený text a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textu píše nebo co z textu vyplývá.",
+          "passageTitle": "TEXT K ÚLOHÁM 27 AŽ 29",
+          "passage": "Kalifornii neproslavila jen zlatá horečka, ale také dodnes prosperující citrusový průmysl. Pomeranče přivezli v roce 1769 do Kalifornie španělští misionáři a již o století později se staly v podstatě nejcennějším kalifornským zbožím. Počet akrů pomerančovníkových sadů v jižní Kalifornii vzrostl mezi lety 1877 a 1890 sedminásobně a počet železničních vagonů vyvážejících tyto šťavnaté poklady se zdvojnásobil na téměř 6 000 ročně. Počínaje rokem 1888 přepravovala společnost Southern Pacific pomeranče ve vagonech chlazených obrovskými bloky ledu. Hodnota transportovaných pomerančů za rok 1878 činila 20 milionů dolarů. Vše ale narušil perlovec zhoubný, který v sadech způsobil katastrofu.\n\nK populační explozi tohoto škůdce došlo v roce 1878 na Novém Zélandu. Je záhadou, jak se tento nebezpečný škůdce, připomínající bílý polštář, rozšířil na citrusy po celém světě. Agresivita napadení plantáží předčila všechny do té doby zaznamenané problémy se škůdci. V Kalifornii se snažili perlovce likvidovat velrybím tukem, nahříváním párou či pálením infikovaných větviček, vše bylo ale bezvýsledné. Pěstitelé tedy museli zasažené stromy vykopat a spálit. Toho času rostlo v Kalifornii 600 000 pomerančovníků. Přesný počet zničených stromů není znám, ale rozměr katastrofy lze vyvodit z objemu vývozu. V roce 1887 bylo přepraveno 2 000 nákladních vagonů s pomeranči, o rok později už pouze 400.\n\nNaději poskytl australský entomolog Fraser Crawford, který objevil parazitickou mouchu *Cryptochetum iceryae*, která napadala perlovce zhoubné. Do Austrálie byl v roce 1888 vyslán americký entomolog Albert Koeble, který posléze objevil, že perlovec je požírán i slunéčkem australským. Tomuto objevu však nebyla věnována velká pozornost a naděje všech se upíraly k parazitické mouše. Do USA byly tedy zaslány tyto mouchy a pro jistotu i malá zásilka slunéčka australského. To se ukázalo jako prozíravé, neboť nasazení parazitických much nemělo v Kalifornii žádný účinek. Na druhou stranu slunéčko australské požíralo perlovce s velkou razancí, proto bylo od října 1888 do ledna 1889 do USA zasláno 164 slunéček australských. Koncem roku 1889 došlo k vyhubení téměř všech perlovců.\n\nKoebleho objev je dodnes prezentován jako první historický příklad použití moderní biologické ochrany na základě vědeckého poznání. Příběh pokračuje až do současnosti, neboť i přes vynález syntetických pesticidů ve 20. století se ukázalo, že perlovec je proti většině z nich rezistentní, a tak někteří pěstitelé citrusů dodnes organizují vysazování slunéčka australského do svých sadů.",
+          "questions": [
+            {
+              "n": 27,
+              "stem": "Ve které z následujících možností jsou dle informací v uvedeném textu události seřazeny chronologicky od nejstarší po nejmladší?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "zlatá horečka v Kalifornii – objevení parazitické mouchy na Novém Zélandu – rozšíření perlovce zhoubného do celého světa – cesta A. Koebleho do Austrálie"
+                    },
+                    {
+                      "key": "B",
+                      "text": "příjezd španělských misionářů do Kalifornie – založení společnosti Southern Pacific – výzkum F. Crawforda v Austrálii – rozšíření perlovce zhoubného do celého světa"
+                    },
+                    {
+                      "key": "C",
+                      "text": "populační exploze perlovce zhoubného – dramatický pokles objemu vývozu pomerančů z Kalifornie – první použití syntetických pesticidů – nasazení slunéčka australského v Kalifornii"
+                    },
+                    {
+                      "key": "D",
+                      "text": "populační exploze perlovce zhoubného – cesta A. Koebleho do Austrálie – nasazení slunéčka australského v Kalifornii – vynález syntetických pesticidů"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Exploze perlovce (1878) → Koebleho cesta do Austrálie (1888) → nasazení slunéčka v Kalifornii (1888–1889) → vynález syntetických pesticidů (20. století). V C jsou pesticidy (20. stol.) před slunéčkem (1888), v A je moucha chybně na Novém Zélandu a v B je rozšíření perlovce až po Crawfordově výzkumu (a založení Southern Pacific text nedatuje)."
+            },
+            {
+              "n": 28,
+              "stem": "Který z následujících údajů v uvedeném textu **není** obsažen?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "počet pomerančovníků zničených v roce 1887"
+                    },
+                    {
+                      "key": "B",
+                      "text": "počet přepravených nákladních vagonů s pomeranči v roce 1888"
+                    },
+                    {
+                      "key": "C",
+                      "text": "hodnota pomerančů transportovaných v roce 1878"
+                    },
+                    {
+                      "key": "D",
+                      "text": "poměr rozlohy pomerančovníkových sadů v jižní Kalifornii v letech 1877 a 1890"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Text výslovně uvádí, že „přesný počet zničených stromů není znám“. Počet vagonů v roce 1888 (400), hodnota pomerančů za rok 1878 (20 mil. dolarů) i poměr rozlohy sadů (sedminásobek) v textu jsou."
+            },
+            {
+              "n": 29,
+              "stem": "Která z metod byla podle autora uvedeného textu při likvidaci perlovce zhoubného nejúčinnější?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "použití pesticidů"
+                    },
+                    {
+                      "key": "B",
+                      "text": "nasazení parazitické mouchy"
+                    },
+                    {
+                      "key": "C",
+                      "text": "nasazení slunéčka australského"
+                    },
+                    {
+                      "key": "D",
+                      "text": "potírání větví velrybím tukem"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Slunéčko australské požíralo perlovce „s velkou razancí“ a do konce roku 1889 byli téměř všichni perlovci vyhubeni. Moucha neměla žádný účinek, velrybí tuk byl bezvýsledný a proti většině pesticidů je perlovec rezistentní."
+            }
+          ]
+        },
+        {
+          "id": "g08",
+          "taskType": "dva_texty",
+          "instruction": "Přečtěte si oba texty v zadání a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textech píše nebo co z textů vyplývá.",
+          "passageTitle": "TEXT K ÚLOHÁM 30 AŽ 33",
+          "passage": "**Text 1**\n\nElektromobilita je nevyhnutelným krokem na cestě za uhlíkovou neutralitou. Stále se však šíří různé fámy o elektromobilitě. Například ta o počtu Dukovan nebo Temelínů, které budeme muset postavit, když se rozvine ta elektromobilita. V ČR je registrováno 5 924 995 osobních automobilů. Za rok 2019 ujely osobní automobily v ČR celkem 62 445 mil. kilometrů. Průměrná spotřeba elektromobilu, kromě pár vozů s vyšší spotřebou, je 15 kWh na 100 km.\n\nNyní ta základní otázka. V případě, že by všechny osobní vozy v ČR v roce 2019 poháněla elektrická energie, kolik by jí celkem spotřebovaly za rok? Se zohledněním průměrné spotřeby elektromobilu je to 9,37 TWh. Výpočet zvládnou i žáci základních škol v lockdownu. V roce 2019 se v ČR vyrobilo 87,0 TWh elektrické energie. Import byl 11,0 TWh a export 24,1 TWh. Reálně jsme tedy vyrobili navíc a vyvezli 13,1 TWh elektrické energie. Je to tedy více, než by spotřebovaly ty nenasytné elektromobily. Vidíte ten paradox? Kolik lidí irituje to, že elektromobily mají vlastně „výfuk v komínu elektrárny“. Omyl! Dýcháme ty zplodiny všichni. Všem v ČR to pomalu ničí zdraví jenom proto, aby naši sousedé mohli dýchat čistý vzduch.\n\nNo a nyní si sami odpovězte na otázku, kolik těch Temelínů se vlastně musí nově postavit, když by pouze stačilo nevyvážet energii, jejíž výroba ničí zdraví občanům. Hlavně se nenechte napálit experty na všechno z univerzit, kteří jsou zcela jistě ti největší odborníci na elektromobilitu. Popřemýšlejte, jestli není lepší čerpat informace raději u těch, kteří tyto technologie reálně – každodenně využívají. A kdo elektromobil má, neměnil by jej.\n\n*MATYÁŠ, M.: 33 a 3/4 Temelínů.*\n\n**Text 2**\n\nBlog pana Matyáše považuji za vysloveně tendenční až demagogický. Pokusím se nastínit pár problémů s elektromobilitou, které opomíjí a zamlčuje.\n\nV blogu autor uvádí, že by v roce 2019 všechna auta za předpokladu elektrického pohonu spotřebovala 9,37 TWh. S tím nelze nesouhlasit, to je však jediné. Autor dále píše, že elektřiny je dost, že ji ČR vyváží, a že kdyby nevyvážela, tak se může vše vesele dobíjet. S tím zásadně nesouhlasím. ČR není ostrovní energetický systém, omezit vývoz elektřiny není možné bez dosažení jednomyslné shody na mezinárodní úrovni. Silová elektřina se navíc obchoduje na mezinárodních burzách.\n\nZkuste si představit, že Evropa přejde na elektromobilitu, a dejte si to do souvislosti s trendem uzavírání jaderných a uhelných elektráren. Elektřiny nebude dost. Logický důsledek bude zvýšené riziko blackoutů a razantní nárůst cen elektrické energie. Přenosová síť navíc není dimenzována na rychlý přechod k obnovitelným zdrojům a na nárůst nabíjecích míst. Její rekonstrukce bude stát miliardy eur. Solární energie je zcela nevyužitelná v kontextu elektromobility. 99 % lidí bude chtít jaksi nabíjet auta v noci, kdy toho slunečního záření zrovna moc není. A skladovat elektřinu také zatím moc neumíme.\n\nPříklad z Holandska, kde je elektromobilita masivně podporována a prodej nových aut na běžná paliva omezován a došlo zde k razantnímu nárůstu obchodu s ojetinami na úkor ostatních prodejů, ukazuje, že lidé po elektromobilech neprahnou. Nemám absolutně nic proti elektromobilitě, může být do budoucna přínosem a přispět ke snižování emisí uhlíkových plynů. Kdyby šla přirozenou nedotovanou cestou na základě poptávky na trhu. Současné ekošílenství ale správná cesta není.\n\n*DOČEKAL, J.: 3 a 3/4 Temelínů? Polemika s článkem pana Matyáše.*",
+          "questions": [
+            {
+              "n": 30,
+              "stem": "Která z následujících možností nejlépe vystihuje, jak se autoři jednotlivých textů stavějí k otázce poptávky spotřebitelů po elektromobilech?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Autor prvního textu se k této otázce přímo nevyjadřuje, pouze zmiňuje, že vlastníci elektromobilů jsou s nimi spokojeni, autor druhého textu na příkladu ze zahraničí demonstruje nezájem lidí o elektromobily a s tím spojené důsledky na trhu s ojetými vozy."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Autor prvního textu ze spokojenosti uživatelů elektromobilů vyvozuje závěr, že díky současné oblibě se nelze obávat nezájmu o elektromobily, autor druhého textu s tímto tvrzením nesouhlasí, protože podle něj ani dnešní uživatelé elektromobilů nejsou se svými vozy spokojeni."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Autor prvního textu se touto otázkou ani okrajově nezabývá, autor druhého textu poukazuje na zvýšený zájem obyvatel Holandska o elektromobily na úkor vozidel se spalovacími motory."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Autor prvního textu se nezájmu o elektromobily neobává, což dokládá několika příklady ze zahraničí, autor druhého textu je k poptávce po elektromobilech skeptický, což dokládá vlastní zkušeností s koupí nového vozu."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Text 1 se poptávce věnuje jen poslední větou („kdo elektromobil má, neměnil by jej“). Text 2 na příkladu Holandska ukazuje, že lidé po elektromobilech „neprahnou“ a roste obchod s ojetinami. Text 1 žádné zahraniční příklady neuvádí a text 2 nemluví o zvýšeném zájmu ani o nespokojenosti uživatelů či vlastní koupi vozu."
+            },
+            {
+              "n": 31,
+              "stem": "Které z následujících tvrzení vyplývá z druhého textu, ale nikoli z prvního textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "V ČR se aktuálně nacházejí dvě jaderné elektrárny."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Výroba elektrické energie může lidem ničit zdraví."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Většina lidí bude chtít své elektromobily nabíjet přes noc."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Rozvoj elektromobility přinese nové zdroje elektrické energie."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Jen text 2 uvádí, že 99 % lidí bude chtít nabíjet auta v noci. O škodlivosti výroby elektřiny pro zdraví mluví naopak text 1, počet jaderných elektráren v ČR ani nové zdroje z elektromobility z textů nevyplývají."
+            },
+            {
+              "n": 32,
+              "stem": "Která z následujících možností nejlépe vystihuje, jaké autoři jednotlivých textů zaujímají postoje k tvrzení, že k zajištění dostatečného množství elektrické energie pro elektromobily postačí omezit export elektrické energie?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Autoři obou textů se shodují, že v omezení exportu elektrické energie je cesta k zajištění dostatečného množství elektrické energie pro přechod na elektromobilitu bez nutnosti hledat její nové zdroje."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Autor prvního textu toto tvrzení hodnotí velice kriticky a uvádí je jako příklad fámy o elektromobilitě, autor druhého textu se k tomuto tvrzení výslovně nevyjadřuje."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Autor prvního textu se k tomuto tvrzení nikterak nevyjadřuje, autor druhého textu s tímto tvrzením souhlasí, neboť podle něj je možné v rámci mezinárodního společenství dojít k dohodě na energetické soběstačnosti v jednotlivých zemích."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Podle autora prvního textu by k zajištění dostatečného množství elektrické energie pro elektromobily stačilo energii nevyvážet, autor druhého textu tuto variantu považuje za nereálnou z důvodu fungování mezinárodního obchodu s elektrickou energií a zapojení ČR v něm."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Autor 1 tvrdí, že by „pouze stačilo nevyvážet energii“. Autor 2 s tím „zásadně nesouhlasí“, protože ČR není ostrovní systém, omezení vývozu vyžaduje mezinárodní shodu a elektřina se obchoduje na burzách."
+            },
+            {
+              "n": 33,
+              "stem": "Ke které z následujících tezí vyjadřují autoři v jednotlivých textech nejpodobnější názor?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Elektromobilita může přispět ke snižování emisí uhlíkových plynů."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Česká republika by měla usilovat o energetickou neutralitu."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Mělo by dojít k rozšíření jaderných elektráren na území naší země."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Přechod na elektromobilitu naráží na nízký zájem lidí o vozy na elektrickou energii."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Autor 1 označuje elektromobilitu za nevyhnutelný krok k uhlíkové neutralitě, autor 2 připouští, že může „přispět ke snižování emisí uhlíkových plynů“. V ostatních tezích se autoři neshodují nebo se k nim nevyjadřují (nízký zájem tvrdí jen autor 2)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analytic",
+      "title": "Analytický oddíl",
+      "timeLimitSec": 3000,
+      "groups": [
+        {
+          "id": "g09",
+          "taskType": "data",
+          "instruction": "Není dovoleno používat kalkulačky! Není-li uvedeno jinak, jsou všechna použitá čísla reálná a zapsaná v desítkové soustavě. Čáry, které se jeví jako přímé, považujte za přímky. Číslo umístěné u části geometrického obrazce označuje velikost této části. **O velikosti neoznačených částí obrazců nelze činit žádné předpoklady.** Geometrické úlohy řešte pomocí matematických znalostí, nikoli odhadem či měřením z obrázku. Obsahuje-li úloha proměnnou, je třeba pro řešení uvažovat všechny její přípustné hodnoty. Úlohy řešte v libovolném pořadí. Žádná úloha nenavazuje na výsledek předchozích úloh.",
+          "passageTitle": "TEXT K ÚLOHÁM 34 AŽ 36",
+          "passage": "Graf prezentuje počty kyberútoků v jednotlivých částech světa v letech 2020 a 2021. Všechny prezentované počty jsou dělitelné 50.",
+          "chart": {
+            "kind": "bar",
+            "title": "Počet kyberútoků v jednotlivých částech světa",
+            "yStep": 50,
+            "categories": [
+              "Afrika",
+              "Asie a Tichomoří",
+              "Latinská Amerika",
+              "Evropa",
+              "Severní Amerika"
+            ],
+            "series": [
+              {
+                "name": "2020",
+                "values": [
+                  1400,
+                  1100,
+                  800,
+                  400,
+                  350
+                ]
+              },
+              {
+                "name": "2021",
+                "values": [
+                  1550,
+                  1350,
+                  1200,
+                  650,
+                  550
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 34,
+              "stem": "Ve které části světa byl v roce 2021 zaznamenán poloviční nominální meziroční nárůst počtu kyberútoků než v Latinské Americe?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "v Africe"
+                    },
+                    {
+                      "key": "B",
+                      "text": "v Asii a Tichomoří"
+                    },
+                    {
+                      "key": "C",
+                      "text": "v Evropě"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v Severní Americe"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Latinská Amerika: $1\\,200 - 800 = 400$, polovina je 200. Nárůsty: Afrika $150$, Asie a Tichomoří $250$, Evropa $250$, Severní Amerika $550 - 350 = 200$."
+            },
+            {
+              "n": 35,
+              "stem": "O kolik procent vzrostl v Latinské Americe počet kyberútoků v roce 2021 oproti roku 2020?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "o 30 %"
+                    },
+                    {
+                      "key": "B",
+                      "text": "o 40 %"
+                    },
+                    {
+                      "key": "C",
+                      "text": "o 45 %"
+                    },
+                    {
+                      "key": "D",
+                      "text": "o 50 %"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Z 800 na 1 200 útoků je nárůst o 400, tj. $\\frac{400}{800} = 50\\ \\%$."
+            },
+            {
+              "n": 36,
+              "stem": "V jakém vzájemném poměru byl v roce 2020 počet kyberútoků v Latinské Americe k počtu kyberútoků v Evropě?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "1 : 2"
+                    },
+                    {
+                      "key": "B",
+                      "text": "1 : 3"
+                    },
+                    {
+                      "key": "C",
+                      "text": "2 : 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2 : 1"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "V roce 2020 bylo v Latinské Americe 800 útoků a v Evropě 400, poměr je $800 : 400 = 2 : 1$."
+            }
+          ]
+        },
+        {
+          "id": "g10",
+          "taskType": "data",
+          "instruction": "Není dovoleno používat kalkulačky! Není-li uvedeno jinak, jsou všechna použitá čísla reálná a zapsaná v desítkové soustavě. Čáry, které se jeví jako přímé, považujte za přímky. Číslo umístěné u části geometrického obrazce označuje velikost této části. **O velikosti neoznačených částí obrazců nelze činit žádné předpoklady.** Geometrické úlohy řešte pomocí matematických znalostí, nikoli odhadem či měřením z obrázku. Obsahuje-li úloha proměnnou, je třeba pro řešení uvažovat všechny její přípustné hodnoty. Úlohy řešte v libovolném pořadí. Žádná úloha nenavazuje na výsledek předchozích úloh.",
+          "passageTitle": "TEXT K ÚLOHÁM 37 AŽ 39",
+          "passage": "Tabulka zobrazuje vývoj indexu cen jednotlivých komodit na trhu stavebnin v období července 2020 až ledna 2023. *Indexy cen se stanovují jako podíl průměrné ceny komodity v daném měsíci a průměrné ceny komodity v červenci 2020.*\n\n<table>\n<thead>\n<tr><th>komodita</th><th>červenec<br>2020</th><th>leden<br>2021</th><th>červenec<br>2021</th><th>leden<br>2022</th><th>červenec<br>2022</th><th>leden<br>2023</th></tr>\n</thead>\n<tbody>\n<tr><th scope=\"row\">výrobky z oceli</th><td>1,00</td><td>1,60</td><td>1,55</td><td>1,90</td><td>1,67</td><td>1,50</td></tr>\n<tr><th scope=\"row\">tepelné izolace</th><td>1,00</td><td>1,38</td><td>1,55</td><td>2,10</td><td>1,80</td><td>1,68</td></tr>\n<tr><th scope=\"row\">výrobky ze dřeva</th><td>1,00</td><td>1,72</td><td>1,63</td><td>1,78</td><td>1,70</td><td>1,62</td></tr>\n<tr><th scope=\"row\">betonové výrobky</th><td>1,00</td><td>1,01</td><td>1,23</td><td>1,33</td><td>1,37</td><td>1,42</td></tr>\n<tr><th scope=\"row\">cihlářské výrobky</th><td>1,00</td><td>1,00</td><td>1,43</td><td>1,73</td><td>1,75</td><td>1,72</td></tr>\n</tbody>\n</table>",
+          "questions": [
+            {
+              "n": 37,
+              "stem": "Pokud byla v lednu 2021 průměrná cena výrobků z oceli 8 000 Kč, jaká byla průměrná cena výrobků z oceli v lednu 2023?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "5 600 Kč"
+                    },
+                    {
+                      "key": "B",
+                      "text": "6 400 Kč"
+                    },
+                    {
+                      "key": "C",
+                      "text": "7 200 Kč"
+                    },
+                    {
+                      "key": "D",
+                      "text": "7 500 Kč"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Index 1,60 odpovídá 8 000 Kč, cena v červenci 2020 tedy byla $8\\,000 : 1{,}6 = 5\\,000$ Kč. V lednu 2023 (index 1,50) to je $5\\,000 \\cdot 1{,}5 = 7\\,500$ Kč."
+            },
+            {
+              "n": 38,
+              "stem": "Ve kterém měsíci byl index cen alespoň jedné komodity nižší než před půl rokem?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen v červenci 2022"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen v lednu 2023"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen v každém z dvojice červenec 2022, leden 2023"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v každém z trojice červenec 2021, červenec 2022, leden 2023"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Červenec 2021: ocel 1,55 < 1,60 (i dřevo 1,63 < 1,72). Leden 2022: všechny indexy vzrostly. Červenec 2022: ocel 1,67 < 1,90. Leden 2023: ocel 1,50 < 1,67. Leden 2021 oproti červenci 2020 žádný index neklesl. Platí tedy pro trojici červenec 2021, červenec 2022, leden 2023."
+            },
+            {
+              "n": 39,
+              "stem": "Pokud průměrná cena tepelné izolace klesla v červenci 2022 oproti lednu 2022 o 540 Kč, jaká byla průměrná cena tepelné izolace v červenci 2020?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "675 Kč"
+                    },
+                    {
+                      "key": "B",
+                      "text": "1 350 Kč"
+                    },
+                    {
+                      "key": "C",
+                      "text": "1 800 Kč"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2 348 Kč"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Index klesl z 2,10 na 1,80, tj. o 0,30 ceny z července 2020. Ta je proto $540 : 0{,}3 = 1\\,800$ Kč."
+            }
+          ]
+        },
+        {
+          "id": "g11",
+          "taskType": "porovnani",
+          "instruction": "V následujících úlohách porovnejte hodnoty výrazů uvedených v buňkách vlevo a vpravo a zvolte odpověď:\n\n**(A)** pokud hodnota vlevo je větší,\n\n**(B)** pokud hodnota vpravo je větší,\n\n**(C)** pokud jsou si hodnoty rovny,\n\n**(D)** pokud nelze jednoznačně určit, která hodnota je větší (tj. nelze jednoznačně rozhodnout, je-li hodnota vlevo větší než hodnota vpravo, menší než hodnota vpravo, nebo stejně velká jako hodnota vpravo).\n\nInformace týkající se jednoho nebo obou výrazů jsou uvedeny vždy nad oběma výrazy.",
+          "questions": [
+            {
+              "n": 40,
+              "stem": "Vlak vyjel z výchozí stanice, každý úsek jízdy jede průměrnou rychlostí 120 km/h, vždy po 15 minutách jízdy stojí 5 minut ve stanici. Auto jede stálou rychlostí o třetinu menší, než je průměrná rychlost vlaku během jízdy, jede bez zastávek.",
+              "compare": {
+                "left": "počet kilometrů, které ujede auto za 60 minut od vyjetí",
+                "right": "počet kilometrů, které ujede vlak za 60 minut od vyjetí"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Vlak za 60 minut jede třikrát po 15 minutách (a třikrát stojí po 5 minutách), tj. 45 minut rychlostí 120 km/h: 90 km. Auto jede $\\frac{2}{3} \\cdot 120 = 80$ km/h, za hodinu ujede 80 km. Větší je hodnota vpravo."
+            },
+            {
+              "n": 41,
+              "stem": "",
+              "compare": {
+                "left": "minimální počet přímek, které mohou rozdělit rovinu na 7 částí",
+                "right": "3"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Dvě přímky rozdělí rovinu nejvýše na 4 části, tři přímky (v obecné poloze) na 7 částí. Minimální počet je tedy 3."
+            },
+            {
+              "n": 42,
+              "stem": "",
+              "compare": {
+                "left": "počet všech kladných celých čísel menších než 1 000, která jsou dělitelná dvanácti a současně nejsou dělitelná osmi",
+                "right": "počet všech kladných celých čísel menších než 1 000, která jsou dělitelná osmi a současně nejsou dělitelná dvanácti"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Násobků 12 pod 1 000 je 83, násobků 8 je 124, násobků obou (tj. 24) je 41. Vlevo $83 - 41 = 42$, vpravo $124 - 41 = 83$."
+            },
+            {
+              "n": 43,
+              "stem": "Deset stavebnicových kostek tvaru kvádru je poskládáno do řady těsně k sobě (každé dvě sousední kostky se dotýkají stejně velkými stěnami). Každá kostka má délky hran 3 cm, 5 cm a 7 cm.",
+              "compare": {
+                "left": "délka uvedené řady kostek",
+                "right": "50 cm"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Dotýkají-li se kostky stěnami stejné velikosti, leží všechny stejně a délka řady je $10 \\cdot 3 = 30$ cm, $10 \\cdot 5 = 50$ cm, nebo $10 \\cdot 7 = 70$ cm podle orientace. Nelze rozhodnout."
+            },
+            {
+              "n": 44,
+              "stem": "Součet dvou různých kladných celých čísel $A$ a $B$ je 21.",
+              "compare": {
+                "left": "$\\frac{A \\cdot B}{2}$",
+                "right": "60"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Součin dvou různých kladných celých čísel se součtem 21 je největší pro 10 a 11: $110$. Tedy $\\frac{A \\cdot B}{2} \\le 55 < 60$."
+            },
+            {
+              "n": 45,
+              "stem": "",
+              "compare": {
+                "left": "počet sekund ve $\\frac{13}{9}$ hodiny",
+                "right": "počet minut ve $\\frac{13}{9}$ dne"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Vlevo $\\frac{13}{9} \\cdot 3\\,600 = 5\\,200$, vpravo $\\frac{13}{9} \\cdot 1\\,440 = 2\\,080$."
+            }
+          ]
+        },
+        {
+          "id": "g12",
+          "taskType": "dostatecnost",
+          "instruction": "Každá z následujících úloh se skládá z otázky a dvou tvrzení, označených jako (1) a (2), která obsahují určité informace. Některé úlohy také obsahují úvodní informace. S využitím všech těchto informací, znalostí matematiky a objektivních známých faktů (tj. např. kolik dní má červenec, co znamená pojem zleva doprava...) rozhodněte, zda jsou dané informace **dostačující pro určení jednoznačné odpovědi** na otázku v zadání.",
+          "questions": [
+            {
+              "n": 46,
+              "stem": "Na táboře musely děti splnit postupně čtyři táborové aktivity, jimiž byly stavění příbytku, lov, sběr a vaření. Kterou táborovou aktivitu plnily děti jako druhou?\n\nTvrzení (1) Aby si děti mohly uvařit, musely předtím splnit jak lov, tak sběr.\n\nTvrzení (2) Stavění příbytku plnily děti nejdříve.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Z obou tvrzení: 1. stavění, vaření až po lovu i sběru, tedy pořadí stavění – lov – sběr – vaření, nebo stavění – sběr – lov – vaření. Druhá aktivita může být lov i sběr, ani obě tvrzení nestačí."
+            },
+            {
+              "n": 47,
+              "stem": "Čísla $x$ a $y$ jsou celá. Je číslo $x$ sudé?\n\nTvrzení (1) Součin čísel $x$ a $y$ je sudé číslo.\n\nTvrzení (2) Dvojnásobek čísla $x$ je rovný čtvrtině čísla $y$.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Z (2) plyne $y = 8x$, takže součin $xy = 8x^2$ je sudý vždy a (1) nepřidává nic. Vyhovuje $x = 1, y = 8$ (liché $x$) i $x = 2, y = 16$ (sudé $x$). Ani obě tvrzení nestačí."
+            },
+            {
+              "n": 48,
+              "stem": "V první řadě kina je devět sedadel označených popořadě čísly 1 až 9. Část z nich obsadili Novákovi a zbytek Svobodovi, všichni členové každé rodiny sedí v nepřetržité řadě. Kolik ze sedadel první řady kina obsadili Novákovi?\n\nTvrzení (1) Součet čísel sedadel, na nichž sedí Novákovi, je menší než součet čísel sedadel, na nichž sedí Svobodovi.\n\nTvrzení (2) Kdyby si člen rodiny Novákových vyměnil místo se sousedem z rodiny Svobodových, pak by součet čísel sedadel, na nichž by po výměně seděli Novákovi, byl roven 11.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Novákovi sedí buď na sedadlech $1$ až $k$, nebo $k$ až $9$. Z (1) mohou sedět např. na 1–2 i 1–3 – nestačí. (2): Výměna na hranici změní součet o 1. Sedí-li vlevo, je $\\frac{k(k+1)}{2} + 1 = 11$, tedy $k = 4$; sedí-li vpravo, musel by být součet 12, což žádný úsek končící sedadlem 9 nemá (9, 17, …). Novákovi tedy obsadili 4 sedadla – stačí samo (2)."
+            },
+            {
+              "n": 49,
+              "stem": "Je $x$ nezáporné číslo?\n\nTvrzení (1) $x(x + 1) > 0$\n\nTvrzení (2) $|x + 1| < 1$",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "(1) platí pro $x > 0$ i pro $x < -1$ – nestačí. (2) znamená $-2 < x < 0$, tedy $x$ je určitě záporné a odpověď je jednoznačně „ne“. Stačí právě jedno tvrzení."
+            }
+          ]
+        },
+        {
+          "id": "g13",
+          "taskType": "slovni",
+          "instruction": "Vyřešte následující slovní úlohy.",
+          "questions": [
+            {
+              "n": 50,
+              "stem": "Tomáš má o 10 odznaků více než Lukáš s Pavlem dohromady. Pavel má o 50 odznaků méně než Tomáš. Celkem kolik odznaků má Lukáš?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "20"
+                    },
+                    {
+                      "key": "B",
+                      "text": "30"
+                    },
+                    {
+                      "key": "C",
+                      "text": "40"
+                    },
+                    {
+                      "key": "D",
+                      "text": "60"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "$T = L + P + 10$ a $P = T - 50$. Dosazením $T = L + T - 50 + 10$, tedy $L = 40$."
+            },
+            {
+              "n": 51,
+              "stem": "Papírová rulička od spotřebovaného toaletního papíru má výšku 8 cm a poloměr $\\frac{3}{\\pi}$ cm.\n\nRuličku rozstřihneme šikmým střihem a rozbalíme, čímž dostaneme rozbalenou ruličku na obrázku vpravo. Jaký je obsah rozbalené ruličky? Tloušťku papíru zanedbejte.",
+              "figure": "/figures/osp-2026-02-a/q51.png",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$\\frac{24}{\\pi}$ cm$^2$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$\\frac{48}{\\pi}$ cm$^2$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "24 cm$^2$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "48 cm$^2$"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Obsah papíru se rozstřižením nemění, rovná se plášti válce: $2\\pi r v = 2\\pi \\cdot \\frac{3}{\\pi} \\cdot 8 = 48$ cm$^2$."
+            },
+            {
+              "n": 52,
+              "stem": "Rovnoramenný lichoběžník $ABCD$ má vnitřní úhly $\\alpha$, $\\beta$, $\\gamma$, $\\delta$.\n\nKolik stupňů měří úhel $\\delta$, je-li úhel $\\gamma$ o $40°$ větší než úhel $\\alpha$?",
+              "figure": "/figures/osp-2026-02-a/q52.png",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$55°$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$70°$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$110°$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$140°$"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "V rovnoramenném lichoběžníku je $\\gamma = \\delta$ a $\\alpha + \\delta = 180°$. Z $\\delta = \\alpha + 40°$ plyne $2\\alpha + 40° = 180°$, $\\alpha = 70°$ a $\\delta = 110°$."
+            },
+            {
+              "n": 53,
+              "stem": "Skladník začal v 8 hodin skládat z kamionu náklad, který obsahuje 320 krabic. O hodinu později, když měl složeno právě 64 krabic, mu přišel na pomoc další, stejně výkonný skladník. Nejdříve v kolik hodin budou mít společně složený celý náklad, budou-li i nadále pracovat každý tímto tempem?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "v 10 hodin 30 minut"
+                    },
+                    {
+                      "key": "B",
+                      "text": "v 11 hodin"
+                    },
+                    {
+                      "key": "C",
+                      "text": "v 11 hodin 30 minut"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v 11 hodin 40 minut"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Jeden skladník složí 64 krabic za hodinu, dva 128. Zbývá $320 - 64 = 256$ krabic, tj. 2 hodiny práce od 9 hodin – hotovo v 11 hodin."
+            },
+            {
+              "n": 54,
+              "stem": "Lada každý druhý den vysává, každý třetí den vytírá a každý pátý den utírá prach. Ve čtvrtek 31. srpna dělala všechny tři činnosti. Kdy nejdříve nastane takový den, v němž bude dělat opět všechny tři činnosti, ale zároveň tento den nebude sobota ani neděle?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "v druhé půlce září"
+                    },
+                    {
+                      "key": "B",
+                      "text": "v první půlce října"
+                    },
+                    {
+                      "key": "C",
+                      "text": "v druhé půlce října"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v první půlce listopadu"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Všechny tři činnosti se sejdou každých $\\text{nsn}(2, 3, 5) = 30$ dní. Za 30 dní (30. září) je čtvrtek + 2 dny = sobota. Za 60 dní (30. října) je čtvrtek + 4 dny = pondělí, tedy druhá půlka října."
+            },
+            {
+              "n": 55,
+              "stem": "V osudí je 50 losů, jeden z nich je výherní. O jakou část pravděpodobnosti vytáhnutí výherního losu v 1. tahu bude vyšší pravděpodobnost vytáhnutí výherního losu v 11. tahu za předpokladu, že prvních 10 tažených losů nevyhrálo a vytažené losy se do osudí nevracejí?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "o jednu padesátinu"
+                    },
+                    {
+                      "key": "B",
+                      "text": "o jednu čtyřicetinu"
+                    },
+                    {
+                      "key": "C",
+                      "text": "o jednu desetinu"
+                    },
+                    {
+                      "key": "D",
+                      "text": "o jednu čtvrtinu"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "V 1. tahu je pravděpodobnost $\\frac{1}{50}$, v 11. tahu (zbývá 40 losů) $\\frac{1}{40}$. Rozdíl $\\frac{1}{40} - \\frac{1}{50} = \\frac{1}{200}$ je $\\frac{1}{200} : \\frac{1}{50} = \\frac{1}{4}$ původní pravděpodobnosti."
+            }
+          ]
+        },
+        {
+          "id": "g14",
+          "taskType": "vyrazy",
+          "instruction": "Vyřešte následující úlohy založené na textu nebo matematickém výrazu.",
+          "questions": [
+            {
+              "n": 56,
+              "stem": "Marek koupil $m$ koláčů, každý za $n$ korun. Petr koupil $n$ koláčů, každý za $m$ korun. Jaká částka z jejich celkové útraty připadá na každý zakoupený koláč?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$\\frac{mn}{2(m+n)}$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$\\frac{2mn}{m+n}$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$\\frac{m^2}{n^2}$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$2(m+n)$"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Celková útrata je $mn + nm = 2mn$ korun za $m + n$ koláčů, na jeden koláč tedy připadá $\\frac{2mn}{m+n}$ korun."
+            },
+            {
+              "n": 57,
+              "stem": "Půllitrová láhev limonády stojí $x$ Kč. Dvoulitrová láhev limonády stojí $y$ Kč. Platí vztah:\n\n$y = 4x - 15$\n\nKteré z následujících tvrzení vyplývá z uvedeného vztahu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Při koupi dvoulitrové láhve vyjde půl litru limonády o 15 Kč levněji než při koupi půllitrové láhve."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Při koupi dvoulitrové láhve vyjde půl litru limonády o 15 Kč dráže než při koupi půllitrové láhve."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Za čtyři půllitrové láhve limonády zaplatíme o 15 Kč více než za dvoulitrovou láhev limonády."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Kdyby půllitrová láhev limonády zlevnila o 15 Kč, čtyři tyto láhve by stály dohromady stejně jako dvoulitrová láhev."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Ze vztahu $4x = y + 15$: čtyři půllitrové láhve stojí o 15 Kč více než jedna dvoulitrová. Na půl litru tak připadá rozdíl jen $\\frac{15}{4}$ Kč (A, B neplatí) a po zlevnění o 15 Kč by čtyři láhve stály $4x - 60 \\ne y$ (D neplatí)."
+            },
+            {
+              "n": 58,
+              "stem": "Funkce $f$ je definována pouze pro nezáporná čísla, a to vztahem $f(x) = 0{,}25 \\cdot (2 + x^2)$. Čemu se rovná $x$, platí-li $f(x) = \\frac{11}{4}$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$-1$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "2"
+                    },
+                    {
+                      "key": "C",
+                      "text": "3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "5"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "$0{,}25 \\cdot (2 + x^2) = \\frac{11}{4}$ dává $2 + x^2 = 11$, $x^2 = 9$. Funkce je definována jen pro nezáporná $x$, tedy $x = 3$."
+            },
+            {
+              "n": 59,
+              "stem": "Kterou z nabídnutých možností je možné nahradit otazník v následujícím vztahu, aby vznikla rovnost?\n\n$$\\frac{26}{1 + 2 \\cdot (-7)} \\; ? \\; \\frac{(-1) \\cdot 4 + 5}{1} = \\frac{33}{11}$$",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$+\\frac{20}{4} \\cdot$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$-\\frac{18}{6} +$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$+\\frac{18}{6} -$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$\\cdot \\frac{8}{4} + 3 \\cdot$"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "První zlomek je $\\frac{26}{-13} = -2$, druhý $\\frac{1}{1} = 1$, pravá strana 3. (A): $-2 + 5 \\cdot 1 = 3$ ✓. (B): $-2 - 3 + 1 = -4$, (C): $-2 + 3 - 1 = 0$, (D): $-2 \\cdot 2 + 3 \\cdot 1 = -1$."
+            }
+          ]
+        },
+        {
+          "id": "g15",
+          "taskType": "podminky",
+          "instruction": "Každá z následujících úloh je založena na textu a na souboru podmínek. Rozlišujte, které podmínky se týkají celé série úloh a které podmínky jsou uvedeny pouze pro jednu jedinou úlohu. U některých úloh může být užitečné pomoci si hrubým náčrtkem.",
+          "passageTitle": "TEXT K ÚLOHÁM 60 AŽ 63",
+          "passage": "Každá z pěti bývalých spolužaček (Bára, Gábi, Sára, Klára, Verča) si v kavárně objednala jiný nápoj (jeden z druhů kávy: sójové latte, espresso, překapávaná káva, nebo alkoholický nápoj: víno, pivo), každá z nich vystudovala jiný obor (archeologie, malba, lingvistika, film, divadlo). Víme, že:\n\n- Ta, která vystudovala archeologii, si objednala pivo.\n- Verča ani Klára si neobjednaly alkoholický nápoj.\n- Gábi vystudovala lingvistiku a neobjednala si žádný z druhů kávy.\n- Sára nevystudovala ani film, ani archeologii.",
+          "questions": [
+            {
+              "n": 60,
+              "stem": "Při platnosti kterého z následujících tvrzení by bylo možné jednoznačně určit, která z žen vystudovala malbu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Verča vystudovala film."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Verča si objednala překapávanou kávu."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Klára vystudovala divadlo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Klára vystudovala film."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Gábi (lingvistika) pije alkohol, ale ne pivo (to pije archeoložka), tedy víno. Pivo a archeologie pak připadnou Báře. Sára, Klára a Verča si rozdělí malbu, film a divadlo, Sára nestudovala film. Vystudovala-li Klára divadlo, Sára musí mít malbu (a Verča film). U ostatních možností zůstávají dvě varianty."
+            },
+            {
+              "n": 61,
+              "stem": "Které z následujících tvrzení může platit?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Gábi si objednala pivo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Klára si objednala espresso."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Bára si objednala překapávanou kávu."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ta, která vystudovala lingvistiku, si neobjednala víno."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Z podmínek plyne: Bára – archeologie, pivo; Gábi – lingvistika, víno. Sára, Klára a Verča pijí kávy v libovolném pořadí, Klára tedy může mít espresso. Ostatní tvrzení odporují odvozenému."
+            },
+            {
+              "n": 62,
+              "stem": "U které ze spolužaček lze jednoznačně určit, co vystudovala a který nápoj si objednala?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen u Gábi"
+                    },
+                    {
+                      "key": "B",
+                      "text": "u každé z dvojice Gábi, Bára"
+                    },
+                    {
+                      "key": "C",
+                      "text": "u každé z dvojice Gábi, Sára"
+                    },
+                    {
+                      "key": "D",
+                      "text": "u každé z dvojice Bára, Sára"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Gábi vystudovala lingvistiku a pije víno, Bára archeologii a pije pivo. U Sáry, Kláry a Verči zůstává obor (malba/film/divadlo, Sára ne film) i druh kávy neurčen."
+            },
+            {
+              "n": 63,
+              "stem": "Které z následujících tvrzení je v rozporu s uvedenými podmínkami?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Klára vystudovala film a objednala si espresso."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Sára vystudovala malbu a objednala si espresso."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Klára vystudovala malbu a současně Verča vystudovala divadlo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Sára si objednala sójové latte."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Malbu, film a divadlo si rozdělí Sára, Klára a Verča. Mají-li Klára malbu a Verča divadlo, zbývá Sáře film, který ale nevystudovala – spor. Ostatní tvrzení jsou možná."
+            }
+          ]
+        },
+        {
+          "id": "g16",
+          "taskType": "podminky",
+          "instruction": "Každá z následujících úloh je založena na textu a na souboru podmínek. Rozlišujte, které podmínky se týkají celé série úloh a které podmínky jsou uvedeny pouze pro jednu jedinou úlohu. U některých úloh může být užitečné pomoci si hrubým náčrtkem.",
+          "passageTitle": "TEXT K ÚLOHÁM 64 AŽ 66",
+          "passage": "Každý ze čtyř kamarádů (Alena, Michal, Vítek, Zuzka) si na festivalu zakoupil jeden z pěti možných druhů občerstvení (bramborák, hermelín, klobása, párek, topinka), žádní dva z nich si nekoupili stejný druh občerstvení. Každý druh občerstvení měl jinou cenu (45 Kč, 48 Kč, 50 Kč, 53 Kč, 55 Kč). Víme, že:\n\n- Zuzka si koupila klobásu.\n- Nejnižší cenu měl bramborák.\n- Párek byl dražší než hermelín.\n- Jeden ze čtyř kamarádů si koupil topinku.\n- Michal a Vítek zakoupili občerstvení dohromady za 108 Kč.",
+          "questions": [
+            {
+              "n": 64,
+              "stem": "Jaká mohla být cena za Zuzčino občerstvení?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen 48 Kč"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen 50 Kč"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jakákoli z dvojice 50 Kč, 53 Kč"
+                    },
+                    {
+                      "key": "D",
+                      "text": "jakákoli z dvojice 48 Kč, 50 Kč"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Bramborák stojí 45 Kč. Jediná dvojice zbylých cen se součtem 108 Kč je 53 + 55, tedy Michal a Vítek mají občerstvení za 53 a 55 Kč. Klobása proto stojí 48 nebo 50 Kč; obě možnosti lze doplnit (např. hermelín 48, klobása 50, párek a topinka 53/55, nebo klobása 48, hermelín 50)."
+            },
+            {
+              "n": 65,
+              "stem": "Které občerstvení mohl zakoupit Vítek?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen topinku"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen kterékoli z dvojice hermelín, párek"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jen kterékoli z dvojice hermelín, topinka"
+                    },
+                    {
+                      "key": "D",
+                      "text": "kterékoli z trojice hermelín, párek, topinka"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Michal a Vítek mají občerstvení za 53 a 55 Kč (bramborák stojí 45, klobásu má Zuzka). Jsou-li to párek a topinka, může Vítek mít kterékoli z nich; je-li hermelín za 53 a párek za 55 (topinka za 48 či 50 u Aleny), může mít i hermelín."
+            },
+            {
+              "n": 66,
+              "stem": "Pro který z druhů občerstvení mohlo platit, že si ho **nekoupil** nikdo z kamarádů?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen pro párek"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen pro hermelín"
+                    },
+                    {
+                      "key": "C",
+                      "text": "pro kterýkoli z dvojice bramborák, párek"
+                    },
+                    {
+                      "key": "D",
+                      "text": "pro kterýkoli z dvojice hermelín, bramborák"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Klobásu má Zuzka a topinku někdo koupil. Párek je vždy jedním z dražších jídel Michala či Vítka (za 53 nebo 55 Kč), takže nekoupený mohl zůstat jen bramborák, nebo hermelín – obě varianty jsou možné (Alena koupí to druhé)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

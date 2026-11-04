@@ -1,6 +1,7 @@
 import "server-only";
 import { GENERATOR_VERSION, generateTasks } from "@/lib/ai/generate";
-import { TASK_TYPES } from "@/lib/content/exams";
+import { retireMisshapen } from "./pool";
+import { EXAMS, TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
 import type { TaskType } from "@/lib/content/types";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -46,8 +47,13 @@ const isRateLimit = (reason: string) => /\b429\b|rate.?limit|overloaded|\b529\b/
 
 /** The task type with the fewest current-version tasks in the pool (ties broken randomly). */
 async function pickType(inFlight: Map<string, number>): Promise<TaskType> {
-  const { data } = await createAdminClient().from("generated_tasks").select("task_type,v:payload->v").eq("exam", "osp");
-  const counts = new Map<string, number>(TASK_TYPES.filter((t) => t.exam === "osp").map((t) => [t.id, 0]));
+  // every enabled exam is filled evenly (a new exam's empty types are picked first)
+  const types = TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled));
+  const { data } = await createAdminClient()
+    .from("generated_tasks")
+    .select("task_type,v:payload->v")
+    .in("exam", [...new Set(types.map((t) => t.exam))]);
+  const counts = new Map<string, number>(types.map((t) => [t.id, 0]));
   for (const r of (data ?? []) as { task_type: string; v?: number | null }[]) {
     if (counts.has(r.task_type) && Number(r.v ?? 1) >= GENERATOR_VERSION) counts.set(r.task_type, counts.get(r.task_type)! + 1);
   }
@@ -57,11 +63,19 @@ async function pickType(inFlight: Map<string, number>): Promise<TaskType> {
   return lowest[Math.floor(Math.random() * lowest.length)] as TaskType;
 }
 
+const SWEEP_MS = 6 * 3600_000;
+let lastSweep = 0;
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /** Runs the claimed worker slots in parallel until the time budget is used up. */
 export async function runAutogen(slots: number[]) {
   const admin = createAdminClient();
+  // retire pool tasks that fail a format check added after they were stored (so pickType sees the real stock)
+  if (Date.now() - lastSweep > SWEEP_MS) {
+    lastSweep = Date.now();
+    await retireMisshapen().catch((e) => console.error("retireMisshapen", e));
+  }
   const deadline = Date.now() + RUN_MS;
   const inFlight = new Map<string, number>();
 
@@ -77,7 +91,7 @@ export async function runAutogen(slots: number[]) {
         inFlight.set(type, (inFlight.get(type) ?? 0) + 1);
         let out;
         try {
-          out = await generateTasks({ exam: "osp", type, count: 1, deadline });
+          out = await generateTasks({ exam: taskTypeMeta(type)?.exam ?? "osp", type, count: 1, deadline });
         } finally {
           inFlight.set(type, (inFlight.get(type) ?? 1) - 1);
         }

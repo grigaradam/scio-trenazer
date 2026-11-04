@@ -10,8 +10,8 @@ export interface ScorePoint {
   label: string;
   percent: number;
   percentile: number | null;
-  verbal: number;
-  analytic: number;
+  /** Per-section percentages, e.g. "verbální 55 % · analytický 40 %". */
+  sections: { label: string; percent: number }[];
 }
 
 export function ScoreChart({ data }: { data: ScorePoint[] }) {
@@ -37,7 +37,7 @@ export function ScoreChart({ data }: { data: ScorePoint[] }) {
                     {p.percentile !== null && <span className="text-muted"> · ≈ {p.percentile}. percentil</span>}
                   </div>
                   <div className="text-xs text-muted">
-                    verbální {p.verbal} % · analytický {p.analytic} %
+                    {p.sections.map((s) => `${s.label} ${s.percent} %`).join(" · ")}
                   </div>
                 </div>
               );

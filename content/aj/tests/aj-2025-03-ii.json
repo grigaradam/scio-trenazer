@@ -1,0 +1,1290 @@
+{
+  "id": "aj-2025-03-ii",
+  "exam": "aj",
+  "title": "AJ – Březen II 2025",
+  "date": "2025-03",
+  "source": "Fotky sešitu „aj březen II 2025“",
+  "sections": [
+    {
+      "id": "reading",
+      "title": "Reading",
+      "timeLimitSec": 900,
+      "groups": [
+        {
+          "id": "g01",
+          "taskType": "aj_reading",
+          "instruction": "Read the following text and solve the tasks based solely on the information in it.",
+          "passageTitle": "Does the future of medicine lie in space?",
+          "passage": "In a small lab, squeezed into the corner of a skyscraper in downtown Tel Aviv, Israeli entrepreneur Yossi Yamin is proudly holding what he calls “a little James Bond-style suitcase factory, powered by the sun”. As with many of James Bond’s finest contraptions, initial impressions are inauspicious. But in the past four years, these little metal boxes, coated in solar panels, have repeatedly blasted into orbit on the back of a SpaceX rocket, bringing groundbreaking new insights back to Earth for things ranging from the future of skincare to longevity drugs and the best ways of generating lab-grown steak.\n\nAs CEO of SpacePharma, Yamin has helped to pioneer a new industry. Using technology developed at the Technion, Israel’s oldest university, increasing numbers of biologists are now able to send their experiments to space, where they can be remotely controlled from the ground. **(A)**\n\nThe idea of leaving Earth to further medicine goes back to the <u>dawn</u> of the space age. Needing a way of justifying the enormous cost of launching as many as 50 flights a year, NASA suggested that its astronauts could multitask, using their time in orbit to pursue a cure for cancer or the many other illnesses afflicting humankind.\n\nIt is the absence of gravity that has long made space such an attractive playground for teasing apart some of biology’s intricacies. The pull of the Earth’s gravitational field can mask some of the ways in which cells communicate, making it harder to understand why they behave as they do. It also makes it much more difficult for scientists to study the complex crystal structures of key proteins, for example those linked to cancer, viruses, and genetic disorders.\n\nThe field of space medicine was accelerated by one of the worst disasters in NASA’s history. **(B)** In February 2003, space shuttle Columbia exploded as it re-entered the atmosphere, killing all seven astronauts on board. **(C)** Three months later, a series of vials were discovered among the debris that contained crystals, somehow still intact, from an experiment the Columbia astronauts had been working on during their time on the International Space Station (ISS). It provided biologists with <u>vital</u> information regarding the structure of a protein called interferon alfa-2b, the active ingredient in the drug Intron A, which at the time was a standard treatment for melanoma and hepatitis C.\n\nThe major problem with doing research in space has traditionally been the cost. The price of getting a single experiment to the ISS and back has been reported as being in the region of \\$7.5m, particularly if it includes astronaut time. There’s also exceptional rivalry involved, with thousands of scientists around the world <u>vying</u> to have their experiments flown into orbit. **(D)**\n\nBut space research is increasingly shifting from public to private providers, a new model that presents both challenges and opportunities. NASA has already declared its plan to shut down the ISS by the end of 2030, with the Houston-based company Axiom Space intending to replace it with the first commercial space station. Although offering space vacations to the ultra-rich is Axiom Space’s main revenue model, some of the money will be used to build extra modules on the space station for conducting scientific experiments.\n\nSpacePharma is aiming to make medical research in space more widely available by offering to automate experiments, taking them up into low Earth orbit on launch rockets and then back down again. This removes the need for a space station altogether, as well as cutting costs related to astronaut time.",
+          "questions": [
+            {
+              "n": 13,
+              "stem": "The word “dawn” in the third paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "discovery"
+                    },
+                    {
+                      "key": "B",
+                      "text": "period"
+                    },
+                    {
+                      "key": "C",
+                      "text": "necessity"
+                    },
+                    {
+                      "key": "D",
+                      "text": "beginning"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„The dawn of the space age“ = úsvit, tedy začátek vesmírného věku. Dawn zde znamená počátek, ne období ani objev."
+            },
+            {
+              "n": 14,
+              "stem": "The word “vital” in the fifth paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "scientific"
+                    },
+                    {
+                      "key": "B",
+                      "text": "essential"
+                    },
+                    {
+                      "key": "C",
+                      "text": "reliable"
+                    },
+                    {
+                      "key": "D",
+                      "text": "complex"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Vital information = zásadní, nezbytně důležité informace, tedy essential. Ostatní možnosti význam slova nevystihují."
+            },
+            {
+              "n": 15,
+              "stem": "The word “vying” in the sixth paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "cheating"
+                    },
+                    {
+                      "key": "B",
+                      "text": "failing"
+                    },
+                    {
+                      "key": "C",
+                      "text": "pretending"
+                    },
+                    {
+                      "key": "D",
+                      "text": "competing"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Vie (vying) = soupeřit, ucházet se; souvisí s předchozím „exceptional rivalry“. Odpovídá competing."
+            },
+            {
+              "n": 16,
+              "stem": "In the first paragraph, it is said about the equipment developed by SpacePharma that “as with many of James Bond’s finest contraptions, initial impressions are inauspicious”. Which of the following statements best describes the main message of this sentence?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "The equipment doesn’t look very promising at first glance."
+                    },
+                    {
+                      "key": "B",
+                      "text": "The quality of the equipment is incomparable with James Bond’s finest contraptions."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Initially, most people are amazed by the equipment."
+                    },
+                    {
+                      "key": "D",
+                      "text": "The first impression of the equipment being auspicious is misleading."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Inauspicious = nevypadající slibně; první dojem z vybavení tedy není nijak oslnivý. D tvrdí opak (že první dojem je slibný)."
+            },
+            {
+              "n": 17,
+              "stem": "Yossi Yamin is ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "a CEO at the Technion"
+                    },
+                    {
+                      "key": "B",
+                      "text": "a biologist focusing on medical research"
+                    },
+                    {
+                      "key": "C",
+                      "text": "the highest-ranking executive in SpacePharma"
+                    },
+                    {
+                      "key": "D",
+                      "text": "an astronaut"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Text uvádí „As CEO of SpacePharma“ – CEO je nejvýše postavený manažer firmy. Technion je univerzita, kde byla technologie vyvinuta, ne jeho firma."
+            },
+            {
+              "n": 18,
+              "stem": "The Earth’s gravitational field ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "makes it more challenging for us to comprehend cellular behaviour"
+                    },
+                    {
+                      "key": "B",
+                      "text": "barely interferes with the ways in which cells communicate"
+                    },
+                    {
+                      "key": "C",
+                      "text": "can trigger the development of cancer and genetic disorders"
+                    },
+                    {
+                      "key": "D",
+                      "text": "makes cellular communication impossible"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Gravitace „can mask some of the ways in which cells communicate, making it harder to understand why they behave as they do“. Komunikaci buněk neznemožňuje (D) ani nezpůsobuje nemoci (C)."
+            },
+            {
+              "n": 19,
+              "stem": "The International Space Station ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "is due to be decommissioned by the end of 2030"
+                    },
+                    {
+                      "key": "B",
+                      "text": "is to be extended with new modules by the end of 2030"
+                    },
+                    {
+                      "key": "C",
+                      "text": "is expected to co-exist with a station owned by Axiom Space"
+                    },
+                    {
+                      "key": "D",
+                      "text": "is going to offer vacations to the ultra-rich starting at the end of 2030"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "NASA plánuje ISS do konce roku 2030 vyřadit („shut down“). Moduly a dovolené se týkají nové komerční stanice Axiom Space, která ISS nahradí, ne s ní bude koexistovat."
+            },
+            {
+              "n": 20,
+              "stem": "What is to be the main source of income for the company Axiom Space?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "building new modules for their space station"
+                    },
+                    {
+                      "key": "B",
+                      "text": "looking for sponsors among other private companies"
+                    },
+                    {
+                      "key": "C",
+                      "text": "selling the results of their medical experiments carried out in space"
+                    },
+                    {
+                      "key": "D",
+                      "text": "offering holidays for wealthy people"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Offering space vacations to the ultra-rich is Axiom Space’s main revenue model.“ Moduly se z těchto peněz teprve budou stavět."
+            },
+            {
+              "n": 21,
+              "stem": "In the last four years, technology employed by SpacePharma has brought insights into which two of the following domains?\n\n1) substances to prolong lifespan\n\n2) plant-based alternatives to meat\n\n3) ways to create artificial skin\n\n4) methods to produce laboratory-cultivated meat",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "1 and 2"
+                    },
+                    {
+                      "key": "B",
+                      "text": "1 and 4"
+                    },
+                    {
+                      "key": "C",
+                      "text": "2 and 4"
+                    },
+                    {
+                      "key": "D",
+                      "text": "3 and 4"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text zmiňuje „longevity drugs“ (1) a „the best ways of generating lab-grown steak“ (4). Skincare není výroba umělé kůže a o rostlinných náhražkách masa se nemluví."
+            },
+            {
+              "n": 22,
+              "stem": "Look at the four letters (A) to (D) in the text. These indicate where the following sentence could be added to the text.\n\n*Damage to the shuttle’s left wing, which had occurred two weeks earlier during the launch, had made it too fragile to withstand the enormous pressures of re-entry.*\n\nWhere would the sentence best fit?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "(A)"
+                    },
+                    {
+                      "key": "B",
+                      "text": "(B)"
+                    },
+                    {
+                      "key": "C",
+                      "text": "(C)"
+                    },
+                    {
+                      "key": "D",
+                      "text": "(D)"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Věta vysvětluje, proč raketoplán při návratu do atmosféry explodoval, a navazuje tedy na větu o explozi Columbie – pozice (C). Na (B) by ještě nebylo jasné, o jaký raketoplán jde."
+            },
+            {
+              "n": 23,
+              "stem": "Which of the following statements best sums up the text?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "SpacePharma hinders medical research in space by making it much less accessible for the general population."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Medical research has long been part of space exploration, with SpacePharma now revolutionizing it by expanding the accessibility of conducting medical experiments in space."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Thanks to the medical research conducted by private companies on ISS, many new effective cures, including a cure for hepatitis, melanoma and other cancers, have been discovered."
+                    },
+                    {
+                      "key": "D",
+                      "text": "It is not advisable for space medical research to be conducted by private companies, because they usually follow their own goals instead of public interest."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text popisuje dlouhou historii lékařského výzkumu ve vesmíru a to, jak SpacePharma zpřístupňuje experimenty (automatizace, nižší náklady). A tvrdí opak, C a D v textu nejsou."
+            }
+          ]
+        },
+        {
+          "id": "g02",
+          "taskType": "aj_inference",
+          "instruction": "Answer the following questions using only the information given in or implied by the text.",
+          "questions": [
+            {
+              "n": 24,
+              "stem": "A dynamo is a rotating electrical machine that converts mechanical energy from the rotor of a driving machine into electrical energy in the form of direct current. A dynamo consists of a stator made up of a magnet or electromagnet, and a rotor. Until the advent of solid-state rectifiers, the dynamo was an important source of electrical power (in the form of direct current), but its importance has diminished since.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "A rotor consists of a magnet or electromagnet."
+                    },
+                    {
+                      "key": "B",
+                      "text": "A dynamo converts electrical energy into mechanical energy."
+                    },
+                    {
+                      "key": "C",
+                      "text": "After the spread of solid-state rectifiers, the importance of dynamos has decreased."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Dynamos replaced solid-state rectifiers."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Význam dynama klesl od nástupu polovodičových usměrňovačů („its importance has diminished since“). Z magnetu je stator, ne rotor (A), a energii převádí opačně, než tvrdí B."
+            },
+            {
+              "n": 25,
+              "stem": "In 1987, the considerable success of the Star Trek films led to the launch of a new and arguably the most famous Star Trek series, Star Trek – The Next Generation, starring the massive new Enterprise-D, led by the charismatic, bald Captain Jean-Luc Picard. The New Generation differed greatly from its predecessors in many ways. The story itself takes place around the year 2360, eighty years later than the original stories of Captain Kirk and his crew.\n\nWhich of the following statements **cannot** be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "There is more than one Star Trek movie."
+                    },
+                    {
+                      "key": "B",
+                      "text": "There is more than one Star Trek series."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Enterprise-D is the name of a U.S. Navy warship."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Captain Kirk is a character in stories set in the 23rd century."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Že je Enterprise-D válečná loď amerického námořnictva, text nikde neuvádí. Ostatní vyplývá: „films“ v množném čísle (A), nová série a její předchůdci (B), 2360 − 80 = 2280, tedy 23. století (D)."
+            },
+            {
+              "n": 26,
+              "stem": "A Roman mosaic dating from the 3rd century BC depicts athletic women wearing two-piece sports suits. However, one of the earliest written references to two-piece female garments used for athletic purposes dates back to ancient Greece around 1400 BC.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "The two-piece sports suit was first depicted on a Roman mosaic from the 3rd century BC."
+                    },
+                    {
+                      "key": "B",
+                      "text": "In Rome, the use of two-piece sports suits never became common."
+                    },
+                    {
+                      "key": "C",
+                      "text": "In ancient Greece, the two-piece sports suit was used only for swimming."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Written records from ancient Greece mention women’s two-piece athletic garments."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text uvádí písemnou zmínku o dvoudílném ženském sportovním oblečení ze starověkého Řecka kolem 1400 př. n. l. Že by mozaika byla první vyobrazení (A), text netvrdí; B a C v textu nejsou."
+            },
+            {
+              "n": 27,
+              "stem": "In the case of special purpose roads owned by a municipality, the road administration authority may, on the proposal of the municipality and after consultation with the Police of the Czech Republic, modify or restrict public access to such a special purpose road if this is strictly necessary to protect the legitimate interests of the municipality as the owner of this road.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "The Police of the Czech Republic mustn’t restrict public access to special purpose roads."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Most roads owned by a municipality have a special purpose."
+                    },
+                    {
+                      "key": "C",
+                      "text": "A municipality may restrict access to a road based on the proposal of the road administration authority."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Special purpose roads owned by a municipality can have public access restricted."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Silniční správní úřad může přístup na účelovou komunikaci obce omezit, takže omezení je možné. C obrací role (návrh dává obec, omezuje úřad); o tom, co policie nesmí (A), ani o většině silnic (B) text nic neříká."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "title": "Use of English",
+      "timeLimitSec": 1500,
+      "groups": [
+        {
+          "id": "g03",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "Plastic pollution on coral reefs gets worse the deeper you go, study finds",
+          "passage": "No part of the planet is free of plastic waste, and coral reefs are no exception, but scientists have now made the discovery that the deeper the reef, the more plastic debris it is likely to have.\n\nA study published in *Nature* found that not only is every coral reef **(28)** ______ with plastic, but almost three-quarters of the larger items were from fishing paraphernalia such as ropes, lines and nets. The study examined reefs at more than two-dozen locations – including uninhabited atolls and reefs at depths of 150 metres – around the world. The scientists discovered that the deeper sites **(29)** ______ more plastic than the shallower ones.\n\n“It was surprising to find that debris increased with depth, **(30)** ______ deeper reefs are farther from sources of plastic pollution,” said Luiz Rocha from the California Academy of Sciences. Almost three-quarters of larger items found were from fishing gear, with plastic wrappers and bottles also common. “We are almost always the first humans to **(31)** ______ eyes on these deeper reefs, and yet we see human-produced trash **(32)** ______ every dive.”\n\nThere was more plastic pollution in reefs nearer to densely populated cities, as well as in marine protected areas, whose borders are heavily **(33)** ______ by fishers. “Our findings reveal some of the complex collective challenges we face when dealing with plastic pollution,” said Hudson Pinheiro from the University of São Paulo. “As marine resources around the world dwindle, humans that rely on those resources are turning to deeper habitats and to those closer to marine protected areas where fish remain **(34)** ______ so that they can ensure a continuous food supply.”\n\nOne potential reason for finding more plastic at greater depths could be **(35)** ______ wave action at the surface, which could drag debris deeper. Other possibilities include recreational divers removing trash from shallower reefs, and shallow corals – which have higher growth rates – growing over the debris.",
+          "questions": [
+            {
+              "n": 28,
+              "stem": "Gap (28)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "enquired"
+                    },
+                    {
+                      "key": "B",
+                      "text": "entrusted"
+                    },
+                    {
+                      "key": "C",
+                      "text": "encumbered"
+                    },
+                    {
+                      "key": "D",
+                      "text": "enabled"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Encumbered with plastic = zatížený, zaplevelený plastem. Ostatní slovesa s „with plastic“ nedávají smysl (entrusted with = pověřen něčím)."
+            },
+            {
+              "n": 29,
+              "stem": "Gap (29)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "has"
+                    },
+                    {
+                      "key": "B",
+                      "text": "had"
+                    },
+                    {
+                      "key": "C",
+                      "text": "did"
+                    },
+                    {
+                      "key": "D",
+                      "text": "are"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Po minulém „discovered that“ následuje posun časů: the deeper sites had more plastic. „Has“ nesouhlasí s množným číslem „sites“, „are/did“ nejdou s předmětem „more plastic“."
+            },
+            {
+              "n": 30,
+              "stem": "Gap (30)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "despite"
+                    },
+                    {
+                      "key": "B",
+                      "text": "however"
+                    },
+                    {
+                      "key": "C",
+                      "text": "since"
+                    },
+                    {
+                      "key": "D",
+                      "text": "so"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Since = protože: překvapivé to bylo, protože hlubší útesy jsou dál od zdrojů znečištění. Despite by vyžadovalo podstatné jméno, however a so významově nesedí."
+            },
+            {
+              "n": 31,
+              "stem": "Gap (31)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "pull"
+                    },
+                    {
+                      "key": "B",
+                      "text": "set"
+                    },
+                    {
+                      "key": "C",
+                      "text": "roll"
+                    },
+                    {
+                      "key": "D",
+                      "text": "make"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Ustálené spojení „to set eyes on something“ = spatřit, poprvé uvidět."
+            },
+            {
+              "n": 32,
+              "stem": "Gap (32)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "by"
+                    },
+                    {
+                      "key": "B",
+                      "text": "on"
+                    },
+                    {
+                      "key": "C",
+                      "text": "under"
+                    },
+                    {
+                      "key": "D",
+                      "text": "while"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "S jednotlivými akcemi typu ponor/cesta se používá „on“: on every dive = při každém ponoru."
+            },
+            {
+              "n": 33,
+              "stem": "Gap (33)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "frequented"
+                    },
+                    {
+                      "key": "B",
+                      "text": "seen"
+                    },
+                    {
+                      "key": "C",
+                      "text": "adopted"
+                    },
+                    {
+                      "key": "D",
+                      "text": "smuggled"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Hranice chráněných oblastí jsou hojně navštěvované rybáři – heavily frequented by fishers. Ostatní slovesa nevystihují, že tam rybáři často loví."
+            },
+            {
+              "n": 34,
+              "stem": "Gap (34)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "scarce"
+                    },
+                    {
+                      "key": "B",
+                      "text": "lots"
+                    },
+                    {
+                      "key": "C",
+                      "text": "abundant"
+                    },
+                    {
+                      "key": "D",
+                      "text": "rare"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Lidé se stěhují tam, kde je ryb stále hojně (abundant), aby si zajistili potravu. Scarce/rare dávají opačný smysl a „lots“ nemůže stát jako přísudkové adjektivum po „remain“."
+            },
+            {
+              "n": 35,
+              "stem": "Gap (35)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "skilled"
+                    },
+                    {
+                      "key": "B",
+                      "text": "leaking"
+                    },
+                    {
+                      "key": "C",
+                      "text": "increased"
+                    },
+                    {
+                      "key": "D",
+                      "text": "indifferent"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Možným důvodem je zesílené vlnobití (increased wave action) na hladině, které stahuje odpad hlouběji. Ostatní přídavná jména se k „wave action“ nehodí."
+            }
+          ]
+        },
+        {
+          "id": "g04",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "The History of the Tea Bag",
+          "passage": "The arrival of tea in Britain in the seventeenth century **(36)** ______ the drinking habits of this nation forever. The late eighteenth century saw black tea overtake green tea in popularity for the first time. In the nineteenth century, widespread cultivation of tea in India began, leading to the imports of Indian tea into Britain overtaking the imports of Chinese tea. And in the twentieth century, there was the invention of the tea bag.\n\nThe purpose of the tea bag is **(37)** ______ in the belief that for tea to taste its best, the leaves ought to be removed from the hot water **(38)** ______ of a specific brewing period. Needless to say, it was in America, with its love of labour-saving devices, that the first tea bags **(39)** ______. In around 1908, Thomas Sullivan, a New York tea merchant, started to send samples of tea to his customers in small silken bags. Some assumed that these **(40)** ______ to be used in the same way as the metal infusers, by putting the entire bag into the pot, rather than emptying out the contents – it was thus by accident that the tea bag was born!\n\n**(41)** ______ to the comments from his customers **(42)** ______ the mesh on the silk was too fine, Sullivan developed sachets made of gauze – the first purpose-made tea bags. The features that we still recognize today were already in place – a string that hung over the side so the bag could be removed easily, with a decorated tag on the end.\n\n**(43)** ______ the American population took to tea bags with enthusiasm, the British were naturally wary of such a radical change in their tea-making methods and it was not until the 1950s that tea bags really took off, now being the preferred method nationwide.",
+          "questions": [
+            {
+              "n": 36,
+              "stem": "Gap (36)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "retained"
+                    },
+                    {
+                      "key": "B",
+                      "text": "altered"
+                    },
+                    {
+                      "key": "C",
+                      "text": "persisted"
+                    },
+                    {
+                      "key": "D",
+                      "text": "revoked"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Příchod čaje navždy změnil (altered) pitné zvyky národa. Retained = zachoval (opačný smysl), persisted je nepřechodné, revoked = zrušil (zákon, povolení)."
+            },
+            {
+              "n": 37,
+              "stem": "Gap (37)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "rooted"
+                    },
+                    {
+                      "key": "B",
+                      "text": "resulted"
+                    },
+                    {
+                      "key": "C",
+                      "text": "filled"
+                    },
+                    {
+                      "key": "D",
+                      "text": "sentenced"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Spojení „to be rooted in the belief“ = vycházet z přesvědčení, mít kořeny v. „Resulted“ by vyžadovalo „resulted from“ a nejde do trpného tvaru."
+            },
+            {
+              "n": 38,
+              "stem": "Gap (38)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "in the end"
+                    },
+                    {
+                      "key": "B",
+                      "text": "eventually"
+                    },
+                    {
+                      "key": "C",
+                      "text": "subsequently"
+                    },
+                    {
+                      "key": "D",
+                      "text": "at the end"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„At the end of a specific brewing period“ = na konci určité doby louhování; at the end of + podstatné jméno. „In the end“ znamená nakonec a „of“ za sebou mít nemůže."
+            },
+            {
+              "n": 39,
+              "stem": "Gap (39)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "invented"
+                    },
+                    {
+                      "key": "B",
+                      "text": "was invented"
+                    },
+                    {
+                      "key": "C",
+                      "text": "were invented"
+                    },
+                    {
+                      "key": "D",
+                      "text": "had invented"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Čajové sáčky byly vynalezeny – trpný rod minulého času, podmět „tea bags“ je v množném čísle, proto „were invented“."
+            },
+            {
+              "n": 40,
+              "stem": "Gap (40)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "suppose"
+                    },
+                    {
+                      "key": "B",
+                      "text": "are supposed"
+                    },
+                    {
+                      "key": "C",
+                      "text": "supposed"
+                    },
+                    {
+                      "key": "D",
+                      "text": "were supposed"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Be supposed to“ = mít se (používat); po minulém „assumed“ a s množným „these“ je správně „were supposed to be used“."
+            },
+            {
+              "n": 41,
+              "stem": "Gap (41)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Respond"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Responding"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Response"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Responds"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Příčestí přítomné uvozuje větný člen se stejným podmětem jako hlavní věta: Responding to the comments…, Sullivan developed… „Response to“ by potřebovalo předložku (In response to)."
+            },
+            {
+              "n": 42,
+              "stem": "Gap (42)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "which"
+                    },
+                    {
+                      "key": "B",
+                      "text": "who"
+                    },
+                    {
+                      "key": "C",
+                      "text": "but"
+                    },
+                    {
+                      "key": "D",
+                      "text": "that"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Comments … that the mesh on the silk was too fine“ – „that“ uvozuje obsahovou větu rozvíjející „comments“ (připomínky, že…). „Which“ by vyžadovalo, aby ve vedlejší větě chyběl člen."
+            },
+            {
+              "n": 43,
+              "stem": "Gap (43)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Therefore"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Meanwhile"
+                    },
+                    {
+                      "key": "C",
+                      "text": "While"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Hence"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Věta stojí na kontrastu (Američané nadšení × Britové opatrní) a jde o souvětí, takže je třeba spojka „While“ (zatímco). Therefore, Meanwhile a Hence jsou příslovce a dvě věty spojit nemohou."
+            }
+          ]
+        },
+        {
+          "id": "g05",
+          "taskType": "aj_grammar",
+          "instruction": "Fill in the gaps in the following sentences with the most suitable word or phrase from the options offered.",
+          "questions": [
+            {
+              "n": 44,
+              "stem": "Even though the clerks in this post-office are exhausted from understaffing issues, they are never <u>surly</u> when dealing with customers.\n\nIn the context of the sentence above, the word “surly” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "self-confident"
+                    },
+                    {
+                      "key": "B",
+                      "text": "self-conscious"
+                    },
+                    {
+                      "key": "C",
+                      "text": "bad-tempered"
+                    },
+                    {
+                      "key": "D",
+                      "text": "helpful"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Surly = nevrlý, mrzutý, nepříjemný – tedy bad-tempered. Helpful je opak."
+            },
+            {
+              "n": 45,
+              "stem": "The teacher was <u>negligent</u> in allowing the pupils to swim in the fast-flowing river.\n\nIn the context of the sentence above, the word “negligent” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "not careful enough"
+                    },
+                    {
+                      "key": "B",
+                      "text": "responsible"
+                    },
+                    {
+                      "key": "C",
+                      "text": "accused"
+                    },
+                    {
+                      "key": "D",
+                      "text": "not clever enough"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Negligent = nedbalý, nedostatečně opatrný (not careful enough). Nejde o inteligenci (D) ani o obvinění (C)."
+            },
+            {
+              "n": 46,
+              "stem": "The president ______ denied allegations of any illegal activities taking place under his administration.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "highly"
+                    },
+                    {
+                      "key": "B",
+                      "text": "considerably"
+                    },
+                    {
+                      "key": "C",
+                      "text": "crucially"
+                    },
+                    {
+                      "key": "D",
+                      "text": "strongly"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Ustálená kolokace „strongly deny“ = důrazně popřít. Highly, considerably a crucially se se slovesem deny nespojují."
+            },
+            {
+              "n": 47,
+              "stem": "______ the English and the Americans, who usually speak only English, the Swiss are often bilingual or even trilingual.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Apart from"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Except"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Unlike"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Apart"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Věta vyjadřuje kontrast: na rozdíl od (Unlike) Angličanů a Američanů jsou Švýcaři vícejazyční. Apart from/Except znamenají „kromě“ a „Apart“ samo předložkou není."
+            },
+            {
+              "n": 48,
+              "stem": "They have a sophisticated approach to design, ______?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "don’t they"
+                    },
+                    {
+                      "key": "B",
+                      "text": "hadn’t they"
+                    },
+                    {
+                      "key": "C",
+                      "text": "didn’t they"
+                    },
+                    {
+                      "key": "D",
+                      "text": "have they"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„Have“ je zde plnovýznamové sloveso (mít), takže tázací dovětek tvoří pomocné „do“ v přítomném čase: don’t they? Kladná věta = záporný dovětek."
+            },
+            {
+              "n": 49,
+              "stem": "Coursework needs to be taken ______ account, not only exam results.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "on"
+                    },
+                    {
+                      "key": "B",
+                      "text": "for"
+                    },
+                    {
+                      "key": "C",
+                      "text": "into"
+                    },
+                    {
+                      "key": "D",
+                      "text": "of"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Ustálené spojení „take something into account“ = vzít v úvahu."
+            },
+            {
+              "n": 50,
+              "stem": "Despite ______ Italian when he was at school, he soon picked it up when he started to work in Rome.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "he never learned"
+                    },
+                    {
+                      "key": "B",
+                      "text": "he has never learned"
+                    },
+                    {
+                      "key": "C",
+                      "text": "never having learned"
+                    },
+                    {
+                      "key": "D",
+                      "text": "he had never learned"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Po předložce „despite“ následuje podstatné jméno nebo gerundium, ne vedlejší věta: despite never having learned. Věty s podmětem (A, B, D) by vyžadovaly „although“."
+            },
+            {
+              "n": 51,
+              "stem": "Both armies should ______ from engaging in violent actions and seek a diplomatic solution instead.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "refrain"
+                    },
+                    {
+                      "key": "B",
+                      "text": "remain"
+                    },
+                    {
+                      "key": "C",
+                      "text": "retain"
+                    },
+                    {
+                      "key": "D",
+                      "text": "belong"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„Refrain from doing something“ = zdržet se něčeho. Remain, retain ani belong se s „from + -ing“ v tomto smyslu nepojí."
+            },
+            {
+              "n": 52,
+              "stem": "Seldom ______ a restaurant that impressed them as much as the little bistro they stumbled upon during their vacation.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "they hadn’t been to"
+                    },
+                    {
+                      "key": "B",
+                      "text": "had they been to"
+                    },
+                    {
+                      "key": "C",
+                      "text": "they had to be to"
+                    },
+                    {
+                      "key": "D",
+                      "text": "had been to"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Po záporně zabarveném příslovci „Seldom“ na začátku věty následuje inverze: Seldom had they been to… A má zbytečný zápor a chybí inverze, D nemá podmět."
+            }
+          ]
+        },
+        {
+          "id": "g06",
+          "taskType": "aj_wordform",
+          "instruction": "Use the word in brackets at the end of the sentence to form a new word (different from the word provided) that best fits the gap. Write only one word in each gap. **Please write neatly in capital letters. Illegible answers will be considered to be incorrect.**\n\nPlease note that only words listed in either Cambridge Dictionary (https://dictionary.cambridge.org/) or Oxford English Dictionary (https://en.oxforddictionaries.com/) or Webster’s Dictionary (https://www.merriam-webster.com/), which are not marked as archaic or obsolete, will be accepted as correct answers.\n\nExample: The Mona Lisa is one of the most ______ paintings in the world. (FAME) → FAMOUS",
+          "questions": [
+            {
+              "n": 53,
+              "stem": "She tapped her foot ______ on the floor, waiting for the phone call. (ANXIETY)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "ANXIOUSLY"
+                }
+              ],
+              "solution": "Sloveso „tapped“ rozvíjí příslovce způsobu: anxiety → anxious → anxiously (nervózně, úzkostně)."
+            },
+            {
+              "n": 54,
+              "stem": "The athlete managed to ______ everyone’s expectations by breaking the world record. (EXCESS)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "EXCEED"
+                }
+              ],
+              "solution": "Po „managed to“ je třeba infinitiv slovesa: excess → exceed (překonat). Exceed expectations = překonat očekávání."
+            },
+            {
+              "n": 55,
+              "stem": "The adventurer fearlessly ventured into the ______ and discovered a world beyond his wildest imagination. (KNOW)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "UNKNOWN"
+                }
+              ],
+              "solution": "Po členu „the“ stojí substantivizované přídavné jméno: the unknown = neznámo. Smysl věty (nebojácně, objevil nový svět) vyžaduje zápornou předponu un-."
+            },
+            {
+              "n": 56,
+              "stem": "John is a ______ friend – he can always be counted on. (RELY)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "RELIABLE"
+                }
+              ],
+              "solution": "Před podstatným jménem „friend“ je třeba přídavné jméno: rely → reliable (spolehlivý), což potvrzuje i „can always be counted on“."
+            },
+            {
+              "n": 57,
+              "stem": "Sarah decided to ______ her new neighbour by inviting her over for dinner. (FRIEND)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "BEFRIEND"
+                }
+              ],
+              "solution": "Po „decided to“ je třeba sloveso s předmětem „her new neighbour“: friend → befriend (spřátelit se s někým)."
+            },
+            {
+              "n": 58,
+              "stem": "The invention of the Internet has ______ the way we communicate. (REVOLUTION)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "REVOLUTIONISED",
+                  "alsoAccepted": [
+                    "REVOLUTIONIZED"
+                  ]
+                }
+              ],
+              "solution": "Předpřítomný čas „has + příčestí minulé“: revolution → revolutionise → revolutionised (zásadně změnil). Americký pravopis -ized je také správně."
+            },
+            {
+              "n": 59,
+              "stem": "In emerging economies, researchers found that growing N₂O ______ in the atmosphere cause damage to the human respiratory tract. (EMIT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "EMISSIONS"
+                }
+              ],
+              "solution": "Po přídavném jménu „growing N₂O“ je třeba podstatné jméno, a protože sloveso „cause“ je v množném čísle, musí být v množném čísle: emit → emission → emissions."
+            },
+            {
+              "n": 60,
+              "stem": "The employee was fired due to allegations of serious ______ in the workplace. (CONDUCT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "MISCONDUCT"
+                }
+              ],
+              "solution": "Po přídavném jménu „serious“ následuje podstatné jméno; propuštění kvůli obvinění znamená špatné chování: conduct → misconduct (pochybení, nevhodné jednání)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

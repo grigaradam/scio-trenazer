@@ -29,8 +29,9 @@ export function taskToPrompt(group: Group, questions: Question[] = group.questio
     if (q.figure) lines.push(`(Úloha obsahuje obrázek, který tu není k dispozici.)`);
     for (const p of q.parts) {
       if (p.label) lines.push(`${p.label}:`);
+      if (p.kind === "text") lines.push("(Odpověď se píše – jedno slovo, bez nabídky možností.)");
       for (const o of p.options) lines.push(`(${o.key}) ${o.text}`);
-      if (withKey) lines.push(`Správně: ${p.answer}`);
+      if (withKey) lines.push(`Správně: ${[p.answer, ...(p.kind === "text" ? (p.alsoAccepted ?? []) : [])].join(" / ")}`);
     }
     if (withKey && q.solution) lines.push(`Zdůvodnění: ${q.solution}`);
   });

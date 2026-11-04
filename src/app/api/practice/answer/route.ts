@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { levelUp, XP } from "@/lib/gamification";
+import { acceptedOf, partCorrect } from "@/lib/scoring";
 import { checkAchievements, recordActivity } from "@/lib/server/activity";
 import { BASIC } from "@/lib/plans";
 import { apiUser, getPlan } from "@/lib/server/auth";
@@ -8,7 +9,8 @@ import { practiceToday } from "@/lib/server/queries";
 import { resolveTask } from "@/lib/server/tasks";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const Key = z.enum(["A", "B", "C", "D", "E", "F", "G", "H"]).nullable();
+// option letters, or a typed word (AJ word formation)
+const Key = z.string().max(40).nullable();
 const Body = z.object({
   ref: z.string(),
   answer: z.array(Key),
@@ -31,7 +33,7 @@ export async function POST(req: Request) {
   const admin = createAdminClient();
 
   const parts = task.question.parts;
-  const correct = parts.every((p, i) => body.answer[i] === p.answer || (body.answer[i] && p.alsoAccepted?.includes(body.answer[i]!)));
+  const correct = parts.every((p, i) => Boolean(body.answer[i]) && partCorrect(p, body.answer[i]!));
 
   await admin.from("practice_answers").insert({
     user_id: user.id,
@@ -83,6 +85,6 @@ export async function POST(req: Request) {
     achievementXp: ach.xp,
     levelUp: profile && after ? levelUp(profile.xp - xp, after.xp) : null,
     streak: profile?.streak_current ?? null,
-    ...(show ? { answer: parts.map((p) => p.answer), solution: task.question.solution } : {}),
+    ...(show ? { answer: parts.map((p) => p.answer), accepted: acceptedOf(parts), solution: task.question.solution } : {}),
   });
 }

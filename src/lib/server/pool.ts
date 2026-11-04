@@ -2,8 +2,10 @@ import "server-only";
 import { after } from "next/server";
 import { tryBudget } from "@/lib/ai/client";
 import { GENERATOR_VERSION, generateTasks } from "@/lib/ai/generate";
+import { optionShapeIssues } from "@/lib/ai/option-shape";
 import { diversify, focusOf, recentlySeenFocuses, split } from "@/lib/ai/variety";
-import type { ExamId, TaskType } from "@/lib/content/types";
+import { TASK_TYPES } from "@/lib/content/exams";
+import type { ExamId, Group, TaskType } from "@/lib/content/types";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /** How many unseen, ready-made tasks of a type we keep waiting for each user. */
@@ -20,9 +22,58 @@ async function unseen(userId: string, exam: ExamId, type: TaskType) {
     p_type: type,
     p_limit: 60,
   });
-  return ((data ?? []) as { id: string; payload: PoolPayload; served_count: number }[]).filter(
+  const current = ((data ?? []) as { id: string; payload: PoolPayload; served_count: number }[]).filter(
     (t) => (t.payload.v ?? 1) >= GENERATOR_VERSION,
   );
+  // tasks stored before a format check existed: never shown, and retired so the pool refills that type
+  const misshapen = current.filter((t) => optionShapeIssues(t.payload as unknown as Group, type).length);
+  if (misshapen.length) void Promise.all(misshapen.map((t) => retireTask(t.id, t.payload, optionShapeIssues(t.payload as unknown as Group, type))));
+  return current.filter((t) => !misshapen.includes(t));
+}
+
+/**
+ * Takes a pool task out of service: v 0 makes every pool query (serving, stock counts, autogen balance) skip it,
+ * the original version and the reason stay in the payload.
+ */
+async function retireTask(id: string, payload: PoolPayload, issues: string[]) {
+  const { error } = await createAdminClient()
+    .from("generated_tasks")
+    .update({ payload: { ...payload, v: 0, retired: { reason: issues.join("; "), v: payload.v ?? 1, at: new Date().toISOString() } } })
+    .eq("id", id);
+  if (error) console.error("retireTask", id, error.message);
+}
+
+/**
+ * Sweeps the whole pool for current-version tasks whose answer options don't look like real Scio options
+ * (see option-shape.ts) and retires them. `dryRun` only reports.
+ */
+export async function retireMisshapen(opts: { dryRun?: boolean } = {}) {
+  const admin = createAdminClient();
+  const found: { id: string; type: TaskType; issues: string[]; options: string }[] = [];
+  let total = 0;
+  for (const t of TASK_TYPES) {
+    const type = t.id as TaskType;
+    for (let from = 0; ; from += 500) {
+      const { data, error } = await admin
+        .from("generated_tasks")
+        .select("id,payload")
+        .eq("task_type", type)
+        .order("id")
+        .range(from, from + 499);
+      if (error) throw error;
+      const rows = ((data ?? []) as { id: string; payload: PoolPayload }[]).filter((r) => (r.payload.v ?? 1) >= GENERATOR_VERSION);
+      total += rows.length;
+      for (const r of rows) {
+        const issues = optionShapeIssues(r.payload as unknown as Group, type);
+        if (!issues.length) continue;
+        const g = r.payload as unknown as Group;
+        found.push({ id: r.id, type, issues, options: g.questions[0]?.parts[0]?.options.map((o) => o.text).join(" | ") ?? "" });
+        if (!opts.dryRun) await retireTask(r.id, r.payload, issues);
+      }
+      if (!data || data.length < 500) break;
+    }
+  }
+  return { total, found };
 }
 
 /**

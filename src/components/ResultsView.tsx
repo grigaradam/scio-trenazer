@@ -92,11 +92,12 @@ export function ResultsView({ attemptId, test, result, activeSeconds, pauses, is
             </div>
           </Card>
           <div className="grid grid-cols-2 gap-4">
-            {(["verbal", "analytic"] as SectionId[]).map((s) => {
+            {test.sections.map((x) => x.id).map((s) => {
               const b = result.sections[s];
+              if (!b) return null;
               return (
-                <Card key={s} className={s === "verbal" ? "border-verbal-100 dark:border-verbal-700/40" : "border-analytic-100 dark:border-analytic-700/40"}>
-                  <div className={clsx("text-xs font-extrabold uppercase tracking-wider", s === "verbal" ? "text-verbal-600" : "text-analytic-600")}>
+                <Card key={s} className={SECTION_META[s].tone === "verbal" ? "border-verbal-100 dark:border-verbal-700/40" : "border-analytic-100 dark:border-analytic-700/40"}>
+                  <div className={clsx("text-xs font-extrabold uppercase tracking-wider", SECTION_META[s].tone === "verbal" ? "text-verbal-600" : "text-analytic-600")}>
                     {SECTION_META[s].title}
                   </div>
                   <div className="mt-1 font-display text-3xl font-extrabold">
@@ -112,7 +113,7 @@ export function ResultsView({ attemptId, test, result, activeSeconds, pauses, is
                   <ProgressBar
                     value={Math.max(0, b.score / b.max)}
                     className="mt-3 h-2"
-                    barClassName={s === "verbal" ? "bg-verbal-500" : "bg-analytic-500"}
+                    barClassName={SECTION_META[s].tone === "verbal" ? "bg-verbal-500" : "bg-analytic-500"}
                   />
                 </Card>
               );
@@ -263,9 +264,9 @@ export function ResultsView({ attemptId, test, result, activeSeconds, pauses, is
           Rozbor úloh
         </SectionTitle>
         <p className="mb-3 text-sm text-muted">Klikni na úlohu – nejdřív si ji zkus přepočítat, pak uvidíš řešení a vysvětlení.</p>
-        {(["verbal", "analytic"] as SectionId[]).map((s) => (
+        {test.sections.map((x) => x.id).map((s) => (
           <div key={s} className="mb-4">
-            <div className={clsx("mb-2 text-xs font-extrabold uppercase tracking-wider", s === "verbal" ? "text-verbal-600" : "text-analytic-600")}>
+            <div className={clsx("mb-2 text-xs font-extrabold uppercase tracking-wider", SECTION_META[s].tone === "verbal" ? "text-verbal-600" : "text-analytic-600")}>
               {SECTION_META[s].title}
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -348,7 +349,7 @@ export function ResultsView({ attemptId, test, result, activeSeconds, pauses, is
                     key={open}
                     taskRef={testRef(test.id, open)}
                     group={ctx.group}
-                    tone={ctx.section === "verbal" ? "verbal" : "analytic"}
+                    tone={SECTION_META[ctx.section].tone}
                     given={q.given}
                     startRevealed={q.status === "correct"}
                   />
@@ -366,10 +367,10 @@ function RetakeBanner({ attemptId, section }: { attemptId: string; section: Sect
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const name = section === "verbal" ? "verbální" : "analytický";
+  const meta = SECTION_META[section];
   return (
     <section className="animate-fade-up rounded-3xl border-2 border-amber-300 bg-amber-50 p-4 dark:border-amber-700 dark:bg-amber-900/20 sm:p-5">
-      <div className="font-display text-lg font-extrabold">{section === "verbal" ? "Verbální" : "Analytický"} oddíl je úplně prázdný</div>
+      <div className="font-display text-lg font-extrabold">{meta.acc.charAt(0).toUpperCase() + meta.acc.slice(1)} je úplně prázdný</div>
       <p className="mt-1 text-sm text-muted">
         Nejspíš se ti odpovědi neuložily. Můžeš ho jednorázově dodělat – dostaneš na něj plný čas, druhý oddíl zůstane, jak
         jsi ho odevzdal, a výsledek testu se přepočítá.
@@ -392,7 +393,7 @@ function RetakeBanner({ attemptId, section }: { attemptId: string; section: Sect
           router.push(`/app/test/${attemptId}`);
         }}
       >
-        <RotateCcw className="h-4 w-4" /> Dodělat {name} oddíl
+        <RotateCcw className="h-4 w-4" /> Dodělat {meta.acc}
       </Button>
     </section>
   );

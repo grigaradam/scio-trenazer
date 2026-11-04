@@ -5,14 +5,22 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const dir = path.join(root, "content/osp/tests");
+const dirs = ["osp", "aj"].map((e) => path.join(root, "content", e, "tests")).filter((d) => fs.existsSync(d));
 const files = process.argv.slice(2).length
   ? process.argv.slice(2)
-  : fs.readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => path.join(dir, f));
+  : dirs.flatMap((dir) => fs.readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => path.join(dir, f)));
 
 const VERBAL = ["doplnovani", "analogie", "synonyma", "nesoulad", "vyplyvani", "porozumeni", "dva_texty"];
 const ANALYTIC = ["data", "porovnani", "dostatecnost", "slovni", "vyrazy", "podminky"];
-const LIMITS = { verbal: 35 * 60, analytic: 50 * 60 };
+const LIMITS = { verbal: 35 * 60, analytic: 50 * 60, reading: 15 * 60, english: 25 * 60 };
+const AJ_READING = ["aj_reading", "aj_inference"];
+const AJ_ENGLISH = ["aj_cloze", "aj_grammar", "aj_wordform"];
+// exam → [section ids in order, allowed types per section, question numbers]
+const EXAM_SHAPE = {
+  osp: { sections: ["verbal", "analytic"], types: { verbal: VERBAL, analytic: ANALYTIC }, first: 1, last: 66 },
+  // AJ: listening (1–12) needs the recording and is left out
+  aj: { sections: ["reading", "english"], types: { reading: AJ_READING, english: AJ_ENGLISH }, first: 13, last: 60 },
+};
 
 let errorCount = 0;
 let warnCount = 0;
@@ -30,23 +38,27 @@ for (const file of files) {
     errorCount++;
     continue;
   }
-  for (const k of ["id", "exam", "title", "date", "variant", "source", "stats", "sections"]) {
+  const shape = EXAM_SHAPE[t.exam] ?? EXAM_SHAPE.osp;
+  if (t.exam === "osp" && !["A", "B"].includes(t.variant)) err(`variant must be A or B`);
+  for (const k of ["id", "exam", "title", "date", "source", "sections"]) {
     if (t[k] === undefined) err(`missing top-level "${k}"`);
   }
   if (t.id && path.basename(file, ".json") !== t.id) err(`id "${t.id}" does not match filename`);
-  for (const k of ["participants", "mean", "median", "sd", "maxScore", "minScore"]) {
-    if (typeof t.stats?.[k] !== "number") err(`stats.${k} must be a number`);
-  }
+  // stats are optional (photographed booklets carry none); when present they must be complete
+  if (t.stats !== undefined)
+    for (const k of ["participants", "mean", "median", "sd", "maxScore", "minScore"]) {
+      if (typeof t.stats?.[k] !== "number") err(`stats.${k} must be a number`);
+    }
   if (!/^\d{4}-\d{2}$/.test(t.date ?? "")) err(`date must be YYYY-MM`);
 
   const seenN = new Set();
   const groupIds = new Set();
   const typeCounts = {};
   (t.sections ?? []).forEach((s, si) => {
-    const expected = si === 0 ? "verbal" : "analytic";
+    const expected = shape.sections[si];
     if (s.id !== expected) err(`section ${si} id should be "${expected}"`);
     if (s.timeLimitSec !== LIMITS[s.id]) err(`section ${s.id} timeLimitSec should be ${LIMITS[s.id]}`);
-    const allowed = s.id === "verbal" ? VERBAL : ANALYTIC;
+    const allowed = shape.types[s.id] ?? [];
     for (const g of s.groups ?? []) {
       if (!g.id || groupIds.has(g.id)) err(`group id missing/duplicate: ${g.id}`);
       groupIds.add(g.id);
@@ -78,6 +90,12 @@ for (const file of files) {
             checkPart(parts[0], ["A", "B", "C", "D"], where + " syn");
             checkPart(parts[1], ["E", "F", "G", "H"], where + " ant");
           }
+        } else if (g.taskType === "aj_wordform") {
+          const p = parts[0];
+          if (parts.length !== 1) err(`${where}: must have exactly 1 part`);
+          else if (p.kind !== "text" || (p.options ?? []).length) err(`${where}: word formation needs kind "text" and no options`);
+          else if (!/^[A-Z][A-Z'-]*$/.test(p.answer ?? "")) err(`${where}: text answer must be one word in capitals`);
+          else if ((p.alsoAccepted ?? []).some((a) => !/^[A-Z][A-Z'-]*$/.test(a))) err(`${where}: alsoAccepted must be capitals`);
         } else {
           if (parts.length !== 1) err(`${where}: must have exactly 1 part`);
           else checkPart(parts[0], ["A", "B", "C", "D"], where);
@@ -85,15 +103,16 @@ for (const file of files) {
       }
     }
   });
-  for (let n = 1; n <= 66; n++) if (!seenN.has(n)) err(`question ${n} missing`);
-  if (seenN.size !== 66) err(`expected 66 questions, got ${seenN.size}`);
+  for (let n = shape.first; n <= shape.last; n++) if (!seenN.has(n)) err(`question ${n} missing`);
+  const expectedCount = shape.last - shape.first + 1;
+  if (seenN.size !== expectedCount) err(`expected ${expectedCount} questions, got ${seenN.size}`);
 
   // answer distribution sanity
   const dist = {};
   for (const s of t.sections ?? [])
     for (const g of s.groups ?? [])
       for (const q of g.questions ?? [])
-        for (const p of q.parts ?? []) dist[p.answer] = (dist[p.answer] ?? 0) + 1;
+        for (const p of q.parts ?? []) if (p.kind !== "text") dist[p.answer] = (dist[p.answer] ?? 0) + 1;
 
   function checkPart(p, keys, where) {
     const got = (p.options ?? []).map((o) => o.key).join("");

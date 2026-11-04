@@ -1,0 +1,2127 @@
+{
+  "id": "osp-2026-01-ii-a",
+  "exam": "osp",
+  "title": "OSP – Leden II 2026, varianta A",
+  "date": "2026-01",
+  "variant": "A",
+  "source": "Fotky sešitu „osp a leden 2 2026“",
+  "sections": [
+    {
+      "id": "verbal",
+      "title": "Verbální oddíl",
+      "timeLimitSec": 2100,
+      "groups": [
+        {
+          "id": "g01",
+          "taskType": "doplnovani",
+          "instruction": "V každém z následujících krátkých textů jsou dvě nebo tři prázdná místa, která značí, že ve větě bylo něco vynecháno. Vyberte z nabízených možností dvojici nebo trojici slov, která se v daném pořadí významově a stylisticky **nejlépe** hodí do příslušného textu jako celku.",
+          "questions": [
+            {
+              "n": 1,
+              "stem": "Na trhu s uměním se stále výrazněji mezi investory ______ generace mileniálů. Umělecké předměty jsou navíc specifickou investicí, nekupují se totiž pouze kvůli zhodnocení v budoucnu, ale i pro ______ majitele.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "rozšiřuje – ocenění"
+                    },
+                    {
+                      "key": "B",
+                      "text": "prosazuje – potěšení"
+                    },
+                    {
+                      "key": "C",
+                      "text": "objevuje – zajímavost"
+                    },
+                    {
+                      "key": "D",
+                      "text": "odlišuje – zisk"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Mileniálové se mezi investory „prosazují“ a umění se kupuje nejen kvůli zhodnocení, ale i pro „potěšení“ majitele. „Zisk“ by jen opakoval zhodnocení a „rozšiřuje/objevuje se generace“ nedává smysl."
+            },
+            {
+              "n": 2,
+              "stem": "______ se u nás vzteklina takřka nevyskytuje, je očkování psů proti vzteklině ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Ačkoli – dobrovolné"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Jelikož – nezbytné"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Přestože – povinné"
+                    },
+                    {
+                      "key": "D",
+                      "text": "I když – volitelné"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Věta vyjadřuje přípustku: i když se nemoc téměř nevyskytuje, očkování je přesto „povinné“. Dvojice s „dobrovolné/volitelné“ by žádný rozpor nevyjadřovaly a „Jelikož – nezbytné“ je logicky nesmyslné."
+            },
+            {
+              "n": 3,
+              "stem": "Zatímco jižní část středomořského Kypru patří k ______ členům Evropské unie, severní třetinu ostrova zaujímá republika, kterou uznává jediná země – Turecko. Bezmála před padesáti lety totiž Turci území násilím ______ a vyvolali tím dodnes ______ mezinárodní spor.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "uznávaným – sjednotili – rozpoutaný"
+                    },
+                    {
+                      "key": "B",
+                      "text": "právoplatným – zabrali – nevyřešený"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jednoznačným – obsadili – neukončený"
+                    },
+                    {
+                      "key": "D",
+                      "text": "mnoha – sloučili – přetrvávající"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Jižní Kypr je „právoplatným“ členem EU (v protikladu k neuznané republice), území Turci násilím „zabrali“ a spor je „dodnes nevyřešený“. „Jednoznačným členům“ ani „sjednotili/sloučili násilím“ se nehodí."
+            }
+          ]
+        },
+        {
+          "id": "g02",
+          "taskType": "analogie",
+          "instruction": "Vyberte z dvojic výrazů nabízených v odpovědích tu, po jejímž doplnění na vynechaná místa v zadání (v uvedeném pořadí) bude významový vztah mezi výrazy vpravo od rovnítka **nejpodobnější** významovému vztahu mezi výrazy vlevo od rovnítka (**pořadí výrazů ve dvojicích je důležité**).",
+          "questions": [
+            {
+              "n": 4,
+              "stem": "PROPISKA : ______ = PISTOLE : ______",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "psaní – střelba"
+                    },
+                    {
+                      "key": "B",
+                      "text": "písař – spoušť"
+                    },
+                    {
+                      "key": "C",
+                      "text": "tuha – muška"
+                    },
+                    {
+                      "key": "D",
+                      "text": "papír – střelec"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Propiska slouží k psaní, pistole slouží ke střelbě (nástroj : činnost, ke které slouží). Tuha je součástí tužky, ne propisky."
+            },
+            {
+              "n": 5,
+              "stem": "BEZPEČÍ : ______ = ______ : ROZMAŘILÝ",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "zajištěný – spokojenost"
+                    },
+                    {
+                      "key": "B",
+                      "text": "předvídatelný – stálost"
+                    },
+                    {
+                      "key": "C",
+                      "text": "riskantní – skromnost"
+                    },
+                    {
+                      "key": "D",
+                      "text": "jistý – vlastnost"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Vztah protikladu podstatného jména a přídavného jména: bezpečí je opakem toho, co je riskantní, a skromnost je opakem rozmařilosti. Ostatní dvojice vyjadřují blízký význam, ne protiklad."
+            },
+            {
+              "n": 6,
+              "stem": "NÁDVOŘÍ : ______ = ______ : STADION",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "socha – tribuna"
+                    },
+                    {
+                      "key": "B",
+                      "text": "palác – hřiště"
+                    },
+                    {
+                      "key": "C",
+                      "text": "kultura – sport"
+                    },
+                    {
+                      "key": "D",
+                      "text": "kašna – tělocvična"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Nádvoří je částí paláce, hřiště je částí stadionu (část : celek). U A je pořadí obrácené (socha stojí na nádvoří, tribuna je část stadionu)."
+            }
+          ]
+        },
+        {
+          "id": "g03",
+          "taskType": "synonyma",
+          "instruction": "V každé z následujících úloh vyberte z nabízených možností **A až D** ten výraz, který se v kontextu uvedené věty nejvíce blíží významu podtrženého výrazu (**synonymum**). Z možností **E až H** pak vyberte ten výraz, který se v kontextu uvedené věty nejvíce blíží **opačnému** významu podtrženého výrazu (**antonymum**).",
+          "questions": [
+            {
+              "n": 7,
+              "stem": "Použité prostředky byly zcela <u>odpovídající</u> charakteru útoku.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "přiměřené"
+                    },
+                    {
+                      "key": "B",
+                      "text": "podpůrné"
+                    },
+                    {
+                      "key": "C",
+                      "text": "rozhodující"
+                    },
+                    {
+                      "key": "D",
+                      "text": "věnované"
+                    }
+                  ],
+                  "answer": "A"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "znemožňující"
+                    },
+                    {
+                      "key": "F",
+                      "text": "nevypovídající"
+                    },
+                    {
+                      "key": "G",
+                      "text": "nezodpovědné"
+                    },
+                    {
+                      "key": "H",
+                      "text": "neúměrné"
+                    }
+                  ],
+                  "answer": "H"
+                }
+              ],
+              "solution": "Prostředky „odpovídající“ charakteru útoku jsou mu „přiměřené“. Opakem je „neúměrné“ (nepřiměřené); „nevypovídající“ znamená něco jiného."
+            },
+            {
+              "n": 8,
+              "stem": "O mladého útočníka z Anglie usiloval německý klub dlouho, ale neúspěšně, takže anglická liga o tento <u>mimořádný</u> talent nepřijde.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "nečekaný"
+                    },
+                    {
+                      "key": "B",
+                      "text": "neobyčejný"
+                    },
+                    {
+                      "key": "C",
+                      "text": "nadaný"
+                    },
+                    {
+                      "key": "D",
+                      "text": "šikovný"
+                    }
+                  ],
+                  "answer": "B"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "beznadějný"
+                    },
+                    {
+                      "key": "F",
+                      "text": "běžný"
+                    },
+                    {
+                      "key": "G",
+                      "text": "skrytý"
+                    },
+                    {
+                      "key": "H",
+                      "text": "postradatelný"
+                    }
+                  ],
+                  "answer": "F"
+                }
+              ],
+              "solution": "„Mimořádný“ talent je „neobyčejný“; opakem je „běžný“. „Nadaný“ a „šikovný“ popisují hráče, ne míru výjimečnosti."
+            },
+            {
+              "n": 9,
+              "stem": "V Havlíčkově Brodě se <u>odpůrci</u> nové výstavby vynoří pravidelně pokaždé, když se nějaký takový záměr objeví.",
+              "parts": [
+                {
+                  "label": "synonymum",
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "původci"
+                    },
+                    {
+                      "key": "B",
+                      "text": "záškodníci"
+                    },
+                    {
+                      "key": "C",
+                      "text": "posuzovatelé"
+                    },
+                    {
+                      "key": "D",
+                      "text": "nepřátelé"
+                    }
+                  ],
+                  "answer": "D"
+                },
+                {
+                  "label": "antonymum",
+                  "options": [
+                    {
+                      "key": "E",
+                      "text": "příznivci"
+                    },
+                    {
+                      "key": "F",
+                      "text": "obdivovatelé"
+                    },
+                    {
+                      "key": "G",
+                      "text": "pomocníci"
+                    },
+                    {
+                      "key": "H",
+                      "text": "navrhovatelé"
+                    }
+                  ],
+                  "answer": "E"
+                }
+              ],
+              "solution": "Odpůrci výstavby jsou její „nepřátelé“ (stojí proti ní). Opakem jsou „příznivci“ výstavby; navrhovatelé ji navrhují, ale opakem postoje „být proti“ je „být pro“."
+            }
+          ]
+        },
+        {
+          "id": "g04",
+          "taskType": "nesoulad",
+          "instruction": "V každém z následujících textů je právě jedna část, která do něj svým vyzněním **nezapadá**. U každé z úloh zvolte možnost, která obsahuje právě tu část textu, jež **není v souladu s jeho celkovým vyzněním**.",
+          "questions": [
+            {
+              "n": 10,
+              "stem": "Lékaři už dlouho experimentují s náhradou nemocí poškozených lidských orgánů jejich ekvivalenty odebranými z prasat. Lidský imunitní systém ale prasečí orgány nesnáší a útočí na ně. Utlumení imunitní obrany příjemce sice umožní transplantovaným buňkám přežít, ale zvyšuje riziko těžkých infekcí. Naději v této oblasti nepřinesla ani myšlenka opravovat poškozené lidské orgány nediferencovanými zárodečnými buňkami. Tým amerických vědců odzkoušel na opicích s poškozenou slinivkou transplantaci nediferencovaných buněk z prasečích zárodků. Zvířata transplantované buňky přijala a jejich zdravotní stav se zlepšil. Buňky zárodku méně dráždily imunitní systém příjemce, a zvířata proto vystačila s nízkou dávkou léků pro potlačení imunity. Opice dál žily bez zdravotních komplikací déle než pět let.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Utlumení imunitní obrany příjemce sice umožní transplantovaným buňkám přežít, ale zvyšuje riziko těžkých infekcí."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Naději v této oblasti nepřinesla ani myšlenka opravovat poškozené lidské orgány nediferencovanými zárodečnými buňkami."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Zvířata transplantované buňky přijala a jejich zdravotní stav se zlepšil."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Buňky zárodku méně dráždily imunitní systém příjemce, a zvířata proto vystačila s nízkou dávkou léků pro potlačení imunity."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Zbytek textu popisuje úspěšný pokus se zárodečnými buňkami, právě tato myšlenka tedy naději přinesla. Tvrzení, že naději „nepřinesla“, je v rozporu s vyzněním textu."
+            },
+            {
+              "n": 11,
+              "stem": "Zachycování uhlíku (DAC) se stává jednou z hlavních hrozeb pro existenci fosilního průmyslu. Právě ropné a plynárenské korporace dnes na technologie DAC sázejí, protože věří, že díky nim budou moci pokračovat v těžbě a prodeji fosilních paliv, která skleníkový efekt zhoršují. Trend se ostatně projevil i loni na podzim, kdy se mezinárodní společenství dohodlo na přechodu ke kompenzaci pálení fosilních paliv zachycováním uhlíku. Elektrárny a ropné rafinérie by tak mohly fungovat dál, pokud si své emise na místě zachytí a uloží. Je ovšem otázka, jestli by elektřina nutná pro pohánění zařízení DAC nemohla být zužitkována lépe – například k nahrazení energie, kterou dnes lidstvo stále vyrábí z fosilních paliv.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Zachycování uhlíku (DAC) se stává jednou z hlavních hrozeb pro existenci fosilního průmyslu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Trend se ostatně projevil i loni na podzim, kdy se mezinárodní společenství dohodlo na přechodu ke kompenzaci pálení fosilních paliv zachycováním uhlíku."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Elektrárny a ropné rafinérie by tak mohly fungovat dál, pokud si své emise na místě zachytí a uloží."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Je ovšem otázka, jestli by elektřina nutná pro pohánění zařízení DAC nemohla být zužitkována lépe – například k nahrazení energie, kterou dnes lidstvo stále vyrábí z fosilních paliv."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Text ukazuje, že fosilní korporace na DAC sázejí, protože jim umožní pokračovat v těžbě – DAC je tedy pro fosilní průmysl nadějí, ne hrozbou."
+            },
+            {
+              "n": 12,
+              "stem": "Nakladatelé těží na rychle rostoucím trhu s e-knihami především z toho, že lidé disponují stále modernějšími a výkonnějšími technologickými zařízeními. Ta umožňují nejen čtení přímo z obrazovky, ale hlavně uložení velkého množství dat. Například do chytrého telefonu dnes můžete nahrát doslova celou knihovnu. A proto nakladatelé dnes vydávají každou knižní novinku i v elektronické podobě. A co víc, řada knih se dá v elektronické verzi zakoupit mnohem dříve než tištěná kniha. A to i přesto, že nakladatelé nedovedou flexibilně reagovat na požadavky trhu a stále se konzervativně drží vydávání především tištěných knih, ať už jde o žhavé novinky, či o staré klasiky.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Nakladatelé těží na rychle rostoucím trhu s e-knihami především z toho, že lidé disponují stále modernějšími a výkonnějšími technologickými zařízeními."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Ta umožňují nejen čtení přímo z obrazovky, ale hlavně uložení velkého množství dat."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Například do chytrého telefonu dnes můžete nahrát doslova celou knihovnu."
+                    },
+                    {
+                      "key": "D",
+                      "text": "A to i přesto, že nakladatelé nedovedou flexibilně reagovat na požadavky trhu a stále se konzervativně drží vydávání především tištěných knih, ať už jde o žhavé novinky, či o staré klasiky."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text líčí nakladatele, kteří pružně vydávají každou novinku i elektronicky a často dříve než tištěnou. Tvrzení, že se konzervativně drží tištěných knih a nedovedou reagovat na trh, tomu odporuje."
+            },
+            {
+              "n": 13,
+              "stem": "Žijí na ulici, na první pohled to na nich ale není znát. Pouze nápis *Kuchařky bez domova* na prodejním pultíku prozrazuje situaci žen, které na patnácti různých místech po Praze vaří a prodávají jídlo. Jídlo uvařené na místě v pojízdné kuchyni nabízejí výměnou za oblečení či jiné životní potřeby. V repertoáru mají ovocné koláče, různé závitky, polévky nebo pomazánky. „Chceme upozornit na problematiku ženského bezdomovectví a také ukázat, že tyto ženy něco umějí. Pro naše ženy je to také možnost přivýdělku,“ říká Lenka Vrbová z neziskové organizace *Jako doma*, která za projektem stojí. Podle jejích slov si kuchařky měsíčně vydělají okolo tří tisíc korun, záleží na konkrétních tržbách. Jedna z kuchařek, Zuzana, dodává: „Jsem tady už od počátku a upřímně přiznávám, že nejdřív jsem se zapojila kvůli penězům. Před Vánoci lidé u nás nakupovali hodně, to jsem si vydělala nejvíc.“\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Jídlo uvařené na místě v pojízdné kuchyni nabízejí výměnou za oblečení či jiné životní potřeby."
+                    },
+                    {
+                      "key": "B",
+                      "text": "V repertoáru mají ovocné koláče, různé závitky, polévky nebo pomazánky."
+                    },
+                    {
+                      "key": "C",
+                      "text": "„Pro naše ženy je to také možnost přivýdělku,“ říká Lenka Vrbová z neziskové organizace *Jako doma*, která za projektem stojí."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Podle jejích slov si kuchařky měsíčně vydělají okolo tří tisíc korun, záleží na konkrétních tržbách."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Ženy jídlo prodávají a vydělávají si peníze (přivýdělek, tržby, nákupy před Vánoci). Výměnný obchod za oblečení či jiné potřeby s tím není v souladu."
+            },
+            {
+              "n": 14,
+              "stem": "Počet uživatelů virtuální kanceláře přesáhl v Česku podle posledních údajů již padesát tisíc. Většina uživatelů těchto firemních sídel pochází z větších měst, přibližně tři čtvrtiny připadají na Prahu. Rychle přibývá využívání virtuálních kanceláří zejména mezi podnikateli, kteří ke své práci nepotřebují klasické zázemí. Jsou to například poradci, projektanti či webdesigneři. V posledním roce přibylo i finančních konzultantů, účetních či obchodníků. Meziročně se v prvním pololetí roku 2021 snížil počet uživatelů virtuálních kanceláří o deset procent.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Většina uživatelů těchto firemních sídel pochází z větších měst, přibližně tři čtvrtiny připadají na Prahu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Rychle přibývá využívání virtuálních kanceláří zejména mezi podnikateli, kteří ke své práci nepotřebují klasické zázemí."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Jsou to například poradci, projektanti či webdesigneři."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Meziročně se v prvním pololetí roku 2021 snížil počet uživatelů virtuálních kanceláří o deset procent."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Celý text popisuje růst počtu uživatelů virtuálních kanceláří (rychle přibývá, přibylo). Meziroční pokles o deset procent tomu odporuje."
+            },
+            {
+              "n": 15,
+              "stem": "Víte, proč je rakouská ambasáda na Smíchově, mimo centrum Prahy? Protože nové Československo to dávalo po roce 1918 staré vrchnosti „sežrat“. Zatímco spojenci z Francie, Británie, Ameriky, Jugoslávie či Rumunska šli do malostranských paláců, Rakousko muselo vzít zavděk tehdejší periferií. A ta vzájemná symbolika přežívá dodnes. Karel Schwarzenberg Rakušany zná, proto říká, že jsme si navzájem zrcadlem. Teď, když je Rakousko tím bohatším a služebně starším v EU, to dává „sežrat“ ono nám. Žádný jiný stát neurčuje českou energetickou politiku tak tvrdě jako Rakousko. Žádný nedělá takové „buzerace“ českým autům a autobusům na hranicích. Žádný jiný soused nevystoupil už proti myšlence amerického radaru v Brdech. A obráceně – žádný jiný postkomunistický stát v roce 2000 nebrojil proti protirakouským diplomatickým sankcím tak důsledně jako Česko.\n\nKterá z následujících částí uvedeného textu **není v souladu** s jeho celkovým vyzněním?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Protože nové Československo to dávalo po roce 1918 staré vrchnosti „sežrat“."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Teď, když je Rakousko tím bohatším a služebně starším v EU, to dává „sežrat“ ono nám."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Žádný nedělá takové „buzerace“ českým autům a autobusům na hranicích."
+                    },
+                    {
+                      "key": "D",
+                      "text": "A obráceně – žádný jiný postkomunistický stát v roce 2000 nebrojil proti protirakouským diplomatickým sankcím tak důsledně jako Česko."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text popisuje vzájemné „dávání sežrat“: „a obráceně“ má uvést, jak Česko škodilo Rakousku. Brojení proti protirakouským sankcím by ale bylo podporou Rakouska – smysl textu vyžaduje, že Česko sankce naopak podporovalo."
+            }
+          ]
+        },
+        {
+          "id": "g05",
+          "taskType": "vyplyvani",
+          "instruction": "Všechny následující úlohy řešte **pouze** na základě informací uvedených v textu či z něho vyplývajících.",
+          "questions": [
+            {
+              "n": 16,
+              "stem": "Jen 10 procent českých čtenářů vlastní více než tisíc knih a stejné množství má naopak nejskromnější knihovničky do padesáti svazků. Úctyhodné několikatisícisvazkové knihovny si udržují hlavně Češi nad šedesát let (mezi nimi je to 25 procent), mezi dospělými (36 až 60 let) je to pak 14 procent a u mladých dospělých (18 až 35 let) jsou to tři procenta. Ti mívají nejčastěji (34 procent) malou knihovnu do 150 knih.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každý čtvrtý Čech nad 60 let vlastní několik tisíc knih."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Třetina obyvatel ČR ve věku 18–35 let má ve své knihovně méně než sto knih."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Tisícisvazkové knihovny jsou u lidí středního věku naprostou raritou."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Většina českých čtenářů má doma kolem stovky knih."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Několikatisícisvazkové knihovny má 25 % Čechů nad šedesát let, tedy každý čtvrtý. B mluví o méně než sto knihách (text uvádí do 150), C odporuje 14 % a D z textu neplyne."
+            },
+            {
+              "n": 17,
+              "stem": "Ve své knize *Příběh lidského těla* doktor Lieberman přesvědčivými argumenty dokládá, že dnešní epidemie chronických onemocnění je důsledkem nesouladu mezi našimi evolučními kořeny a moderním životním stylem: „[...] protože se pořád neumíme bránit dávným, kdysi adaptivním instinktům jíst koblihy a nechat se vozit výtahem.“\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Kniha *Příběh lidského těla* důkladně popisuje historii našich instinktů a její dopady na současné lidstvo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Doktor Lieberman podkládá svoji tezi týkající se chronických onemocnění argumenty, které získal u autorů knihy *Příběh lidského těla*."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Doktor Lieberman je kritikem moderního životního stylu, který se projevuje například zvýšenou konzumací sladkého pečiva."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Doktor Lieberman dává do souvislostí současnou epidemii chronických onemocnění a naše dávné instinkty."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Lieberman tvrdí, že epidemie chronických nemocí vzniká, protože se neumíme bránit dávným instinktům – dává je tedy do souvislosti. Kniha je jeho vlastní (B), o důkladném popisu historie instinktů (A) ani o kritice (C) text nemluví."
+            },
+            {
+              "n": 18,
+              "stem": "Mezi vhodné tepelné úpravy potravin patří pečení a dušení. V porovnání s vařením si potraviny uchovávají daleko více vitaminu C, nicméně dlouhá expozice potravin horkému vzduchu škodí zase vitaminům skupiny B (dokonce ztratí až 40 % své účinnosti). Při pečení se vyplatí počkat si. Zvlášť maso v troubě proto pečte déle při nižších teplotách.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Pečení i vaření uchovají v potravinách dostatek vitaminu C."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Teplota úpravy potravin ovlivňuje chuť připravovaných pokrmů."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Vitaminy skupiny B mohou být kvůli horkému vzduchu účinné jen na 40 %."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Způsob tepelné úpravy potravin má vliv na vitaminy, které obsahují."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text porovnává obsah vitaminů při pečení/dušení a vaření, způsob úpravy tedy vitaminy ovlivňuje. Vitaminy B ztratí až 40 %, takže zůstanou účinné nejméně na 60 % (C), o chuti (B) text nemluví."
+            },
+            {
+              "n": 19,
+              "stem": "Navýšení exportu do Vietnamu může pomoci i české ekonomice. Její výkonnost je totiž na vývozu zboží přes hranice závislá. Podle dat Světové banky se export na hrubém domácím produktu podílí z více než sedmdesáti procent. Podstatná většina vývozu ale míří do Evropské unie. Stát se proto snaží riziko závislosti na jednom trhu snížit a podpořit větší rozmanitost i objem mimoevropského zahraničního obchodu.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Česká ekonomika je závislá na vývozu zboží do Vietnamu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Více než 70 procent českého exportu míří do Evropské unie."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Stát se snaží zvýšit vývoz mimo Evropskou unii."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Podle Světové banky je česká ekonomika příliš závislá na jednom trhu."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Stát chce podpořit objem mimoevropského obchodu, aby snížil závislost na vývozu do EU – tedy zvýšit vývoz mimo EU. 70 % je podíl exportu na HDP, ne podíl EU na exportu (B), a hodnocení závislosti nepochází od Světové banky (D)."
+            },
+            {
+              "n": 20,
+              "stem": "Svědky atentátu na arcivévodu Františka Ferdinanda d'Este zůstávají dodnes vyznamenání a řády, které měl připnuty na uniformě osudového 28. června 1914. Stále jsou potřísněny arcivévodovou krví. Symbolicky na den přesně o sto sedm let později byla tato kolekce převezena do Národního muzea, kde bude návštěvníky vítat po vstupu do expozice Dějiny dvacátého století.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Vyznamenání a řády Františka Ferdinanda d'Este doposud nebyly vystavovány."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Sto sedm let po smrti Františka Ferdinanda d'Este byla zahájena výstava Dějiny dvacátého století."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Zakrvácené řády Františka Ferdinanda d'Este budou vystaveny v rámci expozice Dějiny dvacátého století."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Uniforma Františka Ferdinanda d'Este bude vystavena v Národním muzeu ve své původní podobě z 28. června 1914."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Řády potřísněné krví byly převezeny do Národního muzea, kde budou vítat návštěvníky expozice Dějiny dvacátého století. Po 107 letech byla převezena kolekce, ne zahájena výstava (B), o uniformě ani předchozím vystavování text nic neříká."
+            },
+            {
+              "n": 21,
+              "stem": "Daňčí obora se na mapách veltruského parku objevuje už v roce 1802. Daněk skvrnitý byl pro svůj exotický vzhled vysazován v českých oborách již od konce 17. století, ale větší oblibě se těšil až ve století 18. a 19. Daňčí zvěř není tak plachá jako zvěř jelení, takže se s daňčími oborami, a samozřejmě i s daňčí zvěří samotnou, často potkáme v samotné blízkosti šlechtických sídel.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "První šlechtickou oborou, kde byl daněk skvrnitý vysazen, byl veltruský park."
+                    },
+                    {
+                      "key": "B",
+                      "text": "V blízkosti šlechtických sídel se daněk skvrnitý v 18. století vyskytoval více než dnes."
+                    },
+                    {
+                      "key": "C",
+                      "text": "V oborách nacházejících se poblíž šlechtických sídel je již od konce 18. století nejčastějším druhem zvěře zvěř daňčí."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Daňčí obora se na mapách veltruského parku objevuje až po více než sto letech od doby, kdy byl daněk skvrnitý v českých oborách poprvé vysazován."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Daněk se v českých oborách vysazoval od konce 17. století (nejpozději kolem roku 1700) a veltruská obora je na mapách od roku 1802, tedy více než o sto let později. Ostatní tvrzení z textu neplynou."
+            },
+            {
+              "n": 22,
+              "stem": "Společnost T-Mobile předčasně vypověděla smlouvy 12 virtuálním operátorům. Ty jim umožňovaly využívat síť společnosti T-Mobile a nabízet na ní vlastní služby. Nově navržené smlouvy jsou pak podle oslovených operátorů nevýhodné. Zástupci některých malých operátorů jsou navíc přesvědčeni, že výpovědi byly vyvolány nedávným rozhodnutím Českého telekomunikačního úřadu (ČTÚ), podle kterého musí společnost T-Mobile snížit velkoobchodní cenu za mobilní data.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Podle některých virtuálních operátorů je předčasné vypovězení smluv ze strany společnosti T-Mobile protiprávním krokem."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Virtuální operátoři využívají na smluvním základu výhradně síť společnosti T-Mobile."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Podle některých názorů má předčasné vypovězení smluv ze strany společnosti T-Mobile původ v rozhodnutí ČTÚ."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Český telekomunikační úřad svým rozhodnutím uložil společnosti T-Mobile povinnost vypovědět smlouvy s virtuálními operátory."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Zástupci některých operátorů se domnívají, že výpovědi vyvolalo rozhodnutí ČTÚ o snížení velkoobchodní ceny. O protiprávnosti (A) ani o výhradním využívání sítě (B) text nemluví a ČTÚ výpověď neuložil (D)."
+            },
+            {
+              "n": 23,
+              "stem": "Triglav (2 864 m n. m.) je nejvyšší hora Slovinska a Julských Alp. Nachází se v Triglavském národním parku na severozápadě země. Hora je stylizovaně zobrazena na slovinském státním znaku i slovinské vlajce. Své pojmenování získala podle Trihlava, starodávného trojhlavého slovanského božstva.\n\nKteré z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Na slovinské státní vlajce je umístěn slovinský státní znak."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Na slovinském státním znaku je vyobrazeno slovanské božstvo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Podle slovinských mýtů obývalo horu Triglav slovanské božstvo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "V Julských Alpách nalezneme horu pojmenovanou podle slovanského božstva."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Triglav leží v Julských Alpách a je pojmenován podle božstva Trihlava. Na znaku je zobrazena hora, ne božstvo (B); že je znak na vlajce (A) či že božstvo horu obývalo (C), text neuvádí."
+            }
+          ]
+        },
+        {
+          "id": "g06",
+          "taskType": "porozumeni",
+          "instruction": "Přečtěte si uvedený text a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textu píše nebo co z textu vyplývá.",
+          "passage": "Počátky hudby sahají do starší doby kamenné (asi před 30 000 lety) na samý práh lidské vzdělanosti. Klademe je do té fáze vývoje člověka, kdy se začal lišit od zvířete svým myšlením a tím, že dokázal vyjádřit své myšlenky primitivní řečí. V té době si vytvářel první kosmologické a přírodní představy o jevech, které ho obklopovaly, a v té době vznikala také prvá umělecká díla, jež povětšinou neměla funkci estetickou, ale především magickou: měla člověku naklonit nadpřirozené mocnosti a ulehčit tak jeho život.\n\nTermín hudba v mezinárodním většinovém slově „musica“ (lat. přep.) pochází z doby antického Řecka a měl zprvu širší význam. Původní tvar „mousiké“, přepisujeme a čteme „músiké“, se vyskytl v okruhu dórské sborové lyriky, konkrétně v Pindarově prvé ódě z roku 476 př. n. l. Toto slovo souvisí s názvem božských ochránkyň umění – Múz. Podle řecké mytologie to byly dcery boha Dia, původně bohyně básnictví a zpěvu, ochránkyně pěvců, kteří pokládali svůj zpěv za dar a dílo Múz. V antických pramenech, zejména Homérových a Hesiodových, existuje o významu Múz a jejich počtu řada verzí. Byly spojovány též s bohem Apollónem (v egyptské mytologii zase s bohem Thótem), jehož obveselovaly svým zpěvem a tancem na Parnassu. Původní músiké byla tak určitá jednota uměleckých činností, jakými jsou básnictví, zpěv, instrumentální hra a tanec. Odtud jsou ona umění dodnes chápána jako múzická na rozdíl od umění výtvarných. Pro studium hudby mají význam jména Múz: pro zpěv a tragédii Melpomené, pro vážný zpěv a hudbu Polymnia, pro tanec Terpsichora a pro komedii Thaleia.\n\nO samotném vzniku hudby existuje však více teorií. Charles Darwin (1809–1862) soudil, že zpěv byl dorozumívacím prostředkem, předcházel řeči. Poukazoval přitom na obdobnou funkci ptačího zpěvu. Opačný názor, že hudba vznikla z řeči a z jejího melodického spádu, zastávala na sobě nezávislá skupina badatelů, např. Jean-Jacques Rousseau, Herbert Spencer, Carl Stumpf, u nás později Leoš Janáček. Národohospodář Karl Bücher vysvětloval vznik hudby z rytmu práce a na souvislost hudby a tělesné činnosti poukazoval také náš historik a estetik Otakar Hostinský ve své studii Umění a společnost. Vztah hudby a ptačího zpěvu dokazoval též francouzský skladatel Olivier Messiaen (1908–1992), který intonaci a rytmus ptačích zpěvů podrobil srovnávacím studiím na všech kontinentech, jsa vyzbrojen na hudebníka vzácnými odbornými znalostmi z oboru ornitologie. Uspokojivého a jednotného řešení problému vzniku hudby však zatím nebylo dosaženo.",
+          "passageTitle": "TEXT K ÚLOHÁM 24 AŽ 26",
+          "questions": [
+            {
+              "n": 24,
+              "stem": "Která z následujících možností nejlépe vystihuje, z jakého důvodu je v uvedeném textu zmíněn Pindaros?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Ve svém díle použil slovo, z něhož vzniklo dnešní slovo „musica“."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Patřil mezi antické pěvce, kteří pokládali své umění za dar Múz."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Na rozdíl od Homéra a Hesioda se zabýval sborovou lyrikou."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Je autorem jednoho z nejstarších dochovaných hudebních pramenů."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Pindaros je zmíněn proto, že se v jeho prvé ódě vyskytl původní tvar „mousiké“, z něhož pochází termín „musica“. Ostatní možnosti text o Pindarovi neuvádí."
+            },
+            {
+              "n": 25,
+              "stem": "Které z následujících tvrzení o vzniku hudby odporuje informacím v uvedeném textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Charles Darwin využil poznatků hudebníka Oliviera Messiaena při zkoumání funkce ptačího zpěvu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Badatelé se shodují v názoru, že hudba vznikla již v pravěku."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Ve svých počátcích plnila hudba jinou funkci než dnes."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Leoš Janáček zkoumal spád lidské řeči, aby mohl vyvrátit Darwinovu teorii o vzniku hudby."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Darwin zemřel roku 1862, Messiaen se narodil až 1908 – Darwin tedy jeho poznatky využít nemohl. To je přímý rozpor s daty v textu; ostatní tvrzení text buď nepotvrzuje, nebo s ním nejsou v přímém rozporu."
+            },
+            {
+              "n": 26,
+              "stem": "Které z následujících tvrzení o Múzách vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Múzy najdeme i v jiné než řecké mytologii."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Každá Múza ovládala instrumentální hru, zpěv a tanec."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Nejstarší zmínky o Múzách jsou v Homérových dílech."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Výtvarná umění mají jiné Múzy než hudební umění."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Text uvádí, že Múzy byly v egyptské mytologii spojovány s bohem Thótem – objevují se tedy i mimo řeckou mytologii. Každá Múza měla svou oblast (B), o nejstarších zmínkách (C) ani o Múzách výtvarných umění (D) text nic neříká."
+            }
+          ]
+        },
+        {
+          "id": "g07",
+          "taskType": "porozumeni",
+          "instruction": "Přečtěte si uvedený text a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textu píše nebo co z textu vyplývá.",
+          "passage": "Hrad Landštejn střežil kupeckou stezku z Rakous do Čech, za panování Krajířů z Krajku byl dokonce třetím největším hradem u nás. Z věže je úchvatná vyhlídka, zelené lesní moře, louky. Historie Landštejna začíná kolem roku 1260, kdy Vítkovec Vítek dostává od krále Jana Lucemburského, kterému pomohl na trůn, rozsáhlé majetky – Landštejn k nim patřil.\n\nNejznámějším majitelem byl Vilém z Landštejna. Prchlivý Vilém měl mocného souseda Jindřicha II. z Jindřichova Hradce. Aby rody posílily, slíbil mu Vilém dceru Markétu za ženu. Jindřich se sice zamiloval, ale chtěl věnem mýto ze stezky. Vilém odmítl a Jindřich nechal kupce jezdit směr Hradec. To byl počátek dlouhotrvajících bojů, spor vešel ve známost jako válka růží. Sňatek byl zrušen, landštejnský pán se zatvrdil. Markétiny lamentace ji přivedly do vězení a snad skončila i zazděná, každopádně stopy po ní končí. Osvobodit Markétu se pokusil rytíř Buzek z Lásenic, neuspěl ale a zhynul v hladomorně.\n\nDo války byly vtaženy nejen jižní Čechy, ale i Horní Rakousy. Spor řešil až Karel IV., právo přiřkl Landštejnovi. Válka skončila v roce 1356 soubojem Viléma a Jindřicha. Vilém zemřel na následky zranění. Potom už panství neprosperovalo, žádný ze šesti synů nedosáhl otcova věhlasu. Hrad připadl králi. Václav IV. ho v roce 1381 věnoval korutanskému hejtmanovi Kraigovi (později se psal jako Konrád Krajíř z Krajku). Ten musel z Rakous uprchnout kvůli stíhání za zpronevěru. Král si ho však velmi oblíbil; po zprostředkování sňatku princezny Anny s anglickým králem Richardem II. byl Konrád na vrcholu. Nejvlivnější byl z krajířského rodu Volf Starší (†1554), velitel zemské hotovosti sbírané proti možnému tureckému vpádu.\n\nPosledními majiteli byli Herbersteinové, pocházející ze Štýrska. V roce 1771 zapálil blesk šindelové střechy, hrad vyhořel a jeho majitelé už ho neobnovovali. Centrem moci se stal renesanční Jindřichův Hradec, z Landštejna zbyly jen ruiny. Mohutná čtyřboká věž ční vysoko nad lesy přerušovanými výseky pastvin, polí i přehradní nádrže pod hradem. V 70. letech minulého století začaly odklízecí práce, poté se přešlo v náročnou rekonstrukci. Částečně přístupný je Landštejn od roku 1990.\n\nMarkéta se stala landštejnskou Bílou paní, bloudí po hradbách, za bouřlivých nocí tu kvílí i Vilém, prosící za odpuštění.",
+          "passageTitle": "TEXT K ÚLOHÁM 27 AŽ 29",
+          "questions": [
+            {
+              "n": 27,
+              "stem": "Které z následujících tvrzení vyplývá z uvedeného textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Počátky Jindřichova Hradce spadají do první poloviny 13. století."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Zakladatelem Landštejna byl král Jan Lucemburský."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Spor zvaný též válka růží probíhal ve 14. století."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Landštejn se nachází na území Jindřichova Hradce."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Válka růží skončila roku 1356 soubojem Viléma a Jindřicha a spor řešil Karel IV. – probíhala tedy ve 14. století. O počátcích Jindřichova Hradce ani o zakladateli hradu text nic neříká (Jan Lucemburský jen daroval majetky)."
+            },
+            {
+              "n": 28,
+              "stem": "Které z následujících tvrzení odporuje informacím v uvedeném textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Vilém zemřel v souboji s Volfem Starším."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hrad Landštejn byl postaven převážně v gotickém stylu."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Volf Starší bojoval proti tureckému vpádu."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Vilém z Landštejna vybíral od kupců mýto."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Vilém zemřel na následky zranění ze souboje s Jindřichem z Jindřichova Hradce (1356), Volf Starší žil až v 16. století. O slohu hradu text nemluví a mýto ze stezky (D) i velení hotovosti proti Turkům (C) s textem v rozporu nejsou."
+            },
+            {
+              "n": 29,
+              "stem": "Na kterou z následujících otázek je na základě informací v uvedeném textu možné jednoznačně odpovědět?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Jaké konkrétní zranění utrpěl Vilém v souboji?"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Proč opustil Konrád Krajíř z Krajku Rakousy?"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Kdo vládl v Horních Rakousích ve 14. století?"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Které části Landštejna jsou veřejnosti přístupné?"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text uvádí, že Konrád Krajíř musel z Rakous uprchnout kvůli stíhání za zpronevěru. Konkrétní zranění, vládce Horních Rakous ani přístupné části hradu (jen „částečně přístupný“) text neuvádí."
+            }
+          ]
+        },
+        {
+          "id": "g08",
+          "taskType": "dva_texty",
+          "instruction": "Přečtěte si oba texty v zadání a v následujících otázkách vyberte **nejvhodnější** odpověď. Všechny úlohy řešte pouze na základě toho, co se v textech píše nebo co z textů vyplývá.",
+          "passage": "**Text 1**\n\nPsycholog Jordan Peterson má v anglosaském světě už několik let status veřejně známého intelektuála, který rád provokuje. Kromě toho, že přednáší na Torontské univerzitě, píše knižní bestsellery o osobním rozvoji, v nichž hlásá návrat k tradičním hodnotám. Někteří akademici Petersonovi vyčítají odborné nedostatky hraničící s diletantismem, především fakt, že často chybně cituje renomované autory, jejichž dílo ani pořádně nečetl, nicméně u velké části veřejnosti platí za uznávaného myslitele a duchovní celebritu.\n\nSpor o Petersona nyní dorazil i do Česka. Vše začalo na konci března, kdy univerzita v Cambridge oznámila, že Petersonovi ruší pozvání na studijní pobyt, který mu dříve nabídla. Toho se rozhodla využít Univerzita Palackého v Olomouci, která Petersona obratem pozvala, ať místo toho přijede přednášet do Česka. To se nelíbilo například sociologovi Martinu Fafejtovi. Podle Fafejty Peterson ve svých vystoupeních často dezinterpretuje známé filosofy, čímž de facto šíří dezinformace. Rektor Jaroslav Miller ale pozvání psychologa hájí. „Pokud se nám nezdá způsob argumentace lidí, tak je nutné je konfrontovat, ne umlčet. Měli jsme na naší univerzitě třeba i evolučního biologa Richarda Dawkinse, který také bývá označován za kontroverzního. Ale tihle lidé umějí skvěle přednášet, dokážou posluchače zaujmout,“ říká.\n\n**Text 2**\n\nKdyž jsem si před pár dny přečetl na stránkách své domovské olomoucké univerzity status oznamující, že byl na její půdu oficiálně pozván Jordan Peterson, pocítil jsem určitou nevoli. Petersonovo současné působení vnímám totiž v mnoha ohledech jako aktivistické, a ne vědecké, protože se relativně silně vyjadřuje i k věcem, kterým se odborně nevěnuje, například chybně interpretuje některé filosofy, jejichž dílo dostatečně nezná. Je pravda, že moji domovskou univerzitu již navštívili jiní akademici-aktivisté, například Chomsky nebo Dawkins. Dawkins ovšem ve své přednášce popularizoval svůj biologický výzkum, zatímco svou kritiku náboženství téměř nezmínil. Vystoupil tedy primárně jako vědec, a ne jako aktivista. Pokud by se v tomto duchu nesla i přednáška Jordana Petersona, byla by má nevole proti jeho vystoupení zcela bezpředmětná. Zároveň je nabíledni, že Peterson se do povědomí veřejnosti dostal především právě jako aktivista, zastánce tradičních hodnot a kritik politické korektnosti.\n\nPozvání Jordana Petersona nicméně stále platí a já rozhodně nepožaduji, aby bylo zrušeno. Určitě nejsem ten, kdo by proti jeho případnému příjezdu sepisoval petice. Představitelé univerzity upřesnili, že Jordan Peterson má být, podobně jako Richard Dawkins, pozván na festival Academia film Olomouc (AFO). To je podle mne naprosto ideální platforma pro takovéto vystoupení. AFO totiž není oficiální půdou univerzity, i když má s univerzitou mnoho společného. A pořadatelé jsou jistě natolik zkušení, že nepřipustí, aby se z vystoupení Jordana Petersona stala oslavná akce pro jeho nekritické fanoušky.",
+          "passageTitle": "TEXT K ÚLOHÁM 30 AŽ 33",
+          "questions": [
+            {
+              "n": 30,
+              "stem": "Která z následujících možností obsahuje s ohledem na obsah druhého textu nejpravděpodobnější reakci jeho autora na citaci rektora olomoucké univerzity uvedenou v prvním textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "„Souhlasím s tím, že kontroverzní osoby není nutné zcela umlčet, ale pro jejich vyjádření pod záštitou univerzity je potřeba zvolit vhodný formát a prostor.“"
+                    },
+                    {
+                      "key": "B",
+                      "text": "„S Vaším tvrzením nesouhlasím – přednášky kontroverzních aktivistů, jakkoli zajímavé, by se nikdy neměly odehrávat pod záštitou univerzity.“"
+                    },
+                    {
+                      "key": "C",
+                      "text": "„Myslím, že Vaše adorace kontroverzních přednášejících není namístě – takoví lidé dokážou zaujmout leda tak své vlastní nekritické příznivce.“"
+                    },
+                    {
+                      "key": "D",
+                      "text": "„Plně souhlasím s tím, že i kontroverzní aktivistické přednášky patří na půdu univerzity – studenti se musejí naučit udělat si vlastní názor.“"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Autor druhého textu nežádá zrušení pozvání ani nesepisuje petice, ale vítá, že Peterson vystoupí na festivalu AFO mimo oficiální půdu univerzity – souhlasí tedy s nezamlčováním, ale za vhodného formátu. Proti oficiální půdě univerzity se vymezuje, takže D neplatí, a B či C jsou příliš vyhrocené."
+            },
+            {
+              "n": 31,
+              "stem": "Který z následujících formátů přednášky Jordana Petersona by nejspíše vyhovoval jak autorovi druhého textu, tak rektorovi univerzity citovanému v prvním textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Petersonova přednáška se odehraje mimo oficiální půdu univerzity a nebude koncipována jako nekritická, oslavná akce pro jeho příznivce."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Peterson bude mít v Olomouci dvě vystoupení: jedno na půdě univerzity, druhé na festivalu AFO, které může pojmout jako oslavnou akci pro fanoušky."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Petersonova přednáška se odehraje mimo festival AFO, který svádí k méně vědeckým vystoupením, jelikož není oficiální půdou univerzity."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Přednášky Jordana Petersona se zúčastní odborníci, kteří jej přeruší a umlčí, pokud začne prezentovat kontroverzní názory."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Rektor chce Petersona vystoupit nechat (konfrontovat, ne umlčet), autor druhého textu považuje za ideální AFO mimo oficiální půdu univerzity bez oslavné akce pro nekritické fanoušky. To splňuje jen A; D odporuje rektorovi, B a C autorovi druhého textu."
+            },
+            {
+              "n": 32,
+              "stem": "Na kterém z následujících tvrzení by se autoři uvedených textů nejpravděpodobněji shodli?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Kontroverzní vědci, kteří se zabývají aktivismem, by neměli na akademické půdě vůbec přednášet."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Některá tvrzení, která Jordan Peterson veřejně hlásá, trpí z pohledu akademiků odbornými nedostatky."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Je v pořádku pojmout Petersonovo vystoupení v Olomouci jako akci pro jeho nekritické fanoušky, pokud se bude konat mimo oficiální půdu univerzity."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Kontroverzní vědci jsou nejlepšími přednášejícími, jelikož umějí svými názory posluchače nejvíce zaujmout."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "První text uvádí, že akademici Petersonovi vyčítají odborné nedostatky (chybné citace), autor druhého textu sám píše, že Peterson chybně interpretuje filosofy. Ostatní tvrzení jsou s jedním z textů v rozporu nebo v nich nezaznívají."
+            },
+            {
+              "n": 33,
+              "stem": "Které z následujících tvrzení vyplývá z prvního textu, ale nikoli z druhého textu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Jordana Petersona pozval na olomouckou univerzitu sám rektor."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Jordan Peterson v minulosti obdržel pozvání i z jiné než olomoucké univerzity."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Jordan Peterson je mezi veřejností známý jako aktivista."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Proti vystoupení Jordana Petersona na olomoucké univerzitě vznikla petice."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Jen první text zmiňuje pozvání od univerzity v Cambridge, které bylo zrušeno. Že pozval sám rektor, neplyne z žádného textu (pozvala univerzita), C plyne z druhého textu a o petici nemluví ani jeden."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analytic",
+      "title": "Analytický oddíl",
+      "timeLimitSec": 3000,
+      "groups": [
+        {
+          "id": "g09",
+          "taskType": "data",
+          "instruction": "Není dovoleno používat kalkulačky! Není-li uvedeno jinak, jsou všechna použitá čísla reálná a zapsaná v desítkové soustavě. Čáry, které se jeví jako přímé, považujte za přímky. Číslo umístěné u části geometrického obrazce označuje velikost této části. **O velikosti neoznačených částí obrazců nelze činit žádné předpoklady.** Geometrické úlohy řešte pomocí matematických znalostí, nikoli odhadem či měřením z obrázku. Obsahuje-li úloha proměnnou, je třeba pro řešení uvažovat všechny její přípustné hodnoty. Úlohy řešte v libovolném pořadí. Žádná úloha nenavazuje na výsledek předchozích úloh.",
+          "passage": "Jsou dva lesnaté pozemky, severní (SEVER) a jižní (JIH). Severní má celkem 1 200 stromů a jižní 1 800 stromů. Grafy znázorňují zastoupení různých druhů stromů na jednotlivých pozemcích.",
+          "passageTitle": "TEXT K ÚLOHÁM 34 AŽ 36",
+          "chart": {
+            "kind": "bar",
+            "title": "Zastoupení druhů stromů na pozemcích",
+            "yLabel": "podíl stromů na pozemku",
+            "unit": "%",
+            "yStep": 5,
+            "categories": [
+              "jedle",
+              "borovice",
+              "smrk",
+              "bříza",
+              "dub"
+            ],
+            "series": [
+              {
+                "name": "SEVER",
+                "values": [
+                  25,
+                  30,
+                  20,
+                  15,
+                  10
+                ]
+              },
+              {
+                "name": "JIH",
+                "values": [
+                  15,
+                  10,
+                  30,
+                  30,
+                  15
+                ]
+              }
+            ]
+          },
+          "questions": [
+            {
+              "n": 34,
+              "stem": "Kolikrát více borovic roste na severním pozemku než na jižním pozemku?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "1,5×"
+                    },
+                    {
+                      "key": "B",
+                      "text": "2×"
+                    },
+                    {
+                      "key": "C",
+                      "text": "2,5×"
+                    },
+                    {
+                      "key": "D",
+                      "text": "3×"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Sever: $0{,}30 \\cdot 1\\,200 = 360$ borovic, jih: $0{,}10 \\cdot 1\\,800 = 180$ borovic. $360 : 180 = 2$."
+            },
+            {
+              "n": 35,
+              "stem": "Jaký je na jižním pozemku rozdíl mezi počtem smrků a počtem dubů?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "120 stromů"
+                    },
+                    {
+                      "key": "B",
+                      "text": "150 stromů"
+                    },
+                    {
+                      "key": "C",
+                      "text": "240 stromů"
+                    },
+                    {
+                      "key": "D",
+                      "text": "270 stromů"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Smrky: $0{,}30 \\cdot 1\\,800 = 540$, duby: $0{,}15 \\cdot 1\\,800 = 270$. Rozdíl je $540 - 270 = 270$ stromů."
+            },
+            {
+              "n": 36,
+              "stem": "Kolik procent ze stromů na obou pozemcích dohromady tvoří jedle?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "12 %"
+                    },
+                    {
+                      "key": "B",
+                      "text": "19 %"
+                    },
+                    {
+                      "key": "C",
+                      "text": "20 %"
+                    },
+                    {
+                      "key": "D",
+                      "text": "40 %"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Jedlí je $0{,}25 \\cdot 1\\,200 + 0{,}15 \\cdot 1\\,800 = 300 + 270 = 570$ ze $3\\,000$ stromů, tj. $\\frac{570}{3000} = 19\\,\\%$."
+            }
+          ]
+        },
+        {
+          "id": "g10",
+          "taskType": "data",
+          "instruction": "Není dovoleno používat kalkulačky! Není-li uvedeno jinak, jsou všechna použitá čísla reálná a zapsaná v desítkové soustavě. Čáry, které se jeví jako přímé, považujte za přímky. Číslo umístěné u části geometrického obrazce označuje velikost této části. **O velikosti neoznačených částí obrazců nelze činit žádné předpoklady.** Geometrické úlohy řešte pomocí matematických znalostí, nikoli odhadem či měřením z obrázku. Obsahuje-li úloha proměnnou, je třeba pro řešení uvažovat všechny její přípustné hodnoty. Úlohy řešte v libovolném pořadí. Žádná úloha nenavazuje na výsledek předchozích úloh.",
+          "passage": "Sadař prodává svoje ovoce na farmářském trhu vždy v pondělí, ve středu, v pátek a v sobotu. V tabulce je uvedeno množství prodaného ovoce a cena za jednotlivé druhy v konkrétních dnech jednoho týdne.\n\n<table>\n<thead>\n<tr><th colspan=\"2\"></th><th>pondělí</th><th>středa</th><th>pátek</th><th>sobota</th></tr>\n</thead>\n<tbody>\n<tr><th scope=\"row\" rowspan=\"2\">prodané množství v kg</th><th scope=\"row\">jablka</th><td>70</td><td>80</td><td>90</td><td>100</td></tr>\n<tr><th scope=\"row\">broskve</th><td>80</td><td>75</td><td>80</td><td>80</td></tr>\n<tr><th scope=\"row\" rowspan=\"2\">cena v Kč za 1 kg</th><th scope=\"row\">jablka</th><td>20</td><td>18</td><td>16</td><td>16</td></tr>\n<tr><th scope=\"row\">broskve</th><td>35</td><td>32</td><td>30</td><td>28</td></tr>\n</tbody>\n</table>",
+          "passageTitle": "TEXT K ÚLOHÁM 37 AŽ 39",
+          "questions": [
+            {
+              "n": 37,
+              "stem": "Jak by se musela změnit středeční cena 1 kg jablek, aby ve středu byla výše tržby za jablka i broskve stejná?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "musela by se zvýšit o 6 Kč"
+                    },
+                    {
+                      "key": "B",
+                      "text": "musela by se zvýšit o 8 Kč"
+                    },
+                    {
+                      "key": "C",
+                      "text": "musela by se zvýšit o 12 Kč"
+                    },
+                    {
+                      "key": "D",
+                      "text": "musela by se zvýšit o 14 Kč"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Středeční tržba za broskve: $75 \\cdot 32 = 2\\,400$ Kč. Aby 80 kg jablek vyneslo také 2 400 Kč, musí 1 kg stát $2\\,400 : 80 = 30$ Kč, tj. o $30 - 18 = 12$ Kč více."
+            },
+            {
+              "n": 38,
+              "stem": "O kolik více nebo méně kilogramů broskví by sadař musel prodat v sobotu, aby tržba za prodej broskví v pondělí a v sobotu byla stejná?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "o 4 kg méně"
+                    },
+                    {
+                      "key": "B",
+                      "text": "o 8 kg více"
+                    },
+                    {
+                      "key": "C",
+                      "text": "o 12 kg více"
+                    },
+                    {
+                      "key": "D",
+                      "text": "o 20 kg více"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Pondělní tržba za broskve: $80 \\cdot 35 = 2\\,800$ Kč. V sobotu při ceně 28 Kč by bylo třeba prodat $2\\,800 : 28 = 100$ kg, tedy o $100 - 80 = 20$ kg více."
+            },
+            {
+              "n": 39,
+              "stem": "O kolik více nebo méně utržil sadař v pátek za jablka než za broskve?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "o 960 Kč více"
+                    },
+                    {
+                      "key": "B",
+                      "text": "o 640 Kč více"
+                    },
+                    {
+                      "key": "C",
+                      "text": "o 640 Kč méně"
+                    },
+                    {
+                      "key": "D",
+                      "text": "o 960 Kč méně"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Pátek: jablka $90 \\cdot 16 = 1\\,440$ Kč, broskve $80 \\cdot 30 = 2\\,400$ Kč. Za jablka utržil o $2\\,400 - 1\\,440 = 960$ Kč méně."
+            }
+          ]
+        },
+        {
+          "id": "g11",
+          "taskType": "porovnani",
+          "instruction": "V následujících úlohách porovnejte hodnoty výrazů uvedených v buňkách vlevo a vpravo a zvolte odpověď:\n\n**(A)** pokud hodnota vlevo je větší,\n\n**(B)** pokud hodnota vpravo je větší,\n\n**(C)** pokud jsou si hodnoty rovny,\n\n**(D)** pokud nelze jednoznačně určit, která hodnota je větší (tj. nelze jednoznačně rozhodnout, je-li hodnota vlevo větší než hodnota vpravo, menší než hodnota vpravo, nebo stejně velká jako hodnota vpravo).\n\nInformace týkající se jednoho nebo obou výrazů jsou uvedeny vždy nad oběma výrazy.",
+          "questions": [
+            {
+              "n": 40,
+              "stem": "",
+              "compare": {
+                "left": "polovina obsahu souvislé plochy složené z 12 těsně k sobě přiložených čtverců, z nichž každý má obsah 400 cm$^2$",
+                "right": "obsah souvislé plochy složené z 24 těsně k sobě přiložených čtverců, z nichž každému je vepsána kružnice o průměru 10 cm"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Vlevo: $\\frac{12 \\cdot 400}{2} = 2\\,400$ cm$^2$. Vpravo: kružnice o průměru 10 cm vepsaná do čtverce znamená stranu čtverce 10 cm, obsah 100 cm$^2$, celkem $24 \\cdot 100 = 2\\,400$ cm$^2$. Hodnoty jsou stejné."
+            },
+            {
+              "n": 41,
+              "stem": "$x \\neq 0$",
+              "compare": {
+                "left": "druhá mocnina poloviny $x$",
+                "right": "polovina druhé mocniny $x$"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Vlevo $\\left(\\frac{x}{2}\\right)^2 = \\frac{x^2}{4}$, vpravo $\\frac{x^2}{2}$. Protože $x^2 > 0$, je $\\frac{x^2}{2} > \\frac{x^2}{4}$ – vpravo je vždy větší."
+            },
+            {
+              "n": 42,
+              "stem": "Nádoba obsahuje celkem 36 míčků označených čísly 1 až 36 (každý míček má jiné číslo). Postupně z nádoby taháme náhodně po jednom míčku, vytáhnutý míček vždy před dalším tahem vracíme do nádoby.",
+              "compare": {
+                "left": "pravděpodobnost, že vytáhneme třikrát za sebou míček s číslem 1",
+                "right": "pravděpodobnost, že vytáhneme postupně míčky s čísly 10, 20 a 30 v tomto pořadí"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Tahy jsou nezávislé a v každém má konkrétní číslo pravděpodobnost $\\frac{1}{36}$. Obě pravděpodobnosti jsou $\\left(\\frac{1}{36}\\right)^3$, tedy stejné."
+            },
+            {
+              "n": 43,
+              "stem": "Úhel o velikosti $\\alpha$ je vnitřní úhel rovnostranného trojúhelníku.\n\nÚhel o velikosti $\\beta$ je největší vnitřní úhel pravoúhlého trojúhelníku.",
+              "compare": {
+                "left": "$3\\alpha$",
+                "right": "$2\\beta$"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "$\\alpha = 60°$, takže $3\\alpha = 180°$. Největší úhel pravoúhlého trojúhelníku je pravý, $\\beta = 90°$, takže $2\\beta = 180°$. Hodnoty jsou stejné."
+            },
+            {
+              "n": 44,
+              "stem": "Na spořicí účet s roční úrokovou sazbou 10 % byla uložena kladná částka $x$ Kč. Během celého roku na něj vlastník nic nepřidal ani z něj nic nevybral. Po připsání úroku v prvním roce je na účtu $y$ Kč.",
+              "compare": {
+                "left": "$x$",
+                "right": "90 % z $y$"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "$y = 1{,}1x$, takže 90 % z $y$ je $0{,}9 \\cdot 1{,}1x = 0{,}99x$. Protože $x > 0$, je $x > 0{,}99x$ – vlevo je větší."
+            },
+            {
+              "n": 45,
+              "stem": "$x > y > -2$\n\n$(x \\neq 0)$",
+              "compare": {
+                "left": "$\\frac{1}{x^2}$",
+                "right": "$y^2$"
+              },
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hodnota vlevo je větší než hodnota vpravo."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Hodnota vpravo je větší než hodnota vlevo."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Hodnota vpravo je stejná jako hodnota vlevo."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Nelze jednoznačně určit, která hodnota je větší."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Pro $x = 1$, $y = 0$ je vlevo $1$ a vpravo $0$ (vlevo větší). Pro $x = 10$, $y = 5$ je vlevo $\\frac{1}{100}$ a vpravo $25$ (vpravo větší). Nelze rozhodnout."
+            }
+          ]
+        },
+        {
+          "id": "g12",
+          "taskType": "dostatecnost",
+          "instruction": "Každá z následujících úloh se skládá z otázky a dvou tvrzení, označených jako (1) a (2), která obsahují určité informace. Některé úlohy také obsahují úvodní informace. S využitím všech těchto informací, znalostí matematiky a objektivních známých faktů (tj. např. kolik dní má červenec, co znamená pojem zleva doprava...) rozhodněte, zda jsou dané informace **dostačující pro určení jednoznačné odpovědi** na otázku v zadání.",
+          "questions": [
+            {
+              "n": 46,
+              "stem": "Bětka si každý měsíc kupuje oblečení. Jaká byla její průměrná měsíční útrata za oblečení v minulém roce?\n\nTvrzení (1) Nejvíce Bětka za oblečení utratila v minulém roce v květnu, a to 2 400 Kč, nejméně pak v červnu, a to 800 Kč.\n\nTvrzení (2) V prvním pololetí minulého roku utratila Bětka za oblečení měsíčně v průměru o 300 Kč více než ve druhém pololetí minulého roku.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "K průměru potřebujeme celkovou roční útratu. (1) dává jen maximum a minimum, (2) jen rozdíl průměrů obou pololetí. Ani dohromady neznáme žádný z pololetních průměrů (např. ostatní měsíce mohou mít různé částky mezi 800 a 2 400 Kč), takže průměr určit nelze."
+            },
+            {
+              "n": 47,
+              "stem": "V pyramidě patnácti kostek (na nejspodnější řadě pěti kostek leží čtyři kostky, na nich tři kostky, na nich dvě kostky a na nich jedna kostka) jsou právě dvě černé kostky, ostatní kostky jsou bílé. Je ve třetí (prostřední) řadě alespoň jedna černá kostka?\n\nTvrzení (1) V nejsvrchnějších dvou řadách pyramidy je dohromady alespoň jedna černá kostka.\n\nTvrzení (2) V nejspodnějších dvou řadách pyramidy je dohromady právě osm bílých kostek.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "(1) samo: druhá černá kostka může, ale nemusí být ve 3. řadě. (2) samo: ve spodních dvou řadách (9 kostek) je právě jedna černá, druhá může být ve 3. řadě i nahoře. Dohromady: jedna černá je dole, druhá nahoře, ve 3. řadě tedy černá není – odpověď je jednoznačně ne."
+            },
+            {
+              "n": 48,
+              "stem": "Silvie má ke svému telefonu čtyřmístný PIN, v němž se žádná číslice nevyskytuje vícekrát než jednou. První dvojčíslí kódu je 64, třetí číslice je větší než čtvrtá a v kódu se nevyskytuje 0.\n\nKteré všechny číslice se vyskytují v Silviině kódu?\n\nTvrzení (1) Ciferný součet všech číslic v kódu je roven 20.\n\nTvrzení (2) Všechny číslice v kódu jsou sudé.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Kód je $64ab$ s $a > b$, $a, b \\notin \\{0, 4, 6\\}$. (1): $a + b = 10$ – vyhovuje 91, 82 i 73, nejednoznačné. (2): zbývající sudé číslice jsou jen 2 a 8, tedy kód 6482 – jednoznačné. Dostačuje právě jedno tvrzení."
+            },
+            {
+              "n": 49,
+              "stem": "Je $x$ kladné celé číslo?\n\nTvrzení (1) $3x^2 - 75 = 0$\n\nTvrzení (2) $2x^2 - 20x + 50 = 0$",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Každé z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Právě jedno z tvrzení je samo o sobě dostačující."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Obě tvrzení dohromady jsou dostačující, ale ani jedno z tvrzení není samo o sobě dostačující."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Ani obě tvrzení dohromady nejsou dostačující."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "(1): $x^2 = 25$, $x = \\pm 5$ – nelze rozhodnout. (2): $2(x - 5)^2 = 0$, tedy $x = 5$ – odpověď ano. Dostačuje právě jedno tvrzení."
+            }
+          ]
+        },
+        {
+          "id": "g13",
+          "taskType": "slovni",
+          "instruction": "Vyřešte následující slovní úlohy.",
+          "questions": [
+            {
+              "n": 50,
+              "stem": "Trasu mezi místy A a B ujedeme na skútru průměrnou rychlostí 50 km/h za dobu o 3 hodiny kratší, než za jakou dobu ji ujedeme na kole průměrnou rychlostí 25 km/h. Jak je trasa dlouhá?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "50 km"
+                    },
+                    {
+                      "key": "B",
+                      "text": "75 km"
+                    },
+                    {
+                      "key": "C",
+                      "text": "150 km"
+                    },
+                    {
+                      "key": "D",
+                      "text": "250 km"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "$\\frac{s}{25} - \\frac{s}{50} = 3 \\Rightarrow \\frac{s}{50} = 3 \\Rightarrow s = 150$ km (na kole 6 h, na skútru 3 h)."
+            },
+            {
+              "n": 51,
+              "stem": "Dvacet pět procent z čísla $x$ je 10. Deset procent z čísla $y$ je 25. Čemu se rovná součet $x + y$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "140"
+                    },
+                    {
+                      "key": "B",
+                      "text": "260"
+                    },
+                    {
+                      "key": "C",
+                      "text": "290"
+                    },
+                    {
+                      "key": "D",
+                      "text": "400"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "$x = 10 : 0{,}25 = 40$, $y = 25 : 0{,}1 = 250$, $x + y = 290$."
+            },
+            {
+              "n": 52,
+              "stem": "Do nádobky bylo vloženo 33 modrých, 43 červených a 35 zelených kuliček. Poté, co jsme z nádobky vyjmuli 20 modrých kuliček, chceme odebráním části červených kuliček dosáhnout toho, aby při náhodném vytažení byla pravděpodobnost vytažení zelené kuličky větší než 50 %. Kolik maximálně může v nádobce zůstat červených kuliček?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "2"
+                    },
+                    {
+                      "key": "B",
+                      "text": "19"
+                    },
+                    {
+                      "key": "C",
+                      "text": "21"
+                    },
+                    {
+                      "key": "D",
+                      "text": "22"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Zbývá 13 modrých a 35 zelených. Zelených musí být víc než polovina: $35 > 13 + c$, tedy $c < 22$. Maximálně může zůstat 21 červených kuliček."
+            },
+            {
+              "n": 53,
+              "stem": "Povrch hranolu s délkami hran v poměru $1 : 2 : 3$ byl natřen na modro, hranol byl poté rozdělen třemi řezy na stejně velké krychle. Jaký je poměr celkového počtu natřených stěn na všech vzniklých krychlích k celkovému počtu všech nenatřených stěn?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$11 : 7$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$3 : 2$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$1 : 2$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$2 : 3$"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Třemi řezy vznikne 6 krychlí $1 \\times 1 \\times 1$ (hranol $1 \\times 2 \\times 3$), celkem 36 stěn. Natřené stěny odpovídají povrchu hranolu: $2(1 \\cdot 2 + 1 \\cdot 3 + 2 \\cdot 3) = 22$. Nenatřených je $36 - 22 = 14$, poměr $22 : 14 = 11 : 7$."
+            },
+            {
+              "n": 54,
+              "stem": "Kružnice $m$ je kružnicí vepsanou v rovnostranném trojúhelníku se stranou dlouhou 8 cm. Kružnice $n$ je kružnicí opsanou témuž trojúhelníku. Kolikrát je délka kružnice $n$ větší než délka kružnice $m$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "2×"
+                    },
+                    {
+                      "key": "B",
+                      "text": "3×"
+                    },
+                    {
+                      "key": "C",
+                      "text": "4×"
+                    },
+                    {
+                      "key": "D",
+                      "text": "6×"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "V rovnostranném trojúhelníku leží střed obou kružnic v těžišti, které dělí výšku v poměru $2 : 1$. Poloměr opsané kružnice je tedy dvojnásobkem poloměru vepsané a délka kružnice $n$ je 2× větší."
+            },
+            {
+              "n": 55,
+              "stem": "Ve vlaku je v první třídě 10 kupé po 4 místech a ve druhé třídě 60 kupé po 6 místech. Polovina míst v první třídě a třetina míst ve druhé třídě je obsazena. Kolik procent ze všech míst ve vlaku je obsazeno?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "35 %"
+                    },
+                    {
+                      "key": "B",
+                      "text": "42 %"
+                    },
+                    {
+                      "key": "C",
+                      "text": "58 %"
+                    },
+                    {
+                      "key": "D",
+                      "text": "65 %"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Míst je $40 + 360 = 400$, obsazeno $20 + 120 = 140$. $\\frac{140}{400} = 35\\,\\%$."
+            }
+          ]
+        },
+        {
+          "id": "g14",
+          "taskType": "vyrazy",
+          "instruction": "Vyřešte následující úlohy založené na textu nebo matematickém výrazu.",
+          "questions": [
+            {
+              "n": 56,
+              "stem": "Zbyšek si na brigádě vydělal v lednu $l$ Kč, v únoru $u$ Kč a v březnu $b$ Kč. Platí vztah:\n\n$$\\frac{l+u}{2} = \\frac{u+b}{2}$$\n\nKteré z následujících tvrzení vyplývá z uvedeného vztahu?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Zbyšek si v březnu vydělal stejně Kč jako v lednu."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Zbyšek si v každém z uvedených tří měsíců vydělal stejně Kč."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Zbyškův průměrný výdělek za leden a březen byl stejný jako únorový výdělek."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Zbyšek si v březnu vydělal o polovinu více než v únoru."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Vynásobením dvěma a odečtením $u$ dostaneme $l = b$. O vztahu k únorovému výdělku $u$ nic nevyplývá."
+            },
+            {
+              "n": 57,
+              "stem": "Kávovar byl v průběhu roku nejdříve zlevněn z $x$ korun o 50 % a poté zdražen o 50 % zlevněné ceny na $y$ Kč. Který z následujících vztahů uvedené situaci odpovídá?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$y = \\frac{x}{2} \\cdot 1{,}25$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$y = \\frac{x}{2} + \\frac{1}{4}$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$y = \\frac{3}{4}x$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$y = \\frac{x}{2} + \\frac{x}{8}$"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Po zlevnění stojí $\\frac{x}{2}$, po zdražení o 50 % $\\frac{x}{2} \\cdot 1{,}5 = \\frac{3}{4}x$. Možnosti A a D dávají $\\frac{5}{8}x$."
+            },
+            {
+              "n": 58,
+              "stem": "Operace # je definována vztahem $a \\# b = \\left(\\frac{1}{b} - \\frac{1}{a}\\right)$. Kolik je $b$, platí-li $3 \\# b = 3$?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "$\\frac{1}{3}$"
+                    },
+                    {
+                      "key": "B",
+                      "text": "$\\frac{4}{3}$"
+                    },
+                    {
+                      "key": "C",
+                      "text": "$\\frac{3}{10}$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "$\\frac{9}{10}$"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "$\\frac{1}{b} - \\frac{1}{3} = 3 \\Rightarrow \\frac{1}{b} = \\frac{10}{3} \\Rightarrow b = \\frac{3}{10}$."
+            },
+            {
+              "n": 59,
+              "stem": "Jestliže s číslem $-3$ provedeme tajnou operaci, výsledek vynásobíme dvěma, k součinu přičteme čtyřku a se součtem provedeme znovu tutéž tajnou operaci, dostaneme číslo deset.\n\nKterá z následujících možností může být onou tajnou operací?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "umocnění na druhou"
+                    },
+                    {
+                      "key": "B",
+                      "text": "přičtení čísla 4"
+                    },
+                    {
+                      "key": "C",
+                      "text": "odečtení čísla $-3$"
+                    },
+                    {
+                      "key": "D",
+                      "text": "vydělení číslem 2"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Přičtení 4: $-3 + 4 = 1$, $2 \\cdot 1 + 4 = 6$, $6 + 4 = 10$. ✓ Ostatní: druhá mocnina dá $22^2 = 484$, odečtení $-3$ dá $7$, dělení dvěma dá $0{,}5$."
+            }
+          ]
+        },
+        {
+          "id": "g15",
+          "taskType": "podminky",
+          "instruction": "Každá z následujících úloh je založena na textu a na souboru podmínek. Rozlišujte, které podmínky se týkají celé série úloh a které podmínky jsou uvedeny pouze pro jednu jedinou úlohu. U některých úloh může být užitečné pomoci si hrubým náčrtkem.",
+          "passage": "Na dětském hřišti si hrají čtyři děti (Anička, Barča, Kája, Míša). Na hřiště se každé dopravilo jiným způsobem (pěšky, v autě, na tříkolce, na odrážedle). Každé z dětí si hraje na jiném prvku hřiště (písek, houpačka, domeček, lezecká stěna). Víme, že:\n\n- Míša přijel na tříkolce.\n- Barča si hraje na lezecké stěně a nepřišla pěšky.\n- Na houpačce si hraje ten, kdo přišel pěšky.\n- Na písku si hraje ten, kdo přijel na odrážedle.",
+          "passageTitle": "TEXT K ÚLOHÁM 60 AŽ 63",
+          "questions": [
+            {
+              "n": 60,
+              "stem": "Kdo si může hrát na písku?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen Anička"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen Kája"
+                    },
+                    {
+                      "key": "C",
+                      "text": "kdokoli z dvojice Anička, Míša"
+                    },
+                    {
+                      "key": "D",
+                      "text": "kdokoli z dvojice Anička, Kája"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Míša přijel na tříkolce. Barča nepřišla pěšky a nemohla přijet ani na odrážedle (ten si hraje na písku, ona na stěně), takže přijela autem. Pěšky a na odrážedle tedy přišli Anička a Kája (v libovolném pořadí): kdo pěšky, hraje si na houpačce, kdo na odrážedle, na písku. Míšovi zbývá domeček. Na písku si tedy může hrát Anička i Kája."
+            },
+            {
+              "n": 61,
+              "stem": "Při platnosti kterého z následujících tvrzení by bylo možné pro každé z dětí jednoznačně určit, jak se dostalo na hřiště a na jakém prvku hřiště si hraje?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Anička přišla pěšky."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Barča přijela autem."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Míša si hraje v domečku."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Kája si nehraje v domečku."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Míša přijel na tříkolce. Barča nepřišla pěšky a nemohla přijet ani na odrážedle (ten si hraje na písku, ona na stěně), takže přijela autem. Pěšky a na odrážedle tedy přišli Anička a Kája (v libovolném pořadí): kdo pěšky, hraje si na houpačce, kdo na odrážedle, na písku. Míšovi zbývá domeček. Nejasné je jen rozdělení Aničky a Káji; tvrzení A ho rozhodne (Anička pěšky a houpačka, Kája odrážedlo a písek). B, C i D platí vždy a nic nového neurčí."
+            },
+            {
+              "n": 62,
+              "stem": "Jakým způsobem se mohla dopravit na hřiště Anička?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen pěšky"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen na odrážedle"
+                    },
+                    {
+                      "key": "C",
+                      "text": "jakýmkoli z dvojice pěšky, autem"
+                    },
+                    {
+                      "key": "D",
+                      "text": "jakýmkoli z dvojice pěšky, na odrážedle"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Míša přijel na tříkolce. Barča nepřišla pěšky a nemohla přijet ani na odrážedle (ten si hraje na písku, ona na stěně), takže přijela autem. Pěšky a na odrážedle tedy přišli Anička a Kája (v libovolném pořadí): kdo pěšky, hraje si na houpačce, kdo na odrážedle, na písku. Míšovi zbývá domeček."
+            },
+            {
+              "n": 63,
+              "stem": "Které z následujících tvrzení může platit?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Barča přišla pěšky."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Kája si hraje na písku."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Anička přijela autem."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Míša si hraje na písku."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Míša přijel na tříkolce. Barča nepřišla pěšky a nemohla přijet ani na odrážedle (ten si hraje na písku, ona na stěně), takže přijela autem. Pěšky a na odrážedle tedy přišli Anička a Kája (v libovolném pořadí): kdo pěšky, hraje si na houpačce, kdo na odrážedle, na písku. Míšovi zbývá domeček. Kája tedy může hrát na písku (pokud přijel na odrážedle); ostatní tvrzení jsou vyloučena."
+            }
+          ]
+        },
+        {
+          "id": "g16",
+          "taskType": "podminky",
+          "instruction": "Každá z následujících úloh je založena na textu a na souboru podmínek. Rozlišujte, které podmínky se týkají celé série úloh a které podmínky jsou uvedeny pouze pro jednu jedinou úlohu. U některých úloh může být užitečné pomoci si hrubým náčrtkem.",
+          "passage": "Manželé Tomanovi jezdili od roku 2017 každý rok na dovolenou do zahraničí po Evropě (Itálie, Kypr, Portugalsko, Švédsko) nebo do Asie (Malajsie, Thajsko, Vietnam). Každý rok navštívili pouze jednu jinou zahraniční zemi. Naposledy byli na dovolené v létě roku 2023. Víme, že:\n\n- V roce 2017 nebyli v Thajsku.\n- Ve Švédsku byli v roce 2019.\n- V Malajsii nebyli před rokem 2020.\n- V Itálii byli dříve než v Portugalsku.\n- V Asii nikdy nebyli dva roky po sobě.\n- V roce 2022 byli buď ve Vietnamu, nebo na Kypru.\n- Na Kypru a ve Vietnamu nebyli v bezprostředně po sobě následujících letech.",
+          "passageTitle": "TEXT K ÚLOHÁM 64 AŽ 66",
+          "questions": [
+            {
+              "n": 64,
+              "stem": "Ve které zemi mohli být manželé Tomanovi na dovolené v roce 2023?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen ve kterékoli z dvojice Kypr, Vietnam"
+                    },
+                    {
+                      "key": "B",
+                      "text": "ve kterékoli z trojice Portugalsko, Kypr, Švédsko"
+                    },
+                    {
+                      "key": "C",
+                      "text": "ve kterékoli z trojice Vietnam, Malajsie, Thajsko"
+                    },
+                    {
+                      "key": "D",
+                      "text": "ve kterékoli z trojice Portugalsko, Malajsie, Thajsko"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Sedm let 2017–2023 odpovídá sedmi zemím, každé právě jednou. Výčtem všech pořadí splňujících podmínky vyjde 10 možností (např. Itálie, Vietnam, Švédsko, Portugalsko, Malajsie, Kypr, Thajsko). V roce 2023 nemohli být ve Švédsku (2019), v Itálii (musí předcházet Portugalsku) ani na Kypru či ve Vietnamu (v roce 2022 byli v jedné z těchto zemí a ty nesmějí následovat po sobě). Portugalsko, Malajsie i Thajsko v roce 2023 vycházejí (např. Kypr, Thajsko, Švédsko, Malajsie, Itálie, Vietnam, Portugalsko; Itálie, Vietnam, Švédsko, Portugalsko, Thajsko, Kypr, Malajsie; Itálie, Vietnam, Švédsko, Portugalsko, Malajsie, Kypr, Thajsko)."
+            },
+            {
+              "n": 65,
+              "stem": "Pokud by platilo, že Tomanovi byli na dovolené ve Švédsku dříve než v Itálii, ve kterých zemích by byli na dovolené dříve než ve Švédsku?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "v Itálii a ve Vietnamu"
+                    },
+                    {
+                      "key": "B",
+                      "text": "v Thajsku a na Kypru"
+                    },
+                    {
+                      "key": "C",
+                      "text": "v Thajsku a v Malajsii"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v Portugalsku a v Thajsku"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Itálie by pak byla až po roce 2019 a Portugalsko po ní; Malajsie může být nejdříve 2020. Na roky 2017 a 2018 tak zbývají Kypr, Thajsko a Vietnam: Thajsko nesmí být v 2017, Thajsko s Vietnamem nesmějí být po sobě (Asie) a Kypr s Vietnamem také ne. Jediná možnost je Kypr (2017) a Thajsko (2018), takže před Švédskem byli v Thajsku a na Kypru (celé pořadí: Kypr, Thajsko, Švédsko, Malajsie, Itálie, Vietnam, Portugalsko)."
+            },
+            {
+              "n": 66,
+              "stem": "Ve kterých letech mohli být manželé Tomanovi v Portugalsku?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "jen v roce 2018"
+                    },
+                    {
+                      "key": "B",
+                      "text": "jen v roce 2022"
+                    },
+                    {
+                      "key": "C",
+                      "text": "v kterémkoli roce z trojice 2021, 2022, 2023"
+                    },
+                    {
+                      "key": "D",
+                      "text": "v kterémkoli roce z trojice 2020, 2021, 2023"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Sedm let 2017–2023 odpovídá sedmi zemím, každé právě jednou. Výčtem všech pořadí splňujících podmínky vyjde 10 možností (např. Itálie, Vietnam, Švédsko, Portugalsko, Malajsie, Kypr, Thajsko). Portugalsko vychází v letech 2020 (např. I, V, Š, P, M, K, T), 2021 (I, V, Š, M, P, K, T) a 2023 (K, T, Š, M, I, V, P); v roce 2022 je Vietnam nebo Kypr a v 2017–2018 nemůže být, protože Itálie musí být dříve."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

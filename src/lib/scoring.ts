@@ -1,7 +1,8 @@
 // Scio scoring: correct +1, wrong −1/3, blank 0. Synonym/antonym tasks consist of two halves,
-// each worth ±½ (wrong half −1/6). Pure functions – usable on server and client.
+// each worth ±½ (wrong half −1/6). Typed answers (AJ word formation) cost nothing when wrong.
+// Pure functions – usable on server and client.
 import type { AnswerMap } from "./content/public";
-import type { OptionKey, Question, SectionId, TaskType, TestFile, TestStats } from "./content/types";
+import type { Question, QuestionPart, SectionId, TaskType, TestFile, TestStats } from "./content/types";
 
 export type QuestionStatus = "correct" | "wrong" | "partial" | "blank";
 
@@ -9,8 +10,8 @@ export interface QuestionResult {
   n: number;
   section: SectionId;
   taskType: TaskType;
-  given: (OptionKey | null)[];
-  answer: OptionKey[];
+  given: (string | null)[];
+  answer: string[];
   points: number;
   status: QuestionStatus;
 }
@@ -29,7 +30,7 @@ export interface TestResult {
   maxScore: number;
   percent: number;
   percentile: number | null;
-  sections: Record<SectionId, Bucket>;
+  sections: Partial<Record<SectionId, Bucket>>;
   types: Partial<Record<TaskType, Bucket>>;
   questions: QuestionResult[];
 }
@@ -38,27 +39,45 @@ export interface TestResult {
 // answers rather than a choice, so the student may fill it in once afterwards.
 export function emptySection(result: TestResult): SectionId | null {
   const answered = (b: Bucket) => b.correct + b.wrong + b.partial;
-  const { verbal, analytic } = result.sections;
-  if (verbal.max > 0 && answered(verbal) === 0 && answered(analytic) > 0) return "verbal";
-  if (analytic.max > 0 && answered(analytic) === 0 && answered(verbal) > 0) return "analytic";
+  const entries = Object.entries(result.sections) as [SectionId, Bucket][];
+  if (entries.length !== 2) return null;
+  const [[aId, a], [bId, b]] = entries;
+  if (a.max > 0 && answered(a) === 0 && answered(b) > 0) return aId;
+  if (b.max > 0 && answered(b) === 0 && answered(a) > 0) return bId;
   return null;
+}
+
+/** Typed answers are compared case-insensitively, ignoring spaces and apostrophe style. */
+export const normalizeTyped = (s: string) =>
+  s.normalize("NFKC").replace(/[’‘`´]/g, "'").replace(/\s+/g, "").toUpperCase();
+
+/** Other accepted spellings of typed parts, per part (empty for option parts) – shown when the key is revealed. */
+export const acceptedOf = (parts: QuestionPart[]) => parts.map((p) => (p.kind === "text" ? (p.alsoAccepted ?? []) : []));
+
+/** Is a given answer right for this part (option key, or typed word for text parts)? */
+export function partCorrect(p: QuestionPart, g: string) {
+  if (p.kind === "text") {
+    const n = normalizeTyped(g);
+    return [p.answer, ...(p.alsoAccepted ?? [])].some((a) => normalizeTyped(a) === n);
+  }
+  return g === p.answer || Boolean(p.alsoAccepted?.includes(g));
 }
 
 const emptyBucket = (): Bucket => ({ correct: 0, wrong: 0, blank: 0, partial: 0, score: 0, max: 0 });
 
-export function scoreQuestion(q: Question, given: (OptionKey | null)[] | undefined) {
+export function scoreQuestion(q: Question, given: (string | null)[] | undefined) {
   const weight = 1 / q.parts.length;
   let points = 0;
   let right = 0;
   let wrong = 0;
   q.parts.forEach((p, i) => {
     const g = given?.[i] ?? null;
-    if (g === null) return;
-    if (g === p.answer || p.alsoAccepted?.includes(g)) {
+    if (g === null || (p.kind === "text" && !g.trim())) return;
+    if (partCorrect(p, g)) {
       points += weight;
       right++;
     } else {
-      points -= weight / 3;
+      if (p.kind !== "text") points -= weight / 3;
       wrong++;
     }
   });
@@ -71,7 +90,7 @@ export function scoreQuestion(q: Question, given: (OptionKey | null)[] | undefin
 }
 
 export function scoreTest(test: TestFile, answers: AnswerMap): TestResult {
-  const sections = { verbal: emptyBucket(), analytic: emptyBucket() } as Record<SectionId, Bucket>;
+  const sections: Partial<Record<SectionId, Bucket>> = Object.fromEntries(test.sections.map((s) => [s.id, emptyBucket()]));
   const types: Partial<Record<TaskType, Bucket>> = {};
   const questions: QuestionResult[] = [];
   let score = 0;
@@ -85,7 +104,7 @@ export function scoreTest(test: TestFile, answers: AnswerMap): TestResult {
         const { points, status } = scoreQuestion(q, given);
         score += points;
         maxScore += 1;
-        const buckets = [sections[s.id], (types[g.taskType] ??= emptyBucket())];
+        const buckets = [(sections[s.id] ??= emptyBucket()), (types[g.taskType] ??= emptyBucket())];
         for (const b of buckets) {
           b.score += points;
           b.max += 1;
@@ -103,7 +122,7 @@ export function scoreTest(test: TestFile, answers: AnswerMap): TestResult {
       }
     }
   }
-  for (const b of [...Object.values(sections), ...Object.values(types)]) b.score = round(b.score);
+  for (const b of [...Object.values(sections), ...Object.values(types)]) if (b) b.score = round(b.score);
   score = round(score);
   return {
     score,

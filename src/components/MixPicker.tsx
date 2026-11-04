@@ -3,27 +3,37 @@
 import clsx from "clsx";
 import { Check, ChevronDown, Shuffle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { SECTION_META, taskTypesFor } from "@/lib/content/exams";
-import type { SectionId } from "@/lib/content/types";
+import { SECTION_META, sectionsOf, taskTypesFor } from "@/lib/content/exams";
+import type { ExamId, SectionId } from "@/lib/content/types";
 import { count } from "@/lib/czech";
 import { BASIC } from "@/lib/plans";
 import { ProLock } from "./Pro";
 import { ButtonLink } from "./ui";
 
-const SECTIONS: SectionId[] = ["verbal", "analytic"];
 const STORE = "scio:mix-types";
 
 /** Hub card for a mixed practice session: everything at once, or a hand-picked set of sections and task types. */
-export function MixPicker({ mistakes, basicLeft = null }: { mistakes: Record<string, number>; basicLeft?: number | null }) {
+export function MixPicker({
+  exam = "osp",
+  mistakes,
+  basicLeft = null,
+}: {
+  exam?: ExamId;
+  mistakes: Record<string, number>;
+  basicLeft?: number | null;
+}) {
   const basic = basicLeft !== null;
-  const all = taskTypesFor("osp");
+  const all = taskTypesFor(exam);
+  const SECTIONS: SectionId[] = sectionsOf(exam);
+  const store = exam === "osp" ? STORE : `${STORE}:${exam}`;
+  const mixAll = exam === "osp" ? "/app/practice/mix" : `/app/practice/mix?exam=${exam}`;
   const [open, setOpen] = useState(false);
   const [picked, setPicked] = useState<string[]>(all.map((t) => t.id));
 
   // remember the last custom selection on this device
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORE) ?? "null");
+      const saved = JSON.parse(localStorage.getItem(store) ?? "null");
       const valid = Array.isArray(saved) ? saved.filter((id) => all.some((t) => t.id === id)) : [];
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (valid.length) setPicked(valid);
@@ -33,13 +43,13 @@ export function MixPicker({ mistakes, basicLeft = null }: { mistakes: Record<str
   function update(next: string[]) {
     setPicked(next);
     try {
-      localStorage.setItem(STORE, JSON.stringify(next));
+      localStorage.setItem(store, JSON.stringify(next));
     } catch {}
   }
 
   const toggle = (id: string) => update(picked.includes(id) ? picked.filter((x) => x !== id) : [...picked, id]);
   const toggleSection = (s: SectionId) => {
-    const ids = taskTypesFor("osp", s).map((t) => t.id as string);
+    const ids = taskTypesFor(exam, s).map((t) => t.id as string);
     const full = ids.every((id) => picked.includes(id));
     update(full ? picked.filter((id) => !ids.includes(id)) : [...new Set([...picked, ...ids])]);
   };
@@ -48,7 +58,7 @@ export function MixPicker({ mistakes, basicLeft = null }: { mistakes: Record<str
   const pickedMistakes = picked.reduce((n, id) => n + (mistakes[id] ?? 0), 0);
   // keep the URL in the hub's type order, so the same selection always gives the same link
   const href = everything
-    ? "/app/practice/mix"
+    ? mixAll
     : picked.length === 1
       ? `/app/practice/${picked[0]}`
       : `/app/practice/mix?types=${all.filter((t) => picked.includes(t.id)).map((t) => t.id).join(",")}`;
@@ -65,7 +75,7 @@ export function MixPicker({ mistakes, basicLeft = null }: { mistakes: Record<str
               : "Úlohy na přeskáčku, jako v testu. Trénuj všechno, nebo si vyklikej oddíly a typy."}
           </p>
         </div>
-        <ButtonLink href="/app/practice/mix" className="max-sm:w-full">
+        <ButtonLink href={mixAll} className="max-sm:w-full">
           <Shuffle className="h-4 w-4" /> Trénovat vše
         </ButtonLink>
       </div>
@@ -88,9 +98,9 @@ export function MixPicker({ mistakes, basicLeft = null }: { mistakes: Record<str
       {open && !basic && (
         <div className="mt-3 animate-fade-up space-y-4">
           {SECTIONS.map((s) => {
-            const types = taskTypesFor("osp", s);
+            const types = taskTypesFor(exam, s);
             const on = types.filter((t) => picked.includes(t.id)).length;
-            const verbal = s === "verbal";
+            const verbal = SECTION_META[s].tone === "verbal";
             return (
               <div key={s}>
                 <button

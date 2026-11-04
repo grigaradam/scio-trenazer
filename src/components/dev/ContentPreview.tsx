@@ -1,8 +1,9 @@
 "use client";
 
+import { SECTION_META } from "@/lib/content/exams";
 import { stripQuestion } from "@/lib/content/public";
 import type { TestFile } from "@/lib/content/types";
-import { GroupContext, QuestionBody } from "../QuestionView";
+import { GroupContext, QuestionBody, langOf } from "../QuestionView";
 import { RichText } from "../RichText";
 
 export function ContentPreview({ test, all }: { test: TestFile; all: string[] }) {
@@ -24,7 +25,7 @@ export function ContentPreview({ test, all }: { test: TestFile; all: string[] })
               <div className="text-xs font-bold text-muted">
                 {g.id} · {g.taskType}
               </div>
-              <GroupContext group={{ ...g, questions: [] }} tone={s.id === "verbal" ? "verbal" : "analytic"} />
+              <GroupContext group={{ ...g, questions: [] }} tone={SECTION_META[s.id].tone} />
               {g.questions.map((q) => (
                 <div key={q.n} id={`q${q.n}`} className="rounded-3xl border-2 border-border bg-surface p-4">
                   <div className="mb-2 font-display font-extrabold">
@@ -32,9 +33,10 @@ export function ContentPreview({ test, all }: { test: TestFile; all: string[] })
                   </div>
                   <QuestionBody
                     question={stripQuestion(q)}
-                    tone={s.id === "verbal" ? "verbal" : "analytic"}
+                    lang={langOf(g.taskType)}
+                    tone={SECTION_META[s.id].tone}
                     selected={q.parts.map(() => null)}
-                    reveal={{ answer: q.parts.map((p) => p.answer) }}
+                    reveal={{ answer: q.parts.map((p) => p.answer), accepted: q.parts.map((p) => (p.kind === "text" ? (p.alsoAccepted ?? []) : [])) }}
                   />
                   <div className="mt-3 rounded-xl bg-surface-2 p-3 text-sm">
                     <RichText>{q.solution}</RichText>

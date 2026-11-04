@@ -3,14 +3,13 @@
 import { Eye, RotateCcw, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { PublicGroup } from "@/lib/content/public";
-import type { OptionKey } from "@/lib/content/types";
 import { celebrate } from "@/lib/celebrate";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { emitLiveStats } from "@/lib/liveStats";
 import { announceRewards } from "@/lib/notify";
 import { playSound, primeSounds } from "@/lib/sounds";
 import { Explanation } from "./Explanation";
-import { GroupContext, QuestionBody, type Tone } from "./QuestionView";
+import { GroupContext, QuestionBody, type Tone, langOf } from "./QuestionView";
 import { RichText } from "./RichText";
 import { TaskChat } from "./TaskChat";
 import { Button } from "./ui";
@@ -30,14 +29,14 @@ export function ReviewTask({
   taskRef: string;
   group: PublicGroup;
   tone: Tone;
-  given?: (OptionKey | null)[];
+  given?: (string | null)[];
   onResolved?: (fixed: boolean) => void;
   startRevealed?: boolean;
 }) {
   const q = group.questions[0];
-  const empty = q.parts.map(() => null) as (OptionKey | null)[];
-  const [selected, setSelected] = useState<(OptionKey | null)[]>(startRevealed ? given ?? empty : empty);
-  const [reveal, setReveal] = useState<{ answer: OptionKey[]; solution: string } | null>(null);
+  const empty = q.parts.map(() => null) as (string | null)[];
+  const [selected, setSelected] = useState<(string | null)[]>(startRevealed ? given ?? empty : empty);
+  const [reveal, setReveal] = useState<{ answer: string[]; accepted?: string[][]; solution: string } | null>(null);
   const [status, setStatus] = useState<"idle" | "checking" | "wrong" | "right">("idle");
   const [tries, setTries] = useState(0);
   const [explain, setExplain] = useState(false);
@@ -62,7 +61,7 @@ export function ReviewTask({
     if (j.correct) {
       setStatus("right");
       setXp(j.xp ?? 0);
-      setReveal({ answer: j.answer, solution: j.solution });
+      setReveal({ answer: j.answer, accepted: j.accepted, solution: j.solution });
       celebrate("small");
       onResolved?.(true);
     } else {
@@ -77,7 +76,7 @@ export function ReviewTask({
     const r = await fetch("/api/reveal", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ref: taskRef }) });
     const j = await r.json();
     if (r.ok) {
-      setReveal({ answer: j.answer, solution: j.solution });
+      setReveal({ answer: j.answer, accepted: j.accepted, solution: j.solution });
       if (status !== "right") setSelected(given ?? selected);
       onResolved?.(false);
     }
@@ -104,10 +103,11 @@ export function ReviewTask({
         )}
         <QuestionBody
           question={q}
+          lang={langOf(group.taskType)}
           tone={tone}
           selected={selected}
           onSelect={reveal ? undefined : (p, k) => setSelected((s) => s.map((x, i) => (i === p ? k : x)))}
-          reveal={reveal ? { answer: reveal.answer } : null}
+          reveal={reveal ? { answer: reveal.answer, accepted: reveal.accepted } : null}
           wrongShake={shake}
         />
 

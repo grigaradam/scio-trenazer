@@ -2,8 +2,8 @@ import Link from "next/link";
 import { MixPicker } from "@/components/MixPicker";
 import { ProLock } from "@/components/Pro";
 import { Badge, ProgressBar } from "@/components/ui";
-import { SECTION_META, taskTypesFor } from "@/lib/content/exams";
-import type { SectionId } from "@/lib/content/types";
+import { EXAMS, SECTION_META, sectionsOf, taskTypesFor } from "@/lib/content/exams";
+import type { ExamId } from "@/lib/content/types";
 import { BASIC } from "@/lib/plans";
 import { getPlan, requireUser } from "@/lib/server/auth";
 import { masteryLevel } from "@/lib/mastery";
@@ -11,12 +11,15 @@ import { getTypeStats, practiceToday } from "@/lib/server/queries";
 
 export const metadata = { title: "Trénink" };
 
-export default async function PracticeHub() {
+export default async function PracticeHub({ searchParams }: PageProps<"/app/practice">) {
+  const sp = await searchParams;
+  const exams = EXAMS.filter((e) => e.enabled);
+  const exam: ExamId = exams.find((e) => e.id === sp.exam)?.id ?? "osp";
   const { user } = await requireUser();
   const [stats, plan] = await Promise.all([getTypeStats(user.id), getPlan(user.id)]);
   const basic = plan === "basic";
   const basicLeft = basic ? Math.max(0, BASIC.dailyTasks - (await practiceToday(user.id))) : null;
-  const weakest = [...stats].filter((s) => s.mastery !== null).sort((a, b) => a.mastery! - b.mastery!)[0];
+  const weakest = [...stats].filter((s) => s.exam === exam && s.mastery !== null).sort((a, b) => a.mastery! - b.mastery!)[0];
 
   return (
     <div className="space-y-8">
@@ -28,18 +31,32 @@ export default async function PracticeHub() {
             : "Vyber typ úloh. Nejdřív přijdou na řadu tvoje chyby, pak nekonečno nových úloh od AI – každá prošla kontrolou kvality a nikdy se ti nezopakuje."}
         </p>
       </div>
-      <MixPicker mistakes={Object.fromEntries(stats.map((s) => [s.type, s.openMistakes]))} basicLeft={basicLeft} />
-      {(["verbal", "analytic"] as SectionId[]).map((section) => (
+      {exams.length > 1 && (
+        <div className="inline-flex rounded-2xl bg-surface-2 p-1 text-sm font-bold">
+          {exams.map((e) => (
+            <Link
+              key={e.id}
+              href={e.id === "osp" ? "/app/practice" : `/app/practice?exam=${e.id}`}
+              className={`rounded-xl px-4 py-1.5 ${e.id === exam ? "bg-surface shadow-sm" : "text-muted hover:text-text"}`}
+              aria-current={e.id === exam ? "page" : undefined}
+            >
+              {e.emoji} {e.id === "aj" ? "Angličtina" : e.short}
+            </Link>
+          ))}
+        </div>
+      )}
+      <MixPicker key={exam} exam={exam} mistakes={Object.fromEntries(stats.map((s) => [s.type, s.openMistakes]))} basicLeft={basicLeft} />
+      {sectionsOf(exam).map((section) => (
         <section key={section}>
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h2 className={`font-display text-xl font-bold ${section === "verbal" ? "text-verbal-600" : "text-analytic-600"}`}>
+            <h2 className={`font-display text-xl font-bold ${SECTION_META[section].tone === "verbal" ? "text-verbal-600" : "text-analytic-600"}`}>
               {SECTION_META[section].title}
             </h2>
             {basic ? (
               <ProLock label="celý oddíl v Pro" />
             ) : (
               <Link
-                href={`/app/practice/mix?types=${taskTypesFor("osp", section).map((t) => t.id).join(",")}`}
+                href={`/app/practice/mix?types=${taskTypesFor(exam, section).map((t) => t.id).join(",")}`}
                 className="text-sm font-bold text-brand-600"
               >
                 Trénovat oddíl →
@@ -47,7 +64,7 @@ export default async function PracticeHub() {
             )}
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {taskTypesFor("osp", section).map((t) => {
+            {taskTypesFor(exam, section).map((t) => {
               const s = stats.find((x) => x.type === t.id)!;
               return (
                 <Link

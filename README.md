@@ -2,7 +2,7 @@
 
 Soukromá aplikace (noindex, registrace jen s přístupovým kódem).
 
-Webová aplikace pro přípravu na Národní srovnávací zkoušky (Scio) – zatím **OSP**.
+Webová aplikace pro přípravu na Národní srovnávací zkoušky (Scio) – **OSP** a **Anglický jazyk (AJ)**.
 Ostré testy z minulých let na čas, rozbor chyb s AI lektorem, nekonečný trénink AI úloh
 ve stylu Scio, gamifikace (XP, levely, streak, denní cíl, achievementy).
 
@@ -42,7 +42,7 @@ Lokálně s vyplněným `.env.local`:
 ```bash
 npm install
 npm run pool -- --dry --type analogie --count 2   # test kvality: vygeneruje, zvaliduje, vypíše, neuloží
-npm run pool -- --type all --count 3              # naplní sdílený pool (13 typů × až 3 úlohy)
+npm run pool -- --type all --count 3              # naplní sdílený pool (18 typů × až 3 úlohy; --type aj = jen angličtina)
 ```
 Bez předgenerování se úlohy vytváří automaticky při tréninku (první načtení trvá ~1 min, další jsou připravené).
 
@@ -52,7 +52,9 @@ cp .env.example .env.local   # doplň hodnoty
 npm install
 npm run dev                  # http://localhost:3000
 ```
-- `npm run validate:content` – kontrola všech testů v `content/osp/tests/`
+- `npm run validate:content` – kontrola všech testů v `content/osp/tests/` a `content/aj/tests/`
+- `npm run check:generator` – samokontrola generátoru: skutečné úlohy projdou kontrolami, prompt neroste s poolem, pojistka driftu
+- `npm run drift -- --type aj_grammar --rounds 5 --batch 5` – živý test kvality AI úloh po kolech (dry run, potřebuje platný `ANTHROPIC_API_KEY`)
 - `npm run typecheck`, `npm run lint`, `npm run build`
 - `http://localhost:3000/dev/<testId>` (jen v dev režimu) – náhled testu se všemi klíči a řešeními
 - `npm run dev:demo` – celá aplikace bez Supabase (databáze v paměti, fiktivní uživatel) na http://localhost:3001 – na UI testování
@@ -65,7 +67,8 @@ npm run dev                  # http://localhost:3000
 - Denní limity AI na uživatele: `AI_DAILY_*` proměnné.
 
 ## Obsah
-`content/osp/tests/*.json` – 10 unikátních testů OSP (2023–2026), převedené z PDF, matematika v KaTeX,
-grafy v `public/figures/`. Klíče ověřené vlastním řešením a u 8 testů i proti oficiálnímu značení v PDF.
+`content/osp/tests/*.json` – 20 testů OSP (2023–2026): 10 převedených z PDF (klíče ověřené i proti značení v PDF)
+a 10 přepsaných z fotek sešitů (klíče vlastním řešením, shodné úlohy mezi variantami mají shodný klíč).
+`content/aj/tests/*.json` – 4 testy AJ (Reading + Use of English, bez poslechu). Matematika v KaTeX, grafy v `public/figures/`.
 Schéma: [`src/lib/content/types.ts`](src/lib/content/types.ts), návod převodu: [`content/CONVERSION_GUIDE.md`](content/CONVERSION_GUIDE.md).
 Nový test = nový JSON + `npm run validate:content`. Další zkouška (ZSV, AJ…) = obsah + `enabled: true` v `src/lib/content/exams.ts`.

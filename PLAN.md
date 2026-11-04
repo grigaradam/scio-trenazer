@@ -239,3 +239,10 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
   řešeny samostatně. Přidáno `alsoAccepted` (dvě uznané odpovědi dle NOK) a `excluded` (úloha vyřazená z hodnocení).
 - 2026-10-22 – aplikace postavena: Next.js 16 + Supabase + Claude API, build/lint/typecheck OK, SQL migrace ověřena
   na lokálním Postgresu, bodování ověřeno proti statistikám Scio.
+- 2026-11-04 – **angličtina (AJ)** a 10 nových testů OSP z fotek sešitů (`nove-testy/`). AJ: oddíly `reading` (15 min)
+  a `english` (Use of English, 25 min) = 40 min (60 min testu minus 20 min poslechu), úlohy 13–60 – poslech (1–12) bez nahrávky vynechán. Typy `aj_reading`,
+  `aj_inference`, `aj_cloze`, `aj_grammar`, `aj_wordform`; word formation má psanou odpověď (`kind: "text"`, špatně = 0 b.).
+  Testy bez statistik (fotky je nemají) → bez percentilu. Generátor má pro AJ vlastní prompty a validátor; každá AI úloha
+  navíc prochází „pojistkou driftu“ (délky a jazyk proti skutečným úlohám Scio) – `npm run check:generator`,
+  živý test po kolech `npm run drift`. OSP Únor 2026 A čeká v `content/osp/drafts/` na dofocení strany 15.
+  Supabase: spustit migraci `0014_aj.sql`.

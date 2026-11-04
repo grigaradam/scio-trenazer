@@ -125,7 +125,7 @@ export async function refreshLessons(type: TaskType) {
     max_tokens: 3000,
     output_config: { effort: "low" },
     system:
-      "Jsi editor, který zlepšuje AI generátor úloh pro test OSP (Scio). Z důvodů, proč validátor úlohy zamítl, " +
+      `Jsi editor, který zlepšuje AI generátor úloh pro test ${meta?.exam === "aj" ? "Anglický jazyk (Scio AJ)" : "OSP (Scio)"}. Z důvodů, proč validátor úlohy zamítl, ` +
       "sestav krátký seznam konkrétních, akčních pravidel pro generátor, aby se stejné chyby už neopakovaly. " +
       "Pravidla piš česky jako odrážky „- …“, každé 1 krátká věta, MAX. 8 odrážek a celkem max. 1000 znaků. " +
       "Výsledek NAHRAZUJE dosavadní pravidla: zachovej jen ta, která stále platí, slouč duplicity, " +
@@ -135,7 +135,7 @@ export async function refreshLessons(type: TaskType) {
       {
         role: "user",
         content: `Typ úlohy: ${meta?.name ?? type}
-Pevný formát: ${meta && meta.groupSize > 1 ? `skupina ${meta.groupSize} otázek ke společnému textu` : "1 otázka"}, klíče možností ${type === "synonyma" ? "A–D (synonymum) a E–H (antonymum)" : "přesně A, B, C, D"}.
+Pevný formát: ${meta && meta.groupSize > 1 ? `skupina ${meta.groupSize} otázek ke společnému textu` : "1 otázka"}, ${type === "synonyma" ? "klíče možností A–D (synonymum) a E–H (antonymum)" : type === "aj_wordform" ? "psaná odpověď jedním slovem (bez možností)" : "klíče možností přesně A, B, C, D"}.
 Přijatých úloh zatím: ${accepted ?? 0}
 
 Dosavadní pravidla:

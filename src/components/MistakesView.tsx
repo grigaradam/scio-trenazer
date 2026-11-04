@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { taskTypeMeta } from "@/lib/content/exams";
+import { taskTypeMeta, SECTION_META } from "@/lib/content/exams";
 import { count } from "@/lib/czech";
 import type { PublicGroup } from "@/lib/content/public";
 import type { TaskType } from "@/lib/content/types";
@@ -105,7 +105,7 @@ export function MistakesView({
               {locked ? (
                 <ProLock />
               ) : (
-                <ButtonLink href={`/app/practice/${type}?mode=mistakes`} size="sm" variant={meta.section === "verbal" ? "verbal" : "analytic"}>
+                <ButtonLink href={`/app/practice/${type}?mode=mistakes`} size="sm" variant={SECTION_META[meta.section].tone}>
                   Trénovat
                 </ButtonLink>
               )}
@@ -193,7 +193,7 @@ export function MistakesView({
                   key={current.ref}
                   taskRef={current.ref}
                   group={current.group}
-                  tone={taskTypeMeta(current.type)?.section === "verbal" ? "verbal" : "analytic"}
+                  tone={SECTION_META[taskTypeMeta(current.type)?.section ?? "verbal"].tone}
                   onResolved={(ok) => ok && setFixed((f) => [...f, current.ref])}
                 />
               )}

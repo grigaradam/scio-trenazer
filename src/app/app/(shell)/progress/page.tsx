@@ -2,7 +2,8 @@ import clsx from "clsx";
 import { Announce } from "@/components/Notifications";
 import { Heatmap, ScoreChart, type ScorePoint } from "@/components/ProgressCharts";
 import { Card, ProgressBar, SectionTitle } from "@/components/ui";
-import { SECTION_META, taskTypeMeta } from "@/lib/content/exams";
+import { EXAMS, SECTION_META, sectionsOf, taskTypeMeta } from "@/lib/content/exams";
+import type { SectionId } from "@/lib/content/types";
 import {
   ACHIEVEMENT_CATEGORIES,
   ACHIEVEMENTS,
@@ -38,14 +39,17 @@ export default async function ProgressPage() {
   const typeStats = await getTypeStats(user.id, attempts, mistakes);
 
   const completed = attempts.filter((a) => a.status === "completed" && a.result).reverse();
-  const points: ScorePoint[] = completed.map((a) => ({
+  const points: (ScorePoint & { exam: string })[] = completed.map((a) => ({
     date: new Date(a.completed_at!).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" }),
     label: testTitle(a.test_id),
     percent: a.result!.percent,
     percentile: a.result!.percentile,
-    verbal: Math.max(0, Math.round((a.result!.sections.verbal.score / a.result!.sections.verbal.max) * 100)),
-    analytic: Math.max(0, Math.round((a.result!.sections.analytic.score / a.result!.sections.analytic.max) * 100)),
+    exam: a.exam,
+    sections: (Object.entries(a.result!.sections) as [SectionId, { score: number; max: number } | undefined][])
+      .filter(([, b]) => b && b.max)
+      .map(([id, b]) => ({ label: SECTION_META[id].short.toLowerCase(), percent: Math.max(0, Math.round((b!.score / b!.max) * 100)) })),
   }));
+  const chartExams = EXAMS.filter((e) => e.enabled && (e.id === "osp" || points.some((p) => p.exam === e.id)));
 
   const totalSec = days.reduce((s, d) => s + d.seconds, 0);
   const totalTasks = days.reduce((s, d) => s + d.tasks, 0);
@@ -166,7 +170,12 @@ export default async function ProgressPage() {
       <section>
         <SectionTitle>Výsledky testů</SectionTitle>
         <Card>
-          <ScoreChart data={points} />
+          {chartExams.map((e) => (
+            <div key={e.id} className={chartExams.length > 1 ? "mb-4 last:mb-0" : ""}>
+              {chartExams.length > 1 && <div className="mb-1 text-xs font-extrabold uppercase tracking-wider text-muted">{e.emoji} {e.short}</div>}
+              <ScoreChart data={points.filter((p) => p.exam === e.id)} />
+            </div>
+          ))}
         </Card>
       </section>
 
@@ -176,9 +185,9 @@ export default async function ProgressPage() {
           Počítá hlavně s tvými posledními odpověďmi – staré chyby postupně blednou a chyba, kterou později opravíš, se počítá napůl jako správně.
         </p>
         <div className="grid gap-6 md:grid-cols-2">
-          {(["verbal", "analytic"] as const).map((sec) => (
+          {sectionsOf("osp").concat(typeStats.some((t) => t.exam === "aj" && t.attempts > 0) ? sectionsOf("aj") : []).map((sec) => (
             <Card key={sec}>
-              <div className={`mb-3 text-xs font-extrabold uppercase tracking-wider ${sec === "verbal" ? "text-verbal-600" : "text-analytic-600"}`}>
+              <div className={`mb-3 text-xs font-extrabold uppercase tracking-wider ${SECTION_META[sec].tone === "verbal" ? "text-verbal-600" : "text-analytic-600"}`}>
                 {SECTION_META[sec].title}
               </div>
               <div className="space-y-3">

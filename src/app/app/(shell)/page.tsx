@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ProLock } from "@/components/Pro";
 import { StartTestButton } from "@/components/StartTestButton";
 import { Badge, ButtonLink, Card, ProgressBar, Ring, SectionTitle } from "@/components/ui";
-import { taskTypeMeta } from "@/lib/content/exams";
+import { SECTION_META, taskTypeMeta } from "@/lib/content/exams";
+import { getTest } from "@/lib/content/load";
 import { levelInfo, levelTitle } from "@/lib/gamification";
 import { count, plural } from "@/lib/czech";
 import { effectivePlan } from "@/lib/plans";
@@ -30,6 +31,7 @@ export default async function Dashboard() {
   const goal = Math.min(1, todayMin / profile.daily_goal_min);
   const lvl = levelInfo(profile.xp);
   const inProgress = attempts.find((a) => a.status === "in_progress");
+  const inProgressSection = inProgress ? getTest(inProgress.test_id)?.sections[inProgress.section_index]?.id : undefined;
   const completed = attempts.filter((a) => a.status === "completed");
   const last = completed[0];
   const openMistakes = mistakes.filter((m) => m.status === "open");
@@ -80,8 +82,8 @@ export default async function Dashboard() {
           <div className="flex-1">
             <div className="font-display text-lg font-extrabold">Máš rozdělaný test – dokonči ho!</div>
             <div className="text-sm text-muted">
-              {testTitle(inProgress.test_id)} · {inProgress.section_index === 0 ? "verbální oddíl" : "analytický oddíl"} · zbývá{" "}
-              {Math.round((inProgress.section_index === 0 ? inProgress.time_left.verbal : inProgress.time_left.analytic) / 60)} min
+              {testTitle(inProgress.test_id)} · {inProgressSection ? SECTION_META[inProgressSection].acc : ""} · zbývá{" "}
+              {Math.round((inProgressSection ? (inProgress.time_left[inProgressSection] ?? 0) : 0) / 60)} min
             </div>
           </div>
           <Play className="h-6 w-6 text-amber-600" />

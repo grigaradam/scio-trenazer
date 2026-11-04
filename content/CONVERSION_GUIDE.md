@@ -77,3 +77,15 @@ Stejně tak u verbálního oddílu zkontroluj vizuálně podtržená slova (syno
 1. `node scripts/validate-content.mjs content/osp/tests/<id>.json` → 0 chyb.
 2. Projdi si JSON očima: české věty dávají smysl, nic není useknuté, matematika sedí s PDF.
 3. Rozložení odpovědí A/B/C/D by mělo být zhruba rovnoměrné – výrazná nerovnováha = podezření na chybu.
+
+## Angličtina (AJ) – rozdíly
+
+- Soubor `content/aj/tests/<id>.json`, `exam: "aj"`, bez `variant` a (u fotek) bez `stats`.
+- Poslech (úlohy 1–12) se nepřevádí – bez nahrávky ho nejde řešit. Čísla úloh zůstávají jako v sešitu (13–60).
+- Sekce `reading` („Reading“, 900 s, úlohy 13–27) a `english` („Use of English“, 1500 s, úlohy 28–60).
+- Typy: `aj_reading` (dlouhý článek, značky **(A)**–**(D)** v textu), `aj_inference` (krátké texty, text + otázka ve stemu),
+  `aj_cloze` (každý text = skupina, mezery `**(28)** ______`, stem `Gap (28)`), `aj_grammar`, `aj_wordform`.
+- Word formation: část `{ "kind": "text", "options": [], "answer": "MEMORISE", "alsoAccepted": ["MEMORIZE"] }` –
+  odpověď velkými písmeny, všechny tvary uznávané slovníky Cambridge/Oxford do `alsoAccepted`. Špatná odpověď = 0 bodů.
+- Zadání anglicky doslova, `solution` česky.
+- Fotky sešitů: poznámky studentů (zakroužkované odpovědi, dopsaná slova) nikdy neber jako klíč.

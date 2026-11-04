@@ -1,0 +1,1287 @@
+{
+  "id": "aj-2026-04",
+  "exam": "aj",
+  "title": "AJ – Duben 2026",
+  "date": "2026-04",
+  "source": "Fotky sešitu „aj duben 2026“",
+  "sections": [
+    {
+      "id": "reading",
+      "title": "Reading",
+      "timeLimitSec": 900,
+      "groups": [
+        {
+          "id": "g01",
+          "taskType": "aj_reading",
+          "instruction": "Read the following text and solve the tasks based solely on the information in it.",
+          "passageTitle": "Forget Changing With Age, People’s Moral Values Change With The Seasons",
+          "passage": "When screenwriter Robert Bolt called Sir Thomas More, an English lawyer, judge, and a social philosopher, “A Man For All Seasons”, he was referring to the way More held true to his values even as the political climate shifted around him. The implication was that this was rare, but “Seasons” was used metaphorically, and it probably didn’t occur to anyone that it might be relevant for literal seasons of the year. However, University of British Columbia (UBC) researchers thought to check and found that for many of us, the time of year does affect what we believe.\n\nSocial scientists have been asking people about the importance of values like loyalty and kindness for decades as a way to understand their behaviour. **(A)** Based on an impressive sample of 232,975 American people, UBC doctoral student Ian Hohm looked at whether the views of these values shift with the seasons, and found that they do, but in some curious ways.\n\nIn the US, purity, loyalty, and respect for authority – values venerated by traditional conservatism – often go together, and are collectively known as “binding values”. **(B)** What is stranger is that instead of peaking in summer or winter, this trio is most valued in spring and fall, and considered less important both when it is hot and cold. Meanwhile, values typically emphasized by liberals and progressives, like fairness and caring for others, showed less variation throughout the year.\n\nHistorically, this means US conservatives may have had a small boost from the requirement to hold elections at the start of November. Whether American history would be significantly different if they were held in summer or winter is hard to tell. In countries where the prime minister or president gets to choose the date of the election, the findings could be even more interesting to politicians. The authors looked at other English-speaking countries apart from the US and found a similar pattern in Australia and Canada. **(C)** However, in each case the sample size was less than a tenth of that available for the US, so these results require more caution.\n\nIt seems logical that people’s values will change more with the seasons in places where the difference between summer and winter is greater than where seasons are barely a thing. Indeed, the variation observed was considerably larger for Canada than Australia, but the authors didn’t break the US variation down by state to see if Alaskan values vary more than, for example, Floridian values.\n\nIt might be easier to come up with an explanation for the observed changes in people’s moral values across seasons if winter and summer were opposites, instead of close matches, but the authors did find a major clue in terms of mood. A follow-up study using similar methods found that Americans are more anxious in spring and fall. “This correlation suggests that higher anxiety may drive people to seek comfort in the group norms and traditions upheld by binding values,” said senior author Professor Mark Schaller. **(D)**\n\nThe data was collected weekly over ten years, and the same pattern was seen each time, so it’s unlikely it was too <u>skewed</u> by specific events.\n\nThe authors also note that it is not just elections that could be affected by these trends. Criminal convictions imply a disrespect for authority, and suggest further investigation into whether judges impose heavier <u>penalties</u> in certain seasons as a result.",
+          "questions": [
+            {
+              "n": 13,
+              "stem": "Look at the letters (A) to (D) in the text. These indicate where the following sentence could be added to the text.\n\n*So it is no surprise that their perceived importance rises and falls together over the course of a year.*\n\nWhere would the sentence best fit?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "(A)"
+                    },
+                    {
+                      "key": "B",
+                      "text": "(B)"
+                    },
+                    {
+                      "key": "C",
+                      "text": "(C)"
+                    },
+                    {
+                      "key": "D",
+                      "text": "(D)"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Věta navazuje na informaci, že čistota, loajalita a respekt k autoritě „often go together“ a jsou souhrnně „binding values“ – proto jejich důležitost stoupá a klesá společně. „Their“ odkazuje právě na tuto trojici; následující věta „What is stranger…“ pak logicky pokračuje."
+            },
+            {
+              "n": 14,
+              "stem": "The word “skewed” in the seventh paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "caused"
+                    },
+                    {
+                      "key": "B",
+                      "text": "weakened"
+                    },
+                    {
+                      "key": "C",
+                      "text": "distorted"
+                    },
+                    {
+                      "key": "D",
+                      "text": "related"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "„Skewed by specific events“ = zkreslený konkrétními událostmi, tedy „distorted“. Data byla sbírána deset let, takže jednotlivé události výsledky nezkreslily."
+            },
+            {
+              "n": 15,
+              "stem": "The word “penalties” in the last paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "rules"
+                    },
+                    {
+                      "key": "B",
+                      "text": "sentences"
+                    },
+                    {
+                      "key": "C",
+                      "text": "trials"
+                    },
+                    {
+                      "key": "D",
+                      "text": "appeals"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Soudci ukládají („impose“) tresty – „penalties“ zde znamená tresty, tedy „sentences“ (rozsudky, tresty). Trials jsou soudní procesy, appeals odvolání."
+            },
+            {
+              "n": 16,
+              "stem": "Screenwriter Robert Bolt highlighted Thomas More’s ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "unwavering adherence to his principles regardless of the political climate"
+                    },
+                    {
+                      "key": "B",
+                      "text": "ability to stick to his values from spring to winter"
+                    },
+                    {
+                      "key": "C",
+                      "text": "outstanding ability to adapt to a shifting political climate"
+                    },
+                    {
+                      "key": "D",
+                      "text": "tendency to always declare his values truly despite their frequent alterations"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Bolt tím mínil, že More „held true to his values even as the political climate shifted around him“ – neochvějně se držel svých zásad. „Seasons“ bylo myšleno obrazně, ne jako roční období (B)."
+            },
+            {
+              "n": 17,
+              "stem": "According to the text, what belongs among traditional conservative values?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "defiance of authority"
+                    },
+                    {
+                      "key": "B",
+                      "text": "fairness"
+                    },
+                    {
+                      "key": "C",
+                      "text": "allegiance"
+                    },
+                    {
+                      "key": "D",
+                      "text": "compassion for others"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Konzervativní „binding values“ jsou purity, loyalty a respect for authority; „allegiance“ = věrnost, loajalita. Fairness a caring for others jsou hodnoty liberálů."
+            },
+            {
+              "n": 18,
+              "stem": "Compared to the study in the US, the study in Australia ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "was conducted across a longer time span"
+                    },
+                    {
+                      "key": "B",
+                      "text": "involved fewer respondents"
+                    },
+                    {
+                      "key": "C",
+                      "text": "yielded more compelling results"
+                    },
+                    {
+                      "key": "D",
+                      "text": "found greater variation in moral values across the year"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "U Austrálie a Kanady byl vzorek „less than a tenth of that available for the US“ – tedy méně respondentů. Výsledky proto vyžadují větší opatrnost, ne že by byly přesvědčivější."
+            },
+            {
+              "n": 19,
+              "stem": "As for the study conducted in the US, ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "the authors omitted the states of Alaska and Florida when collecting the data"
+                    },
+                    {
+                      "key": "B",
+                      "text": "the authors observed greater variation in values across seasons compared to Canada"
+                    },
+                    {
+                      "key": "C",
+                      "text": "the findings from Alaska and Florida significantly deviated from the overall results"
+                    },
+                    {
+                      "key": "D",
+                      "text": "the authors didn’t examine the state-level variation in the data"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text uvádí, že autoři „didn’t break the US variation down by state“ – rozdíly mezi státy nezkoumali. Aljaška a Florida jsou jen hypotetický příklad, ne vynechané státy."
+            },
+            {
+              "n": 20,
+              "stem": "What possible explanation for the observed changes in people’s moral values across seasons does the text suggest?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "People’s mood generally improves in spring and so does their willingness to stick to certain values."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Whenever people feel anxious, they tend to emphasize more liberal values, such as fairness."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The extent to which people uphold certain values is influenced by their level of anxiety."
+                    },
+                    {
+                      "key": "D",
+                      "text": "People’s anxiety level rises in winter and so does their tendency to promote the so-called binding values."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Vodítkem je nálada: Američané jsou úzkostnější na jaře a na podzim a vyšší úzkost může vést k důrazu na binding values. D chybně uvádí zimu, B liberální hodnoty, A zlepšení nálady."
+            },
+            {
+              "n": 21,
+              "stem": "The text suggests that increased anxiety may lead some people to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "stick more to values emphasized by liberals"
+                    },
+                    {
+                      "key": "B",
+                      "text": "find solace in traditions"
+                    },
+                    {
+                      "key": "C",
+                      "text": "deviate from group norms"
+                    },
+                    {
+                      "key": "D",
+                      "text": "seek comfort in overstepping norms and traditions"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Citát: vyšší úzkost může lidi vést „to seek comfort in the group norms and traditions“ – hledat útěchu (solace) v tradicích. D tvrdí opak (porušování norem)."
+            },
+            {
+              "n": 22,
+              "stem": "According to the text, the data in the study ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "were affected by specific events"
+                    },
+                    {
+                      "key": "B",
+                      "text": "were collected on a daily basis"
+                    },
+                    {
+                      "key": "C",
+                      "text": "showed a consistent pattern"
+                    },
+                    {
+                      "key": "D",
+                      "text": "yielded opposite results in similar countries"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Data se sbírala týdně po deset let a „the same pattern was seen each time“ – vzorec byl konzistentní. Sběr nebyl denní a vliv konkrétních událostí je naopak nepravděpodobný."
+            },
+            {
+              "n": 23,
+              "stem": "Which of the following statements best sums up the main message of the text?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "A recent study has found that elections in the US should ideally take place at another time than November, preferably in spring."
+                    },
+                    {
+                      "key": "B",
+                      "text": "A study conducted in some English-speaking countries has found that seasons of the year influence people’s perception of the importance of certain values."
+                    },
+                    {
+                      "key": "C",
+                      "text": "A recent study conducted in the US, Australia and Canada has found that people experience different levels of anxiety throughout the year."
+                    },
+                    {
+                      "key": "D",
+                      "text": "According to a recent study, moral values are not universal: they are determined by whether an individual leans towards conservatism or towards liberalism."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Hlavní sdělení: roční období ovlivňují, jak důležité lidem připadají určité (morální) hodnoty – zjištěno v USA, Austrálii a Kanadě. Úzkost (C) je jen dílčí vysvětlení, doporučení k volbám (A) text nedává."
+            }
+          ]
+        },
+        {
+          "id": "g02",
+          "taskType": "aj_inference",
+          "instruction": "Answer the following questions using only the information given in or implied by the text.",
+          "questions": [
+            {
+              "n": 24,
+              "stem": "In Scotland, the 1920s and especially the 1930s were strongly marked by a tilt of creative intellectuals towards the political left; this was often accompanied by an attempt to revive the Scottish identity. Perhaps the most striking expression of these two combined tendencies is in the works of Hugh MacDiarmid.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Hugh MacDiarmid’s works reflected an attempt to revive Scottish identity."
+                    },
+                    {
+                      "key": "B",
+                      "text": "The 1930s saw the production of some of the most famous Scottish pieces of art."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The Scottish struggle for independence is best described in the works of Hugh MacDiarmid."
+                    },
+                    {
+                      "key": "D",
+                      "text": "In Scotland, the struggle for self-identity was no longer relevant in the 1930s."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "MacDiarmidovo dílo je nejvýraznějším výrazem obou tendencí – levicového posunu i snahy oživit skotskou identitu, takže ji nutně odráží. O nejslavnějších dílech ani o boji za nezávislost text nic neříká."
+            },
+            {
+              "n": 25,
+              "stem": "With the arrival of the Spanish conquistadors to Mexico also came priests and missionaries. These priests and missionaries considered the ceremonies of the indigenous Mexicans to be pagan customs and therefore suppressed them. They knew that the indigenous Mexicans used these rituals to worship the sun and that the rituals were closely linked to the worship of the fertility deity.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "The indigenous Mexicans adopted the religious rituals from the Spanish missionaries."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Priests and missionaries in Mexico suppressed the ceremonies of the indigenous Mexicans, which they perceived as pagan."
+                    },
+                    {
+                      "key": "C",
+                      "text": "Spain sent missionaries to Mexico to eradicate the customs of the indigenous Mexicans in the name of Christianity."
+                    },
+                    {
+                      "key": "D",
+                      "text": "The arrival of the Spanish conquistadors brought a swift end to all traditions of the indigenous Mexicans."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text přímo uvádí, že kněží a misionáři považovali obřady za pohanské, a proto je potlačovali. Účel vyslání misionářů (C) ani rychlý konec všech tradic (D) z textu nevyplývá."
+            },
+            {
+              "n": 26,
+              "stem": "The peaks of the Sierra Nevada are usually ascended from the north – from Tairona National Park. Access from the other sides is, due to impenetrable tropical vegetation and rebel troops, if not impossible, then definitely dangerous. This is why the Sierra Nevada is still one of the most isolated mountain ranges.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Access to the Sierra Nevada peaks is complicated by the presence of rebel troops."
+                    },
+                    {
+                      "key": "B",
+                      "text": "The Sierra Nevada peaks are covered by dense tropical vegetation."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The Sierra Nevada and the Tairona region both have the status of a protected national park."
+                    },
+                    {
+                      "key": "D",
+                      "text": "On the northern side of the Sierra Nevada, tropical vegetation is completely absent, making it easy to climb."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Přístup z ostatních stran je kvůli vegetaci a rebelům nebezpečný nebo nemožný, takže rebelové přístup komplikují. Vegetace se týká přístupových stran, ne samotných vrcholů (B); národním parkem je jen Tairona (C)."
+            },
+            {
+              "n": 27,
+              "stem": "After the Second World War, during which most of the beam houses in Lower Saxony were damaged or completely destroyed, their disappearance was assumed. However, during the 1970s, a renaissance took place, and towns showed considerable interest in these peculiar dwellings, which are not found anywhere else in the world. They began to be appreciated as historical monuments contributing significantly to the uniqueness of the whole area. Municipalities have therefore begun to seek their restoration.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Immediately after the Second World War, the municipalities began to reconstruct the damaged beam houses."
+                    },
+                    {
+                      "key": "B",
+                      "text": "During the Second World War, all beam houses were completely destroyed."
+                    },
+                    {
+                      "key": "C",
+                      "text": "In the 1970s, brand new beam houses began to be constructed in towns and villages."
+                    },
+                    {
+                      "key": "D",
+                      "text": "The beam houses are distinctive dwellings specific to Lower Saxony."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Domy jsou „peculiar dwellings, which are not found anywhere else in the world“ – jsou tedy pro Dolní Sasko specifické. Zničena byla většina (ne všechny), obnova začala až od 70. let a jde o restaurování, ne novostavby."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "title": "Use of English",
+      "timeLimitSec": 1500,
+      "groups": [
+        {
+          "id": "g03",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "ADHD may have been an evolutionary advantage, research suggests",
+          "passage": "Traits common to attention deficit hyperactivity disorder (ADHD), such as distractibility or impulsivity, might have been an evolutionary advantage for our **(28)** ______ – hunter-gatherers who lived in the Stone Age – because these traits improved their tactics when **(29)** ______ for food, researchers have said.\n\nADHD is a neurodevelopmental disorder with symptoms including impulsiveness, disorganisation and difficulty focusing. Even though **(30)** ______ of prevalence have varied, diagnoses **(31)** ______ in many countries, including the UK.\n\nNow, researchers say that **(32)** ______ some of these traits tend to be viewed negatively, they **(33)** ______ people seek out new patches for foraging. Dr David Barack of the University of Pennsylvania and his colleagues reported how they analysed data from 457 adults who completed an online foraging game in which they had to collect as many berries as possible within eight minutes. The number of berries obtained from each bush decreased with the number of times it was foraged. During the task, participants could either continue to collect berries from the bushes in their original location or move to a new patch – but **(34)** ______ cost them time. The team also screened participants for ADHD-like symptoms – although this did not constitute an official diagnosis – finding that 206 participants had positive results.\n\nThe researchers found that participants with higher scores **(35)** ______ the ADHD scale spent shorter periods of time in each patch of bushes than those with lower scores. In other words, they were more likely to abandon their current patch and hunt for a new one, and they also gained more points in the game. So, in fact, ADHD may have been useful in situations where physical activity and rapid decision-making were highly valued.",
+          "questions": [
+            {
+              "n": 28,
+              "stem": "Gap (28)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "descendants"
+                    },
+                    {
+                      "key": "B",
+                      "text": "ancestors"
+                    },
+                    {
+                      "key": "C",
+                      "text": "offspring"
+                    },
+                    {
+                      "key": "D",
+                      "text": "heritage"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Lovci-sběrači z doby kamenné jsou naši předkové – „ancestors“. Descendants a offspring jsou potomci, heritage je dědictví."
+            },
+            {
+              "n": 29,
+              "stem": "Gap (29)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "foraged"
+                    },
+                    {
+                      "key": "B",
+                      "text": "foraging"
+                    },
+                    {
+                      "key": "C",
+                      "text": "had foraged"
+                    },
+                    {
+                      "key": "D",
+                      "text": "were foraging"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Po spojce „when“ lze použít zkrácenou vedlejší větu s -ing tvarem: „when foraging for food“ (= když hledali potravu). Ostatní tvary by vyžadovaly podmět."
+            },
+            {
+              "n": 30,
+              "stem": "Gap (30)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "conditions"
+                    },
+                    {
+                      "key": "B",
+                      "text": "frequency"
+                    },
+                    {
+                      "key": "C",
+                      "text": "difficulties"
+                    },
+                    {
+                      "key": "D",
+                      "text": "estimates"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Estimates of prevalence have varied“ = odhady výskytu se lišily; kolokace estimates of prevalence. Frequency by navíc nesouhlasila s „have“ (jednotné číslo)."
+            },
+            {
+              "n": 31,
+              "stem": "Gap (31)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "have lately been rising"
+                    },
+                    {
+                      "key": "B",
+                      "text": "has lately been rising"
+                    },
+                    {
+                      "key": "C",
+                      "text": "have lately raised"
+                    },
+                    {
+                      "key": "D",
+                      "text": "have lately been raising"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Podmět „diagnoses“ je v množném čísle → have; nepřechodné sloveso „rise“ (stoupat), ne přechodné „raise“ (zvedat něco). Předpřítomný průběhový čas vyjadřuje trend trvající dodnes."
+            },
+            {
+              "n": 32,
+              "stem": "Gap (32)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "despite"
+                    },
+                    {
+                      "key": "B",
+                      "text": "even"
+                    },
+                    {
+                      "key": "C",
+                      "text": "if"
+                    },
+                    {
+                      "key": "D",
+                      "text": "while"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Přípustkové „while“ (= ačkoli) uvozuje vedlejší větu: „while some of these traits tend to be viewed negatively, they…“. „Despite“ nelze spojit s celou větou, „even“ samo není spojka."
+            },
+            {
+              "n": 33,
+              "stem": "Gap (33)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "might helped"
+                    },
+                    {
+                      "key": "B",
+                      "text": "might had helped"
+                    },
+                    {
+                      "key": "C",
+                      "text": "might have helped"
+                    },
+                    {
+                      "key": "D",
+                      "text": "might have been helped"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Spekulace o minulosti: modální sloveso + have + příčestí minulé → „might have helped“. Trpný rod (D) nedává smysl, protože vlastnosti lidem pomáhaly."
+            },
+            {
+              "n": 34,
+              "stem": "Gap (34)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "later"
+                    },
+                    {
+                      "key": "B",
+                      "text": "latter"
+                    },
+                    {
+                      "key": "C",
+                      "text": "a latter"
+                    },
+                    {
+                      "key": "D",
+                      "text": "the latter"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„The latter“ = to druhé (z obou zmíněných možností), tj. přesun na nový keř stál čas. Ve významu „ten druhý“ se vždy používá se členem the."
+            },
+            {
+              "n": 35,
+              "stem": "Gap (35)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "on"
+                    },
+                    {
+                      "key": "B",
+                      "text": "as"
+                    },
+                    {
+                      "key": "C",
+                      "text": "having"
+                    },
+                    {
+                      "key": "D",
+                      "text": "after"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Vazba „score high/higher scores on a scale/test“ – předložka „on“."
+            }
+          ]
+        },
+        {
+          "id": "g04",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "Gray whale sighted off New England 200 years after the species’ Atlantic extinction",
+          "passage": "Scientists have confirmed the presence of a whale off New England that **(36)** ______ in the Atlantic Ocean two centuries ago – an exciting discovery, but one that illustrates the impact of climate change **(37)** ______ sea life.\n\nResearchers with the New England Aquarium in Boston found the gray whale while flying 30 miles south of Nantucket, Massachusetts, on 1 March. The whale typically lives in the northern Pacific Ocean.\n\nThe gray whale had vanished from the Atlantic Ocean by the 18th century, but there have been five observations of the animal in Atlantic and Mediterranean waters in the last 15 years, the aquarium said in a statement. The whale **(38)** ______ this month was probably the same animal spotted in Florida late last year, the aquarium said.\n\nThe researchers who found the animal off Massachusetts said they were skeptical at first, but after circling the area for 45 minutes, they were able to take photographs **(39)** ______ confirmed for certain it was indeed a gray whale.\n\nScientists said they were thrilled to see the animal, but its appearance **(40)** ______ the warming of the planet. The North-west Passage, which connects the Atlantic and Pacific Oceans through the Arctic Ocean in Canada, **(41)** ______ ice in the summertime in recent years, they said. That means gray whales are able to travel through the passage in the summer when normally they would have been blocked.\n\nGray whales were almost hunted to extinction during the era of commercial whaling. Today, the whales have recovered to the point that they are considered a species of “least concern” by the International Union for Conservation of Nature, **(42)** ______ the organization considers the western population of the whales that lives off Asia **(43)** ______ endangered.",
+          "questions": [
+            {
+              "n": 36,
+              "stem": "Gap (36)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "went extinct"
+                    },
+                    {
+                      "key": "B",
+                      "text": "extinct"
+                    },
+                    {
+                      "key": "C",
+                      "text": "has gone extinct"
+                    },
+                    {
+                      "key": "D",
+                      "text": "has extinct"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Ukončený děj v minulosti s časovým údajem „two centuries ago“ → minulý čas prostý „went extinct“. Předpřítomný čas se s „ago“ nepojí, „extinct“ je přídavné jméno, ne sloveso."
+            },
+            {
+              "n": 37,
+              "stem": "Gap (37)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "at"
+                    },
+                    {
+                      "key": "B",
+                      "text": "by"
+                    },
+                    {
+                      "key": "C",
+                      "text": "in"
+                    },
+                    {
+                      "key": "D",
+                      "text": "on"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Vazba „the impact of something on something“ – dopad na mořský život."
+            },
+            {
+              "n": 38,
+              "stem": "Gap (38)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "was found"
+                    },
+                    {
+                      "key": "B",
+                      "text": "had been found"
+                    },
+                    {
+                      "key": "C",
+                      "text": "found"
+                    },
+                    {
+                      "key": "D",
+                      "text": "has been found"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Zkrácená vztažná věta v trpném rodě: „The whale (that was) found this month was probably…“. Plný tvar se slovesem by vytvořil dvě přísudková slovesa bez spojky."
+            },
+            {
+              "n": 39,
+              "stem": "Gap (39)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "to"
+                    },
+                    {
+                      "key": "B",
+                      "text": "by which"
+                    },
+                    {
+                      "key": "C",
+                      "text": "that"
+                    },
+                    {
+                      "key": "D",
+                      "text": "being"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Vztažné zájmeno „that“ je podmětem vedlejší věty: fotografie, které potvrdily… „By which“ by vyžadovalo další podmět, „to“ a „being“ nedávají gramatickou větu."
+            },
+            {
+              "n": 40,
+              "stem": "Gap (40)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "has to do with"
+                    },
+                    {
+                      "key": "B",
+                      "text": "is doing"
+                    },
+                    {
+                      "key": "C",
+                      "text": "has done with"
+                    },
+                    {
+                      "key": "D",
+                      "text": "has been done with"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„Have to do with something“ = souviset s něčím: výskyt velryby souvisí s oteplováním planety."
+            },
+            {
+              "n": 41,
+              "stem": "Gap (41)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "has lacked"
+                    },
+                    {
+                      "key": "B",
+                      "text": "lacking"
+                    },
+                    {
+                      "key": "C",
+                      "text": "would lacked"
+                    },
+                    {
+                      "key": "D",
+                      "text": "lack of"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Podmět „The North-west Passage“ potřebuje přísudek; „in recent years“ ukazuje na předpřítomný čas → „has lacked“. „Lack“ je přechodné, bez předložky of."
+            },
+            {
+              "n": 42,
+              "stem": "Gap (42)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "though"
+                    },
+                    {
+                      "key": "B",
+                      "text": "so that"
+                    },
+                    {
+                      "key": "C",
+                      "text": "despite"
+                    },
+                    {
+                      "key": "D",
+                      "text": "whether"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Přípustková spojka „though“ (= ačkoli) uvozuje vedlejší větu s podmětem a přísudkem. „Despite“ by vyžadovalo podstatné jméno, „so that“ vyjadřuje účel."
+            },
+            {
+              "n": 43,
+              "stem": "Gap (43)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "are"
+                    },
+                    {
+                      "key": "B",
+                      "text": "to be"
+                    },
+                    {
+                      "key": "C",
+                      "text": "that are"
+                    },
+                    {
+                      "key": "D",
+                      "text": "has been"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Vazba „consider something/somebody to be + adjective“ – považovat za ohrožené. Ostatní tvary s „considers … endangered“ netvoří správnou strukturu."
+            }
+          ]
+        },
+        {
+          "id": "g05",
+          "taskType": "aj_grammar",
+          "instruction": "Fill in the gaps in the following sentences with the most suitable word or phrase from the options offered.",
+          "questions": [
+            {
+              "n": 44,
+              "stem": "His reign was marked by a series of <u>vile</u> atrocities that plunged the nation into a state of turmoil.\n\nIn the context of the sentence above, the word “vile” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "unexpected"
+                    },
+                    {
+                      "key": "B",
+                      "text": "ruined"
+                    },
+                    {
+                      "key": "C",
+                      "text": "immoral"
+                    },
+                    {
+                      "key": "D",
+                      "text": "powerful"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "„Vile“ = odporný, hanebný, morálně zavrženíhodný – nejblíže „immoral“ (nemorální)."
+            },
+            {
+              "n": 45,
+              "stem": "Crops began to wither and livestock started to <u>perish</u>, leading to widespread famine in the region.\n\nIn the context of the sentence above, the word “perish” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "thrive"
+                    },
+                    {
+                      "key": "B",
+                      "text": "reproduce"
+                    },
+                    {
+                      "key": "C",
+                      "text": "fall apart"
+                    },
+                    {
+                      "key": "D",
+                      "text": "die"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Perish“ = zahynout, zemřít; hladomor ukazuje, že dobytek hynul. „Thrive“ je opak, „fall apart“ se užívá o věcech."
+            },
+            {
+              "n": 46,
+              "stem": "As a seasoned teacher, she ______ complex topics in a way that is easy for her students to understand, and she is ready to answer any questions.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "is used to communicating"
+                    },
+                    {
+                      "key": "B",
+                      "text": "used to communicating"
+                    },
+                    {
+                      "key": "C",
+                      "text": "is used to communicate"
+                    },
+                    {
+                      "key": "D",
+                      "text": "got used to communicate"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„Be used to + -ing“ = být zvyklý něco dělat (současný stav zkušené učitelky). „Used to + infinitiv“ by znamenalo minulý zvyk, B a D jsou gramaticky chybné."
+            },
+            {
+              "n": 47,
+              "stem": "______ the final exams, you will not be able to go to university, so you’d better study hard.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "If you pass"
+                    },
+                    {
+                      "key": "B",
+                      "text": "If you will pass"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Unless you will pass"
+                    },
+                    {
+                      "key": "D",
+                      "text": "Unless you pass"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Smysl: pokud zkoušky neuděláš, nepůjdeš na univerzitu → „unless“ (= if not). V podmínkové větě 1. typu se po if/unless nepoužívá will."
+            },
+            {
+              "n": 48,
+              "stem": "The new library is ______ than the old one.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "much impressive"
+                    },
+                    {
+                      "key": "B",
+                      "text": "far more impressive"
+                    },
+                    {
+                      "key": "C",
+                      "text": "much more impressed"
+                    },
+                    {
+                      "key": "D",
+                      "text": "far impressive"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Druhý stupeň víceslabičného přídavného jména: more impressive, zesílený „far/much“. „Impressed“ (ohromený) popisuje pocit člověka, ne knihovnu."
+            },
+            {
+              "n": 49,
+              "stem": "If he ______ his university studies, he wouldn’t have such a good job now.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "wasn’t finished"
+                    },
+                    {
+                      "key": "B",
+                      "text": "hadn’t finished"
+                    },
+                    {
+                      "key": "C",
+                      "text": "wouldn’t finish"
+                    },
+                    {
+                      "key": "D",
+                      "text": "wouldn’t have finished"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Smíšená podmínka: minulá podmínka (if + past perfect „hadn’t finished“) se současným následkem (wouldn’t have … now). Ve vedlejší větě s if se nepoužívá would."
+            },
+            {
+              "n": 50,
+              "stem": "I was just ______ you when you arrived.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "in the point of calling"
+                    },
+                    {
+                      "key": "B",
+                      "text": "on the point to call"
+                    },
+                    {
+                      "key": "C",
+                      "text": "on the point of calling"
+                    },
+                    {
+                      "key": "D",
+                      "text": "at the point to call"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Ustálené spojení „be on the point of + -ing“ = právě se chystat něco udělat."
+            },
+            {
+              "n": 51,
+              "stem": "The complicated situation at work during the past few months has taken its ______ on her health – she looks exhausted.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "place"
+                    },
+                    {
+                      "key": "B",
+                      "text": "toll"
+                    },
+                    {
+                      "key": "C",
+                      "text": "effect"
+                    },
+                    {
+                      "key": "D",
+                      "text": "turn"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Idiom „take its toll on something“ = vybrat si daň, mít škodlivý dopad. „Take effect“ znamená začít působit a nepojí se s „its … on“."
+            },
+            {
+              "n": 52,
+              "stem": "We are often motivated by what we think other people will ______ of.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "appreciate"
+                    },
+                    {
+                      "key": "B",
+                      "text": "praise"
+                    },
+                    {
+                      "key": "C",
+                      "text": "approve"
+                    },
+                    {
+                      "key": "D",
+                      "text": "convince"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Pouze „approve“ má vazbu s předložkou „of“ (approve of something = schvalovat). Ostatní slovesa jsou přechodná bez předložky."
+            }
+          ]
+        },
+        {
+          "id": "g06",
+          "taskType": "aj_wordform",
+          "instruction": "Use the word in brackets at the end of the sentence to form a new word (different from the word provided) that best fits the gap. Write only one word in each gap. **Please write neatly in capital letters. Illegible answers will be considered to be incorrect.**\n\nPlease note that only words listed in either Cambridge Dictionary (https://dictionary.cambridge.org/) or Oxford Dictionary (https://www.oxfordlearnersdictionaries.com/), which are not marked as archaic or obsolete, will be accepted as correct answers.\n\nExample: The Mona Lisa is one of the most ______ paintings in the world. (FAME) → FAMOUS",
+          "questions": [
+            {
+              "n": 53,
+              "stem": "After sitting at his desk all day, he decided to do some stretches to ______ his tight muscles. (LOOSE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "LOOSEN"
+                }
+              ],
+              "solution": "Po „to“ je potřeba sloveso; od přídavného jména loose se tvoří sloveso „loosen“ (uvolnit). Samotné loose nelze, slovo musí být jiné."
+            },
+            {
+              "n": 54,
+              "stem": "Winning the competition brought him a sense of deep ______, knowing that his hard work had paid off. (SATISFIED)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "SATISFACTION"
+                }
+              ],
+              "solution": "Po „a sense of deep“ následuje podstatné jméno – „satisfaction“ (uspokojení)."
+            },
+            {
+              "n": 55,
+              "stem": "The sudden clap of thunder outside the window ______ the children and caused them to cling to their parents. (FRIGHT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "FRIGHTENED"
+                }
+              ],
+              "solution": "Chybí přísudek v minulém čase (souběžně s „caused“): „frightened“ = vyděsil. Sloveso „fright“ v tomto významu neexistuje, tvoří se frighten."
+            },
+            {
+              "n": 56,
+              "stem": "She underwent a series of ______ which have helped alleviate her symptoms. (TREAT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "TREATMENTS"
+                }
+              ],
+              "solution": "Po „a series of“ je potřeba podstatné jméno v množném čísle (souhlasí s „have helped“) – „treatments“ (léčebné procedury)."
+            },
+            {
+              "n": 57,
+              "stem": "Despite the challenging terrain, the experienced hiker navigated the trail ______, reaching the summit ahead of schedule. (EFFORT)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "EFFORTLESSLY"
+                }
+              ],
+              "solution": "Sloveso „navigated“ rozvíjí příslovce; smysl (zkušený turista, cíl před plánem) vyžaduje „effortlessly“ = bez námahy."
+            },
+            {
+              "n": 58,
+              "stem": "She walked ______ on the rocky terrain, her ankles wobbling with each step as she struggled to maintain her balance on the uneven ground. (STEADY)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "UNSTEADILY"
+                }
+              ],
+              "solution": "Sloveso „walked“ rozvíjí příslovce a viklající se kotníky ukazují zápornou předponu: „unsteadily“ = vratce, nejistě."
+            },
+            {
+              "n": 59,
+              "stem": "Her ______ as an actress allowed her to seamlessly transition between different roles. (VERSATILE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "VERSATILITY"
+                }
+              ],
+              "solution": "Po přivlastňovacím „Her“ je potřeba podstatné jméno – „versatility“ (všestrannost)."
+            },
+            {
+              "n": 60,
+              "stem": "The two parties decided to ______ the terms of the contract because they realized the original terms were outdated. (NEGOTIATE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "RENEGOTIATE"
+                }
+              ],
+              "solution": "Po „decided to“ je sloveso, a protože původní podmínky jsou zastaralé, jde o opětovné vyjednání – „renegotiate“. Samotné negotiate nelze (musí jít o jiné slovo)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

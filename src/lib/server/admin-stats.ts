@@ -1,6 +1,6 @@
 import "server-only";
 import { GENERATOR_VERSION } from "@/lib/ai/generate";
-import { TASK_TYPES } from "@/lib/content/exams";
+import { EXAMS, TASK_TYPES } from "@/lib/content/exams";
 import { AI, vapidEnv } from "@/lib/env";
 import { levelInfo } from "@/lib/gamification";
 import { effectivePlan, planExpired, type Plan } from "@/lib/plans";
@@ -259,7 +259,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
       waiting: gen.filter((g) => g.served_count === 0).length,
       reuseFactor: servedTasks ? serves / servedTasks : null,
       costPerServe: serves ? genCost / serves : null,
-      byType: TASK_TYPES.filter((t) => t.exam === "osp")
+      byType: TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled))
         .map((m) => m.id as string)
         .concat(types.filter((t) => !TASK_TYPES.some((m) => m.id === t)))
         .map((t) => ({
@@ -301,7 +301,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
       generatorVersion: GENERATOR_VERSION,
       dailyGenerateLimit: AI.dailyGenerateLimit,
     },
-    learning: TASK_TYPES.filter((m) => m.exam === "osp").map((m) => {
+    learning: TASK_TYPES.filter((m) => EXAMS.some((e) => e.id === m.exam && e.enabled)).map((m) => {
       const mine = outcomes.filter((o) => o.note?.startsWith(`${m.id}:`));
       const lesson = lessonRows.find((l) => l.task_type === m.id);
       return {

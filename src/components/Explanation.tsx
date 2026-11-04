@@ -3,7 +3,6 @@
 import clsx from "clsx";
 import { Lightbulb, Sparkles, TriangleAlert } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import type { OptionKey } from "@/lib/content/types";
 import { findQuote, scrollToRange, setActiveQuote, setUnderlined } from "@/lib/quotes";
 import { RichText, type QuoteEvent } from "./RichText";
 
@@ -65,7 +64,7 @@ function useQuotes(rootRef: React.RefObject<HTMLDivElement | null>, deps: unknow
 }
 
 /** Fetches (cached) AI explanation and reveals it step by step. `preset` skips the fetch (dev previews). */
-export function Explanation({ taskRef, given, preset }: { taskRef: string; given?: (OptionKey | null)[]; preset?: ExplanationData }) {
+export function Explanation({ taskRef, given, preset }: { taskRef: string; given?: (string | null)[]; preset?: ExplanationData }) {
   const [data, setData] = useState<ExplanationData | null>(preset ?? null);
   const [error, setError] = useState<string | null>(null);
   const [shown, setShown] = useState(1);

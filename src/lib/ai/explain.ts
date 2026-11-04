@@ -33,6 +33,11 @@ Zásady zvýrazňování (vychází z výzkumu signaling principle a von Restorf
 - Žádné nadpisy, žádné úvody typu „Skvělá otázka“. Krátké věty.
 Správná odpověď je daná klíčem – nikdy ji nezpochybňuj, vysvětli, proč platí.`;
 
+const AJ_NOTE = `Tato úloha je z testu Anglický jazyk (Scio AJ). Vysvětluj česky, ale anglické výrazy, příklady a citace z textu
+ponech anglicky. U gramatiky pojmenuj pravidlo (např. **past perfect passive**, **Despite + noun/-ing**), u slovní zásoby
+uveď český význam a typickou kolokaci. U psané odpovědi (word formation) ukaž, jak slovo vzniklo (předpona/přípona, slovní druh).
+U word formation nejsou možnosti – pole options nech prázdné.`;
+
 /** Bump when the explanation format changes; cached explanations of QUOTE_TYPES older than this get regenerated. */
 export const EXPLAIN_VERSION = 2;
 
@@ -67,7 +72,7 @@ export async function generateExplanation(task: ResolvedTask, userId?: string): 
     model: AI.explainModel,
     max_tokens: 8000,
     output_config: { effort: "medium", format: zodOutputFormat(ExplanationSchema) },
-    system: SYSTEM,
+    system: meta?.exam === "aj" ? `${SYSTEM}\n\n${AJ_NOTE}` : SYSTEM,
     messages: [
       {
         role: "user",

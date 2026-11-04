@@ -5,7 +5,7 @@ import { PracticeSession } from "@/components/PracticeSession";
 import { ProTeaser } from "@/components/Pro";
 import { ButtonLink } from "@/components/ui";
 import { BASIC } from "@/lib/plans";
-import { taskTypeMeta } from "@/lib/content/exams";
+import { taskTypeMeta, SECTION_META } from "@/lib/content/exams";
 import { getPlan, getProfile, requireUser } from "@/lib/server/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -51,7 +51,7 @@ export default async function PracticeTypePage({ params, searchParams }: PagePro
       types={[meta.id]}
       name={meta.name}
       emoji={meta.emoji}
-      tone={meta.section === "verbal" ? "verbal" : "analytic"}
+      tone={SECTION_META[meta.section].tone}
       openMistakes={count ?? 0}
       initialLimit={profile.practice_time_limit_sec}
       initialMode={mode}

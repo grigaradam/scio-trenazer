@@ -5,16 +5,17 @@ import { ChevronLeft, ChevronRight, Flag, LogOut, Pause, Play } from "lucide-rea
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { AnswerMap, PublicGroup, PublicQuestion, PublicTest } from "@/lib/content/public";
-import type { OptionKey, SectionId } from "@/lib/content/types";
+import { SECTION_META } from "@/lib/content/exams";
+import type { SectionId } from "@/lib/content/types";
 import { count } from "@/lib/czech";
 import { useStudyHeartbeat } from "@/lib/hooks/useStudyHeartbeat";
 import { Modal } from "./Modal";
-import { GroupContext, QuestionBody } from "./QuestionView";
+import { GroupContext, langOf, QuestionBody } from "./QuestionView";
 import { startNavProgress } from "./NavProgress";
 import { Button } from "./ui";
 
 type Phase = "intro" | "running" | "between" | "submitting";
-type TimeLeft = Record<SectionId, number>;
+type TimeLeft = Partial<Record<SectionId, number>>;
 
 interface Props {
   attemptId: string;
@@ -58,7 +59,7 @@ function clearBackup(id: string) {
     localStorage.removeItem(backupKey(id));
   } catch {}
 }
-const totalLeft = (t: TimeLeft) => t.verbal + t.analytic;
+const totalLeft = (t: TimeLeft) => Object.values(t).reduce<number>((a, b) => a + (b ?? 0), 0);
 
 // resolves when the browser is back online, or after a while to retry anyway
 const waitForNetwork = () =>
@@ -92,7 +93,7 @@ export function TestRunner({ attemptId, test, initial, retakeSection = null }: P
     const idx = Math.max(initial.sectionIndex, b.sectionIndex);
     return {
       initial: {
-        sectionIndex: idx === 0 && b.timeLeft.verbal <= 0 ? 1 : idx,
+        sectionIndex: idx === 0 && (b.timeLeft[test.sections[0].id] ?? 0) <= 0 ? 1 : idx,
         timeLeft: b.timeLeft,
         answers: b.answers ?? {},
         flags: b.flags ?? [],
@@ -101,7 +102,7 @@ export function TestRunner({ attemptId, test, initial, retakeSection = null }: P
       restored: true,
       activeSeconds: b.activeSeconds ?? 0,
     };
-  }, [isClient, backupId, initial]);
+  }, [isClient, backupId, initial, test]);
   if (!merged) return null;
   return (
     <Runner
@@ -138,7 +139,10 @@ function Runner({
 
   const section = test.sections[sectionIndex];
   const lastSection = sectionIndex === 1 || Boolean(retakeSection);
-  const tone = section.id === "verbal" ? "verbal" : "analytic";
+  const tone = SECTION_META[section.id].tone;
+  const firstId = test.sections[0].id;
+  const secondId = test.sections[1]?.id ?? firstId;
+  const isAj = test.exam === "aj";
   const items = useMemo(
     () => section.groups.flatMap((g) => g.questions.map((q) => ({ group: g, q }))),
     [section],
@@ -281,13 +285,13 @@ function Runner({
   const endSection = useCallback(() => {
     setModal(null);
     if (state.current.sectionIndex === 0 && !retakeSection) {
-      setTimeLeft((t) => ({ ...t, verbal: 0 }));
+      setTimeLeft((t) => ({ ...t, [firstId]: 0 }));
       setPhase("between");
-      setTimeout(() => save({ timeLeft: { ...state.current.timeLeft, verbal: 0 } }), 0);
+      setTimeout(() => save({ timeLeft: { ...state.current.timeLeft, [firstId]: 0 } }), 0);
     } else {
       submit();
     }
-  }, [save, submit, retakeSection]);
+  }, [save, submit, retakeSection, firstId]);
 
   useEffect(() => {
     if (phase !== "running" || paused) return;
@@ -301,7 +305,7 @@ function Runner({
       const whole = Math.floor(acc);
       acc -= whole;
       activeAcc.current += whole;
-      const before = state.current.timeLeft[section.id];
+      const before = state.current.timeLeft[section.id] ?? 0;
       const after = Math.max(0, before - whole);
       state.current = { ...state.current, timeLeft: { ...state.current.timeLeft, [section.id]: after } };
       setTimeLeft((t) => ({ ...t, [section.id]: after }));
@@ -309,14 +313,14 @@ function Runner({
       if (before > 60 && after <= 60) setToast("Poslední minuta! ⏰");
       if (after <= 0) {
         clearInterval(i);
-        setToast(state.current.sectionIndex === 0 && !retakeSection ? "Čas verbálního oddílu vypršel" : "Čas vypršel – odevzdávám test");
+        setToast(state.current.sectionIndex === 0 && !retakeSection ? `Čas ${SECTION_META[firstId].gen} vypršel` : "Čas vypršel – odevzdávám test");
         endSection();
       }
     }, 250);
     return () => clearInterval(i);
-  }, [phase, paused, section.id, endSection, retakeSection]);
+  }, [phase, paused, section.id, endSection, retakeSection, firstId]);
 
-  const remaining = timeLeft[section.id];
+  const remaining = timeLeft[section.id] ?? 0;
 
   useEffect(() => {
     if (!toast) return;
@@ -326,7 +330,7 @@ function Runner({
 
   // ------------------------------------------------------------------ answering
   const select = useCallback(
-    (q: PublicQuestion, part: number, key: OptionKey | null) => {
+    (q: PublicQuestion, part: number, key: string | null) => {
       setAnswers((a) => {
         const prev = a[String(q.n)] ?? q.parts.map(() => null);
         const next = [...prev];
@@ -337,7 +341,7 @@ function Runner({
     [],
   );
   const toggleFlag = useCallback((n: number) => setFlags((f) => (f.includes(n) ? f.filter((x) => x !== n) : [...f, n])), []);
-  const isAnswered = (q: PublicQuestion) => (answers[String(q.n)] ?? []).some((x) => x);
+  const isAnswered = (q: PublicQuestion) => (answers[String(q.n)] ?? []).some((x) => x?.trim());
   const answeredCount = items.filter((it) => isAnswered(it.q)).length;
 
   // keyboard shortcuts
@@ -345,10 +349,13 @@ function Runner({
     if (phase !== "running" || paused || modal) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      // typing an answer (word formation) must not pick options or switch questions
+      if (e.target instanceof HTMLElement && e.target.closest("input, textarea, [contenteditable]")) return;
       const k = e.key.toUpperCase();
-      if (["A", "B", "C", "D"].includes(k)) select(item.q, 0, k as OptionKey);
-      else if (["E", "F", "G", "H"].includes(k) && item.q.parts.length > 1) select(item.q, 1, k as OptionKey);
-      else if (["1", "2", "3", "4"].includes(k)) select(item.q, 0, "ABCD"[Number(k) - 1] as OptionKey);
+      const typed = item.q.parts[0]?.kind === "text";
+      if (!typed && ["A", "B", "C", "D"].includes(k)) select(item.q, 0, k);
+      else if (["E", "F", "G", "H"].includes(k) && item.q.parts.length > 1) select(item.q, 1, k);
+      else if (!typed && ["1", "2", "3", "4"].includes(k)) select(item.q, 0, "ABCD"[Number(k) - 1]);
       else if (e.key === "ArrowRight") setCur((c) => Math.min(items.length - 1, c + 1));
       else if (e.key === "ArrowLeft") setCur((c) => Math.max(0, c - 1));
       else return;
@@ -367,20 +374,20 @@ function Runner({
   // ------------------------------------------------------------------ screens
   if (phase === "intro" || phase === "between") {
     const s = test.sections[phase === "between" ? 1 : sectionIndex];
-    const sTone = s.id === "verbal" ? "verbal" : "analytic";
-    const left = timeLeft[s.id];
+    const sTone = SECTION_META[s.id].tone;
+    const left = timeLeft[s.id] ?? 0;
     const resumed = phase === "intro" && initial.resumed;
     return (
       <main className="mx-auto flex min-h-dvh max-w-xl flex-col justify-center px-4 py-10">
         <div className="animate-fade-up rounded-3xl border-2 border-border bg-surface p-6 shadow-xl">
           {phase === "between" && (
             <div className="mb-4 rounded-2xl bg-emerald-50 p-3 text-center font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-              🎉 Verbální oddíl je za tebou! Teď se k němu už nelze vrátit.
+              🎉 {test.sections[0].title} je za tebou! Teď se k němu už nelze vrátit.
             </div>
           )}
           {retakeSection && (
             <div className="mb-4 rounded-2xl bg-brand-50 p-3 text-center font-bold text-brand-700 dark:bg-brand-900/30 dark:text-brand-300">
-              Dodatečně děláš jen {retakeSection === "verbal" ? "verbální" : "analytický"} oddíl. Druhý oddíl zůstává, jak jsi ho
+              Dodatečně děláš jen {SECTION_META[retakeSection].acc}. Druhý oddíl zůstává, jak jsi ho
               odevzdal.
             </div>
           )}
@@ -405,9 +412,16 @@ function Runner({
           </div>
           <ul className="mt-4 space-y-1.5 text-sm text-muted">
             <li>• Správně +1 bod, špatně −⅓ bodu, nevyplněno 0. Kliknutím na zvolenou možnost odpověď zrušíš.</li>
+            {s.groups.some((g) => g.taskType === "aj_wordform") && (
+              <li>• Word formation: odpověď napiš (jedno slovo). Špatná psaná odpověď body nebere.</li>
+            )}
             {s.id === "analytic" && <li>• Kalkulačka není povolena – počítej na papír.</li>}
+            {isAj && phase === "intro" && (
+              <li>• Poslech (úlohy 1–12) se bez nahrávky dělat nedá, proto v testu není – začíná se úlohou 13.</li>
+            )}
             <li>• Po vypršení času se oddíl automaticky ukončí. Mezi oddíly se nelze vracet.</li>
             <li className="hidden sm:list-item">• Klávesy: A–D výběr, ←/→ další úloha.</li>
+            {isAj && <li>• Ostrý test má 60 minut včetně 20 minut poslechu; bez poslechu tu máš 40 minut (15 + 25).</li>}
           </ul>
           <Button
             variant={sTone}
@@ -422,7 +436,7 @@ function Runner({
               setPhase("running");
             }}
           >
-            <Play className="h-5 w-5" /> {resumed ? "Pokračovat" : `Začít ${s.id === "verbal" ? "verbální" : "analytický"} oddíl`}
+            <Play className="h-5 w-5" /> {resumed ? "Pokračovat" : `Začít ${SECTION_META[s.id].acc}`}
           </Button>
           {phase === "intro" && (
             <Button variant="ghost" className="mt-2 w-full" onClick={() => {
@@ -557,6 +571,7 @@ function Runner({
               </div>
               <QuestionBody
                 question={item.q}
+                lang={langOf(item.group.taskType)}
                 tone={tone}
                 selected={answers[String(item.q.n)] ?? item.q.parts.map(() => null)}
                 onSelect={(p, k) => select(item.q, p, k)}
@@ -635,17 +650,17 @@ function Runner({
 
       <Modal open={modal === "end" || modal === "submit"} onClose={() => setModal(null)}>
         <div className="text-4xl">{modal === "end" ? "➡️" : "🏁"}</div>
-        <h2 className="mt-2 font-display text-2xl font-extrabold">{modal === "end" ? "Ukončit verbální oddíl?" : "Odevzdat test?"}</h2>
+        <h2 className="mt-2 font-display text-2xl font-extrabold">{modal === "end" ? `Ukončit ${SECTION_META[firstId].acc}?` : "Odevzdat test?"}</h2>
         <p className="mt-2 text-muted">
           Vyplněno {answeredCount} z {count(items.length, "úlohy", "úloh", "úloh")}
           {flags.filter((n) => items.some((it) => it.q.n === n)).length > 0 &&
             `, označeno ${flags.filter((n) => items.some((it) => it.q.n === n)).length}`}
           . Zbývá {fmt(remaining)}.
-          {modal === "end" && " K verbálnímu oddílu se pak už nepůjde vrátit."}
+          {modal === "end" && ` K ${SECTION_META[firstId].dat} se pak už nepůjde vrátit.`}
         </p>
         <div className="mt-5 flex flex-col gap-2">
           <Button variant={tone} size="lg" onClick={endSection}>
-            {modal === "end" ? "Ano, pokračovat na analytický" : "Ano, odevzdat"}
+            {modal === "end" ? `Ano, pokračovat na ${SECTION_META[secondId].acc}` : "Ano, odevzdat"}
           </Button>
           <Button variant="secondary" onClick={() => setModal(null)}>
             Ještě zkontroluji

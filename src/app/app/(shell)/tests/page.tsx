@@ -3,7 +3,9 @@ import Link from "next/link";
 import { ProLock } from "@/components/Pro";
 import { StartTestButton } from "@/components/StartTestButton";
 import { Badge, ButtonLink, Card } from "@/components/ui";
-import { getTests } from "@/lib/content/load";
+import { EXAMS } from "@/lib/content/exams";
+import { getTest, getTests } from "@/lib/content/load";
+import type { ExamId } from "@/lib/content/types";
 import { getPlan, requireUser } from "@/lib/server/auth";
 import { basicTestId, getAttempts } from "@/lib/server/queries";
 
@@ -12,28 +14,41 @@ export const metadata = { title: "Testy" };
 export default async function TestsPage() {
   const { user } = await requireUser();
   const [attempts, plan] = await Promise.all([getAttempts(user.id), getPlan(user.id)]);
-  const all = getTests("osp");
   // Basic keeps the first test it started; before that, any one can become it
   const own = plan === "basic" ? basicTestId(attempts) : null;
   const locked = (id: string) => plan === "basic" && own !== null && id !== own;
   // its own test goes first, the locked ones after it
-  const tests = own ? [...all.filter((t) => t.id === own), ...all.filter((t) => t.id !== own)] : all;
+  const ordered = (exam: ExamId) => {
+    const all = getTests(exam);
+    return own ? [...all.filter((t) => t.id === own), ...all.filter((t) => t.id !== own)] : all;
+  };
+  const exams = EXAMS.filter((e) => e.enabled && getTests(e.id).length);
+  const subtitle: Partial<Record<ExamId, string>> = {
+    osp: "Ostré testy z minulých let · 66 úloh · 35 + 50 minut. Doporučujeme ten, který jsi ještě nedělal(a).",
+    aj: "Reading a Use of English · 48 úloh · 40 minut (15 + 25). Poslech (úlohy 1–12, 20 minut) bez nahrávky nejde, proto chybí.",
+  };
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl font-extrabold">Testy OSP</h1>
-        <p className="mt-1 text-muted">
-          Ostré testy z minulých let · 66 úloh · 35 + 50 minut. Doporučujeme ten, který jsi ještě nedělal(a).
-        </p>
+        <h1 className="font-display text-3xl font-extrabold">Testy</h1>
+        <p className="mt-1 text-muted">Ostré testy Scio z minulých let, na čas a se stejným bodováním.</p>
         {plan === "basic" && (
           <p className="mt-2 text-sm text-muted">
             {own ? "V Basic máš jeden test – ten svůj si můžeš zkoušet znovu. Ostatní jsou v Pro." : "V Basic máš jeden test – vyber si, který to bude."}
           </p>
         )}
       </div>
+      {exams.map((exam) => (
+      <section key={exam.id} className="space-y-3">
+        <div>
+          <h2 className="font-display text-2xl font-extrabold">
+            {exam.emoji} {exam.name} <span className="text-muted">({exam.short})</span>
+          </h2>
+          <p className="mt-1 text-sm text-muted">{subtitle[exam.id]}</p>
+        </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        {tests.map((t, i) => {
+        {ordered(exam.id).map((t, i) => {
           const mine = attempts.filter((a) => a.test_id === t.id);
           const open = mine.find((a) => a.status === "in_progress");
           const done = mine.filter((a) => a.status === "completed" && a.result);
@@ -44,9 +59,11 @@ export default async function TestsPage() {
             <Card key={t.id} className={`flex animate-fade-up flex-col gap-3 ${lock ? "border-dashed" : ""}`} style={{ animationDelay: `${i * 40}ms` }}>
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <div className="font-display text-lg font-extrabold">{t.title.replace("OSP – ", "")}</div>
+                  <div className="font-display text-lg font-extrabold">{t.title.replace(/^(OSP|AJ) – /, "")}</div>
                   <div className="text-xs text-muted">
-                    průměr účastníků {t.stats.mean.toLocaleString("cs-CZ")} b. · {t.stats.participants.toLocaleString("cs-CZ")} účastníků
+                    {t.stats
+                      ? `průměr účastníků ${t.stats.mean.toLocaleString("cs-CZ")} b. · ${t.stats.participants.toLocaleString("cs-CZ")} účastníků`
+                      : `${t.sections.reduce((n, s) => n + s.groups.reduce((m, g) => m + g.questions.length, 0), 0)} úloh · přepsáno ze sešitu`}
                   </div>
                 </div>
                 {lock ? (
@@ -83,6 +100,8 @@ export default async function TestsPage() {
           );
         })}
       </div>
+      </section>
+      ))}
 
       {attempts.some((a) => a.status === "completed") && (
         <section>
@@ -97,7 +116,7 @@ export default async function TestsPage() {
                   className="flex items-center gap-3 border-b-2 border-border px-4 py-3 last:border-b-0 hover:bg-surface-2"
                 >
                   <div className="flex-1">
-                    <div className="font-bold">{tests.find((t) => t.id === a.test_id)?.title ?? a.test_id}</div>
+                    <div className="font-bold">{getTest(a.test_id)?.title ?? a.test_id}</div>
                     <div className="text-xs text-muted">
                       {new Date(a.completed_at!).toLocaleDateString("cs-CZ", { day: "numeric", month: "long", year: "numeric" })}
                       {a.is_diagnostic ? " · úvodní test" : ""}

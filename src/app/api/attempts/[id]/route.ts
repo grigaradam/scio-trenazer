@@ -3,11 +3,13 @@ import { z } from "zod";
 import { apiUser } from "@/lib/server/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const Key = z.enum(["A", "B", "C", "D", "E", "F", "G", "H"]).nullable();
+// option letters, or a typed word (AJ word formation)
+const Key = z.string().max(40).nullable();
 const Body = z.object({
   answers: z.record(z.string(), z.array(Key)).optional(),
   flags: z.array(z.number().int()).optional(),
-  timeLeft: z.object({ verbal: z.number(), analytic: z.number() }).optional(),
+  // only the sections of this attempt's test are kept (see below); zod 4 would require every key of an enum record
+  timeLeft: z.record(z.string(), z.number()).optional(),
   sectionIndex: z.number().int().min(0).max(1).optional(),
   pause: z.boolean().optional(),
   activeSeconds: z.number().min(0).max(600).optional(),
@@ -34,11 +36,13 @@ export async function PATCH(req: Request, ctx: RouteContext<"/api/attempts/[id]"
   if (body.flags) update.flags = body.flags;
   if (body.timeLeft) {
     // time can only go down
-    const prev = attempt.time_left as { verbal: number; analytic: number };
-    update.time_left = {
-      verbal: Math.max(0, Math.min(prev.verbal, Math.round(body.timeLeft.verbal))),
-      analytic: Math.max(0, Math.min(prev.analytic, Math.round(body.timeLeft.analytic))),
-    };
+    const prev = attempt.time_left as Record<string, number>;
+    update.time_left = Object.fromEntries(
+      Object.entries(prev).map(([k, v]) => {
+        const next = body.timeLeft?.[k];
+        return [k, next === undefined ? v : Math.max(0, Math.min(v, Math.round(next)))];
+      }),
+    );
   }
   // sections only move forward
   if (body.sectionIndex !== undefined) update.section_index = Math.max(attempt.section_index, body.sectionIndex);

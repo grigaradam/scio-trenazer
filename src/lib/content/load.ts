@@ -1,7 +1,7 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
-import type { ExamId, Group, Question, TestFile } from "./types";
+import type { ExamId, Group, Question, SectionId, TestFile } from "./types";
 
 const cache = new Map<string, TestFile[]>();
 
@@ -18,13 +18,13 @@ export function getTests(exam: ExamId = "osp"): TestFile[] {
   }
   const tests = files
     .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), "utf8")) as TestFile)
-    .sort((a, b) => (a.date === b.date ? a.variant.localeCompare(b.variant) : b.date.localeCompare(a.date)));
+    .sort((a, b) => (a.date === b.date ? a.id.localeCompare(b.id) : b.date.localeCompare(a.date)));
   cache.set(exam, tests);
   return tests;
 }
 
 export function getTest(id: string): TestFile | undefined {
-  for (const exam of ["osp"] as ExamId[]) {
+  for (const exam of ["osp", "aj"] as ExamId[]) {
     const t = getTests(exam).find((x) => x.id === id);
     if (t) return t;
   }
@@ -33,7 +33,7 @@ export function getTest(id: string): TestFile | undefined {
 
 export interface LocatedQuestion {
   test: TestFile;
-  sectionId: "verbal" | "analytic";
+  sectionId: SectionId;
   group: Group;
   question: Question;
 }

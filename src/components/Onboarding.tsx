@@ -37,7 +37,7 @@ export function Onboarding({ name }: { name: string }) {
         const a = await fetch("/api/attempts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ diagnostic: true }),
+          body: JSON.stringify({ diagnostic: true, exam }),
         });
         const data = await a.json();
         if (!a.ok) throw new Error(data.error ?? "Chyba");
@@ -132,13 +132,20 @@ export function Onboarding({ name }: { name: string }) {
         <section className="animate-fade-up">
           <h1 className="font-display text-3xl font-extrabold">Úvodní test 📝</h1>
           <p className="mt-2 text-muted">
-            Začneme celým testem OSP z minulých let – přesně jako na ostro. Zjistíme, kde jsi teď, a podle toho ti
-            připravíme trénink.
+            Začneme celým testem {exam === "aj" ? "z angličtiny" : "OSP"} z minulých let – přesně jako na ostro. Zjistíme, kde
+            jsi teď, a podle toho ti připravíme trénink.
           </p>
           <ul className="mt-6 space-y-3">
             {[
-              ["📖", "Verbální oddíl", "33 úloh · 35 minut"],
-              ["🧮", "Analytický oddíl", "33 úloh · 50 minut, bez kalkulačky – počítej na papír"],
+              ...(exam === "aj"
+                ? [
+                    ["📖", "Reading", "15 úloh · 15 minut – delší článek a krátké texty"],
+                    ["✍️", "Use of English", "33 úloh · 25 minut – cloze, gramatika a word formation (psaná odpověď)"],
+                  ]
+                : [
+                    ["📖", "Verbální oddíl", "33 úloh · 35 minut"],
+                    ["🧮", "Analytický oddíl", "33 úloh · 50 minut, bez kalkulačky – počítej na papír"],
+                  ]),
               ["⚖️", "Bodování jako Scio", "správně +1, špatně −⅓, nevyplněno 0 → hádej jen s rozumem"],
               ["⏸️", "Pauza", "test jde pozastavit a dokončit později, ale ostrý režim je nejlepší trénink"],
             ].map(([e, t, d]) => (
@@ -151,7 +158,9 @@ export function Onboarding({ name }: { name: string }) {
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-sm text-muted">Připrav si papír, tužku a 90 minut klidu. 💪</p>
+          <p className="mt-4 text-sm text-muted">
+            {exam === "aj" ? "Připrav si 40 minut klidu. Poslech v testu není – bez nahrávky ho nejde dělat. 💪" : "Připrav si papír, tužku a 90 minut klidu. 💪"}
+          </p>
           {error && <p className="mt-3 text-sm font-medium text-rose-600">{error}</p>}
           <div className="mt-8 flex flex-col gap-3">
             <Button size="lg" onClick={() => finish(true)} loading={busy}>

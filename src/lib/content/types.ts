@@ -4,7 +4,8 @@
 
 export type ExamId = "osp" | "zsv" | "aj" | "mat";
 
-export type SectionId = "verbal" | "analytic";
+/** OSP: verbal + analytic. AJ: reading + english (Use of English). Listening needs audio and is not included. */
+export type SectionId = "verbal" | "analytic" | "reading" | "english";
 
 export type OspTaskType =
   // verbal
@@ -23,7 +24,16 @@ export type OspTaskType =
   | "vyrazy"
   | "podminky";
 
-export type TaskType = OspTaskType;
+export type AjTaskType =
+  // reading
+  | "aj_reading"
+  | "aj_inference"
+  // use of english
+  | "aj_cloze"
+  | "aj_grammar"
+  | "aj_wordform";
+
+export type TaskType = OspTaskType | AjTaskType;
 
 /** Option keys: A–D for normal questions, E–H for the antonym half of synonyma tasks. */
 export type OptionKey = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
@@ -40,10 +50,16 @@ export interface Option {
  */
 export interface QuestionPart {
   label?: "synonymum" | "antonymum";
+  /**
+   * "text" = the answer is typed in (AJ word formation): `options` is empty, `answer` is the expected word in
+   * capitals and `alsoAccepted` holds other accepted spellings (e.g. British/American). A wrong typed answer costs nothing.
+   */
+  kind?: "text";
   options: Option[];
-  answer: OptionKey;
-  /** Extra answers officially accepted by Scio (rare, e.g. after an appeal). */
-  alsoAccepted?: OptionKey[];
+  /** Option key (A–H), or the expected word for text parts. */
+  answer: string;
+  /** Extra answers officially accepted by Scio (rare, e.g. after an appeal), or other accepted spellings of a text answer. */
+  alsoAccepted?: string[];
 }
 
 export interface Question {
@@ -118,10 +134,12 @@ export interface TestFile {
   title: string;
   /** "YYYY-MM" */
   date: string;
-  variant: "A" | "B";
-  /** Original PDF filename. */
+  /** OSP comes in variants A/B; AJ has a single version. */
+  variant?: "A" | "B";
+  /** Original PDF filename (or the photographed booklet). */
   source: string;
-  stats: TestStats;
+  /** Published participant stats – missing for photographed booklets. */
+  stats?: TestStats;
   sections: Section[];
 }
 

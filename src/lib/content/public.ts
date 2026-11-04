@@ -1,14 +1,14 @@
 // Client-safe shapes (no answer keys) and helpers shared by client and server.
-import type { Group, OptionKey, Question, QuestionPart, Section, TestFile } from "./types";
+import type { Group, Question, QuestionPart, Section, TestFile } from "./types";
 
-export type PublicPart = Omit<QuestionPart, "answer">;
+export type PublicPart = Omit<QuestionPart, "answer" | "alsoAccepted">;
 export type PublicQuestion = Omit<Question, "parts" | "solution"> & { parts: PublicPart[] };
 export type PublicGroup = Omit<Group, "questions"> & { questions: PublicQuestion[] };
 export type PublicSection = Omit<Section, "groups"> & { groups: PublicGroup[] };
 export type PublicTest = Omit<TestFile, "sections"> & { sections: PublicSection[] };
 
 /** Answers given by a user: question number (or local index) → one entry per part. */
-export type AnswerMap = Record<string, (OptionKey | null)[]>;
+export type AnswerMap = Record<string, (string | null)[]>;
 
 export function stripQuestion(q: Question): PublicQuestion {
   return {
@@ -17,7 +17,7 @@ export function stripQuestion(q: Question): PublicQuestion {
     ...(q.compare ? { compare: q.compare } : {}),
     ...(q.figure ? { figure: q.figure } : {}),
     ...(q.excluded ? { excluded: true } : {}),
-    parts: q.parts.map((p) => ({ ...(p.label ? { label: p.label } : {}), options: p.options })),
+    parts: q.parts.map((p) => ({ ...(p.label ? { label: p.label } : {}), ...(p.kind ? { kind: p.kind } : {}), options: p.options })),
   };
 }
 

@@ -1,0 +1,1290 @@
+{
+  "id": "aj-2026-02",
+  "exam": "aj",
+  "title": "AJ – Únor 2026",
+  "date": "2026-02",
+  "source": "Fotky sešitu „aj únor 2026“",
+  "sections": [
+    {
+      "id": "reading",
+      "title": "Reading",
+      "timeLimitSec": 900,
+      "groups": [
+        {
+          "id": "g01",
+          "taskType": "aj_reading",
+          "instruction": "Read the following text and solve the tasks based solely on the information in it.",
+          "passageTitle": "Estonia’s naked wellness tradition to cleanse both body and soul",
+          "passage": "*Used for centuries by rural Estonians to heal their aches and pains, the smoke sauna experience clears the mind and cleanses the spirit.* **(A)**\n\nSaunas, in one form or another, have existed in northern Europe for millennia. Ancient dwellings in Estonia were small chimneyless structures with a stove in the corner, meaning homes could be used as saunas or vice versa. A dig in the 1980s in the north of the country provided the oldest archaeological evidence of a purpose-built sauna in Estonia, dating from between the 12th and 13th centuries – likely predating the first written mention of the Estonian word “saun” in 1241. From the Northern Crusades onwards, Germans overtook local commerce and religion, and Baltic Germans came to comprise most of the landed gentry in Estonia, even though control of the Estonian territory passed from the Danes to the Swedes and eventually to the Russian Empire. During the Middle Ages, masons built “smokeless stoves” (stoves with chimneys) for wealthy townsfolk and some urban bathhouses. **(B)** However, local Estonian culture – including sauna culture – was sealed in a time capsule for 700 years, according to the 2023 book Sauna: History, Culture, Health and Construction – especially in South Estonia, which was far from Hanseatic towns and trade routes. Peasant life saw little improvement for centuries, and saunas in South Estonia continued to be built mostly chimneyless until the 1920s.\n\nOne of the saunas with a rich history, run by its owner Veeroja, is in Mooska. Mooska is located in the south-eastern corner of Estonia and is part of Old Võromaa, which encompasses several counties. This <u>remote</u> region of rolling hills is the ancestral home of Võro, a Finno-Ugric language similar to Estonian with approximately 70,000 native speakers. Following the end of Estonia’s occupation by the Soviet Union in 1991, Veeroja travelled around Estonia and Europe. She soon realised that sauna practices had changed due to increased urbanisation and the <u>advent</u> of electric heaters. However, she saw that Võromaa’s smoke saunas still had preserved something soulful that the others had long since lost, and she came to realise she had something special to share right in her own backyard. Starting in 2009, Veeroja led the initiative to get Võromaa’s smoke sauna tradition listed by UNESCO, and in 2014, it was added to the UNESCO’s list of Intangible Cultural Heritage. The listing includes the smoke sauna building, its construction and repair, and related customs. **(C)**\n\nIn the past, Estonians would not have called sauna-going a mindfulness practice, though certainly it was a chance to relax and socialise after a week filled with physical labour. Nor did the peasant population of South Estonia have access to the physicians who treated their wealthy landlords and the manor folk, so they turned to the sauna to heal their aches and pains. **(D)** Nowadays, most people visit the doctor when sick, yet Veeroja believes the sauna can be used to treat the spiritual ails of modern society. Studies have shown the physical benefits of sauna-going, including improved circulation and immune response, but the sauna experience at Mooska centres around the mental benefits. Visitors to Mooska will not be beaten with a goose wing if they’re cross-eyed, nor will ferns be used to break evil curses, even though these rituals were once common practice in saunas. Yet the ritual of greeting and thanking the sauna remains, as well as the tradition of scrubbing oneself with ash, which connects the mind to bodily sensations. The point is to give sauna-goers the space to slow down.",
+          "questions": [
+            {
+              "n": 13,
+              "stem": "The oldest archaeological evidence of a purpose-built sauna in Estonia ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "was found in the late 20th century"
+                    },
+                    {
+                      "key": "B",
+                      "text": "dates back to 1241"
+                    },
+                    {
+                      "key": "C",
+                      "text": "was found by a team of German archaeologists"
+                    },
+                    {
+                      "key": "D",
+                      "text": "is the Estonian word “saun” carved into a stone"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Nejstarší doklad přinesl vykopávkový průzkum v 80. letech 20. století, tedy koncem 20. století. Rok 1241 je první písemná zmínka o slově „saun“, nikoli archeologický nález; o německých archeolozích ani nápisu v kameni text nemluví."
+            },
+            {
+              "n": 14,
+              "stem": "Which of the following was true about the Germans in Estonia after the Northern Crusades?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "They started a trend of having a dedicated bathing room in the house."
+                    },
+                    {
+                      "key": "B",
+                      "text": "They introduced a land partition law."
+                    },
+                    {
+                      "key": "C",
+                      "text": "They lost a battle to the Russian Empire over the Estonian territory."
+                    },
+                    {
+                      "key": "D",
+                      "text": "They had a major influence in the field of local trade."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Text uvádí, že od severních křížových výprav Němci „overtook local commerce and religion“ – ovládli místní obchod. Ostatní možnosti text nezmiňuje (území sice přešlo k Rusku, ale o prohrané bitvě Němců nic není)."
+            },
+            {
+              "n": 15,
+              "stem": "Which of the following statements about the sauna owned by Veeroja is true?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "It is located in a region with sloping terrain."
+                    },
+                    {
+                      "key": "B",
+                      "text": "It has been moved to various locations throughout south-eastern Estonia."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The rituals in the sauna are led in an ancestral Finno-Ugric language."
+                    },
+                    {
+                      "key": "D",
+                      "text": "It can only be accessed by people speaking the Võro language."
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Sauna je v Mooska, v „remote region of rolling hills“ – v kraji zvlněných kopců, tedy se svažitým terénem. Jazyk võro je jen zmíněn jako jazyk regionu, nic o vedení rituálů ani o omezení přístupu."
+            },
+            {
+              "n": 16,
+              "stem": "Which benefit of sauna-going is **not** mentioned in the text?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "better circulation in the body"
+                    },
+                    {
+                      "key": "B",
+                      "text": "socialising with other people"
+                    },
+                    {
+                      "key": "C",
+                      "text": "treating skin conditions"
+                    },
+                    {
+                      "key": "D",
+                      "text": "improved reactions of the immune system"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Text zmiňuje lepší krevní oběh a imunitní odpověď i možnost „relax and socialise“. Léčba kožních onemocnění v textu není."
+            },
+            {
+              "n": 17,
+              "stem": "Which sauna ritual can still be experienced in Mooska nowadays?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "rubbing one’s body with ash"
+                    },
+                    {
+                      "key": "B",
+                      "text": "being hit with goose feathers"
+                    },
+                    {
+                      "key": "C",
+                      "text": "praying inside the sauna"
+                    },
+                    {
+                      "key": "D",
+                      "text": "being scrubbed with fern"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Zůstává „the tradition of scrubbing oneself with ash“ – drhnutí těla popelem. Bití husím křídlem a kapradí proti kletbám se v Mooska už nepraktikuje, o modlitbě text nemluví (jen o pozdravení a poděkování sauně)."
+            },
+            {
+              "n": 18,
+              "stem": "The word “remote” in the third paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "foreign"
+                    },
+                    {
+                      "key": "B",
+                      "text": "overseas"
+                    },
+                    {
+                      "key": "C",
+                      "text": "mountainous"
+                    },
+                    {
+                      "key": "D",
+                      "text": "distant"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Remote region“ = odlehlý, vzdálený kraj, tedy „distant“. „Mountainous“ neodpovídá ani významu slova, ani textu (rolling hills)."
+            },
+            {
+              "n": 19,
+              "stem": "The word “advent” in the third paragraph of the text is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "return"
+                    },
+                    {
+                      "key": "B",
+                      "text": "cessation"
+                    },
+                    {
+                      "key": "C",
+                      "text": "time"
+                    },
+                    {
+                      "key": "D",
+                      "text": "arrival"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„The advent of electric heaters“ = nástup, příchod elektrických kamen, tedy „arrival“. „Cessation“ znamená opak (ukončení)."
+            },
+            {
+              "n": 20,
+              "stem": "Look at the four letters (A) to (D) in the text. These indicate where the following sentence could be added to the text.\n\n*These include smoking meat in the sauna and rituals related to celebrations and healing.*\n\nWhere would the sentence best fit?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "(A)"
+                    },
+                    {
+                      "key": "B",
+                      "text": "(B)"
+                    },
+                    {
+                      "key": "C",
+                      "text": "(C)"
+                    },
+                    {
+                      "key": "D",
+                      "text": "(D)"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "„These“ musí odkazovat na množné číslo, které věta rozvádí – na „related customs“ v zápisu UNESCO těsně před značkou (C). Uzení masa a rituály jsou příklady těchto zvyků."
+            },
+            {
+              "n": 21,
+              "stem": "Which two of the following statements related to the history of saunas are true?\n\n1) Old dwellings in Estonia did not have chimneys.\n\n2) The first use of the word sauna dates back to the 10th century.\n\n3) Smokeless stoves were used by the lowest social classes in Estonia.\n\n4) There is a book focused on sauna culture and history.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "1 and 3"
+                    },
+                    {
+                      "key": "B",
+                      "text": "1 and 4"
+                    },
+                    {
+                      "key": "C",
+                      "text": "2 and 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "3 and 4"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Pravdivé je 1) (starobylá obydlí byla „chimneyless“) a 4) (kniha *Sauna: History, Culture, Health and Construction* z roku 2023). Slovo „saun“ je poprvé doloženo roku 1241, ne v 10. století, a kamna s komínem měli bohatí měšťané, ne nejnižší vrstvy."
+            },
+            {
+              "n": 22,
+              "stem": "According to the text, which two of the following conditions were treated by rituals performed in saunas in the past?\n\n1) hearing disorders\n\n2) vision disorders\n\n3) stuttering\n\n4) curses imposed",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "1 and 3"
+                    },
+                    {
+                      "key": "B",
+                      "text": "1 and 4"
+                    },
+                    {
+                      "key": "C",
+                      "text": "2 and 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "2 and 4"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Dříve se šilhající („cross-eyed“) bili husím křídlem – porucha zraku – a kapradím se lámaly zlé kletby („break evil curses“). Sluch ani koktání text nezmiňuje."
+            },
+            {
+              "n": 23,
+              "stem": "Which of the following statements best summarizes the main goal of the text?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "To persuade people to build their own sauna."
+                    },
+                    {
+                      "key": "B",
+                      "text": "To discourage people from going to a sauna in Estonia."
+                    },
+                    {
+                      "key": "C",
+                      "text": "To outline a brief history of saunas in one particular location."
+                    },
+                    {
+                      "key": "D",
+                      "text": "To scrutinize historical rituals which were used to cure the gentry."
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Text stručně popisuje historii saun v Estonsku (zejména v jižním Estonsku a Mooska). Nikoho nepřemlouvá ke stavbě ani neodrazuje a šlechta se naopak léčila u lékařů, ne v sauně."
+            }
+          ]
+        },
+        {
+          "id": "g02",
+          "taskType": "aj_inference",
+          "instruction": "Answer the following questions using only the information given in or implied by the text.",
+          "questions": [
+            {
+              "n": 24,
+              "stem": "The success of foreign conservative political parties and the efforts of new Czech political entities to distance themselves from the left wing of the political spectrum have contributed to a more positive perception of conservatism, which was previously perceived mostly negatively in the Czech environment.\n\nWhich of the following statements can be inferred from the text with certainty?\n\n1) New Czech political entities have contributed to a change in the perception of conservatism.\n\n2) Throughout Czech history, conservatism has been the least popular ideology.\n\n3) Czech political conservative parties are now more successful than the remaining parties.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "only 1"
+                    },
+                    {
+                      "key": "B",
+                      "text": "only 2"
+                    },
+                    {
+                      "key": "C",
+                      "text": "only 3"
+                    },
+                    {
+                      "key": "D",
+                      "text": "1 and 2"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Úsilí nových českých politických subjektů přispělo k pozitivnějšímu vnímání konzervatismu, tedy ke změně vnímání – 1) plyne. Text netvrdí, že byl konzervatismus nejméně populární ideologií, ani že jsou konzervativní strany nyní úspěšnější než ostatní (úspěšné jsou zmíněny zahraniční strany)."
+            },
+            {
+              "n": 25,
+              "stem": "Great apes have a number of behavioural traits that resemble human behaviour, such as greeting, communication skills and the ability to deceive and manipulate others. However, it is important to note that for all the similarities, which are rooted in a close genetic relationship and similar features of an advanced central nervous system, great apes have a number of significant differences from human behaviour.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Great apes have learned most of their typical behavioural traits from humans."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Despite the substantial genetic difference, great apes are similar to humans in most behavioural traits."
+                    },
+                    {
+                      "key": "C",
+                      "text": "With the exception of the ability to communicate, great ape behaviour differs from that of humans."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Like humans, great apes are not only able to communicate but also to manipulate others."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Mezi rysy podobné lidem text řadí komunikační schopnosti i schopnost klamat a manipulovat druhými. B je chybně – genetický vztah je blízký, ne odlišný; C opomíjí další shodné rysy (zdravení, manipulace)."
+            },
+            {
+              "n": 26,
+              "stem": "At an altitude of 36,000 km above the equator lies the so-called geostationary orbit, where satellites move at the same speed as the Earth rotates, so they appear to remain stationary over a single point on the Earth’s surface. The geostationary orbit is mainly used by communications, weather and navigation satellites, as from this position they can cover about a third of the Earth’s surface.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "As the altitude of a satellite increases, the amount of the Earth’s surface that it can cover decreases."
+                    },
+                    {
+                      "key": "B",
+                      "text": "A satellite in the geostationary orbit is capable of covering approximately one third of the Earth’s surface."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The geostationary orbit is used by satellites that are unable to move on their own."
+                    },
+                    {
+                      "key": "D",
+                      "text": "Only at an altitude of 36,000 km above the equator can a satellite move without the need for propulsion."
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Text přímo říká, že z geostacionární dráhy pokryjí družice asi třetinu zemského povrchu. Vztah výšky a pokrytí, vlastní pohon družic ani „pouze“ v D z textu neplyne."
+            },
+            {
+              "n": 27,
+              "stem": "At the beginning of the 13th century, the Maya abandoned their capital Chichen Itza and founded a new one in Mayapan. Later, however, there was a period of numerous wars. This led to social unrest that resulted in the destruction of Mayapan in a peasant uprising in the mid-15th century. From then on, Mayan civilisation was on its way to extinction, completed by the arrival of the Spaniards.\n\nWhich of the following statements can be inferred from the text with certainty?",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "Social tensions in Mayan society led to a series of civil wars in the 15th century."
+                    },
+                    {
+                      "key": "B",
+                      "text": "Mayapan was the longest-standing Maya city until its destruction in the 15th century."
+                    },
+                    {
+                      "key": "C",
+                      "text": "The Mayan peasant uprising in Mayapan was not ended until the arrival of the Spaniards."
+                    },
+                    {
+                      "key": "D",
+                      "text": "The arrival of the Spaniards marked the definitive end of the declining Mayan civilization."
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Zánik upadající mayské civilizace byl „completed by the arrival of the Spaniards“ – příchod Španělů znamenal definitivní konec. A obrací příčinu a následek (války vedly k nepokojům, ne naopak), B a C text netvrdí."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "title": "Use of English",
+      "timeLimitSec": 1500,
+      "groups": [
+        {
+          "id": "g03",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "If you yearn for the void, try floating in a dark tank",
+          "passage": "Depending on who you ask, spending an hour floating naked in a soundproof, lightproof tank with only your own thoughts for company sounds either like a soothing respite from everyday life, or a nightmarish punishment **(28)** ______ by a uniquely devious and **(29)** ______ deity.\n\nFloat tanks were first developed in the 1950s by John C. Lilly, a neuroscientist who used them to enhance his psychedelic experiences. They didn’t become commercially available until the 1970s but their popularity quickly grew. Since then, float tanks have drifted in and out of the zeitgeist. Proponents say they help **(30)** ______ stress and muscle pain, and induce a deeply relaxing meditative state. When **(31)** ______ by a major sports network at a float spa in 2015, the basketball star Stephen Curry said: “It’s just me and my thoughts for an hour, playing Russian roulette of the mind.”\n\n**(32)** ______ float therapy has been around for decades and the results of existing studies are promising, it is still not **(33)** ______. Nevertheless, Dr Justin Feinstein, a clinical neuropsychologist, says that there are studies which show that after a float, patients experience a significant decrease **(34)** ______ stress and anxiety. He adds that these effects can last up to 48 hours.\n\nSo what happens in your body when you float? Within five to ten minutes of starting a float, there is a precipitous drop in blood pressure. Part of this is probably due to reduced muscle tension. Breathing also slows significantly, by about one breath per minute. Slower, deeper breathing has been found to help reduce feelings of stress and anxiety.\n\nHowever, float therapy is not for everyone. It’s best to avoid it if you have claustrophobia, a seizure disorder or are prone **(35)** ______ ear infections. Most float companies also ask you not to float if you’ve recently had your hair coloured, but that’s not a health issue – they just don’t want the hair dye to stain the pristine pods.",
+          "questions": [
+            {
+              "n": 28,
+              "stem": "Gap (28)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "devised"
+                    },
+                    {
+                      "key": "B",
+                      "text": "deceived"
+                    },
+                    {
+                      "key": "C",
+                      "text": "defeated"
+                    },
+                    {
+                      "key": "D",
+                      "text": "destroyed"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "„A punishment devised by a deity“ = trest vymyšlený božstvem (zkrácená trpná vedlejší věta). Deceived/defeated/destroyed by nedávaly smysl – trest nikdo neklame ani neporáží."
+            },
+            {
+              "n": 29,
+              "stem": "Gap (29)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "gracious"
+                    },
+                    {
+                      "key": "B",
+                      "text": "vengeful"
+                    },
+                    {
+                      "key": "C",
+                      "text": "compassionate"
+                    },
+                    {
+                      "key": "D",
+                      "text": "considerate"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Spojka „and“ řadí slovo vedle „devious“ (zákeřný) a jde o „nightmarish punishment“, takže je potřeba negativní přívlastek: vengeful = mstivý. Ostatní možnosti jsou kladné."
+            },
+            {
+              "n": 30,
+              "stem": "Gap (30)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "alleviate"
+                    },
+                    {
+                      "key": "B",
+                      "text": "deteriorate"
+                    },
+                    {
+                      "key": "C",
+                      "text": "exacerbate"
+                    },
+                    {
+                      "key": "D",
+                      "text": "worsen"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Zastánci tvrdí, že nádrže pomáhají stres a bolest svalů zmírnit – „help alleviate“. Ostatní slovesa znamenají zhoršit."
+            },
+            {
+              "n": 31,
+              "stem": "Gap (31)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "was interviewed"
+                    },
+                    {
+                      "key": "B",
+                      "text": "he has been interviewed"
+                    },
+                    {
+                      "key": "C",
+                      "text": "had interviewed"
+                    },
+                    {
+                      "key": "D",
+                      "text": "interviewed"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Po „When“ lze použít zkrácenou trpnou konstrukci s příčestím: „When interviewed by…“ (= when he was interviewed). Varianta A postrádá podmět, C je činný rod (Curry rozhovor nevedl)."
+            },
+            {
+              "n": 32,
+              "stem": "Gap (32)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "However"
+                    },
+                    {
+                      "key": "B",
+                      "text": "Despite"
+                    },
+                    {
+                      "key": "C",
+                      "text": "Although"
+                    },
+                    {
+                      "key": "D",
+                      "text": "In spite"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Následuje celá vedlejší věta s podmětem a slovesem, proto je třeba spojka „Although“. Despite / in spite (of) se pojí jen s podstatným jménem nebo -ing tvarem a „However“ nespojuje dvě věty v jednom souvětí."
+            },
+            {
+              "n": 33,
+              "stem": "Gap (33)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "being widely researching"
+                    },
+                    {
+                      "key": "B",
+                      "text": "being widely researched"
+                    },
+                    {
+                      "key": "C",
+                      "text": "been widely researched"
+                    },
+                    {
+                      "key": "D",
+                      "text": "be widely researched"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„It is still not being widely researched“ – přítomný průběhový čas v trpném rodě (is being + příčestí minulé). „Is been“ ani „is be“ nejsou gramatické a „researching“ je činný rod."
+            },
+            {
+              "n": 34,
+              "stem": "Gap (34)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "in"
+                    },
+                    {
+                      "key": "B",
+                      "text": "to"
+                    },
+                    {
+                      "key": "C",
+                      "text": "on"
+                    },
+                    {
+                      "key": "D",
+                      "text": "from"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Ustálená vazba „a decrease in something“ (pokles něčeho), stejně jako „an increase in“."
+            },
+            {
+              "n": 35,
+              "stem": "Gap (35)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "having"
+                    },
+                    {
+                      "key": "B",
+                      "text": "frequent"
+                    },
+                    {
+                      "key": "C",
+                      "text": "by"
+                    },
+                    {
+                      "key": "D",
+                      "text": "to"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Vazba „be prone to something“ = mít sklon k něčemu, být náchylný k (ear infections)."
+            }
+          ]
+        },
+        {
+          "id": "g04",
+          "taskType": "aj_cloze",
+          "instruction": "Fill in the numbered gaps in the following short texts with the most suitable word or phrase from the options offered.",
+          "passageTitle": "Youngest English Chess star",
+          "passage": "Bodhana Sivanandan, a nine-year-old girl from London, is set to **(36)** ______ history as the youngest person ever to represent England internationally in any sport. She will join the England Women’s Team at the Chess Olympiad in Hungary later this year. Malcolm Pein, manager of the England chess team, says she is **(37)** ______ to be one of the best British players ever. However, her father says he is mystified **(38)** ______ where his daughter got her talent from. He is an engineering graduate, as is his wife, but they are not good at chess at all. Bodhana says chess makes her feel good and helps her with lots of other things like maths and calculations.\n\nWhile some of her teammates are old enough to be her grandparents, Bodhana is not the only upcoming young talent. The game is seeing **(39)** ______ of interest among young people, according to Mr Pein, which he **(40)** ______ to two factors – the **(41)** ______ of the lockdowns and the impact of smash-hit Netflix drama The Queen’s Gambit, which is about a gifted female chess player.\n\nMr Pein says he feels very confident that his **(42)** ______ will soon achieve her **(43)** ______ goal and become a grandmaster, the highest title in international chess. At the moment it is Abhimanyu Mishra, from the US, who holds the record for the youngest person to reach grandmaster at the age of 12.",
+          "questions": [
+            {
+              "n": 36,
+              "stem": "Gap (36)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "do"
+                    },
+                    {
+                      "key": "B",
+                      "text": "make"
+                    },
+                    {
+                      "key": "C",
+                      "text": "did"
+                    },
+                    {
+                      "key": "D",
+                      "text": "made"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "Kolokace „make history“ = zapsat se do dějin; po „is set to“ následuje infinitiv (make), ne minulý čas."
+            },
+            {
+              "n": 37,
+              "stem": "Gap (37)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "on course"
+                    },
+                    {
+                      "key": "B",
+                      "text": "a short way"
+                    },
+                    {
+                      "key": "C",
+                      "text": "in way"
+                    },
+                    {
+                      "key": "D",
+                      "text": "in the course"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Idiom „be on course to do something“ = být na dobré cestě k něčemu. „In the course“ znamená „v průběhu“ a nehodí se."
+            },
+            {
+              "n": 38,
+              "stem": "Gap (38)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "such as to"
+                    },
+                    {
+                      "key": "B",
+                      "text": "so that"
+                    },
+                    {
+                      "key": "C",
+                      "text": "because"
+                    },
+                    {
+                      "key": "D",
+                      "text": "as to"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Mystified as to where…“ – „as to“ = pokud jde o, ohledně; uvádí otázku, nad kterou otec žasne."
+            },
+            {
+              "n": 39,
+              "stem": "Gap (39)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "an income"
+                    },
+                    {
+                      "key": "B",
+                      "text": "a height"
+                    },
+                    {
+                      "key": "C",
+                      "text": "a surge"
+                    },
+                    {
+                      "key": "D",
+                      "text": "a spear"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Kolokace „a surge of interest“ = prudký nárůst zájmu."
+            },
+            {
+              "n": 40,
+              "stem": "Gap (40)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "explains"
+                    },
+                    {
+                      "key": "B",
+                      "text": "describes"
+                    },
+                    {
+                      "key": "C",
+                      "text": "attributes"
+                    },
+                    {
+                      "key": "D",
+                      "text": "contributes"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Vazba „attribute something to something“ = připisovat něco něčemu (nárůst zájmu připisuje dvěma faktorům). „Contribute to“ by mělo opačný směr a explain/describe se s „to“ v tomto smyslu nepojí."
+            },
+            {
+              "n": 41,
+              "stem": "Gap (41)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "legacy"
+                    },
+                    {
+                      "key": "B",
+                      "text": "lawbreaker"
+                    },
+                    {
+                      "key": "C",
+                      "text": "legal"
+                    },
+                    {
+                      "key": "D",
+                      "text": "legibility"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Je třeba podstatné jméno ve smyslu „dědictví, dlouhodobý následek“: „the legacy of the lockdowns“. „Legal“ je přídavné jméno, lawbreaker a legibility nedávají smysl."
+            },
+            {
+              "n": 42,
+              "stem": "Gap (42)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "prodigal"
+                    },
+                    {
+                      "key": "B",
+                      "text": "prodigy"
+                    },
+                    {
+                      "key": "C",
+                      "text": "prod"
+                    },
+                    {
+                      "key": "D",
+                      "text": "protection"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Prodigy“ = zázračné dítě, mimořádný talent – Pein mluví o devítileté Bodhaně. „Prodigal“ je přídavné jméno (marnotratný)."
+            },
+            {
+              "n": 43,
+              "stem": "Gap (43)",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "wishing"
+                    },
+                    {
+                      "key": "B",
+                      "text": "successive"
+                    },
+                    {
+                      "key": "C",
+                      "text": "ultimate"
+                    },
+                    {
+                      "key": "D",
+                      "text": "expectant"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "„Ultimate goal“ = konečný, nejvyšší cíl (stát se velmistrem). Ostatní přívlastky se s „goal“ v tomto smyslu nepojí."
+            }
+          ]
+        },
+        {
+          "id": "g05",
+          "taskType": "aj_grammar",
+          "instruction": "Fill in the gaps in the following sentences with the most suitable word or phrase from the options offered.",
+          "questions": [
+            {
+              "n": 44,
+              "stem": "The artist’s <u>inadvertent</u> brushstroke added an unexpected but beautiful element to the painting.\n\nIn the context of the sentence above, the word “inadvertent” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "omitted"
+                    },
+                    {
+                      "key": "B",
+                      "text": "expressive"
+                    },
+                    {
+                      "key": "C",
+                      "text": "deliberate"
+                    },
+                    {
+                      "key": "D",
+                      "text": "unintentional"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Inadvertent“ = neúmyslný, nechtěný, tedy „unintentional“. „Deliberate“ znamená přesný opak (úmyslný)."
+            },
+            {
+              "n": 45,
+              "stem": "The authorities initiated a comprehensive campaign to eradicate the <u>illicit</u> use of performance-enhancing substances in athletics.\n\nIn the context of the sentence above, the word “illicit” is closest in meaning to ______.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "widespread"
+                    },
+                    {
+                      "key": "B",
+                      "text": "illegal"
+                    },
+                    {
+                      "key": "C",
+                      "text": "competitive"
+                    },
+                    {
+                      "key": "D",
+                      "text": "boosting"
+                    }
+                  ],
+                  "answer": "B"
+                }
+              ],
+              "solution": "„Illicit“ = nedovolený, nezákonný, tedy „illegal“. „Widespread“ by sice mohlo do věty pasovat, ale význam slova neodpovídá."
+            },
+            {
+              "n": 46,
+              "stem": "It was so hot outside that I became dizzy and passed ______. I guess I should have drunk more water.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "up"
+                    },
+                    {
+                      "key": "B",
+                      "text": "in"
+                    },
+                    {
+                      "key": "C",
+                      "text": "down"
+                    },
+                    {
+                      "key": "D",
+                      "text": "out"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Frázové sloveso „pass out“ = omdlít. „Pass up“ = nevyužít příležitost, „pass down“ = předat dál."
+            },
+            {
+              "n": 47,
+              "stem": "When I came to see my grandfather, I found the house was very dirty – it ______ weeks.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "wasn’t cleaning for"
+                    },
+                    {
+                      "key": "B",
+                      "text": "hadn’t been cleaned since"
+                    },
+                    {
+                      "key": "C",
+                      "text": "hadn’t cleaned for"
+                    },
+                    {
+                      "key": "D",
+                      "text": "hadn’t been cleaned for"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "Děj trvající až do okamžiku v minulosti → předminulý čas, dům se neuklízí sám → trpný rod: „hadn’t been cleaned“. S časovým úsekem (weeks) se pojí „for“, „since“ jen s okamžikem."
+            },
+            {
+              "n": 48,
+              "stem": "The trophy will remain here in the gym for a month on ______ before being sent to the club office.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "display"
+                    },
+                    {
+                      "key": "B",
+                      "text": "lookout"
+                    },
+                    {
+                      "key": "C",
+                      "text": "exposition"
+                    },
+                    {
+                      "key": "D",
+                      "text": "disposal"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Ustálené spojení „on display“ = vystavený. „On the lookout“ znamená „na stráži“, „at one’s disposal“ = k dispozici."
+            },
+            {
+              "n": 49,
+              "stem": "Despite ______ multiple times, he touched the hot stove.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "having been warned"
+                    },
+                    {
+                      "key": "B",
+                      "text": "he had been warned"
+                    },
+                    {
+                      "key": "C",
+                      "text": "he was warned"
+                    },
+                    {
+                      "key": "D",
+                      "text": "that he got warned"
+                    }
+                  ],
+                  "answer": "A"
+                }
+              ],
+              "solution": "Po předložce „despite“ následuje podstatné jméno nebo -ing tvar, ne vedlejší věta: „despite having been warned“ (trpný rod, předčasnost). Věta s podmětem by vyžadovala „although“."
+            },
+            {
+              "n": 50,
+              "stem": "Unfortunately, your performance is not ______ our standards. Unless you try harder, you will be fired.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "below"
+                    },
+                    {
+                      "key": "B",
+                      "text": "upwards"
+                    },
+                    {
+                      "key": "C",
+                      "text": "for"
+                    },
+                    {
+                      "key": "D",
+                      "text": "up to"
+                    }
+                  ],
+                  "answer": "D"
+                }
+              ],
+              "solution": "„Be (not) up to standard(s)“ = (ne)odpovídat požadované úrovni. „Not below“ by znamenalo, že výkon je v pořádku, což odporuje druhé větě."
+            },
+            {
+              "n": 51,
+              "stem": "When she was a student, she ______ her work meticulously before she submitted it.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "was always checked"
+                    },
+                    {
+                      "key": "B",
+                      "text": "has always checked"
+                    },
+                    {
+                      "key": "C",
+                      "text": "would always check"
+                    },
+                    {
+                      "key": "D",
+                      "text": "had always been checked"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Opakovaný zvyk v minulosti se vyjadřuje „would + infinitiv“: „she would always check“. A a D jsou trpný rod (ona nebyla kontrolována), předpřítomný čas B se nehodí k ukončené minulosti („when she was a student“)."
+            },
+            {
+              "n": 52,
+              "stem": "If he ______ so fast that night, the accident would not have been so bad.",
+              "parts": [
+                {
+                  "options": [
+                    {
+                      "key": "A",
+                      "text": "wasn’t driving"
+                    },
+                    {
+                      "key": "B",
+                      "text": "hasn’t been driving"
+                    },
+                    {
+                      "key": "C",
+                      "text": "hadn’t been driving"
+                    },
+                    {
+                      "key": "D",
+                      "text": "wouldn’t be driving"
+                    }
+                  ],
+                  "answer": "C"
+                }
+              ],
+              "solution": "Třetí kondicionál (nereálná minulost: „that night“, „would not have been“) vyžaduje v podmínce předminulý čas, zde průběhový: „If he hadn’t been driving“."
+            }
+          ]
+        },
+        {
+          "id": "g06",
+          "taskType": "aj_wordform",
+          "instruction": "Use the word in brackets at the end of the sentence to form a new word (different from the word provided) that best fits the gap. Write only one word in each gap. **Please write neatly in capital letters. Illegible answers will be considered to be incorrect.**\n\nPlease note that only words listed in either Cambridge Dictionary (https://dictionary.cambridge.org/) or Oxford Dictionary (https://www.oxfordlearnersdictionaries.com/), which are not marked as archaic or obsolete, will be accepted as correct answers.\n\nExample: The Mona Lisa is one of the most ______ paintings in the world. (FAME) → FAMOUS",
+          "questions": [
+            {
+              "n": 53,
+              "stem": "To excel in language learning, it’s essential to ______ vocabulary through consistent practice and repetition. (MEMORY)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "MEMORISE",
+                  "alsoAccepted": [
+                    "MEMORIZE"
+                  ]
+                }
+              ],
+              "solution": "Po „to“ je třeba sloveso: memorise (BrE) / memorize (AmE) = naučit se nazpaměť."
+            },
+            {
+              "n": 54,
+              "stem": "He ______ parked his car in the disabled spot without a permit – he knew it was against the rules, but he didn’t care. (INTENTION)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "INTENTIONALLY"
+                }
+              ],
+              "solution": "Sloveso „parked“ rozvíjí příslovce: intention → intentional → intentionally (úmyslně), jak potvrzuje druhá část věty."
+            },
+            {
+              "n": 55,
+              "stem": "He was arrested for attempting to ______ the terms of his probation. (VIOLENCE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "VIOLATE"
+                }
+              ],
+              "solution": "Po „attempting to“ je třeba sloveso: violate the terms = porušit podmínky (podmíněného propuštění)."
+            },
+            {
+              "n": 56,
+              "stem": "She was ______ of the surprise party planned by her friends until she walked into the room and saw them all gathered there, holding balloons and wearing party hats. (AWARENESS)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "UNAWARE"
+                }
+              ],
+              "solution": "Vazba „be aware of“ a smysl věty (o oslavě nevěděla, dokud nevešla) vyžadují zápor: unaware."
+            },
+            {
+              "n": 57,
+              "stem": "He ______ accepted the challenge, eager to prove his abilities and contribute to the team’s success. (READY)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "READILY"
+                }
+              ],
+              "solution": "Sloveso „accepted“ rozvíjí příslovce: readily = ochotně, bez váhání (ready → readily)."
+            },
+            {
+              "n": 58,
+              "stem": "The proposed laws sparked a public ______, leading to widespread demonstrations. (CRY)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "OUTCRY"
+                }
+              ],
+              "solution": "Po „a public“ je třeba podstatné jméno: „public outcry“ = veřejné pobouření, které vedlo k demonstracím."
+            },
+            {
+              "n": 59,
+              "stem": "The scientist has tried to ______ the hypothesis that climate change is solely caused by natural processes by demonstrating the undeniable impact of human-induced factors, such as carbon emissions and deforestation. (PROVE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "DISPROVE"
+                }
+              ],
+              "solution": "Vědec dokazuje vliv člověka, tedy se snaží hypotézu o čistě přirozených příčinách vyvrátit: disprove (slovo musí být odlišné od PROVE)."
+            },
+            {
+              "n": 60,
+              "stem": "He knew he had to outsmart every ______ in the upcoming chess tournament, including last year’s tournament winner, if he wanted to win. (ADVERSE)",
+              "parts": [
+                {
+                  "kind": "text",
+                  "options": [],
+                  "answer": "ADVERSARY"
+                }
+              ],
+              "solution": "Po „every“ je třeba podstatné jméno označující osobu: adversary = protivník, soupeř."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
