@@ -8,6 +8,7 @@ import { EXAMS, TASK_TYPES, taskTypeMeta } from "@/lib/content/exams";
 import { count, plural } from "@/lib/czech";
 import { SITE_URL } from "@/lib/env";
 import type { Plan } from "@/lib/plans";
+import { buildReport } from "@/lib/admin-report";
 import type { AdminStats } from "@/lib/server/admin-stats";
 import { Logo } from "../Logo";
 import { TesterPanel } from "./TesterPanel";
@@ -412,7 +413,9 @@ function ClaudeReport({ stats }: { stats: AdminStats }) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="font-display text-lg font-extrabold">Report pro Clauda</h2>
-          <p className="text-sm text-muted">Zkopíruj a vlož do chatu – obsahuje vše potřebné k ladění generátoru.</p>
+          <p className="text-sm text-muted">
+            Zkopíruj a vlož do chatu – cena a úspěšnost po typech, cache, dávky, tempo, zásoba a poptávka, důvody zamítnutí.
+          </p>
         </div>
         <Button size="sm" onClick={() => copy("report", report)}>
           {copied === "report" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
@@ -425,48 +428,6 @@ function ClaudeReport({ stats }: { stats: AdminStats }) {
       </details>
     </Card>
   );
-}
-
-function buildReport(stats: AdminStats) {
-  const lines: string[] = [];
-  const name = (t: string) => taskTypeMeta(t)?.name ?? t;
-  lines.push(`# Report generátoru – ${new Date().toLocaleString("cs-CZ")}`);
-  lines.push(`Konfigurace: ${Object.entries(stats.config).map(([k, v]) => `${k}=${v}`).join(", ")}`);
-  const c = stats.cost;
-  lines.push(
-    `Náklady: celkem $${c.total.toFixed(2)}, 7 dní $${c.week.toFixed(2)} | ` +
-      Object.entries(c.byKind).map(([k, v]) => `${k}: ${v.calls}× $${v.cost.toFixed(3)}`).join(", "),
-  );
-  const p = stats.pool;
-  lines.push(`Zásoba: vytvořeno ${p.generated}, zobrazeno ${p.serves}, recyklováno ${p.recycledServes}, cena/zobrazení ${p.costPerServe !== null ? `$${p.costPerServe.toFixed(3)}` : "–"}`);
-  lines.push(`Generování: ${stats.autogen.mode === "batch" ? "Batch API" : "synchronně"}, ${stats.autogen.enabled ? "zapnuto" : "vypnuto"}`);
-  if (stats.costByType) {
-    lines.push("");
-    lines.push("## Cena úlohy podle typu (14 dní): $/úloha | přijato (napoprvé/po opravě/lehké/varianty) | zamítnuto | thinking | batch");
-    for (const r of stats.costByType.filter((x) => x.accepted || x.rejected)) {
-      const pct = (x: number | null) => (x === null ? "–" : `${Math.round(x * 100)} %`);
-      lines.push(
-        `- ${name(r.type)}: ${r.perTask !== null ? `$${r.perTask.toFixed(3)}` : "–"} | ${r.accepted} (${r.first}/${r.revised}/${r.easy}/${r.variants}) | ${r.rejected} | ${pct(r.thinkingShare)} | ${pct(r.batchShare)}`,
-      );
-    }
-  }
-  lines.push("");
-  lines.push("## Úspěšnost po typech (14 dní): napoprvé / po opravě / zahozeno | připraveno v zásobě");
-  for (const r of stats.learning) {
-    const ready = p.byType.find((b) => b.type === r.type)?.ready ?? 0;
-    lines.push(`- ${name(r.type)} (${r.type}): ${r.first} / ${r.revised} / ${r.failed} | zásoba ${ready}`);
-  }
-  lines.push("");
-  lines.push("## Naučená pravidla");
-  for (const r of stats.learning.filter((x) => x.lessons)) {
-    lines.push(`### ${name(r.type)}`);
-    lines.push(r.lessons!.trim());
-  }
-  if (!stats.learning.some((x) => x.lessons)) lines.push("(zatím žádná)");
-  lines.push("");
-  lines.push(`## Posledních ${stats.rejects.length} důvodů zamítnutí (nejnovější nahoře)`);
-  for (const r of stats.rejects) lines.push(`- [${new Date(r.at).toLocaleString("cs-CZ")}] ${r.note}`);
-  return lines.join("\n");
 }
 
 function Learning({ rows }: { rows: AdminStats["learning"] }) {
@@ -553,7 +514,7 @@ function CostPerTask({ rows }: { rows: AdminStats["costByType"] }) {
       </p>
       {used.length ? (
         <div className="scroll-thin overflow-x-auto">
-          <table className="w-full min-w-[640px] text-sm">
+          <table className="w-full min-w-[700px] text-sm">
             <thead className="text-left text-xs uppercase text-muted">
               <tr>
                 <th className="py-1">Typ úlohy</th>
@@ -563,6 +524,7 @@ function CostPerTask({ rows }: { rows: AdminStats["costByType"] }) {
                 <th className="py-1 text-right">Tvorba</th>
                 <th className="py-1 text-right">Kontrola</th>
                 <th className="py-1 text-right" title="podíl výstupních tokenů generátoru, které jdou na přemýšlení">Thinking</th>
+                <th className="py-1 text-right" title="podíl vstupu generátoru a kontroly přečtený z cache promptů (5 % ceny)">Z cache</th>
                 <th className="py-1 text-right" title="podíl nákladů přes Batch API (poloviční cena)">Batch</th>
               </tr>
             </thead>
@@ -581,6 +543,7 @@ function CostPerTask({ rows }: { rows: AdminStats["costByType"] }) {
                   <td className="py-1.5 text-right tabular-nums">{usd(r.generateCost)}</td>
                   <td className="py-1.5 text-right tabular-nums">{usd(r.validateCost)}</td>
                   <td className="py-1.5 text-right tabular-nums text-muted">{pct(r.thinkingShare)}</td>
+                  <td className="py-1.5 text-right tabular-nums text-muted">{pct(r.cacheShare)}</td>
                   <td className="py-1.5 text-right tabular-nums text-muted">{pct(r.batchShare)}</td>
                 </tr>
               ))}

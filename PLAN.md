@@ -233,7 +233,7 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
 - [ ] Ověřit AI naživo: `npm run pool -- --dry --type analogie --count 2` (kvalita generátoru + validátoru)
 - [ ] Předgenerovat pool úloh (`npm run pool -- --type all --count 3`)
 - [ ] Projít celý tok na produkci (registrace → úvodní test → výsledky → rozbor → trénink)
-- [ ] Spustit migraci `0015_cheaper_tasks.sql` a v dashboardu přepnout generování na „Batch API (−50 %)“
+- [ ] Spustit migrace `0015_cheaper_tasks.sql` a `0016_admin_report.sql` a v dashboardu přepnout generování na „Batch API (−50 %)“
 - [ ] Po týdnu porovnat cenu úlohy po typech; levnější generátor pro konkrétní typ jen po `npm run ab` + slepém hodnocení
 
 ## Changelog
@@ -259,3 +259,8 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
   rodiny až po 15 úlohách typu a 7 dnech. Vysvětlení AI úloh dostanou rozbor chytáků od generátoru a jdou přes Sonnet.
   Dashboard: cena úlohy po typech (vč. thinking a podílu batch), přepínač Batch API. `npm run sim:batch` (simulace bez
   API), `npm run ab` (A/B test nastavení se slepým hodnocením). Supabase: spustit migraci `0015_cheaper_tasks.sql`.
+- 2026-11-04 – **přesný report**: dashboard počítal součty z řádků, které Supabase API vrací max. po 1000 na dotaz –
+  při větším provozu byly náklady, zásoba i úspěšnost neúplné. Migrace `0016_admin_report.sql` přidává agregační funkce
+  (náklady podle druhu/typu/fáze/modelu/batch, výsledky kandidátů a důvody zamítnutí, zásoba a poptávka, tempo po
+  hodinách, dávky, náklady uživatelů); ověřeno na lokálním Postgresu proti vzorovým datům. „Report pro Clauda“ přestavěn
+  na kompletní podklad pro optimalizaci (`src/lib/admin-report.ts`).

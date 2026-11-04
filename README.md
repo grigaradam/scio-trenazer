@@ -82,7 +82,11 @@ npm run dev                  # http://localhost:3000
   typu a 7 dnech.
 - Vysvětlení se cachují v DB (každá úloha se vysvětluje jen jednou pro všechny). AI úlohy si nesou rozbor chytáků od
   generátoru, proto je vysvětluje levnější `AI_EXPLAIN_GEN_MODEL` (výchozí Sonnet); originální úlohy Scio dál Opus.
-- Cena jedné úlohy po typech (vč. zahozených pokusů, podílu thinking a Batch API) je v `/dashboard`.
+- Cena jedné úlohy po typech (vč. zahozených pokusů, podílu thinking, cache a Batch API) je v `/dashboard`. Přesná čísla
+  počítá databáze (migrace [`0016_admin_report.sql`](supabase/migrations/0016_admin_report.sql)) – Supabase API vrací
+  nejvýš 1000 řádků na dotaz, takže bez ní jsou součty při větším provozu neúplné. „Report pro Clauda“ v dashboardu
+  obsahuje vše k optimalizaci: cenu a úspěšnost po typech, volání podle fáze a modelu (vč. cache), důvody zamítnutí,
+  tempo po hodinách, dávky, zásobu a poptávku, kvalitu nových úloh, vysvětlení a chat.
 - Levnější model nebo nižší effort pro konkrétní typ (`AI_MODEL_BY_TYPE`, `AI_FIRST_EFFORT`) nejdřív ověř:
   `npm run ab -- --types slovni --n 6 --b model=claude-sonnet-5-5` – porovná přijetí, skóre a cenu a připraví slepé hodnocení.
 - Denní limity AI na uživatele: `AI_DAILY_*` proměnné.
