@@ -46,3 +46,6 @@ next-env.d.ts
 # local tooling
 /.claude/
 !.env.example
+
+# A/B test outputs (npm run ab)
+/ab-results/

@@ -16,6 +16,8 @@
     "pool:drift": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/pool-drift.ts",
     "pool:repeats": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/pool-repeats.ts",
     "pool:options": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/pool-options.ts",
+    "sim:batch": "tsx --conditions=react-server --tsconfig tsconfig.json scripts/sim-batch.ts",
+    "ab": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/ab-test.ts",
     "dev:demo": "DEMO_MODE=1 next dev --port 3001"
   },
   "dependencies": {
