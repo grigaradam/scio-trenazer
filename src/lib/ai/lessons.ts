@@ -4,6 +4,7 @@ import type { TaskType } from "@/lib/content/types";
 import { AI } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { anthropic } from "./client";
+import { optionShape } from "./option-shape";
 import { logAiCall } from "./usage";
 
 // Self-improving generator: every validator rejection is logged (ai_calls kind "reject", note "<type>: <reason>").
@@ -27,12 +28,18 @@ const stripType = (note: string, type: string) => note.replace(new RegExp(`^${ty
 const CRITERIA_EPOCH = "2026-10-22T21:34:00Z"; // deploy of the fixed validator
 /** Lessons distilled from bad data are discarded per type and re-learned from fresh rejections. */
 const LESSONS_V2 = "2026-10-31T19:00:00Z"; // porozumeni had learned "keys A–E"; topic bans filled nesoulad/dostatecnost
+// doplnovani had learned "put each word into exactly two options (2+2)" – the option check rejects any word that
+// repeats across options, so every task following it was thrown away (set after the deploy that fixed it)
+const LESSONS_V3 = "2026-11-04T22:00:00Z";
 const LESSON_RESET: Partial<Record<TaskType, string>> = {
   synonyma: CRITERIA_EPOCH,
   porozumeni: LESSONS_V2,
   nesoulad: LESSONS_V2,
   dostatecnost: LESSONS_V2,
+  doplnovani: LESSONS_V3,
 };
+/** A reset type re-learns only from rejections after its reset – older ones were judged by other rules. */
+const epochOf = (type: TaskType) => LESSON_RESET[type] ?? CRITERIA_EPOCH;
 
 /** "Too similar to an existing task" – the variety block already lists what is taken, so it's no lesson. */
 const isRepetition = (note: string) => /^(\[po opravě\] )?opakování:/.test(note);
@@ -51,7 +58,7 @@ export async function getLessons(type: TaskType): Promise<Lessons> {
       .select("note")
       .eq("kind", "reject")
       .like("note", `${type}:%`)
-      .gte("created_at", CRITERIA_EPOCH)
+      .gte("created_at", epochOf(type))
       .order("created_at", { ascending: false })
       .limit(MAX_RECENT),
   ]);
@@ -91,14 +98,15 @@ export async function refreshLessons(type: TaskType) {
   if (lessonErr) return; // migration 0004 not applied yet
   const reset = LESSON_RESET[type];
   const stale = Boolean(reset && current?.updated_at && (current.updated_at as string) < reset);
-  const since = !current?.updated_at || stale ? CRITERIA_EPOCH : (current.updated_at as string);
+  const epoch = epochOf(type);
+  const since = !current?.updated_at || stale ? epoch : (current.updated_at as string);
 
   const newQuery = admin
     .from("ai_calls")
     .select("id", { count: "exact", head: true })
     .eq("kind", "reject")
     .like("note", `${type}:%`)
-    .gte("created_at", since > CRITERIA_EPOCH ? since : CRITERIA_EPOCH);
+    .gte("created_at", since > epoch ? since : epoch);
   const { count } = await newQuery;
   if ((count ?? 0) < REFRESH_AFTER) return;
 
@@ -108,7 +116,7 @@ export async function refreshLessons(type: TaskType) {
       .select("note")
       .eq("kind", "reject")
       .like("note", `${type}:%`)
-      .gte("created_at", CRITERIA_EPOCH)
+      .gte("created_at", epoch)
       .order("created_at", { ascending: false })
       .limit(MAX_DISTILL_INPUT * 2), // repetitions are dropped below
     admin.from("ai_calls").select("id", { count: "exact", head: true }).eq("kind", "accept").like("note", `${type}:%`),
@@ -119,6 +127,15 @@ export async function refreshLessons(type: TaskType) {
     .slice(0, MAX_DISTILL_INPUT)
     .map((n) => `- ${n.slice(0, 300)}`);
   if (!reasons.length) return;
+
+  // hard rules of the format the lessons must never contradict (they come from the real Scio tasks of the type)
+  const shape = optionShape(type);
+  const optionRule =
+    shape && shape.slotted && shape.maxSlotReuse === 0
+      ? " Ve skutečných úlohách tohoto typu má každá možnost svá vlastní slova – žádné slovo se neopakuje ve dvou možnostech; nikdy nepiš pravidlo, které by slova mezi možnostmi opakovalo nebo rozdělovalo (např. „2+2“)."
+      : shape && shape.maxSharedWords === 0
+        ? " Ve skutečných úlohách tohoto typu se slova mezi možnostmi neopakují; nikdy nepiš pravidlo, které by je opakovalo."
+        : "";
 
   const response = await anthropic().messages.create({
     model: AI.validatorModel,
@@ -135,7 +152,7 @@ export async function refreshLessons(type: TaskType) {
       {
         role: "user",
         content: `Typ úlohy: ${meta?.name ?? type}
-Pevný formát: ${meta && meta.groupSize > 1 ? `skupina ${meta.groupSize} otázek ke společnému textu` : "1 otázka"}, ${type === "synonyma" ? "klíče možností A–D (synonymum) a E–H (antonymum)" : type === "aj_wordform" ? "psaná odpověď jedním slovem (bez možností)" : "klíče možností přesně A, B, C, D"}.
+Pevný formát: ${meta && meta.groupSize > 1 ? `skupina ${meta.groupSize} otázek ke společnému textu` : "1 otázka"}, ${type === "synonyma" ? "klíče možností A–D (synonymum) a E–H (antonymum)" : type === "aj_wordform" ? "psaná odpověď jedním slovem (bez možností)" : "klíče možností přesně A, B, C, D"}.${optionRule}
 Přijatých úloh zatím: ${accepted ?? 0}
 
 Dosavadní pravidla:
