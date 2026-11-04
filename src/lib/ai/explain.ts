@@ -64,23 +64,41 @@ možností cituj podmínku, kterou porušují, nebo ukaž, proč nestačí k jed
 };
 export const QUOTE_TYPES = Object.keys(QUOTE_TYPE_RULES) as TaskType[];
 
+/** The model that explains a task: AI tasks come with their author's trap analysis, so a cheaper model suffices. */
+export function explainModelFor(task: ResolvedTask) {
+  return trapAnalysis(task) ? AI.explainGeneratedModel : AI.explainModel;
+}
+
+/** What the generator wrote about the wrong options of an AI task (stored with it, never shown to students). */
+function trapAnalysis(task: ResolvedTask) {
+  if (task.origin.kind !== "gen") return null;
+  const traps = (task.group as { trapDesign?: unknown }).trapDesign;
+  const t = Array.isArray(traps) ? traps[task.origin.idx] : null;
+  return typeof t === "string" && t.trim() ? t.trim() : null;
+}
+
 export async function generateExplanation(task: ResolvedTask, userId?: string): Promise<Explanation> {
   const meta = taskTypeMeta(task.taskType);
   const typeRules = QUOTE_TYPE_RULES[task.taskType];
   const rules = typeRules ? `${QUOTE_RULES}\n\n${typeRules}` : "";
+  const traps = trapAnalysis(task);
+  const model = explainModelFor(task);
   const response = await anthropic().messages.parse({
-    model: AI.explainModel,
+    model,
     max_tokens: 8000,
     output_config: { effort: "medium", format: zodOutputFormat(ExplanationSchema) },
     system: meta?.exam === "aj" ? `${SYSTEM}\n\n${AJ_NOTE}` : SYSTEM,
     messages: [
       {
         role: "user",
-        content: `Typ úlohy: ${meta?.name ?? task.taskType} – ${meta?.description ?? ""}\n\n${taskToPrompt(task.group)}\n\n${rules ? `${rules}\n\n` : ""}Vysvětli tuto úlohu.`,
+        content:
+          `Typ úlohy: ${meta?.name ?? task.taskType} – ${meta?.description ?? ""}\n\n${taskToPrompt(task.group)}\n\n` +
+          (traps ? `Rozbor chytáků od autora úlohy (jakou chybu představuje každá špatná možnost):\n${traps}\n\n` : "") +
+          `${rules ? `${rules}\n\n` : ""}Vysvětli tuto úlohu.`,
       },
     ],
   });
-  await logAiCall({ userId, kind: "explain", model: AI.explainModel, usage: response.usage, ok: Boolean(response.parsed_output) });
+  await logAiCall({ userId, kind: "explain", model, usage: response.usage, ok: Boolean(response.parsed_output), type: task.taskType });
   if (!response.parsed_output) throw new Error(`Explanation parse failed (stop_reason ${response.stop_reason})`);
   return response.parsed_output;
 }

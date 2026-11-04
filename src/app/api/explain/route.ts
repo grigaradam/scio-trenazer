@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { aiErrorResponse, spendBudget } from "@/lib/ai/client";
-import { EXPLAIN_VERSION, QUOTE_TYPES, generateExplanation, type Explanation } from "@/lib/ai/explain";
-import { AI } from "@/lib/env";
+import { EXPLAIN_VERSION, QUOTE_TYPES, explainModelFor, generateExplanation, type Explanation } from "@/lib/ai/explain";
 import { apiUser } from "@/lib/server/auth";
 import { resolveTask, type ResolvedTask } from "@/lib/server/tasks";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -19,7 +18,7 @@ function generateOnce(task: ResolvedTask, userId: string) {
       .then(async (explanation) => {
         await createAdminClient()
           .from("explanations")
-          .upsert({ task_ref: task.ref, content: { ...explanation, v: EXPLAIN_VERSION }, model: AI.explainModel });
+          .upsert({ task_ref: task.ref, content: { ...explanation, v: EXPLAIN_VERSION }, model: explainModelFor(task) });
         return explanation;
       })
       .finally(() => inFlight.delete(task.ref));
