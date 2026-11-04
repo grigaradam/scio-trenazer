@@ -202,7 +202,8 @@ async function plan(state: AutogenState) {
   }
   let planned = 0;
   while (capacity >= PER_TYPE) {
-    const type = await pickType(inFlight);
+    const type = await pickType(inFlight, state);
+    if (!type) break; // the stock target is reached everywhere
     const exam = taskTypeMeta(type)?.exam ?? "osp";
     planned += await enqueueJobs({ exam, type, count: PER_TYPE, variants: VARIANT_TYPES.includes(type) ? VARIANTS_PER_GROUP : 0, inFlightParents: parents });
     inFlight.set(type, (inFlight.get(type) ?? 0) + PER_TYPE);

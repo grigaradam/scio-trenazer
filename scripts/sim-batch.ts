@@ -345,6 +345,22 @@ async function main() {
   check(mine.length === n && mine.every((j) => j.stage === "done" || j.stage === "failed"), `${n} úlohy uživatele zpracované v dávkách`);
   check(mine.every((j) => (j.state.candidate.words?.length ?? 0) >= 3), "synonyma dostala nabídku nepoužitých slov");
 
+  console.log("\nVýběr zkoušek a cílová zásoba (jen AJ, cíl 25 neviděných úloh na typ):");
+  const { typeStock } = await import("@/lib/server/autogen");
+  const jobIds = new Set((((await db.from("gen_jobs").select("id")).data ?? []) as { id: string }[]).map((j) => j.id));
+  const capped = { ...state, exams: ["aj"], stock_target: 25 };
+  for (let t = 0; t < 40; t++) await runBatchTick(capped);
+  for (let t = 0; t < 6; t++) await runBatchTick({ ...capped, enabled: false });
+  const planned = (((await db.from("gen_jobs").select("*")).data ?? []) as { id: string; task_type: string }[]).filter((j) => !jobIds.has(j.id));
+  check(planned.length > 0 && planned.every((j) => j.task_type.startsWith("aj_")), `naplánovalo se ${planned.length} úloh, všechny AJ`);
+  const stockNow = (await typeStock())!;
+  const ajTypes = ["aj_reading", "aj_inference", "aj_cloze", "aj_grammar", "aj_wordform"];
+  check(ajTypes.every((t) => (stockNow.get(t)?.stock ?? 0) >= 25), `AJ typy na cíli: ${ajTypes.map((t) => `${t} ${stockNow.get(t)?.stock}`).join(", ")}`);
+  const countJobs = async () => ((await db.from("gen_jobs").select("id")).data ?? []).length;
+  const n1 = await countJobs();
+  await runBatchTick(capped);
+  check((await countJobs()) === n1, "plná zásoba – další tick nic neplánuje a nic nestojí");
+
   server.close();
   console.log(`\nCelkem problémů: ${failures}`);
   process.exit(failures ? 1 : 0);

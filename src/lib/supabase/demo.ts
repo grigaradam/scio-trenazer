@@ -29,7 +29,9 @@ function store(): Store {
           created_at: new Date().toISOString(),
         },
       ],
-      autogen_state: [{ id: 1, enabled: false, workers: 2, mode: "sync", credits_exhausted_at: null, last_tick_at: null, last_error: null, started_at: null }],
+      autogen_state: [
+        { id: 1, enabled: false, workers: 2, mode: "sync", exams: null, stock_target: 30, credits_exhausted_at: null, last_tick_at: null, last_error: null, started_at: null },
+      ],
       autogen_leases: Array.from({ length: 6 }, (_, slot) => ({ slot, lease_until: new Date(0).toISOString(), runs: 0 })),
     };
   }
@@ -305,6 +307,20 @@ function rpc(name: string, a: Record<string, unknown>) {
       const l = table("autogen_leases").find((x) => x.slot === a.p_slot);
       if (l) l.lease_until = new Date(0).toISOString();
       return null;
+    }
+    if (name === "autogen_stock") {
+      // like the SQL: ready tasks per type and how many the most active user (served in the last 14 days) hasn't seen
+      const ready = table("generated_tasks").filter((t) => Number((t.payload as Row | undefined)?.v ?? 1) >= (a.p_version as number));
+      const seen = table("task_seen").filter((x) => String(x.task_ref).startsWith("gen:"));
+      const active = new Set(seen.filter((x) => Date.parse(String(x.created_at)) >= Date.now() - 14 * 86400000).map((x) => x.user_id));
+      const types = [...new Set(ready.map((t) => t.task_type as string))];
+      return types.map((type) => {
+        const rows = ready.filter((t) => t.task_type === type);
+        const ids = new Set(rows.map((t) => `gen:${t.id}`));
+        const perUser = new Map<unknown, number>();
+        for (const x of seen) if (active.has(x.user_id) && ids.has(String(x.task_ref))) perUser.set(x.user_id, (perUser.get(x.user_id) ?? 0) + 1);
+        return { task_type: type, ready: rows.length, stock: rows.length - Math.max(0, ...perUser.values()), active_users: perUser.size };
+      });
     }
     if (name === "batch_claim") {
       const st = table("autogen_state")[0];

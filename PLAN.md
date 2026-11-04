@@ -233,7 +233,7 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
 - [ ] Ověřit AI naživo: `npm run pool -- --dry --type analogie --count 2` (kvalita generátoru + validátoru)
 - [ ] Předgenerovat pool úloh (`npm run pool -- --type all --count 3`)
 - [ ] Projít celý tok na produkci (registrace → úvodní test → výsledky → rozbor → trénink)
-- [ ] Spustit migrace `0015_cheaper_tasks.sql` a `0016_admin_report.sql` a v dashboardu přepnout generování na „Batch API (−50 %)“
+- [ ] Spustit migrace `0015_cheaper_tasks.sql`, `0016_admin_report.sql` a `0017_autogen_targets.sql` a v dashboardu přepnout generování na „Batch API (−50 %)“
 - [ ] Po týdnu porovnat cenu úlohy po typech; levnější generátor pro konkrétní typ jen po `npm run ab` + slepém hodnocení
 
 ## Changelog
@@ -264,3 +264,9 @@ Všechny tabulky s RLS („uživatel vidí jen své"), sdílené tabulky (`gener
   (náklady podle druhu/typu/fáze/modelu/batch, výsledky kandidátů a důvody zamítnutí, zásoba a poptávka, tempo po
   hodinách, dávky, náklady uživatelů); ověřeno na lokálním Postgresu proti vzorovým datům. „Report pro Clauda“ přestavěn
   na kompletní podklad pro optimalizaci (`src/lib/admin-report.ts`).
+- 2026-11-04 – **první ostrý běh Batch API**: 84 úloh za 41 min za $0,059/úlohu (dřív ~$0,25–0,31), 87 % vstupu
+  generátoru z cache. Podle reportu: nekonečné generování si volí zkoušky (OSP / AJ / obojí) a zastaví se na cílové
+  zásobě (neviděné úlohy nejaktivnějšího uživatele, migrace `0017_autogen_targets.sql`); kontrola opakování ignoruje
+  pojmy, které má většina úloh typu (podmínky, data, dostatečnost zamítaly dobré úlohy); oprava skupinové úlohy musí
+  vrátit všechny otázky se zdůvodněním; doplňování se pravidla učí znovu (naučilo se „2+2“, které odporuje kontrole
+  možností) a destilátor pravidel zná pravidlo, že se slova mezi možnostmi neopakují.

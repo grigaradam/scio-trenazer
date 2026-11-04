@@ -3,6 +3,7 @@ import { GENERATOR_VERSION } from "@/lib/ai/generate";
 import { computeExact, loadExact, type OptimizationData } from "./admin-exact";
 import { DECKS } from "@/lib/ai/decks";
 import { EASY_SHARE, EASY_WINDOW, FAMILY_GAP_DAYS, FAMILY_GAP_TASKS, FAMILY_MAX, VARIANT_SHARE, VARIANT_TYPES } from "@/lib/ai/families";
+import { autogenTypes, typeStock } from "./autogen";
 import { batchStatus, JOBS_PER_WORKER, PER_TYPE } from "./batch-gen";
 import { EXAMS, TASK_TYPES } from "@/lib/content/exams";
 import { AI, vapidEnv } from "@/lib/env";
@@ -81,7 +82,16 @@ export interface AdminStats {
     waiting: number;
     reuseFactor: number | null;
     costPerServe: number | null;
-    byType: { type: string; generated: number; ready: number; serves: number; easy: number; variants: number }[];
+    byType: {
+      type: string;
+      generated: number;
+      ready: number;
+      serves: number;
+      easy: number;
+      variants: number;
+      /** unseen tasks for the most active user (null = migration 0017 hasn't run) */
+      stock: number | null;
+    }[];
   };
   /** Cost per accepted task by type over 14 days (null = migration 0015 hasn't run). */
   costByType: TypeCost[] | null;
@@ -98,6 +108,12 @@ export interface AdminStats {
     mode: "sync" | "batch" | null;
     /** Batch mode: candidates in flight. */
     batch: { generating: number; validating: number; variants: number; waiting: number; batches: number } | null;
+    /** Exams endless generation fills (null = all enabled); undefined = migration 0017 hasn't run. */
+    exams: string[] | null | undefined;
+    /** Unseen tasks per type to keep (0 = no limit); null = migration 0017 hasn't run. */
+    stockTarget: number | null;
+    /** Every chosen type has reached the stock target – generation waits until users use it up. */
+    stockFull: boolean;
     busy: number;
     lastTickAt: string | null;
     cronAlive: boolean;
@@ -234,6 +250,12 @@ export async function loadAdminStats(): Promise<AdminStats> {
   });
   // exact aggregates (migration 0016) replace the row-based numbers, which the API caps at 1000 rows per query
   const exact = rawExact ? computeExact(rawExact, enabledTypes) : null;
+  const stock = await typeStock();
+  const stockTarget = autoState && "stock_target" in autoState ? Number(autoState.stock_target ?? 0) : null;
+  const autoExams = autoState && "exams" in autoState ? ((autoState.exams as string[] | null) ?? null) : undefined;
+  const stockFull = Boolean(
+    stock && stockTarget && autogenTypes({ exams: autoExams ?? null }).every((t) => (stock.get(t.id)?.stock ?? 0) >= stockTarget),
+  );
   const rejectsRes = await admin
     .from("ai_calls")
     .select("created_at,note")
@@ -376,7 +398,9 @@ export async function loadAdminStats(): Promise<AdminStats> {
       waiting: exact ? sum(exact.pool.map((p) => p.neverServed)) : gen.filter((g) => g.served_count === 0).length,
       reuseFactor: servedTasks ? serves / servedTasks : null,
       costPerServe: serves ? genCost / serves : null,
-      byType: enabledTypes.concat(types.filter((t) => !TASK_TYPES.some((m) => m.id === t))).map((t) => ({ type: t, ...typeRow(t) })),
+      byType: enabledTypes
+        .concat(types.filter((t) => !TASK_TYPES.some((m) => m.id === t)))
+        .map((t) => ({ type: t, ...typeRow(t), stock: stock ? (stock.get(t)?.stock ?? 0) : null })),
     },
     costByType: exact
       ? exact.optimization.types
@@ -416,6 +440,9 @@ export async function loadAdminStats(): Promise<AdminStats> {
       workers: Number(autoState?.workers ?? 2),
       mode: autoState && "mode" in autoState ? ((autoState.mode as "sync" | "batch") ?? "sync") : null,
       batch,
+      exams: autoExams,
+      stockTarget,
+      stockFull,
       busy: ((leasesRes.error ? [] : leasesRes.data) ?? []).filter((l) => new Date(l.lease_until as string).getTime() > now).length,
       lastTickAt: (autoState?.last_tick_at as string | null) ?? null,
       cronAlive: Boolean(autoState?.last_tick_at && now - new Date(autoState.last_tick_at as string).getTime() < 150_000),
@@ -446,6 +473,9 @@ export async function loadAdminStats(): Promise<AdminStats> {
       chat: AI.chatModel,
       generatorVersion: GENERATOR_VERSION,
       dailyGenerateLimit: AI.dailyGenerateLimit,
+      autogen:
+        `zkoušky ${autoExams === undefined ? "všechny (bez migrace 0017)" : (autoExams ?? EXAMS.filter((e) => e.enabled).map((e) => e.id)).join(" + ").toUpperCase()} · ` +
+        `cílová zásoba ${stockTarget === null ? "– (bez migrace 0017)" : stockTarget ? `${stockTarget} neviděných úloh na typ pro nejaktivnějšího uživatele${stockFull ? " – plná, generování čeká" : ""}` : "bez stropu"}`,
       rules:
         `${DECKS} sady vzorů na typ (střídání po hodině) · lehké ≤ ${EASY_SHARE * 100} % zásoby a ≤ 1 z ${EASY_WINDOW} úloh uživatele · ` +
         `varianty (${VARIANT_TYPES.join(", ")}) ≤ ${VARIANT_SHARE * 100} % zásoby, rodina ≤ ${FAMILY_MAX}, další člen po ${FAMILY_GAP_TASKS} úlohách + ${FAMILY_GAP_DAYS} dnech · ` +

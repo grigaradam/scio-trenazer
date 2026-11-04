@@ -70,6 +70,10 @@ npm run dev                  # http://localhost:3000
   „Batch API (−50 %)“): generování na pozadí jde přes Message Batches API – stejné modely, prompty i kontroly za poloviční
   cenu, úlohy přibývají se zpožděním (obvykle do hodiny). Přes dávky se doplňuje i zásoba uživatele, dokud má aspoň jednu
   úlohu připravenou; když nemá žádnou, generuje se hned za plnou cenu.
+- **Nekonečné generování** (migrace [`0017_autogen_targets.sql`](supabase/migrations/0017_autogen_targets.sql)): v
+  `/dashboard` se volí zkoušky (OSP + AJ / jen OSP / jen AJ) a cílová zásoba – kolik neviděných úloh má mít u každého
+  typu nejaktivnější uživatel. Generuje se vždy typ, kterému zásoba dochází nejvíc; když je všude plná, generování
+  stojí (a nic nestojí) a samo se rozjede, až ji uživatelé vyberou. 0 = bez stropu.
 - **Cache promptů**: pravidla typu a pevná sada skutečných úloh Scio (3 sady na typ, střídají se po hodině) jsou stálý
   začátek promptu v hodinové cache – čte se za 5 % ceny. Totéž u validátoru.
 - **Méně zahozených pokusů**: generátor dostane délky originálů v číslech, špatně označené možnosti opraví kód,

@@ -146,13 +146,14 @@ export function buildReport(stats: AdminStats) {
     }
 
     h("Zásoba a poptávka");
-    L.push("zásoba na dní = nikdy nezobrazené úlohy ÷ průměr zobrazení za den (7 dní)");
+    L.push("zásoba na dní = nikdy nezobrazené úlohy ÷ průměr zobrazení za den (7 dní); neviděné = co ještě neviděl nejaktivnější uživatel (podle toho se doplňuje)");
     L.push(
       ...table(
-        ["typ", "připraveno", "nikdy nezobrazeno", "lehké", "varianty", "rodin", "∅ kvalita", "zobrazení 7 d", "uživatelů 7 d", "zásoba na dní"],
+        ["typ", "připraveno", "neviděné", "nikdy nezobrazeno", "lehké", "varianty", "rodin", "∅ kvalita", "zobrazení 7 d", "uživatelů 7 d", "zásoba na dní"],
         types.map((t) => [
           name(t.type),
           t.ready,
+          stats.pool.byType.find((b) => b.type === t.type)?.stock ?? "–",
           t.neverServed,
           `${t.easy} (${pct(t.ready ? t.easy / t.ready : null)})`,
           `${t.variants} (${pct(t.ready ? t.variants / t.ready : null)})`,

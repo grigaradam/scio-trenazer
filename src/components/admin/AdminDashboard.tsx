@@ -160,7 +160,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
             hint={p.costPerServe !== null ? `${usd(p.costPerServe)} za zobrazení · ${p.waiting} čeká` : `${p.waiting} čeká připraveno`}
           />
         </div>
-        <PoolStock rows={p.byType} />
+        <PoolStock rows={p.byType} stockTarget={stats.autogen.stockTarget} />
       </Card>
 
       <CostPerTask rows={stats.costByType} />
@@ -196,7 +196,10 @@ function AutoGenerate({ auto }: { auto: AdminStats["autogen"] }) {
   const { copied, copy } = useCopy();
   const [busy, setBusy] = useState(false);
   const [workers, setWorkers] = useState(auto.workers);
+  const [target, setTarget] = useState(String(auto.stockTarget ?? 30));
   const [error, setError] = useState<string | null>(null);
+  const enabledExams = EXAMS.filter((e) => e.enabled);
+  const examValue = auto.exams?.length === 1 ? auto.exams[0] : "all";
 
   async function patch(body: Record<string, unknown>) {
     setBusy(true);
@@ -230,12 +233,29 @@ $$);`;
         <div>
           <h2 className="font-display text-lg font-extrabold">Nekonečné generování {auto.enabled ? "🟢" : "⚪"}</h2>
           <p className="text-sm text-muted">
-            Běží na serveru i se zavřeným webem, dokud ho nevypneš nebo nedojde kredit. Vždy doplňuje typ, kterého je nejméně.
+            Běží na serveru i se zavřeným webem, dokud ho nevypneš nebo nedojde kredit. Vždy doplňuje typ, kterého má
+            nejaktivnější uživatel nejméně neviděných úloh, a zastaví se na cílové zásobě.
             {auto.mode === "batch" && " Přes Batch API: stejné úlohy za poloviční cenu, hotové obvykle do hodiny."}
           </p>
         </div>
         {auto.available && (
           <div className="flex flex-wrap items-center gap-2">
+            {auto.exams !== undefined && (
+              <select
+                value={examValue}
+                disabled={busy}
+                onChange={(e) => patch({ exams: e.target.value === "all" ? null : [e.target.value] })}
+                className="h-9 rounded-xl border-2 border-border bg-surface px-2 text-base font-bold sm:text-sm"
+                title="Které zkoušky nekonečné generování doplňuje (uživatelům se úlohy dogenerují vždy)"
+              >
+                <option value="all">{enabledExams.map((e) => e.id.toUpperCase()).join(" + ")}</option>
+                {enabledExams.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    Jen {e.id.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+            )}
             {auto.mode !== null && (
               <select
                 value={auto.mode}
@@ -271,6 +291,38 @@ $$);`;
         )}
       </div>
       {error && <p className="mt-2 text-sm font-semibold text-rose-600">{error}</p>}
+      {auto.available && auto.stockTarget !== null && (
+        <form
+          className="mt-3 flex flex-wrap items-center gap-2 text-sm"
+          onSubmit={(e) => {
+            e.preventDefault();
+            patch({ stockTarget: Math.max(0, Math.round(Number(target) || 0)) });
+          }}
+        >
+          <label htmlFor="stock-target" className="font-bold">
+            Cílová zásoba
+          </label>
+          <input
+            id="stock-target"
+            type="number"
+            min={0}
+            max={5000}
+            value={target}
+            onChange={(e) => setTarget(e.target.value)}
+            className="h-9 w-24 rounded-xl border-2 border-border bg-surface px-2 text-base font-bold tabular-nums sm:text-sm"
+          />
+          <span className="text-muted">neviděných úloh na typ pro nejaktivnějšího uživatele (0 = bez stropu)</span>
+          <Button size="sm" variant="secondary" type="submit" disabled={busy || target === String(auto.stockTarget)}>
+            Uložit
+          </Button>
+        </form>
+      )}
+      {auto.enabled && auto.stockFull && (
+        <p className="mt-3 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-200">
+          ✓ Zásoba je plná ({auto.stockTarget} neviděných úloh u každého typu). Generování nic nestojí a samo se rozjede, až ji
+          uživatelé začnou vybírat.
+        </p>
+      )}
 
       {!auto.available ? (
         <p className="mt-3 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
@@ -557,7 +609,7 @@ function CostPerTask({ rows }: { rows: AdminStats["costByType"] }) {
   );
 }
 
-function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
+function PoolStock({ rows, stockTarget }: { rows: AdminStats["pool"]["byType"]; stockTarget: number | null }) {
   const router = useRouter();
   const [running, setRunning] = useState(false);
   const [status, setStatus] = useState<Record<string, string>>({});
@@ -610,11 +662,12 @@ function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
         </Button>
       </div>
       <div className="scroll-thin overflow-x-auto">
-        <table className="w-full min-w-[620px] text-sm">
+        <table className="w-full min-w-[680px] text-sm">
           <thead className="text-left text-xs uppercase text-muted">
             <tr>
               <th className="py-1">Typ úlohy</th>
               <th className="py-1 text-right">Připraveno</th>
+              <th className="py-1 text-right" title="úlohy, které nejaktivnější uživatel ještě neviděl – podle nich se řídí doplňování">Neviděné</th>
               <th className="py-1 text-right">Vytvořeno</th>
               <th className="py-1 text-right">Zobrazeno</th>
               <th className="py-1 text-right" title="správné, ale lehčí než Scio – max. 10 % zásoby">Lehké</th>
@@ -629,6 +682,9 @@ function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
                   {taskTypeMeta(r.type)?.emoji} {taskTypeMeta(r.type)?.name ?? r.type}
                 </td>
                 <td className={clsx("py-1.5 text-right font-bold tabular-nums", r.ready < 2 ? "text-amber-600" : "text-emerald-600")}>{r.ready}</td>
+                <td className={clsx("py-1.5 text-right tabular-nums", r.stock !== null && stockTarget && r.stock < stockTarget && "font-bold text-amber-600")}>
+                  {r.stock ?? "–"}
+                </td>
                 <td className="py-1.5 text-right tabular-nums">{r.generated}</td>
                 <td className="py-1.5 text-right tabular-nums">{r.serves}</td>
                 <td className="py-1.5 text-right tabular-nums text-muted">{r.easy || "–"}</td>
