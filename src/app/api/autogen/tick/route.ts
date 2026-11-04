@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { after, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/server/admin-auth";
 import { CREDIT_RETRY_MS, LEASE_SECONDS, getAutogenState, runAutogen, updateAutogenState } from "@/lib/server/autogen";
+import { batchReady, hasOpenJobs, runBatchTickLocked } from "@/lib/server/batch-gen";
 import { sendDailyReminders } from "@/lib/server/push";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -30,8 +31,18 @@ export async function POST(req: Request) {
     await updateAutogenState({ last_tick_at: new Date().toISOString() });
     after(() => sendDailyReminders().catch((e) => console.error("push reminders", e)));
   }
+  if (!process.env.ANTHROPIC_API_KEY) return NextResponse.json({ status: state.enabled ? "no-api-key" : "disabled" });
+
+  // Batches: a short tick that collects finished batches and submits new requests. It also runs while generation is
+  // switched off or back in synchronous mode – candidates already in flight and users' buffer top-ups get finished.
+  const batchMode = state.mode === "batch";
+  if (batchMode || (state.mode && (await hasOpenJobs()))) {
+    if (!(await batchReady())) return NextResponse.json({ status: "migration-missing" });
+    after(() => runBatchTickLocked(state, batchMode && state.enabled));
+    if (batchMode) return NextResponse.json({ status: "batch" });
+  }
+
   if (!state.enabled) return NextResponse.json({ status: "disabled" });
-  if (!process.env.ANTHROPIC_API_KEY) return NextResponse.json({ status: "no-api-key" });
   if (state.credits_exhausted_at && Date.now() - new Date(state.credits_exhausted_at).getTime() < CREDIT_RETRY_MS) {
     return NextResponse.json({ status: "waiting-for-credits" });
   }

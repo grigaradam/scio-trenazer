@@ -130,8 +130,18 @@ export function ensureTaskBuffer(userId: string, exam: ExamId, type: TaskType) {
     const deadline = Date.now() + 270_000; // background work shares the request's 300 s limit
     try {
       for (let attempt = 0; attempt < MAX_ATTEMPTS && Date.now() + 120_000 < deadline; attempt++) {
-        const missing = BUFFER - (await waitingCount(userId, exam, type));
+        const waiting = await waitingCount(userId, exam, type);
+        const missing = BUFFER - waiting;
         if (missing <= 0) return;
+        // batch mode: while the user still has a task ready, top up through the Batch API at half the price –
+        // the generation itself happens on the next cron ticks (imported lazily: autogen and batch-gen import this file)
+        const { getAutogenState } = await import("./autogen");
+        if (waiting > 0 && (await getAutogenState())?.mode === "batch") {
+          const { enqueueJobs, queuedFor } = await import("./batch-gen");
+          const need = missing - (await queuedFor(userId, type));
+          if (need > 0 && (await tryBudget(userId, "generate"))) await enqueueJobs({ exam, type, count: need, userId });
+          return;
+        }
         if (!(await tryBudget(userId, "generate"))) return;
         await generateTasks({ exam, type, count: missing, userId, deadline }); // candidates run in parallel
       }
