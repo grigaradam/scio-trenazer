@@ -36,9 +36,9 @@ import { type AutogenState, CREDIT_RETRY_MS, isFatalApiError, pickType, updateAu
 // batch. Nothing has to stay alive between ticks: a job only remembers which batch its current request is in.
 
 /** Candidates in flight per worker slot of the dashboard setting. */
-const JOBS_PER_WORKER = 8;
+export const JOBS_PER_WORKER = 8;
 /** Candidates of one type planned together – they share the cached prompt prefix. */
-const PER_TYPE = 4;
+export const PER_TYPE = 4;
 /** Variant slots in one planned group of a variant type (the rest are fresh tasks). */
 const VARIANTS_PER_GROUP = 1;
 const MAX_REQUESTS = 100;

@@ -1,6 +1,9 @@
 import "server-only";
 import { GENERATOR_VERSION } from "@/lib/ai/generate";
-import { batchStatus } from "./batch-gen";
+import { computeExact, loadExact, type OptimizationData } from "./admin-exact";
+import { DECKS } from "@/lib/ai/decks";
+import { EASY_SHARE, EASY_WINDOW, FAMILY_GAP_DAYS, FAMILY_GAP_TASKS, FAMILY_MAX, VARIANT_SHARE, VARIANT_TYPES } from "@/lib/ai/families";
+import { batchStatus, JOBS_PER_WORKER, PER_TYPE } from "./batch-gen";
 import { EXAMS, TASK_TYPES } from "@/lib/content/exams";
 import { AI, vapidEnv } from "@/lib/env";
 import { levelInfo } from "@/lib/gamification";
@@ -82,6 +85,8 @@ export interface AdminStats {
   };
   /** Cost per accepted task by type over 14 days (null = migration 0015 hasn't run). */
   costByType: TypeCost[] | null;
+  /** Everything for optimizing AI cost and quality, exact from the database (null = migration 0016 hasn't run). */
+  optimization: OptimizationData | null;
   traffic: { day: string; users: number; views: number; minutes: number }[];
   rejects: { at: string; note: string }[];
   config: Record<string, string | number>;
@@ -138,6 +143,8 @@ export interface TypeCost {
   thinkingShare: number | null;
   /** share of the cost that ran through the Batch API */
   batchShare: number | null;
+  /** share of generator + validator input read from the prompt cache (null = not measured) */
+  cacheShare: number | null;
 }
 
 type CostRow = {
@@ -173,6 +180,7 @@ function typeCosts(rows: CostRow[], types: string[]): TypeCost[] {
       perTask: accepts.length ? spend / accepts.length : null,
       thinkingShare: output ? sum(gens.map((g) => g.thinking_tokens ?? 0)) / output : null,
       batchShare: spend ? sum(mine.filter((r) => r.batch && r.kind !== "accept" && r.kind !== "reject").map((r) => Number(r.cost_usd))) / spend : null,
+      cacheShare: null,
     };
   });
 }
@@ -214,6 +222,18 @@ export async function loadAdminStats(): Promise<AdminStats> {
   ]);
   const autoState = autoStateRes.error ? null : (autoStateRes.data as Record<string, unknown> | null);
   const autoStart = (autoState?.started_at as string | null) ?? null;
+  const enabledTypes = TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled)).map((t) => t.id as string);
+  const todayIso = `${czToday()}T00:00:00Z`;
+  const rawExact = await loadExact({
+    since14: since,
+    since7: new Date(Date.now() - 7 * 86400000).toISOString(),
+    weekStart: `${new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10)}T00:00:00Z`,
+    today: todayIso,
+    since48h: new Date(Date.now() - 48 * 3600000).toISOString(),
+    autoStart,
+  });
+  // exact aggregates (migration 0016) replace the row-based numbers, which the API caps at 1000 rows per query
+  const exact = rawExact ? computeExact(rawExact, enabledTypes) : null;
   const rejectsRes = await admin
     .from("ai_calls")
     .select("created_at,note")
@@ -273,9 +293,9 @@ export async function loadAdminStats(): Promise<AdminStats> {
       hours: sum(myDays.map((d) => d.seconds)) / 3600,
       tasks: sum(myDays.map((d) => d.tasks)),
       tests: attempts.filter((a) => a.user_id === u.id).length,
-      generated: gen.filter((g) => g.created_by === u.id).length,
-      aiCalls: myAi.length,
-      costUsd: sum(myAi.map((a) => Number(a.cost_usd))),
+      generated: exact ? (exact.users.get(u.id)?.generated ?? 0) : gen.filter((g) => g.created_by === u.id).length,
+      aiCalls: exact ? (exact.users.get(u.id)?.calls ?? 0) : myAi.length,
+      costUsd: exact ? (exact.users.get(u.id)?.cost ?? 0) : sum(myAi.map((a) => Number(a.cost_usd))),
       blocked: Boolean(p?.blocked),
       inviteCode: p?.invite_code ?? null,
       plan: p?.plan === "basic" || p?.plan === "pro" ? p.plan : null,
@@ -287,19 +307,34 @@ export async function loadAdminStats(): Promise<AdminStats> {
   });
   users.sort((a, b) => (b.lastSeenAt ?? "").localeCompare(a.lastSeenAt ?? ""));
 
-  const byKind: Record<string, { calls: number; cost: number }> = {};
+  const rowKinds: Record<string, { calls: number; cost: number }> = {};
   for (const a of ai) {
-    const k = (byKind[a.kind] ??= { calls: 0, cost: 0 });
+    const k = (rowKinds[a.kind] ??= { calls: 0, cost: 0 });
     k.calls++;
     k.cost += Number(a.cost_usd);
   }
+  const byKind = exact?.byKind ?? rowKinds;
   const weekStart = new Date(now - 6 * 86400000).toISOString().slice(0, 10);
 
   const serves = seenRes.count ?? 0;
-  const servedTasks = gen.filter((g) => g.served_count > 0).length;
-  const generationAttempts = ai.filter((a) => a.kind === "generate").length;
+  const generated = exact ? sum(exact.pool.map((p) => p.generated)) : gen.length;
+  const servedTasks = exact ? sum(exact.pool.map((p) => p.servedTasks)) : gen.filter((g) => g.served_count > 0).length;
+  const generationAttempts = byKind.generate?.calls ?? 0;
   const genCost = (byKind.generate?.cost ?? 0) + (byKind.validate?.cost ?? 0);
-  const types = [...new Set(gen.map((g) => g.task_type))];
+  const types = exact ? exact.pool.map((p) => p.type) : [...new Set(gen.map((g) => g.task_type))];
+  const typeRow = (t: string) => {
+    const e = exact?.pool.find((p) => p.type === t);
+    if (exact) return { generated: e?.generated ?? 0, ready: e?.ready ?? 0, serves: e?.serves ?? 0, easy: e?.easy ?? 0, variants: e?.variants ?? 0 };
+    const mine = gen.filter((g) => g.task_type === t);
+    const current = mine.filter((g) => Number(g.v ?? 1) >= GENERATOR_VERSION);
+    return {
+      generated: mine.length,
+      ready: current.length,
+      serves: sum(mine.map((g) => g.served_count)),
+      easy: current.filter((g) => g.easy === true).length,
+      variants: current.filter((g) => Boolean(g.variantOf)).length,
+    };
+  };
 
   return {
     migrationMissing,
@@ -322,42 +357,50 @@ export async function loadAdminStats(): Promise<AdminStats> {
       tasksSolved: sum(days.map((d) => d.tasks)),
       testsCompleted: attempts.length,
     },
-    cost: {
-      total: sum(ai.map((a) => Number(a.cost_usd))),
-      today: sum(ai.filter((a) => (a.created_at ?? "").slice(0, 10) === today).map((a) => Number(a.cost_usd))),
-      week: sum(ai.filter((a) => (a.created_at ?? "").slice(0, 10) >= weekStart).map((a) => Number(a.cost_usd))),
-      byKind,
-    },
+    cost: exact
+      ? { total: exact.totals.all, today: exact.totals.today, week: exact.totals.d7, byKind }
+      : {
+          total: sum(ai.map((a) => Number(a.cost_usd))),
+          today: sum(ai.filter((a) => (a.created_at ?? "").slice(0, 10) === today).map((a) => Number(a.cost_usd))),
+          week: sum(ai.filter((a) => (a.created_at ?? "").slice(0, 10) >= weekStart).map((a) => Number(a.cost_usd))),
+          byKind,
+        },
     pool: {
-      generated: gen.length,
+      generated,
       generationAttempts,
-      acceptRate: generationAttempts ? gen.length / generationAttempts : null,
+      acceptRate: generationAttempts ? generated / generationAttempts : null,
       serves,
       servedTasks,
       recycledServes: Math.max(0, serves - servedTasks),
-      sharedTasks: gen.filter((g) => g.served_count >= 2).length,
-      waiting: gen.filter((g) => g.served_count === 0).length,
+      sharedTasks: exact ? sum(exact.pool.map((p) => p.sharedTasks)) : gen.filter((g) => g.served_count >= 2).length,
+      waiting: exact ? sum(exact.pool.map((p) => p.neverServed)) : gen.filter((g) => g.served_count === 0).length,
       reuseFactor: servedTasks ? serves / servedTasks : null,
       costPerServe: serves ? genCost / serves : null,
-      byType: TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled))
-        .map((m) => m.id as string)
-        .concat(types.filter((t) => !TASK_TYPES.some((m) => m.id === t)))
-        .map((t) => ({
-          type: t,
-          generated: gen.filter((g) => g.task_type === t).length,
-          ready: gen.filter((g) => g.task_type === t && Number(g.v ?? 1) >= GENERATOR_VERSION).length,
-          serves: sum(gen.filter((g) => g.task_type === t).map((g) => g.served_count)),
-          easy: gen.filter((g) => g.task_type === t && Number(g.v ?? 1) >= GENERATOR_VERSION && g.easy === true).length,
-          variants: gen.filter((g) => g.task_type === t && Number(g.v ?? 1) >= GENERATOR_VERSION && Boolean(g.variantOf)).length,
-        }))
-
+      byType: enabledTypes.concat(types.filter((t) => !TASK_TYPES.some((m) => m.id === t))).map((t) => ({ type: t, ...typeRow(t) })),
     },
-    costByType: costRes.error
-      ? null
-      : typeCosts(
-          (costRes.data ?? []) as CostRow[],
-          TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled)).map((t) => t.id as string),
-        ),
+    costByType: exact
+      ? exact.optimization.types
+          .filter((t) => enabledTypes.includes(t.type))
+          .map((t) => ({
+            type: t.type,
+            accepted: t.accepted,
+            first: t.first,
+            revised: t.revised,
+            easy: t.easyAccepted,
+            variants: t.variantsAccepted,
+            rejected: t.rejectedAttempts,
+            generateCost: t.generateCost,
+            validateCost: t.validateCost,
+            otherCost: t.otherCost,
+            perTask: t.perTask,
+            thinkingShare: t.thinkingShare,
+            batchShare: t.batchShare,
+            cacheShare: t.cacheShare,
+          }))
+      : costRes.error
+        ? null
+        : typeCosts((costRes.data ?? []) as CostRow[], enabledTypes),
+    optimization: exact?.optimization ?? null,
     traffic: week.map((day) => ({
       day,
       users: new Set([...traffic.filter((t) => t.day === day).map((t) => t.user_id), ...days.filter((d) => d.day === day && d.seconds > 0).map((d) => d.user_id)]).size,
@@ -379,8 +422,16 @@ export async function loadAdminStats(): Promise<AdminStats> {
       creditsExhaustedAt: (autoState?.credits_exhausted_at as string | null) ?? null,
       lastError: (autoState?.last_error as string | null) ?? null,
       startedAt: autoStart,
-      generatedSinceStart: autoStart ? gen.filter((g) => !g.created_by && (g as { created_at?: string }).created_at && (g as { created_at?: string }).created_at! >= autoStart).length : 0,
-      costSinceStart: autoStart ? sum(ai.filter((a) => !a.user_id && (a.created_at ?? "") >= autoStart).map((a) => Number(a.cost_usd))) : 0,
+      generatedSinceStart: exact?.sinceStart
+        ? exact.sinceStart.generated
+        : autoStart
+          ? gen.filter((g) => !g.created_by && (g as { created_at?: string }).created_at && (g as { created_at?: string }).created_at! >= autoStart).length
+          : 0,
+      costSinceStart: exact?.sinceStart
+        ? exact.sinceStart.cost
+        : autoStart
+          ? sum(ai.filter((a) => !a.user_id && (a.created_at ?? "") >= autoStart).map((a) => Number(a.cost_usd)))
+          : 0,
       secret: process.env.AUTOGEN_SECRET ?? null,
     },
     config: {
@@ -395,10 +446,16 @@ export async function loadAdminStats(): Promise<AdminStats> {
       chat: AI.chatModel,
       generatorVersion: GENERATOR_VERSION,
       dailyGenerateLimit: AI.dailyGenerateLimit,
+      rules:
+        `${DECKS} sady vzorů na typ (střídání po hodině) · lehké ≤ ${EASY_SHARE * 100} % zásoby a ≤ 1 z ${EASY_WINDOW} úloh uživatele · ` +
+        `varianty (${VARIANT_TYPES.join(", ")}) ≤ ${VARIANT_SHARE * 100} % zásoby, rodina ≤ ${FAMILY_MAX}, další člen po ${FAMILY_GAP_TASKS} úlohách + ${FAMILY_GAP_DAYS} dnech · ` +
+        `batch ${JOBS_PER_WORKER} rozpracovaných na worker, po ${PER_TYPE} od typu`,
     },
     learning: TASK_TYPES.filter((m) => EXAMS.some((e) => e.id === m.exam && e.enabled)).map((m) => {
       const mine = outcomes.filter((o) => o.note?.startsWith(`${m.id}:`));
       const lesson = lessonRows.find((l) => l.task_type === m.id);
+      const exactRow = exact?.learning.get(m.id);
+      if (exactRow) return { type: m.id, ...exactRow, lessons: lesson?.lessons ?? null, lessonsAt: lesson?.updated_at ?? null };
       return {
         type: m.id,
         // easy tasks passed only the lower bar – they count as discarded here (the cost panel lists them)
