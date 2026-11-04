@@ -162,6 +162,7 @@ export function AdminDashboard({ stats }: { stats: AdminStats }) {
         <PoolStock rows={p.byType} />
       </Card>
 
+      <CostPerTask rows={stats.costByType} />
       <AutoGenerate auto={stats.autogen} />
       <Learning rows={stats.learning} />
       <TestGenerate />
@@ -229,10 +230,23 @@ $$);`;
           <h2 className="font-display text-lg font-extrabold">Nekonečné generování {auto.enabled ? "🟢" : "⚪"}</h2>
           <p className="text-sm text-muted">
             Běží na serveru i se zavřeným webem, dokud ho nevypneš nebo nedojde kredit. Vždy doplňuje typ, kterého je nejméně.
+            {auto.mode === "batch" && " Přes Batch API: stejné úlohy za poloviční cenu, hotové obvykle do hodiny."}
           </p>
         </div>
         {auto.available && (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {auto.mode !== null && (
+              <select
+                value={auto.mode}
+                disabled={busy}
+                onChange={(e) => patch({ mode: e.target.value })}
+                className="h-9 rounded-xl border-2 border-border bg-surface px-2 text-base font-bold sm:text-sm"
+                title="Batch API: stejné modely a kontroly za poloviční cenu, úlohy přibývají se zpožděním (obvykle do hodiny)"
+              >
+                <option value="batch">Batch API (−50 %)</option>
+                <option value="sync">Hned (plná cena)</option>
+              </select>
+            )}
             <select
               value={workers}
               disabled={busy}
@@ -263,8 +277,21 @@ $$);`;
         </p>
       ) : (
         <>
+          {auto.mode === null && (
+            <p className="mt-3 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
+              Pro generování přes Batch API za poloviční cenu spusť v Supabase migraci <code>supabase/migrations/0015_cheaper_tasks.sql</code>.
+            </p>
+          )}
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            <Mini label="Pracuje" value={`${auto.busy} / ${auto.workers}`} hint="generátorů právě teď" />
+            {auto.mode === "batch" && auto.batch ? (
+              <Mini
+                label="V dávkách"
+                value={num(auto.batch.generating + auto.batch.validating)}
+                hint={`${auto.batch.generating} tvorba · ${auto.batch.validating} kontrola${auto.batch.variants ? ` · ${auto.batch.variants} variant` : ""}`}
+              />
+            ) : (
+              <Mini label="Pracuje" value={`${auto.busy} / ${auto.workers}`} hint="generátorů právě teď" />
+            )}
             <Mini label="Vytvořeno" value={num(auto.generatedSinceStart)} hint="od zapnutí" />
             <Mini label="Utraceno" value={usd(auto.costSinceStart)} hint="od zapnutí" />
             <Mini label="Plánovač" value={cronAlive ? "běží" : "neběží"} hint={auto.lastTickAt ? `naposledy ${ago(auto.lastTickAt)}` : "zatím nikdy"} />
@@ -412,6 +439,17 @@ function buildReport(stats: AdminStats) {
   );
   const p = stats.pool;
   lines.push(`Zásoba: vytvořeno ${p.generated}, zobrazeno ${p.serves}, recyklováno ${p.recycledServes}, cena/zobrazení ${p.costPerServe !== null ? `$${p.costPerServe.toFixed(3)}` : "–"}`);
+  lines.push(`Generování: ${stats.autogen.mode === "batch" ? "Batch API" : "synchronně"}, ${stats.autogen.enabled ? "zapnuto" : "vypnuto"}`);
+  if (stats.costByType) {
+    lines.push("");
+    lines.push("## Cena úlohy podle typu (14 dní): $/úloha | přijato (napoprvé/po opravě/lehké/varianty) | zamítnuto | thinking | batch");
+    for (const r of stats.costByType.filter((x) => x.accepted || x.rejected)) {
+      const pct = (x: number | null) => (x === null ? "–" : `${Math.round(x * 100)} %`);
+      lines.push(
+        `- ${name(r.type)}: ${r.perTask !== null ? `$${r.perTask.toFixed(3)}` : "–"} | ${r.accepted} (${r.first}/${r.revised}/${r.easy}/${r.variants}) | ${r.rejected} | ${pct(r.thinkingShare)} | ${pct(r.batchShare)}`,
+      );
+    }
+  }
   lines.push("");
   lines.push("## Úspěšnost po typech (14 dní): napoprvé / po opravě / zahozeno | připraveno v zásobě");
   for (const r of stats.learning) {
@@ -489,6 +527,73 @@ function Learning({ rows }: { rows: AdminStats["learning"] }) {
   );
 }
 
+function CostPerTask({ rows }: { rows: AdminStats["costByType"] }) {
+  if (!rows) {
+    return (
+      <Card>
+        <h2 className="font-display text-lg font-extrabold">Cena jedné úlohy</h2>
+        <p className="mt-2 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
+          Pro cenu po typech spusť v Supabase migraci <code>supabase/migrations/0015_cheaper_tasks.sql</code>.
+        </p>
+      </Card>
+    );
+  }
+  const used = rows.filter((r) => r.accepted || r.rejected);
+  const total = used.reduce(
+    (a, r) => ({ cost: a.cost + r.generateCost + r.validateCost + r.otherCost, accepted: a.accepted + r.accepted }),
+    { cost: 0, accepted: 0 },
+  );
+  const pct = (x: number | null) => (x === null ? "–" : `${Math.round(x * 100)} %`);
+  return (
+    <Card>
+      <h2 className="font-display text-lg font-extrabold">Cena jedné úlohy (14 dní)</h2>
+      <p className="mb-3 text-sm text-muted">
+        Všechna volání generátoru a kontroly dělená počtem úloh, které se dostaly do zásoby – včetně zahozených pokusů.
+        {total.accepted ? ` Průměr ${usd(total.cost / total.accepted)} za úlohu.` : ""}
+      </p>
+      {used.length ? (
+        <div className="scroll-thin overflow-x-auto">
+          <table className="w-full min-w-[640px] text-sm">
+            <thead className="text-left text-xs uppercase text-muted">
+              <tr>
+                <th className="py-1">Typ úlohy</th>
+                <th className="py-1 text-right">Za úlohu</th>
+                <th className="py-1 text-right" title="napoprvé / po opravě / lehké / varianty">Přijato</th>
+                <th className="py-1 text-right">Zamítnuto</th>
+                <th className="py-1 text-right">Tvorba</th>
+                <th className="py-1 text-right">Kontrola</th>
+                <th className="py-1 text-right" title="podíl výstupních tokenů generátoru, které jdou na přemýšlení">Thinking</th>
+                <th className="py-1 text-right" title="podíl nákladů přes Batch API (poloviční cena)">Batch</th>
+              </tr>
+            </thead>
+            <tbody>
+              {used.map((r) => (
+                <tr key={r.type} className="border-t border-border">
+                  <td className="py-1.5">
+                    {taskTypeMeta(r.type)?.emoji} {taskTypeMeta(r.type)?.name ?? r.type}
+                  </td>
+                  <td className="py-1.5 text-right font-bold tabular-nums">{r.perTask !== null ? usd(r.perTask) : "–"}</td>
+                  <td className="py-1.5 text-right tabular-nums" title={`napoprvé ${r.first} · po opravě ${r.revised} · lehké ${r.easy} · varianty ${r.variants}`}>
+                    {r.accepted}
+                    {r.easy || r.variants ? <span className="text-xs text-muted"> ({[r.easy && `${r.easy} lehké`, r.variants && `${r.variants} var.`].filter(Boolean).join(", ")})</span> : null}
+                  </td>
+                  <td className="py-1.5 text-right tabular-nums">{r.rejected}</td>
+                  <td className="py-1.5 text-right tabular-nums">{usd(r.generateCost)}</td>
+                  <td className="py-1.5 text-right tabular-nums">{usd(r.validateCost)}</td>
+                  <td className="py-1.5 text-right tabular-nums text-muted">{pct(r.thinkingShare)}</td>
+                  <td className="py-1.5 text-right tabular-nums text-muted">{pct(r.batchShare)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="text-sm text-muted">Zatím žádná data – objeví se s první vygenerovanou úlohou po migraci.</p>
+      )}
+    </Card>
+  );
+}
+
 function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
   const router = useRouter();
   const [running, setRunning] = useState(false);
@@ -542,13 +647,15 @@ function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
         </Button>
       </div>
       <div className="scroll-thin overflow-x-auto">
-        <table className="w-full min-w-[520px] text-sm">
+        <table className="w-full min-w-[620px] text-sm">
           <thead className="text-left text-xs uppercase text-muted">
             <tr>
               <th className="py-1">Typ úlohy</th>
               <th className="py-1 text-right">Připraveno</th>
               <th className="py-1 text-right">Vytvořeno</th>
               <th className="py-1 text-right">Zobrazeno</th>
+              <th className="py-1 text-right" title="správné, ale lehčí než Scio – max. 10 % zásoby">Lehké</th>
+              <th className="py-1 text-right" title="varianty matematických a logických úloh – max. 25 % zásoby">Varianty</th>
               <th className="py-1 pl-3">Stav</th>
             </tr>
           </thead>
@@ -561,6 +668,8 @@ function PoolStock({ rows }: { rows: AdminStats["pool"]["byType"] }) {
                 <td className={clsx("py-1.5 text-right font-bold tabular-nums", r.ready < 2 ? "text-amber-600" : "text-emerald-600")}>{r.ready}</td>
                 <td className="py-1.5 text-right tabular-nums">{r.generated}</td>
                 <td className="py-1.5 text-right tabular-nums">{r.serves}</td>
+                <td className="py-1.5 text-right tabular-nums text-muted">{r.easy || "–"}</td>
+                <td className="py-1.5 text-right tabular-nums text-muted">{r.variants || "–"}</td>
                 <td className="py-1.5 pl-3 text-xs text-muted">{status[r.type] ?? ""}</td>
               </tr>
             ))}

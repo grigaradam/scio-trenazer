@@ -1,5 +1,6 @@
 import "server-only";
 import { GENERATOR_VERSION } from "@/lib/ai/generate";
+import { batchStatus } from "./batch-gen";
 import { EXAMS, TASK_TYPES } from "@/lib/content/exams";
 import { AI, vapidEnv } from "@/lib/env";
 import { levelInfo } from "@/lib/gamification";
@@ -77,8 +78,10 @@ export interface AdminStats {
     waiting: number;
     reuseFactor: number | null;
     costPerServe: number | null;
-    byType: { type: string; generated: number; ready: number; serves: number }[];
+    byType: { type: string; generated: number; ready: number; serves: number; easy: number; variants: number }[];
   };
+  /** Cost per accepted task by type over 14 days (null = migration 0015 hasn't run). */
+  costByType: TypeCost[] | null;
   traffic: { day: string; users: number; views: number; minutes: number }[];
   rejects: { at: string; note: string }[];
   config: Record<string, string | number>;
@@ -86,6 +89,10 @@ export interface AdminStats {
     available: boolean;
     enabled: boolean;
     workers: number;
+    /** null = migration 0015 hasn't run (no batch mode yet) */
+    mode: "sync" | "batch" | null;
+    /** Batch mode: candidates in flight. */
+    batch: { generating: number; validating: number; variants: number; waiting: number; batches: number } | null;
     busy: number;
     lastTickAt: string | null;
     cronAlive: boolean;
@@ -113,6 +120,63 @@ export interface AdminStats {
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
+export interface TypeCost {
+  type: string;
+  accepted: number;
+  first: number;
+  revised: number;
+  easy: number;
+  variants: number;
+  rejected: number;
+  generateCost: number;
+  validateCost: number;
+  /** word proposals and lesson distilling */
+  otherCost: number;
+  /** generation cost per accepted task (null = nothing accepted) */
+  perTask: number | null;
+  /** share of generator output tokens spent on thinking */
+  thinkingShare: number | null;
+  /** share of the cost that ran through the Batch API */
+  batchShare: number | null;
+}
+
+type CostRow = {
+  kind: string;
+  task_type: string | null;
+  cost_usd: number;
+  thinking_tokens: number;
+  output_tokens: number;
+  batch: boolean;
+  note: string | null;
+};
+
+/** Cost per accepted task for every type, from ai_calls rows tagged with their task type (migration 0015). */
+function typeCosts(rows: CostRow[], types: string[]): TypeCost[] {
+  return types.map((type) => {
+    const mine = rows.filter((r) => r.task_type === type);
+    const cost = (kinds: string[]) => sum(mine.filter((r) => kinds.includes(r.kind)).map((r) => Number(r.cost_usd)));
+    const accepts = mine.filter((r) => r.kind === "accept");
+    const gens = mine.filter((r) => r.kind === "generate");
+    const spend = cost(["generate", "validate", "words", "learn"]);
+    const output = sum(gens.map((g) => g.output_tokens));
+    return {
+      type,
+      accepted: accepts.length,
+      first: accepts.filter((a) => /: first\b/.test(a.note ?? "") && !/\beasy$/.test(a.note ?? "")).length,
+      revised: accepts.filter((a) => /: revised\b/.test(a.note ?? "") && !/\beasy$/.test(a.note ?? "")).length,
+      easy: accepts.filter((a) => /\beasy$/.test(a.note ?? "")).length,
+      variants: accepts.filter((a) => /\bvariant\b/.test(a.note ?? "")).length,
+      rejected: mine.filter((r) => r.kind === "reject").length,
+      generateCost: cost(["generate"]),
+      validateCost: cost(["validate"]),
+      otherCost: cost(["words", "learn"]),
+      perTask: accepts.length ? spend / accepts.length : null,
+      thinkingShare: output ? sum(gens.map((g) => g.thinking_tokens ?? 0)) / output : null,
+      batchShare: spend ? sum(mine.filter((r) => r.batch && r.kind !== "accept" && r.kind !== "reject").map((r) => Number(r.cost_usd))) / spend : null,
+    };
+  });
+}
+
 
 export async function loadAdminStats(): Promise<AdminStats> {
   const admin = createAdminClient();
@@ -121,7 +185,7 @@ export async function loadAdminStats(): Promise<AdminStats> {
     admin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
     admin.from("profiles").select("*"),
     admin.from("study_days").select("user_id,day,seconds,tasks"),
-    admin.from("generated_tasks").select("id,created_by,served_count,task_type,created_at,v:payload->v"),
+    admin.from("generated_tasks").select("id,created_by,served_count,task_type,created_at,v:payload->v,easy:payload->easy,variantOf:payload->>variantOf"),
     admin.from("task_seen").select("task_ref", { count: "exact", head: true }).like("task_ref", "gen:%"),
     admin.from("ai_calls").select("user_id,kind,cost_usd,created_at,ok"),
     admin.from("attempts").select("user_id").eq("status", "completed"),
@@ -130,9 +194,17 @@ export async function loadAdminStats(): Promise<AdminStats> {
   ]);
   const migrationMissing = Boolean(aiRes.error || invitesRes.error || trafficRes.error);
   const since = new Date(Date.now() - 14 * 86400000).toISOString();
-  const [outcomesRes, lessonsRes] = await Promise.all([
+  const [outcomesRes, lessonsRes, costRes, batch] = await Promise.all([
     admin.from("ai_calls").select("kind,note").in("kind", ["accept", "reject"]).gte("created_at", since).limit(5000),
     admin.from("generator_lessons").select("task_type,lessons,updated_at"),
+    // separate query: without migration 0015 the columns are missing and only this panel stays empty
+    admin
+      .from("ai_calls")
+      .select("kind,task_type,cost_usd,thinking_tokens,output_tokens,batch,note")
+      .gte("created_at", since)
+      .in("kind", ["generate", "validate", "words", "learn", "accept", "reject"])
+      .limit(20000),
+    batchStatus(),
   ]);
   const outcomes = (outcomesRes.error ? [] : (outcomesRes.data ?? [])) as { kind: string; note: string | null }[];
   const lessonRows = (lessonsRes.error ? [] : (lessonsRes.data ?? [])) as { task_type: string; lessons: string; updated_at: string }[];
@@ -156,7 +228,15 @@ export async function loadAdminStats(): Promise<AdminStats> {
   const authUsers = usersRes.data?.users ?? [];
   const profiles = (profilesRes.data ?? []) as Profile[];
   const days = (daysRes.data ?? []) as { user_id: string; day: string; seconds: number; tasks: number }[];
-  const gen = (genRes.data ?? []) as { id: string; created_by: string | null; served_count: number; task_type: string; v?: number | null }[];
+  const gen = (genRes.data ?? []) as {
+    id: string;
+    created_by: string | null;
+    served_count: number;
+    task_type: string;
+    v?: number | null;
+    easy?: boolean | null;
+    variantOf?: string | null;
+  }[];
   const ai = (aiRes.data ?? []) as { user_id: string | null; kind: string; cost_usd: number; created_at: string; ok: boolean }[];
   const attempts = (attemptsRes.data ?? []) as { user_id: string }[];
   const invites = (invitesRes.data ?? []) as {
@@ -267,9 +347,17 @@ export async function loadAdminStats(): Promise<AdminStats> {
           generated: gen.filter((g) => g.task_type === t).length,
           ready: gen.filter((g) => g.task_type === t && Number(g.v ?? 1) >= GENERATOR_VERSION).length,
           serves: sum(gen.filter((g) => g.task_type === t).map((g) => g.served_count)),
+          easy: gen.filter((g) => g.task_type === t && Number(g.v ?? 1) >= GENERATOR_VERSION && g.easy === true).length,
+          variants: gen.filter((g) => g.task_type === t && Number(g.v ?? 1) >= GENERATOR_VERSION && Boolean(g.variantOf)).length,
         }))
 
     },
+    costByType: costRes.error
+      ? null
+      : typeCosts(
+          (costRes.data ?? []) as CostRow[],
+          TASK_TYPES.filter((t) => EXAMS.some((e) => e.id === t.exam && e.enabled)).map((t) => t.id as string),
+        ),
     traffic: week.map((day) => ({
       day,
       users: new Set([...traffic.filter((t) => t.day === day).map((t) => t.user_id), ...days.filter((d) => d.day === day && d.seconds > 0).map((d) => d.user_id)]).size,
@@ -283,6 +371,8 @@ export async function loadAdminStats(): Promise<AdminStats> {
       available: Boolean(autoState),
       enabled: Boolean(autoState?.enabled),
       workers: Number(autoState?.workers ?? 2),
+      mode: autoState && "mode" in autoState ? ((autoState.mode as "sync" | "batch") ?? "sync") : null,
+      batch,
       busy: ((leasesRes.error ? [] : leasesRes.data) ?? []).filter((l) => new Date(l.lease_until as string).getTime() > now).length,
       lastTickAt: (autoState?.last_tick_at as string | null) ?? null,
       cronAlive: Boolean(autoState?.last_tick_at && now - new Date(autoState.last_tick_at as string).getTime() < 150_000),
@@ -294,9 +384,14 @@ export async function loadAdminStats(): Promise<AdminStats> {
       secret: process.env.AUTOGEN_SECRET ?? null,
     },
     config: {
-      generator: `${AI.model} (${AI.generatorEffort})`,
+      generator: `${AI.model} (${AI.firstEffort}${AI.revisionEffort !== AI.firstEffort ? `, oprava ${AI.revisionEffort}` : ""})`,
+      ...(Object.keys(AI.modelByType).length
+        ? { generatorByType: Object.entries(AI.modelByType).map(([t, m]) => `${t}=${m}`).join(" ") }
+        : {}),
+      variants: `${AI.variantModel} (${AI.variantEffort})`,
+      words: AI.wordsModel,
       validator: `${AI.validatorModel} (${AI.validatorEffort})`,
-      explain: AI.explainModel,
+      explain: `${AI.explainModel} · AI úlohy ${AI.explainGeneratedModel}`,
       chat: AI.chatModel,
       generatorVersion: GENERATOR_VERSION,
       dailyGenerateLimit: AI.dailyGenerateLimit,
@@ -306,8 +401,9 @@ export async function loadAdminStats(): Promise<AdminStats> {
       const lesson = lessonRows.find((l) => l.task_type === m.id);
       return {
         type: m.id,
-        first: mine.filter((o) => o.kind === "accept" && o.note?.endsWith("first")).length,
-        revised: mine.filter((o) => o.kind === "accept" && o.note?.endsWith("revised")).length,
+        // easy tasks passed only the lower bar – they count as discarded here (the cost panel lists them)
+        first: mine.filter((o) => o.kind === "accept" && /: first\b/.test(o.note ?? "") && !/\beasy$/.test(o.note ?? "")).length,
+        revised: mine.filter((o) => o.kind === "accept" && /: revised\b/.test(o.note ?? "") && !/\beasy$/.test(o.note ?? "")).length,
         failed: mine.filter((o) => o.kind === "reject" && /\[po opravě\]|generátor nevrátil|: chyba:/.test(o.note ?? "")).length,
         lessons: lesson?.lessons ?? null,
         lessonsAt: lesson?.updated_at ?? null,
