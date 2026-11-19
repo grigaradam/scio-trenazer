@@ -1,7 +1,9 @@
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { AdminLogin } from "@/components/admin/AdminLogin";
+import { AdminWithdrawals, type WithdrawalRow } from "@/components/admin/AdminWithdrawals";
 import { adminConfigured, isAdmin } from "@/lib/server/admin-auth";
 import { loadAdminStats } from "@/lib/server/admin-stats";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const metadata = { title: "Admin" };
 
@@ -20,6 +22,15 @@ export default async function DashboardPage() {
     );
   }
   if (!(await isAdmin())) return <AdminLogin />;
-  const stats = await loadAdminStats();
-  return <AdminDashboard stats={stats} />;
+  const [stats, { data: withdrawals }] = await Promise.all([
+    loadAdminStats(),
+    // without migration 0018 the table is missing – the section just stays hidden
+    createAdminClient().from("withdrawals").select("*").order("created_at", { ascending: false }).limit(50),
+  ]);
+  return (
+    <>
+      <AdminWithdrawals rows={(withdrawals ?? []) as WithdrawalRow[]} />
+      <AdminDashboard stats={stats} />
+    </>
+  );
 }

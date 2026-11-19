@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { LegalFooter } from "./LegalFooter";
 import { Logo } from "./Logo";
 
 export function AuthShell({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
@@ -13,6 +14,7 @@ export function AuthShell({ title, subtitle, children }: { title: string; subtit
         <p className="mb-5 mt-1 text-sm text-muted">{subtitle}</p>
         {children}
       </div>
+      <LegalFooter compact className="mt-6" />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { bindInvite, claimInvite, releaseInvite } from "@/lib/server/invites";
+import { recordAcceptance } from "@/lib/server/legal";
 import { refreshVocative } from "@/lib/server/names";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -9,13 +10,16 @@ const Body = z.object({
   password: z.string().min(6).max(200),
   name: z.string().trim().max(40).optional(),
   code: z.string().trim().min(1).max(40),
+  // "18+ and I accept the terms" and "start my access now" (§ 1834 OZ) – both required at sign-up
+  terms: z.literal(true),
+  start: z.literal(true),
 });
 
 // Invite-only registration with one-time codes generated in /dashboard.
 // Users are created server-side, so public sign-ups stay disabled in Supabase.
 export async function POST(req: Request) {
   const parsed = Body.safeParse(await req.json().catch(() => ({})));
-  if (!parsed.success) return NextResponse.json({ error: "Zkontroluj e-mail a heslo (min. 6 znaků)." }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: "Zkontroluj e-mail, heslo (min. 6 znaků) a oba souhlasy." }, { status: 400 });
   const { email, password, name, code } = parsed.data;
 
   if (!(await claimInvite(code))) {
@@ -39,6 +43,7 @@ export async function POST(req: Request) {
     );
   }
   await bindInvite(code, data.user.id);
+  await recordAcceptance(data.user.id);
   // awaited so the onboarding greeting right after sign-up already uses it (cached names are instant)
   await refreshVocative(data.user.id, displayName);
   return NextResponse.json({ ok: true });

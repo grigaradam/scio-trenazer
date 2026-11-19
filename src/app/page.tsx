@@ -1,3 +1,4 @@
+import { LegalFooter } from "@/components/LegalFooter";
 import { Logo } from "@/components/Logo";
 import { ButtonLink } from "@/components/ui";
 
@@ -98,6 +99,7 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <LegalFooter />
     </main>
   );
 }

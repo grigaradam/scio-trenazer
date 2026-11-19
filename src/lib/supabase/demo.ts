@@ -354,6 +354,15 @@ const auth = {
       if (!users.length) users.push({ id: DEMO_USER.id, email: DEMO_USER.email, created_at: new Date().toISOString() });
       return { data: { users: JSON.parse(JSON.stringify(users)) }, error: null };
     },
+    async deleteUser(id: string) {
+      const users = table("auth_users");
+      const i = users.findIndex((u) => u.id === id);
+      if (i >= 0) users.splice(i, 1);
+      const profiles = table("profiles");
+      const j = profiles.findIndex((p) => p.id === id);
+      if (j >= 0) profiles.splice(j, 1);
+      return { data: {}, error: null };
+    },
     async createUser(opts: { email: string; user_metadata?: { display_name?: string } }) {
       const users = table("auth_users");
       if (users.some((u) => u.email === opts.email)) return { data: { user: null }, error: { message: "User already registered" } };

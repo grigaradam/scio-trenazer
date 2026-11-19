@@ -49,3 +49,8 @@ next-env.d.ts
 
 # A/B test outputs (npm run ab)
 /ab-results/
+
+# internal legal working notes (facts, checklist, report) – the documents themselves are in pravni/dokumenty/
+/pravni/FAKTA.md
+/pravni/KONTROLA.md
+/pravni/ZPRAVA.md

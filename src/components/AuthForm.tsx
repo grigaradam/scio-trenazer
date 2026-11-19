@@ -14,6 +14,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [code, setCode] = useState(params.get("code") ?? "");
+  const [terms, setTerms] = useState(false);
+  const [start, setStart] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(
     params.get("error") === "confirm"
@@ -39,7 +41,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         const r = await fetch("/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, name, code }),
+          body: JSON.stringify({ email, password, name, code, terms, start }),
         });
         const j = await r.json().catch(() => ({}));
         if (!r.ok) throw new Error(j.error ?? "Registrace se nepovedla.");
@@ -86,6 +88,34 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           value={code}
           onChange={(e) => setCode(e.target.value)}
         />
+      )}
+      {mode === "signup" && (
+        <div className="space-y-2 pt-1 text-sm">
+          <label className="flex cursor-pointer gap-2.5">
+            <input type="checkbox" required checked={terms} onChange={(e) => setTerms(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-brand-600" />
+            <span>
+              Je mi alespoň 18 let a přijímám{" "}
+              <Link href="/obchodni-podminky" target="_blank" className="font-bold text-brand-600 underline underline-offset-2">
+                obchodní podmínky
+              </Link>
+              .
+            </span>
+          </label>
+          <label className="flex cursor-pointer gap-2.5">
+            <input type="checkbox" required checked={start} onChange={(e) => setStart(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-brand-600" />
+            <span>
+              Žádám, aby mi přístup začal hned. Beru na vědomí, že když u placeného přístupu do 14 dnů od zaplacení odstoupím od smlouvy,
+              zaplatím poměrnou část ceny za dobu, po kterou jsem měl(a) přístup.
+            </span>
+          </label>
+          <p className="text-xs text-muted">
+            Jak zpracováváme tvé údaje, najdeš v{" "}
+            <Link href="/ochrana-osobnich-udaju" target="_blank" className="font-semibold underline underline-offset-2">
+              zásadách ochrany osobních údajů
+            </Link>
+            .
+          </p>
+        </div>
       )}
       {error && <p className="rounded-xl bg-rose-100 px-3 py-2 text-sm font-medium text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">{error}</p>}
       <Button type="submit" size="lg" className="w-full" loading={busy}>

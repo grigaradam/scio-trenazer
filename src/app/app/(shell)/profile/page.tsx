@@ -1,4 +1,7 @@
+import Link from "next/link";
 import { AvatarUpload } from "@/components/AvatarUpload";
+import { DeleteAccount } from "@/components/DeleteAccount";
+import { LEGAL_LINKS } from "@/components/LegalFooter";
 import { ProfileForm } from "@/components/ProfileForm";
 import { PlanBadge } from "@/components/Pro";
 import { PushToggle } from "@/components/PushToggle";
@@ -91,6 +94,25 @@ export default async function ProfilePage() {
           Odhlásit se
         </button>
       </form>
+
+      <Card>
+        <div className="font-display font-extrabold">Právní informace</div>
+        <ul className="mt-2 grid gap-1 text-sm sm:grid-cols-2">
+          {LEGAL_LINKS.map((l) => (
+            <li key={l.href}>
+              <Link href={l.href} className="font-semibold text-brand-600 underline underline-offset-2 dark:text-brand-300">
+                {l.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 text-xs text-muted">
+          Kopii svých údajů ti pošleme na požádání na grigar.adam@gmail.com.
+        </p>
+        <div className="mt-3">
+          <DeleteAccount />
+        </div>
+      </Card>
     </div>
   );
 }
