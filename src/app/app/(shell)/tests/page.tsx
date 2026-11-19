@@ -32,7 +32,7 @@ export default async function TestsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-3xl font-extrabold">Testy</h1>
-        <p className="mt-1 text-muted">Ostré testy Scio z minulých let, na čas a se stejným bodováním.</p>
+        <p className="mt-1 text-muted">Celé testy na čas, se stejným bodováním jako u zkoušky.</p>
         {plan === "basic" && (
           <p className="mt-2 text-sm text-muted">
             {own ? "V Basic máš jeden test – ten svůj si můžeš zkoušet znovu. Ostatní jsou v Pro." : "V Basic máš jeden test – vyber si, který to bude."}

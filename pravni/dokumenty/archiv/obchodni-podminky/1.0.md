@@ -21,17 +21,15 @@ Verze 1.0 · účinné od 20. 11. 2026
 
 ## 2. Co aplikace je a co není
 
-2.1 Aplikace slouží k přípravě na Národní srovnávací zkoušky, konkrétně na Obecné studijní předpoklady (OSP) a Anglický jazyk. Nabízí cvičné testy na čas s vyhodnocením a odhadem percentilu, rozbor chyb, vysvětlení a chat k úlohám s umělou inteligencí, tréninkové úlohy (včetně úloh vytvořených umělou inteligencí), přehled pokroku a herní prvky (XP, levely, denní série, mazlíček).
+2.1 Aplikace slouží k přípravě na přijímací testy obecných studijních předpokladů (OSP) a angličtiny. Nabízí cvičné testy na čas s vyhodnocením a odhadem percentilu, rozbor chyb, vysvětlení a chat k úlohám s umělou inteligencí, tréninkové úlohy (včetně úloh vytvořených umělou inteligencí), přehled pokroku a herní prvky (XP, levely, denní série, mazlíček).
 
 2.2 Aplikace je soukromá a neveřejná. Registrace je možná jen s přístupovým kódem od provozovatele.
 
-2.3 Aplikace **není** spojena se společností Scio, s.r.o., ani organizátorem Národních srovnávacích zkoušek a není jimi podporována ani schválena. Názvy NSZ, OSP a Scio patří jejich vlastníkům a používáme je jen k popisu, na co se v aplikaci připravuješ.
+2.3 Výsledky v aplikaci (body, odhad percentilu, úspěšnost) jsou orientační. Odhad percentilu vychází ze statistických údajů a normálního rozdělení a neříká, jaký výsledek získáš u skutečné zkoušky. Úspěch u zkoušky ani přijetí na vysokou školu nezaručujeme.
 
-2.4 Výsledky v aplikaci (body, odhad percentilu, úspěšnost) jsou orientační. Odhad percentilu vychází ze statistických údajů a normálního rozdělení a neříká, jaký výsledek získáš u skutečné zkoušky. Úspěch u zkoušky ani přijetí na vysokou školu nezaručujeme.
+2.4 Aplikaci mohou používat jen osoby starší 18 let. Nezletilí ji používat nemohou, ani se souhlasem zákonného zástupce.
 
-2.5 Aplikaci mohou používat jen osoby starší 18 let. Nezletilí ji používat nemohou, ani se souhlasem zákonného zástupce.
-
-2.6 Aplikaci poskytujeme fyzickým osobám pro jejich vlastní přípravu. Pokud ji chceš využít pro školu nebo firmu, ozvi se; podmínky včetně případné zpracovatelské smlouvy podle čl. 28 GDPR sjednáme zvlášť.
+2.5 Aplikaci poskytujeme fyzickým osobám pro jejich vlastní přípravu. Pokud ji chceš využít pro školu nebo firmu, ozvi se; podmínky včetně případné zpracovatelské smlouvy podle čl. 28 GDPR sjednáme zvlášť.
 
 ## 3. Plány a co obsahují
 

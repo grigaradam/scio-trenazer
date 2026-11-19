@@ -10,7 +10,7 @@ import { BASIC } from "@/lib/plans";
 import { ProLock } from "./Pro";
 import { ButtonLink } from "./ui";
 
-const STORE = "scio:mix-types";
+const STORE = "nanecisto:mix-types";
 
 /** Hub card for a mixed practice session: everything at once, or a hand-picked set of sections and task types. */
 export function MixPicker({

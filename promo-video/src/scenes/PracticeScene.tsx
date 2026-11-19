@@ -79,7 +79,7 @@ export const PracticeScene: React.FC = () => {
             color: C.mutedOnDark,
           }}
         >
-          13 typů úloh ve stylu Scio – nové úlohy přesně na to, co ti nejde.
+          13 typů úloh jako u zkoušky – nové úlohy přesně na to, co ti nejde.
         </div>
       </div>
 

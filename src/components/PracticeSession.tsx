@@ -52,7 +52,7 @@ const LIMITS: { label: string; value: number | null }[] = [
 ];
 
 const LOADING_TIPS = [
-  "AI vymýšlí novou úlohu ve stylu Scio…",
+  "AI vymýšlí novou úlohu…",
   "Druhá AI ji nezávisle řeší a kontroluje češtinu…",
   "Ověřujeme, že má právě jednu správnou odpověď…",
   "Ukládáme ji do sdílené databáze úloh…",

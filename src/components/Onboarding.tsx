@@ -146,7 +146,7 @@ export function Onboarding({ name }: { name: string }) {
                     ["📖", "Verbální oddíl", "33 úloh · 35 minut"],
                     ["🧮", "Analytický oddíl", "33 úloh · 50 minut, bez kalkulačky – počítej na papír"],
                   ]),
-              ["⚖️", "Bodování jako Scio", "správně +1, špatně −⅓, nevyplněno 0 → hádej jen s rozumem"],
+              ["⚖️", "Bodování jako u zkoušky", "správně +1, špatně −⅓, nevyplněno 0 → hádej jen s rozumem"],
               ["⏸️", "Pauza", "test jde pozastavit a dokončit později, ale ostrý režim je nejlepší trénink"],
             ].map(([e, t, d]) => (
               <li key={t} className="flex gap-3 rounded-2xl border-2 border-border bg-surface p-3">

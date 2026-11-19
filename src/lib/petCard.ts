@@ -140,7 +140,7 @@ export async function renderPetCard(svg: SVGSVGElement, info: PetCardInfo): Prom
   ctx.fillText("nanečisto", W / 2, 1296);
   ctx.font = `600 28px ${font()}`;
   ctx.fillStyle = "#6b7280";
-  ctx.fillText(`učím se na Scio s mazlíčkem · ${info.site}`, W / 2, 1333);
+  ctx.fillText(`učím se s mazlíčkem · ${info.site}`, W / 2, 1333);
 
   return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob"))), "image/png"));
 }

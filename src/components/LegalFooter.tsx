@@ -33,7 +33,7 @@ export function LegalFooter({ compact, className }: { compact?: boolean; classNa
         {!compact && (
           <p className="mt-3 text-xs">
             © {new Date().getFullYear()} {OPERATOR.name}, IČO {OPERATOR.ico}, {OPERATOR.address}, zapsaný v živnostenském rejstříku ·{" "}
-            {OPERATOR.email} · Aplikace není spojena se společností Scio, s.r.o.
+            {OPERATOR.email}
           </p>
         )}
       </div>

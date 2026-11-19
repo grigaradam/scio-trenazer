@@ -103,7 +103,7 @@ export const IntroScene: React.FC = () => {
             color: C.mutedOnDark,
           }}
         >
-          Příprava na Národní srovnávací zkoušky Scio –{" "}
+          Příprava na přijímací testy –{" "}
           <b style={{ color: C.textOnDark }}>OSP</b>
         </div>
       </div>

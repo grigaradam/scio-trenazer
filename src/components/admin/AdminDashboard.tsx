@@ -670,7 +670,7 @@ function PoolStock({ rows, stockTarget }: { rows: AdminStats["pool"]["byType"]; 
               <th className="py-1 text-right" title="úlohy, které nejaktivnější uživatel ještě neviděl – podle nich se řídí doplňování">Neviděné</th>
               <th className="py-1 text-right">Vytvořeno</th>
               <th className="py-1 text-right">Zobrazeno</th>
-              <th className="py-1 text-right" title="správné, ale lehčí než Scio – max. 10 % zásoby">Lehké</th>
+              <th className="py-1 text-right" title="správné, ale lehčí než originál – max. 10 % zásoby">Lehké</th>
               <th className="py-1 text-right" title="varianty matematických a logických úloh – max. 25 % zásoby">Varianty</th>
               <th className="py-1 pl-3">Stav</th>
             </tr>
